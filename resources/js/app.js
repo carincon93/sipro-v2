@@ -4,6 +4,7 @@ require("./bootstrap");
 import { addMessages, init } from "svelte-i18n";
 import { App } from "@inertiajs/inertia-svelte";
 import { InertiaProgress } from "@inertiajs/progress";
+console.log(route("users.index"));
 
 import es from "../lang/es.json";
 

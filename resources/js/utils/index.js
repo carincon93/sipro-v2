@@ -1,1 +1,3 @@
-export const route = window.route
+// export const route = window.route;
+
+// console.log(window.route);
