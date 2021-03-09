@@ -5091,8 +5091,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var svelte_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! svelte-i18n */ "./node_modules/svelte-i18n/dist/runtime.esm.js");
 /* harmony import */ var _inertiajs_inertia_svelte__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-svelte */ "./node_modules/@inertiajs/inertia-svelte/src/index.js");
 /* harmony import */ var _inertiajs_progress__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @inertiajs/progress */ "./node_modules/@inertiajs/progress/dist/index.js");
-/* harmony import */ var _Utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/Utils */ "./resources/js/Utils/index.js");
-/* harmony import */ var _lang_es_json__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../lang/es.json */ "./resources/lang/es.json");
+/* harmony import */ var _lang_es_json__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lang/es.json */ "./resources/lang/es.json");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Import modules...
 
 
@@ -5100,10 +5099,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Import
 
 
 
-console.log((0,_Utils__WEBPACK_IMPORTED_MODULE_3__.route)("users.index"));
-console.log((0,_Utils__WEBPACK_IMPORTED_MODULE_3__.route)("login"));
-
-(0,svelte_i18n__WEBPACK_IMPORTED_MODULE_0__.addMessages)("es", _lang_es_json__WEBPACK_IMPORTED_MODULE_4__);
+(0,svelte_i18n__WEBPACK_IMPORTED_MODULE_0__.addMessages)("es", _lang_es_json__WEBPACK_IMPORTED_MODULE_3__);
 (0,svelte_i18n__WEBPACK_IMPORTED_MODULE_0__.init)({
   initialLocale: "es"
 });

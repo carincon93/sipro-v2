@@ -5,11 +5,6 @@ import { addMessages, init } from "svelte-i18n";
 import { App } from "@inertiajs/inertia-svelte";
 import { InertiaProgress } from "@inertiajs/progress";
 
-import { route } from "@/Utils";
-
-console.log(route("users.index"));
-console.log(route("login"));
-
 import es from "../lang/es.json";
 
 addMessages("es", es);
