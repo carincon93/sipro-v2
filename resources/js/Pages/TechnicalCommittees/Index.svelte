@@ -46,6 +46,7 @@
                     {technicalCommittee.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if technicalCommittees.data.length === 0}

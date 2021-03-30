@@ -225,7 +225,7 @@
         {/if} -->
 
         <!-- Page Content -->
-        <main class="lg:px-8 max-w-7xl md:p-12 mx-auto overflow-y-auto px-4 py-8 sm:px-6">
+        <main class="lg:px-8 max-w-7xl md:p-12 mx-auto px-4 py-8 sm:px-6">
             <FlashMessages />
             <slot />
         </main>

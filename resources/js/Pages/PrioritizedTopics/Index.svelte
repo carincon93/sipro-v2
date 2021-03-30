@@ -64,6 +64,7 @@
                     {prioritizedTopic.technical_committee?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if prioritizedTopics.data.length === 0}

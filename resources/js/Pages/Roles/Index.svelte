@@ -46,6 +46,7 @@
                     {role.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if roles.data.length === 0}

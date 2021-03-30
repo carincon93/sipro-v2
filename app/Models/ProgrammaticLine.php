@@ -40,16 +40,6 @@ class ProgrammaticLine extends Model
     ];
 
     /**
-     * Relationship with FirstRelatedModel
-     *
-     * @return void
-     */
-    public function firstRelatedModel()
-    {
-        return $this->belongsTo(FirstRelatedModel::class);
-    }
-
-    /**
      * Relationship with ProjectType
      *
      * @return void
@@ -57,6 +47,16 @@ class ProgrammaticLine extends Model
     public function projectTypes()
     {
         return $this->hasMany(ProjectType::class);
+    }
+
+    /**
+     * Relationship with BudgetProgrammaticLine
+     *
+     * @return void
+     */
+    public function budgetProgrammaticLines()
+    {
+        return $this->hasMany(BudgetProgrammaticLine::class);
     }
 
     /**

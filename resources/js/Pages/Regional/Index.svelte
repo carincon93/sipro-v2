@@ -56,6 +56,7 @@
                     {regional.code}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if regional.data.length === 0}

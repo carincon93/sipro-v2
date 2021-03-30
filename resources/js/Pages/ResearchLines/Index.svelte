@@ -64,6 +64,7 @@
                     {researchLine.research_group?.academic_centre?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if researchLines.data.length === 0}

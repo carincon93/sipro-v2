@@ -66,6 +66,7 @@
                     {academicProgram.academic_centre?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if academicPrograms.data.length === 0}

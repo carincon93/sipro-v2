@@ -55,6 +55,7 @@
                     {projectType.programmatic_line?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if projectTypes.data.length === 0}

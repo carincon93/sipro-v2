@@ -66,6 +66,7 @@
                     {academicCentre.regional?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if academicCentres.data.length === 0}

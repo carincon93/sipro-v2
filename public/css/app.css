@@ -31432,12 +31432,32 @@ select {
           animation: bounce 1s infinite;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+}
+
 .fill-white {
   fill: white;
 }
 
 button:focus, a:focus {
   outline: none;
+}
+
+text {
+  font-family: 'Nunito', sans-serif !important;
+  font-size: 10px;
+}
+
+.outline-none-important {
+  outline: none !important;
+  border-color: transparent !important;
+  outline-offset: 0px !important;
+  box-shadow: none !important;
 }
 
 .btn-spinner,

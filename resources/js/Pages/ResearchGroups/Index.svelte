@@ -64,6 +64,7 @@
                     {researchGroup.academic_centre?.regional?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if researchGroups.data.length === 0}

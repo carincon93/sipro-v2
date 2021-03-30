@@ -52,6 +52,7 @@
                     {user.email}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if users.data.length === 0}

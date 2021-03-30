@@ -66,6 +66,7 @@
                     {programmaticLine.project_category}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if programmaticLines.data.length === 0}

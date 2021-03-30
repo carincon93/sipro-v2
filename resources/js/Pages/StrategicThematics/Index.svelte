@@ -46,6 +46,7 @@
                     {strategicThematic.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if strategicThematics.data.length === 0}

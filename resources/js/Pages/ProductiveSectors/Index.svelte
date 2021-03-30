@@ -46,6 +46,7 @@
                     {productiveSector.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if productiveSectors.data.length === 0}

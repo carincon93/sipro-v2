@@ -46,6 +46,7 @@
                     {knowledgeArea.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if knowledgeAreas.data.length === 0}

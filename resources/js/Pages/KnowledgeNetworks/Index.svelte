@@ -46,6 +46,7 @@
                     {knowledgeNetwork.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if knowledgeNetworks.data.length === 0}

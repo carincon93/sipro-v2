@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Project extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'project_type_id',
+        'is_finished'
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        //
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        //
+    ];
+
+    /**
+     * Relationship with ProjectType
+     *
+     * @return void
+     */
+    public function projectType()
+    {
+        return $this->belongsTo(ProjectType::class);
+    }
+
+    /**
+     * Relationship with RDI
+     *
+     * @return void
+     */
+    public function rdi()
+    {
+        return $this->hasOne(RDI::class, 'id');
+    }
+
+    /**
+     * Relationship with DirectCause
+     *
+     * @return void
+     */
+    public function directCauses()
+    {
+        return $this->hasMany(DirectCause::class);
+    }
+
+    /**
+     * Relationship with DirectEffect
+     *
+     * @return void
+     */
+    public function directEffects()
+    {
+        return $this->hasMany(DirectEffect::class);
+    }
+
+    /**
+     * Relationship with ProjectSennovaRole
+     *
+     * @return void
+     */
+    public function sennovaRoles()
+    {
+        return $this->hasMany(ProjectSennovaRole::class);
+    }
+
+    /**
+     * Relationship with ProjectSennovaBudget
+     *
+     * @return void
+     */
+    public function projectSennovaBudgets()
+    {
+        return $this->hasMany(ProjectSennovaBudget::class);
+    }
+
+    /**
+     * Relationship with Annexe
+     *
+     * @return void
+     */
+    public function annexes()
+    {
+        return $this->hasMany(Annexe::class);
+    }
+
+    /**
+     * Relationship with RiskAnalysis
+     *
+     * @return void
+     */
+    public function riskAnalysis()
+    {
+        return $this->hasMany(RiskAnalysis::class);
+    }
+}

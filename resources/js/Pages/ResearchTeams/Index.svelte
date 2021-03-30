@@ -64,6 +64,7 @@
                     {researchTeam.research_line?.research_group?.name}
                 </a>
             </td>
+        </tr>
         {/each}
 
         {#if researchTeams.data.length === 0}
