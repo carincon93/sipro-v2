@@ -102,9 +102,9 @@
     <Card>
         <div class="p-4">
             <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                {$_("Confirm")}
+                {$_('Confirm')}
             </button>
-            <button on:click={event => modal_open = false} type="button">{$_("Cancel")}</button>
+            <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
         </div>
     </Card>
 </Modal>

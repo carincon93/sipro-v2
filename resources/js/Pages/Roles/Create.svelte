@@ -19,7 +19,7 @@
 
     console.log(role_permissions)
 
-    $: $title = 'Crear rol de sistema'
+    $: $title = $_('Create') + ' ' + $_('System roles.singular').toLowerCase()
 
     let sending = false
     let form = remember({
@@ -37,10 +37,10 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('roles.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Roles")}
+        {$_('System roles.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
-    Crear
+    {$_('Create')}
 </h1>
 
 <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -60,7 +60,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Create role
+                {$_('Create')} {$_('System roles.singular')}
             </LoadingButton>
         </div>
     </form>

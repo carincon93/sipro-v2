@@ -19,7 +19,7 @@
     export let academicCentres
     export let mincienciasCategories
 
-    $: $title = 'Crear tipo de proyecto'
+    $: $title = $_('Create') + ' ' + $_('Research groups.singular').toLowerCase()
 
     let sending = false
     let form = remember({
@@ -42,10 +42,10 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('research-groups.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Research groups")}
+        {$_('Research groups.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
-    Crear
+    {$_('Create')}
 </h1>
 
 <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -96,7 +96,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Create research group
+                {$_('Create')} {$_('Research groups.singular')}
             </LoadingButton>
         </div>
     </form>

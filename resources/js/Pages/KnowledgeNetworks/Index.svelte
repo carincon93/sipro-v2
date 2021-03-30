@@ -12,21 +12,21 @@
 
     export let knowledgeNetworks = []
 
-    $title = 'Redes de conocimiento'
+    $title = $_('Knowledge networks.plural')
 
     let canCreateKnowledgeNetwork = $page.props.auth.user.can.find(element => element == 'knowledge-networks.create') == 'knowledge-networks.create'
 
     let filters = {}
 </script>
 
-<h1 class="mb-8 font-bold text-3xl">{$_("Knowledge networks")}</h1>
+<h1 class="mb-8 font-bold text-3xl">{$_('Knowledge networks.plural')}</h1>
 <div class="mb-6 flex justify-between items-center">
     <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
     {#if canCreateKnowledgeNetwork}
         <Link href={route('knowledge-networks.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
             <div>
-                <span>Crear</span>
-                <span class="hidden md:inline">red de conocimiento</span>
+                <span>{$_('Create')}</span>
+                <span class="hidden md:inline">{$_('Knowledge networks.singular')}</span>
             </div>
         </Link>
     {/if}
@@ -51,7 +51,7 @@
 
         {#if knowledgeNetworks.data.length === 0}
             <tr>
-                <td class="border-t px-6 py-4" colspan="4">{$_("No data recorded")}</td>
+                <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
             </tr>
         {/if}
     </table>

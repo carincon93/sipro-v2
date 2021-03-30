@@ -18,7 +18,7 @@
     export let errors
     export let regional = {}
 
-    $: $title = 'Crear centro de formación'
+    $: $title = $_('Create') + ' ' + $_('Academic centres.singular').toLowerCase()
 
     let sending = false
     let form = remember({
@@ -37,10 +37,10 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('academic-centres.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Academic centre")}
+        {$_('Academic centres.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
-    Crear
+    {$_('Create')}
 </h1>
 
 <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -66,7 +66,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Create academic centre
+                {$_('Create')} {$_('Academic centres.singular')}
             </LoadingButton>
         </div>
     </form>

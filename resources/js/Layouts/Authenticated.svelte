@@ -56,92 +56,92 @@
                                     </a>
                                     {#if $page.props.auth.user.can.find(element => element == 'users.index') == 'users.index'}
                                         <a use:inertia href={route('users.index')} active={isUrl('/users/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Users")}
+                                            {$_("Users.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'regional.index') == 'regional.index'}
                                         <a use:inertia href={route('regional.index')} active={isUrl('/regional/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Regional")}
+                                            {$_("Regional.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'academic-centres.index') == 'academic-centres.index'}
                                         <a use:inertia href={route('academic-centres.index')} active={isUrl('/academic-centres/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Academic centres")}
+                                            {$_("Academic centres.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'academic-programs.index') == 'academic-programs.index'}
                                         <a use:inertia href={route('academic-programs.index')} active={isUrl('/academic-programs/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Academic programs")}
+                                            {$_("Academic programs.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'knowledge-areas.index') == 'knowledge-areas.index'}
                                         <a use:inertia href={route('knowledge-areas.index')} active={isUrl('/knowledge-areas/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Knowledge areas")}
+                                            {$_("Knowledge areas.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'knowledge-subareas.index') == 'knowledge-subareas.index'}
                                         <a use:inertia href={route('knowledge-subareas.index')} active={isUrl('/knowledge-subareas/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Knowledge subareas")}
+                                            {$_("Knowledge subareas.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'knowledge-subarea-disciplines.index') == 'knowledge-subarea-disciplines.index'}
                                         <a use:inertia href={route('knowledge-subarea-disciplines.index')} active={isUrl('/knowledge-subarea-disciplines/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Knowledge subarea disciplines")}
+                                            {$_("Knowledge subarea disciplines.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'programmatic-lines.index') == 'programmatic-lines.index'}
                                         <a use:inertia href={route('programmatic-lines.index')} active={isUrl('/programmatic-lines/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Programmatic lines")}
+                                            {$_("Programmatic lines.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'knowledge-networks.index') == 'knowledge-networks.index'}
                                         <a use:inertia href={route('knowledge-networks.index')} active={isUrl('/knowledge-networks/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Knowledge networks")}
+                                            {$_("Knowledge networks.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'strategic-thematics.index') == 'strategic-thematics.index'}
                                         <a use:inertia href={route('strategic-thematics.index')} active={isUrl('/strategic-thematics/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Strategc thematics")}
+                                            {$_("Strategic thematics.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'project-types.index') == 'project-types.index'}
                                         <a use:inertia href={route('project-types.index')} active={isUrl('/project-types/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Project types")}
+                                            {$_("Project types.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'productive-sectors.index') == 'productive-sectors.index'}
                                         <a use:inertia href={route('productive-sectors.index')} active={isUrl('/productive-sectors/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Productive sectors")}
+                                            {$_("Productive sectors.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'technical-committees.index') == 'technical-committees.index'}
                                         <a use:inertia href={route('technical-committees.index')} active={isUrl('/technical-committees/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Technical committees")}
+                                            {$_("Technical committees.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'prioritized-topics.index') == 'prioritized-topics.index'}
                                         <a use:inertia href={route('prioritized-topics.index')} active={isUrl('/prioritized-topics/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Prioritized topics")}
+                                            {$_("Prioritized topics.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'research-groups.index') == 'research-groups.index'}
                                         <a use:inertia href={route('research-groups.index')} active={isUrl('/research-groups/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Research groups")}
+                                            {$_("Research groups.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'research-lines.index') == 'research-lines.index'}
                                         <a use:inertia href={route('research-lines.index')} active={isUrl('/research-lines/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Research lines")}
+                                            {$_("Research lines.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'research-teams.index') == 'research-teams.index'}
                                         <a use:inertia href={route('research-teams.index')} active={isUrl('/research-teams/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("Research teams")}
+                                            {$_("Research teams.plural")}
                                         </a>
                                     {/if}
                                     {#if $page.props.auth.user.can.find(element => element == 'roles.index') == 'roles.index'}
                                         <a use:inertia href={route('roles.index')} active={isUrl('/roles/*') ? true : false} class="block px-6 py-2 hover:bg-indigo-500 hover:text-white">
-                                            {$_("System roles")}
+                                            {$_("System roles.plural")}
                                         </a>
                                     {/if}
                                 </div>

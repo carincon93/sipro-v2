@@ -16,7 +16,7 @@
 
     export let errors
 
-    $: $title = 'Crear temática estratégica SENA'
+    $: $title = $_('Create') + ' ' + ' ' + $_('Strategic thematics.singular').toLowerCase()
 
     let sending = false
     let form = remember({
@@ -33,10 +33,10 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('strategic-thematics.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Strategic thematics")}
+        {$_('Strategic thematics.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
-    Crear
+    {$_('Create')}
 </h1>
 
 <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -50,7 +50,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Create strategic thematic
+                {$_('Create')} {$_('Strategic thematics.singular')}
             </LoadingButton>
         </div>
     </form>

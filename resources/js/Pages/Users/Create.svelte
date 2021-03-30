@@ -20,7 +20,7 @@
     export let documentTypes
     export let participationTypes
 
-    $: $title = 'Crear usuario'
+    $: $title = $_('Create') + ' ' + $_('Users.singular').toLowerCase()
 
     let sending = false
     let form = remember({
@@ -44,10 +44,10 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('users.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Users")}
+        {$_('Users.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
-    Crear
+    {$_('Create')}
 </h1>
 
 <div class="bg-white rounded shadow overflow-hidden max-w-3xl">
@@ -67,7 +67,7 @@
 
             <div class="mt-4">
                 <Label id="document_type" value="Tipo de documento" />
-                <Select noOptionsMessage={$_("No data recorded")} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
+                <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
                 <InputError message={errors.document_type} />
             </div>
 
@@ -91,7 +91,7 @@
 
             <div class="mt-4">
                 <Label id="participation_type" value="Tipo de participación" />
-                <Select noOptionsMessage={$_("No data recorded")} items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
+                <Select noOptionsMessage={$_('No data recorded')} items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
                 <InputError message={errors.participation_type} />
             </div>
 
@@ -106,7 +106,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Create user
+                {$_('Create')} {$_('Users.singular')}
             </LoadingButton>
         </div>
     </form>

@@ -12,21 +12,21 @@
 
     export let knowledgeSubareaDisciplines = []
 
-    $title = 'Disciplinas de subárea de conocimiento'
+    $title = $_('Knowledge subarea disciplines.plural')
 
     let canCreateKnowledgeSubareaDiscipline = $page.props.auth.user.can.find(element => element == 'knowledge-subarea-disciplines.create') == 'knowledge-subarea-disciplines.create'
 
     let filters = {}
 </script>
 
-<h1 class="mb-8 font-bold text-3xl">{$_("Knowledge subarea disciplines")}</h1>
+<h1 class="mb-8 font-bold text-3xl">{$_('Knowledge subarea disciplines.plural')}</h1>
 <div class="mb-6 flex justify-between items-center">
     <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
     {#if canCreateKnowledgeSubareaDiscipline}
         <Link href={route('knowledge-subarea-disciplines.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
             <div>
-                <span>Crear</span>
-                <span class="hidden md:inline">disciplina de subárea de conocimiento</span>
+                <span>{$_('Create')}</span>
+                <span class="hidden md:inline">{$_('Knowledge subarea disciplines.singular')}</span>
             </div>
         </Link>
     {/if}
@@ -60,7 +60,7 @@
 
         {#if knowledgeSubareaDisciplines.data.length === 0}
             <tr>
-                <td class="border-t px-6 py-4" colspan="4">{$_("No data recorded")}</td>
+                <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
             </tr>
         {/if}
     </table>

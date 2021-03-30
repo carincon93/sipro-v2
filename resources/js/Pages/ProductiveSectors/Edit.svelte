@@ -47,7 +47,7 @@
 
 <h1 class="mb-8 font-bold text-3xl">
     <a use:inertia href={route('productive-sectors.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_("Productive sectors")}
+        {$_('Productive sectors.plural')}
     </a>
     <span class="text-indigo-400 font-medium">/</span>
     {productiveSector.name}
@@ -65,11 +65,11 @@
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             {#if canDeleteProductiveSector}
                 <button class="text-red-600 hover:underline" tabindex="-1" type="button" on:click={event => modal_open = true}>
-                    Delete productive sector
+                    {$_('Delete')} {$_('Productive sectors.singular').toLowerCase()}
                 </button>
             {/if}
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                Update productive sector
+                {$_('Update')} {$_('Productive sectors.singular')}
             </LoadingButton>
         </div>
     </form>
@@ -78,9 +78,9 @@
         <Card>
             <div class="p-4">
                 <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                    {$_("Confirm")}
+                    {$_('Confirm')}
                 </button>
-                <button on:click={event => modal_open = false} type="button">{$_("Cancel")}</button>
+                <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
             </div>
         </Card>
     </Modal>

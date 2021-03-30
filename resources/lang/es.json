@@ -17,6 +17,7 @@
     "Created": "Creado",
     "Create": "Crear",
     "Edit": "Editar",
+    "Update": "Actualizar",
     "Delete": "Eliminar",
     "Show": "Ver detalles",
     "Login": "Ingresar",
@@ -147,5 +148,77 @@
     "Annexes": {
         "singular": "Anexo",
         "plural": "Anexos"
+    },
+    "Users": {
+        "singular": "Usuario",
+        "plural": "Usuarios"
+    },
+    "Regional": {
+        "singular": "Regional",
+        "plural": "Regionales"
+    },
+    "Academic centres": {
+        "singular": "Centro de formación",
+        "plural": "Centros de formación"
+    },
+    "Academic programs": {
+        "singular": "Programa de formación",
+        "plural": "Programas de formación"
+    },
+    "Knowledge areas": {
+        "singular": "Área de conocimiento",
+        "plural": "Áreas de conocimiento"
+    },
+    "Knowledge subareas": {
+        "singular": "Subárea de conocimiento",
+        "plural": "Subáreas de conocimiento"
+    },
+    "Knowledge subarea disciplines": {
+        "singular": "Disciplina de la subárea de conocimiento",
+        "plural": "Disciplinas de las subáreas de conocimiento"
+    },
+    "Programmatic lines": {
+        "singular": "Línea programática",
+        "plural": "Líneas programáticas"
+    },
+    "Knowledge networks": {
+        "singular": "Red de conocimiento",
+        "plural": "Redes de conocimiento"
+    },
+    "Strategic thematics": {
+        "singular": "Temática estratégica SENA",
+        "plural": "Temáticas estratégicas SENA"
+    },
+    "Project types": {
+        "singular": "Tipo de proyecto",
+        "plural": "Tipos de proyectos"
+    },
+    "Productive sectors": {
+        "singular": "Sector productivo",
+        "plural": "Sectores productivos"
+    },
+    "Technical committees": {
+        "singular": "Mesa técnica de servicios tecnológicos",
+        "plural": "Mesas técnicas de servicios tecnológicos"
+    },
+    "Prioritized topics": {
+        "singular": "Tema priorizado",
+        "plural": "Temas priorizados"
+    },
+    "Research groups": {
+        "singular": "Grupo de investigación",
+        "plural": "Grupos de investigación"
+    },
+    "Research lines": {
+        "singular": "Línea de investigación",
+        "plural": "Líneas de investigación"
+    },
+    "Research teams": {
+        "singular": "Semillero de investigación",
+        "plural": "Semilleros de investigación"
+    },
+    "System roles": {
+        "singular": "Rol del sistema",
+        "plural": "Roles del sistema"
     }
 }
