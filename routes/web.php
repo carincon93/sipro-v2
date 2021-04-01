@@ -44,44 +44,14 @@ use App\Http\Controllers\ProjectSennovaBudgetController;
 use App\Http\Controllers\RiskAnalysisController;
 use App\Http\Controllers\PartnerOrganizationController;
 use App\Http\Controllers\AnnexeController;
+use App\Http\Controllers\CIIUCodeController;
 
-// use App\Http\Controllers\API\AnnexeController as AnnexeAPIController;
-// use App\Http\Controllers\API\PartnerOrganizationController as PartnerOrganizationAPIController;
-// use App\Http\Controllers\API\RiskAnalysisController as RiskAnalysisAPIController;
-// use App\Http\Controllers\API\ProjectSennovaBudgetController as ProjectSennovaBudgetAPIController;
-// use App\Http\Controllers\API\CallBudgetController as CallBudgetAPIController;
-// use App\Http\Controllers\API\BudgetProgrammaticLineController as BudgetProgrammaticLineAPIController;
-// use App\Http\Controllers\API\SennovaBudgetController as SennovaBudgetAPIController;
-// use App\Http\Controllers\API\ThirdBudgetInfoController as ThirdBudgetInfoAPIController;
-// use App\Http\Controllers\API\SecondBudgetInfoController as SecondBudgetInfoAPIController;
-// use App\Http\Controllers\API\FirstBudgetInfoController as FirstBudgetInfoAPIController;
-// use App\Http\Controllers\API\ProjectSennovaRoleController as ProjectSennovaRoleAPIController;
-// use App\Http\Controllers\API\SennovaRoleController as SennovaRoleAPIController;
-// use App\Http\Controllers\API\CallSennovaRoleController as CallSennovaRoleAPIController;
-// use App\Http\Controllers\API\IndirectCauseController as IndirectCauseAPIController;
-// use App\Http\Controllers\API\ActivityController as ActivityAPIController;
-// use App\Http\Controllers\API\DirectEffectController as DirectEffectAPIController;
-// use App\Http\Controllers\API\DirectCauseController as DirectCauseAPIController;
-// use App\Http\Controllers\API\RDIController as RDIAPIController;
-// use App\Http\Controllers\API\CallController as CallAPIController;
-// use App\Http\Controllers\API\RoleController as RoleAPIController;
-// use App\Http\Controllers\API\ResearchTeamController as ResearchTeamAPIController;
-// use App\Http\Controllers\API\ResearchLineController as ResearchLineAPIController;
-// use App\Http\Controllers\API\ResearchGroupController as ResearchGroupAPIController;
-// use App\Http\Controllers\API\PrioritizedTopicController as PrioritizedTopicAPIController;
-// use App\Http\Controllers\API\TechnicalCommitteeController as TechnicalCommitteeAPIController;
-// use App\Http\Controllers\API\ProductiveSectorController as ProductiveSectorAPIController;
-// use App\Http\Controllers\API\ProjectTypeController as ProjectTypeAPIController;
-// use App\Http\Controllers\API\StrategicThematicController as StrategicThematicAPIController;
-// use App\Http\Controllers\API\KnowledgeNetworkController as KnowledgeNetworkAPIController;
-// use App\Http\Controllers\API\KnowledgeSubareaDisciplineController as KnowledgeSubareaDisciplineAPIController;
-// use App\Http\Controllers\API\KnowledgeSubareaController as KnowledgeSubareaAPIController;
-// use App\Http\Controllers\API\KnowledgeAreaController as KnowledgeAreaAPIController;
-// use App\Http\Controllers\API\ProgrammaticLineController as ProgrammaticLineAPIController;
-// use App\Http\Controllers\API\AcademicProgramController as AcademicProgramAPIController;
-// use App\Http\Controllers\API\RegionalController as RegionalAPIController;
-// use App\Http\Controllers\API\UserController as UserAPIController;
-// use App\Http\Controllers\API\AcademicCentreController as AcademicCentreAPIController;
+use App\Models\ResearchLine;
+use App\Models\ProjectType;
+use App\Models\KnowledgeNetwork;
+use App\Models\KnowledgeSubareaDiscipline;
+use App\Models\CIIUCode;
+use App\Models\StrategicThematic;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,93 +79,82 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Muestra las líneas programáticas para empezar la formulación de proyectos
     Route::get('calls/{call}/dashboard', [CallController::class, 'dashboard'])->name('calls.dashboard');
-
     // Muestra el árbol de problemas
     Route::get('calls/{call}/projects/{project}/problem-tree', [ProjectTreeController::class, 'showProblemTree'])->name('calls.projects.problem-tree');
     // Muestra el árbol de objetivos
     Route::get('calls/{call}/projects/{project}/objectives-tree', [ProjectTreeController::class, 'showObjectivesTree'])->name('calls.projects.objectives-tree');
-
+    // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
 
-    // Resources
-    Route::resource('regional', RegionalController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('academic-centres', AcademicCentreController::class);
-    Route::resource('academic-programs', AcademicProgramController::class);
-    Route::resource('programmatic-lines', ProgrammaticLineController::class);
-    Route::resource('knowledge-areas', KnowledgeAreaController::class);
-    Route::resource('knowledge-subareas', KnowledgeSubareaController::class);
-    Route::resource('knowledge-subarea-disciplines', KnowledgeSubareaDisciplineController::class);
-    Route::resource('knowledge-networks', KnowledgeNetworkController::class);
-    Route::resource('strategic-thematics', StrategicThematicController::class);
-    Route::resource('project-types', ProjectTypeController::class);
-    Route::resource('productive-sectors', ProductiveSectorController::class);
-    Route::resource('technical-committees', TechnicalCommitteeController::class);
-    Route::resource('prioritized-topics', PrioritizedTopicController::class);
-    Route::resource('research-groups', ResearchGroupController::class);
-    Route::resource('research-lines', ResearchLineController::class);
-    Route::resource('research-teams', ResearchTeamController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('calls', CallController::class);
-    Route::resource('calls.rdi', RDIController::class);
-    Route::resource('calls.rdi.rdi-outputs', RDIOutputController::class);
-    Route::resource('calls.projects.activities', ActivityController::class);
-    Route::resource('calls.projects.project-sennova-budgets', ProjectSennovaBudgetController::class);
-    Route::resource('calls.projects.project-sennova-roles', ProjectSennovaRoleController::class);
-    Route::resource('calls.projects.risk-analysis', RiskAnalysisController::class);
-    Route::resource('calls.rdi.partner-organizations', PartnerOrganizationController::class);
-    Route::resource('calls.projects.annexes', AnnexeController::class);
-    Route::resource('sennova-roles', SennovaRoleController::class);
-    Route::resource('projects.direct-causes', DirectCauseController::class);
-    Route::resource('projects.direct-effects', DirectEffectController::class);
-    Route::resource('direct-causes.indirect-causes', IndirectCauseController::class);
-    Route::resource('call-sennova-roles', CallSennovaRoleController::class);
-    Route::resource('first-budget-info', FirstBudgetInfoController::class);
-    Route::resource('second-budget-info', SecondBudgetInfoController::class);
-    Route::resource('third-budget-info', ThirdBudgetInfoController::class);
-    Route::resource('sennova-budgets', SennovaBudgetController::class);
-    Route::resource('budgets-programmatic-lines', BudgetProgrammaticLineController::class);
-    Route::resource('call-budgets', CallBudgetController::class);
+    // Trae las líneas de investigación
+    Route::get('web-api/research-lines', function() {
+        return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name ||chr(10)|| research_groups.name ||chr(10)|| academic_centres.name ||chr(10)|| regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
+    })->name('web-api.research-lines');
+    // Trae los tipos de proyectos
+    Route::get('web-api/project-types', function() {
+        return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name ||chr(10)|| programmatic_lines.name) as label')->join('programmatic_lines', 'project_types.programmatic_line_id', 'programmatic_lines.id')->get());
+    })->name('web-api.project-types');
+    // Trae las redes de conocimiento sectorial
+    Route::get('web-api/knowledge-networks', function() {
+        return response(KnowledgeNetwork::select('knowledge_networks.id as value', 'knowledge_networks.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.knowledge-networks');
+    // Trae las disciplinas de subáreas de conocimiento
+    Route::get('web-api/knowledge-subarea-disciplines', function() {
+        return response(KnowledgeSubareaDiscipline::select('knowledge_subarea_disciplines.id as value', 'knowledge_subarea_disciplines.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.knowledge-subarea-disciplines');
+    // Trae los códigos CIIU
+    Route::get('web-api/ciiu-codes', function() {
+        return response(CIIUCode::select('ciiu_codes.id as value', 'ciiu_codes.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.ciiu-codes');
+    // Trae las temáticas estrategicas SENA
+    Route::get('web-api/strategic-thematics', function() {
+        return response(StrategicThematic::select('strategic_thematics.id as value', 'strategic_thematics.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.strategic-thematics');
 
-    // API Resources
-    // Route::apiResources(['api/annexes' => AnnexeAPIController::class]);
-    // Route::apiResources(['api/partner-organizations' => PartnerOrganizationAPIController::class]);
-    // Route::apiResources(['api/risk-analysis' => RiskAnalysisAPIController::class]);
-    // Route::apiResources(['api/project-sennova-budgets' => ProjectSennovaBudgetAPIController::class]);
-    // Route::apiResources(['api/call-budgets' => CallBudgetAPIController::class]);
-    // Route::apiResources(['api/budgets-programmatic-lines' => BudgetProgrammaticLineAPIController::class]);
-    // Route::apiResources(['api/sennova-budgets' => SennovaBudgetAPIController::class]);
-    // Route::apiResources(['api/third-budget-info' => ThirdBudgetInfoAPIController::class]);
-    // Route::apiResources(['api/second-budget-info' => SecondBudgetInfoAPIController::class]);
-    // Route::apiResources(['api/first-budget-info' => FirstBudgetInfoAPIController::class]);
-    // Route::apiResources(['api/calls/{call}/projects/{project}/project-sennova-roles' => ProjectSennovaRoleAPIController::class]);
-    // Route::apiResources(['api/sennova-roles' => SennovaRoleAPIController::class]);
-    // Route::apiResources(['api/call-sennova-roles' => CallSennovaRoleAPIController::class]);
-    // Route::apiResources(['api/direct-causes/{direct_cause}/indirect-causes' => IndirectCauseAPIController::class]);
-    // Route::apiResources(['api/specific-objectives/{specific_objective}&activities' => ActivityAPIController::class]);
-    // Route::apiResources(['api/projects/{project}/direct-effects' => DirectEffectAPIController::class]);
-    // Route::apiResources(['api/projects/{project}direct-causes' => DirectCauseAPIController::class)];
-    // Route::apiResources(['api/rdi-outputs' => RDIOutputAPIController::class]);
-    // Route::apiResources(['api/rdi' => RDIAPIController::class]);
-    // Route::apiResources(['api/calls' => CallAPIController::class]);
-    // Route::apiResources(['api/roles' => RoleAPIController::class]);
-    // Route::apiResources(['api/research-teams' => ResearchTeamAPIController::class]);
-    // Route::apiResources(['api/research-lines' => ResearchLineAPIController::class]);
-    // Route::apiResources(['api/research-groups' => ResearchGroupAPIController::class]);
-    // Route::apiResources(['api/prioritized-topics' => PrioritizedTopicAPIController::class]);
-    // Route::apiResources(['api/technical-committees' => TechnicalCommitteeAPIController::class]);
-    // Route::apiResources(['api/productive-sectors' => ProductiveSectorAPIController::class]);
-    // Route::apiResources(['api/project-types' => ProjectTypeAPIController::class]);
-    // Route::apiResources(['api/strategic-thematics' => StrategicThematicAPIController::class]);
-    // Route::apiResources(['api/knowledge-networks' => KnowledgeNetworkAPIController::class]);
-    // Route::apiResources(['api/knowledge-subarea-disciplines' => KnowledgeSubareaDisciplineAPIController::class]);
-    // Route::apiResources(['api/knowledge-subareas' => KnowledgeSubareaAPIController::class]);
-    // Route::apiResources(['api/knowledge-areas' => KnowledgeAreaAPIController::class]);
-    // Route::apiResources(['api/programmatic-lines' => ProgrammaticLineAPIController::class]);
-    // Route::apiResources(['api/academic-programs' => AcademicProgramAPIController::class]);
-    // Route::apiResources(['api/academic-centres' => AcademicCentreAPIController::class]);
-    // Route::apiResources(['api/users' => UserAPIController::class]);
-    // Route::apiResources(['api/regional' => RegionalAPIController::class]);
+    // Resources
+    Route::resources(
+        [
+            'ciiu-codes' => CIIUCodeController::class,
+            'regional' => RegionalController::class,
+            'users' => UserController::class,
+            'academic-centres' => AcademicCentreController::class,
+            'academic-programs' => AcademicProgramController::class,
+            'programmatic-lines' => ProgrammaticLineController::class,
+            'knowledge-areas' => KnowledgeAreaController::class,
+            'knowledge-subareas' => KnowledgeSubareaController::class,
+            'knowledge-subarea-disciplines' => KnowledgeSubareaDisciplineController::class,
+            'knowledge-networks' => KnowledgeNetworkController::class,
+            'strategic-thematics' => StrategicThematicController::class,
+            'project-types' => ProjectTypeController::class,
+            'productive-sectors' => ProductiveSectorController::class,
+            'technical-committees' => TechnicalCommitteeController::class,
+            'prioritized-topics' => PrioritizedTopicController::class,
+            'research-groups' => ResearchGroupController::class,
+            'research-lines' => ResearchLineController::class,
+            'research-teams' => ResearchTeamController::class,
+            'roles' => RoleController::class,
+            'calls' => CallController::class,
+            'calls.rdi' => RDIController::class,
+            'calls.rdi.rdi-outputs' => RDIOutputController::class,
+            'calls.projects.activities' => ActivityController::class,
+            'calls.projects.project-sennova-budgets' => ProjectSennovaBudgetController::class,
+            'calls.projects.project-sennova-roles' => ProjectSennovaRoleController::class,
+            'calls.projects.risk-analysis' => RiskAnalysisController::class,
+            'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
+            'calls.projects.annexes' => AnnexeController::class,
+            'sennova-roles' => SennovaRoleController::class,
+            'projects.direct-causes' => DirectCauseController::class,
+            'projects.direct-effects' => DirectEffectController::class,
+            'direct-causes.indirect-causes' => IndirectCauseController::class,
+            'call-sennova-roles' => CallSennovaRoleController::class,
+            'first-budget-info' => FirstBudgetInfoController::class,
+            'second-budget-info' => SecondBudgetInfoController::class,
+            'third-budget-info' => ThirdBudgetInfoController::class,
+            'sennova-budgets' => SennovaBudgetController::class,
+            'budgets-programmatic-lines' => BudgetProgrammaticLineController::class,
+            'call-budgets' => CallBudgetController::class,
+        ]
+    );
 });
 
 require __DIR__.'/auth.php';

@@ -9,6 +9,11 @@ class RDI extends Model
 {
     use HasFactory;
 
+    /**
+     * table
+     *
+     * @var string
+     */
     protected $table = 'rdi';
 
     /**

@@ -50,6 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\RiskAnalysis' => 'App\Policies\RiskAnalysisPolicy',
         'App\Models\PartnerOrganization' => 'App\Policies\PartnerOrganizationPolicy',
         'App\Models\Annexe' => 'App\Policies\AnnexePolicy',
+        'App\Models\CIIUCode' => 'App\Policies\CIIUCodePolicy',
     ];
 
     /**

@@ -40,21 +40,11 @@ class Regional extends Model
     ];
 
     /**
-     * Relationship with FirstRelatedModel
-     *
-     * @return void
-     */
-    public function firstRelatedModel()
-    {
-        return $this->belongsTo(FirstRelatedModel::class);
-    }
-
-    /**
      * Relationship with AcademicCentre
      *
      * @return void
      */
-    public function academicCentre()
+    public function academicCentres()
     {
         return $this->hasMany(AcademicCentre::class);
     }

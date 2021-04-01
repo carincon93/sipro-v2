@@ -69,6 +69,16 @@ class AcademicCentre extends Model
     }
 
     /**
+     * Relationship with User
+     *
+     * @return void
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

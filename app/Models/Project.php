@@ -116,4 +116,20 @@ class Project extends Model
     {
         return $this->hasMany(RiskAnalysis::class);
     }
+
+    /**
+     * Relationship with Project (participants)
+     *
+     * @return void
+     */
+    public function participants()
+    {
+        return $this->belongsToMany(User::class, 'project_participants', 'project_id', 'user_id')
+            ->withPivot([
+                'user_id',
+                'is_author',
+                'qty_months',
+                'qty_hours'
+            ]);
+    }
 }

@@ -22,7 +22,7 @@ class RDIController extends Controller
         return Inertia::render('Calls/Projects/RDI/Index', [
             'filters'   => request()->all('search'),
             'call'      => $call,
-            'rdi'       => $call->rdi()->orderBy('title', 'ASC')
+            'rdi'       => $call->rdi()->select('id', 'title', 'start_date')->orderBy('title', 'ASC')
                 ->filterRDI(request()->only('search'))->paginate(),
         ]);
     }
@@ -89,7 +89,7 @@ class RDIController extends Controller
 
         return Inertia::render('Calls/Projects/RDI/Edit', [
             'call'  => $call,
-            'rdi'   => $rdi
+            'rdi'   => $rdi,
         ]);
     }
 

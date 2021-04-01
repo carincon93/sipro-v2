@@ -45,6 +45,30 @@ class User extends Authenticatable
     ];
 
     /**
+     * Relationship with Project (participants)
+     *
+     * @return void
+     */
+    public function projects() {
+        return $this->belongsToMany(Project::class, 'project_participants', 'user_id', 'project_id')
+            ->withPivot([
+                'is_author',
+                'qty_months',
+                'qty_hours'
+            ]);
+    }
+
+    /**
+     * Relationship with AcademicCentre
+     *
+     * @return void
+     */
+    public function academicCentre()
+    {
+        return $this->belongsTo(AcademicCentre::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

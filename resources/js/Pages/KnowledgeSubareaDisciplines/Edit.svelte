@@ -29,8 +29,8 @@
     let modal_open = false
     let sending = false
     let form = remember({
-        name:   knowledgeSubareaDiscipline.name,
-        knowledge_subarea: selectedKnowledgeSubarea
+        name:               knowledgeSubareaDiscipline.name,
+        knowledge_subarea:  selectedKnowledgeSubarea
     })
 
     function submit() {
@@ -74,7 +74,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             {#if canDeleteKnowledgeSubareaDiscipline}
-                <button class="text-red-600 hover:underline" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                     {$_('Delete')} {$_('Knowledge subarea disciplines.singular').toLowerCase()}
                 </button>
             {/if}

@@ -1,5 +1,6 @@
 <script>
     export let checked = false
+    export let click = {}
     // export let color = "#2196F3"
 </script>
 
@@ -59,6 +60,6 @@
 </style>
 
 <label class="switch">
-    <input type="checkbox" bind:checked />
+    <input type="checkbox" bind:checked on:click={click} />
     <span class="slider" />
 </label>

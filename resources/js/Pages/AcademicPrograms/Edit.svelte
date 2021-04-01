@@ -90,7 +90,7 @@
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
             {#if canDeleteAcademicProgram}
-                <button class="text-red-600 hover:underline" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                     {$_('Delete')} {$_('Academic programs.singular').toLowerCase()}
                 </button>
             {/if}
