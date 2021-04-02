@@ -22,7 +22,28 @@ class RDI extends Model
      * @var array
      */
     protected $fillable = [
-        'call_id'
+        'project_type_id',
+        'research_line_id',
+        'knowledge_subarea_discipline_id',
+        'strategic_thematic_id',
+        'knowledge_network_id',
+        'ciiu_code_id',
+        'title',
+        'start_date',
+        'end_date',
+        'video',
+        'industry_4_justification',
+        'orange_economy_justification',
+        'people_disabilities_justification',
+        'abstract',
+        'project_background',
+        'conceptual_framework',
+        'project_methodology',
+        'sustainability_proposal',
+        'bibliography',
+        'students',
+        'states',
+        'states_impact'
     ];
 
     /**
@@ -61,6 +82,56 @@ class RDI extends Model
     public function project()
     {
         return $this->belongsTo(Project::class, 'id');
+    }
+
+    /**
+     * Relationship with ResearchLine
+     *
+     * @return void
+     */
+    public function researchLine()
+    {
+        return $this->belongsTo(ResearchLine::class);
+    }
+
+    /**
+     * Relationship with KnowledgeSubareaDiscipline
+     *
+     * @return void
+     */
+    public function knowledgeSubareaDiscipline()
+    {
+        return $this->belongsTo(KnowledgeSubareaDiscipline::class);
+    }
+
+    /**
+     * Relationship with StrategicThematic
+     *
+     * @return void
+     */
+    public function strategicThematic()
+    {
+        return $this->belongsTo(StrategicThematic::class);
+    }
+
+    /**
+     * Relationship with KnowledgeNetwork
+     *
+     * @return void
+     */
+    public function knowledgeNetwork()
+    {
+        return $this->belongsTo(KnowledgeNetwork::class);
+    }
+
+    /**
+     * Relationship with CIIUCode
+     *
+     * @return void
+     */
+    public function ciiuCode()
+    {
+        return $this->belongsTo(CIIUCode::class);
     }
 
     /**

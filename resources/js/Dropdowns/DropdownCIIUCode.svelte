@@ -4,24 +4,37 @@
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
 
-    export let classes = ''
-    export let id = ''
+    export let classes  = ''
+    export let id       = ''
     export let message
+    export let formCiiuCode
 
-    let ciiuCodes = []
+    let ciiuCodes           = []
+    let ciiuCodeFiltered    = null
 
     onMount(() => {
         getCIIUCodes()
 	})
 
     async function getCIIUCodes() {
-        let res       = await axios.get(route('web-api.ciiu-codes'))
+        let res   = await axios.get(route('web-api.ciiu-codes'))
         ciiuCodes = res.data
+        selectCiiuCode()
     }
 
     function handleCIIUCode(event) {
-        console.log(event.detail)
+        formCiiuCode = event.detail.value
     }
+
+    function selectCiiuCode() {
+        if (formCiiuCode) {
+            let filterItem = ciiuCodes.filter(function(ciiuCode) {
+                return ciiuCode.value == formCiiuCode;
+            })
+            ciiuCodeFiltered = filterItem[0]
+        }
+    }
+
 </script>
 
 <style>
@@ -40,5 +53,5 @@
     }
 </style>
 
-<Select inputAttributes={{'id': id}} placeholder="Busque por el nombre del código CIIU" containerClasses="ciiu-codes {classes}" items={ciiuCodes} on:select={handleCIIUCode} />
+<Select selectedValue={ciiuCodeFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre del código CIIU" containerClasses="ciiu-codes {classes}" items={ciiuCodes} on:select={handleCIIUCode} />
 <InputError {message} />

@@ -88,11 +88,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
-        return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name ||chr(10)|| research_groups.name ||chr(10)|| academic_centres.name ||chr(10)|| regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
+        return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name, chr(10), \'∙ Grupo de investigación: \', research_groups.name, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-lines');
     // Trae los tipos de proyectos
     Route::get('web-api/project-types', function() {
-        return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name ||chr(10)|| programmatic_lines.name) as label')->join('programmatic_lines', 'project_types.programmatic_line_id', 'programmatic_lines.id')->get());
+        return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name, chr(10), \'∙ Línea programática: \', programmatic_lines.name) as label')->join('programmatic_lines', 'project_types.programmatic_line_id', 'programmatic_lines.id')->get());
     })->name('web-api.project-types');
     // Trae las redes de conocimiento sectorial
     Route::get('web-api/knowledge-networks', function() {

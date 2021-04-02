@@ -7,8 +7,10 @@
     export let classes = ''
     export let id = ''
     export let message
+    export let formKnowledgeNetwork
 
-    let knowledgeNetworks = []
+    let knowledgeNetworks           = []
+    let knowledgeNetworkFiltered    = null
 
     onMount(() => {
         getKnowledgeNetworks()
@@ -17,10 +19,20 @@
     async function getKnowledgeNetworks() {
         let res       = await axios.get(route('web-api.knowledge-networks'))
         knowledgeNetworks = res.data
+        selectKnowledgeNetwork()
     }
 
     function handleKnowledgeNetwork(event) {
-        console.log(event.detail)
+        formKnowledgeNetwork = event.detail.value
+    }
+
+    function selectKnowledgeNetwork() {
+        if (formKnowledgeNetwork) {
+            let filterItem = knowledgeNetworks.filter(function(knowledgeNetwork) {
+                return knowledgeNetwork.value == formKnowledgeNetwork;
+            })
+            knowledgeNetworkFiltered = filterItem[0]
+        }
     }
 </script>
 
@@ -40,5 +52,5 @@
     }
 </style>
 
-<Select inputAttributes={{'id': id}} placeholder="Busque por el nombre de la red de conocimiento sectorial" containerClasses="knowledge-networks {classes}" items={knowledgeNetworks} on:select={handleKnowledgeNetwork} />
+<Select selectedValue={knowledgeNetworkFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la red de conocimiento sectorial" containerClasses="knowledge-networks {classes}" items={knowledgeNetworks} on:select={handleKnowledgeNetwork} />
 <InputError {message} />

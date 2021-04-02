@@ -7,8 +7,10 @@
     export let classes = ''
     export let id = ''
     export let message
+    export let formResearchLine
 
-    let researchLines = []
+    let researchLines           = []
+    let researchLineFiltered    = null
 
     onMount(() => {
         getResearchLines()
@@ -17,10 +19,20 @@
     async function getResearchLines() {
         let res       = await axios.get(route('web-api.research-lines'))
         researchLines = res.data
+        selectResearchLine()
     }
 
     function handleResearchLine(event) {
-        console.log(event.detail)
+        formResearchLine = event.detail.value
+    }
+
+    function selectResearchLine() {
+        if (formResearchLine) {
+            let filterItem = researchLines.filter(function(researchLine) {
+                return researchLine.value == formResearchLine;
+            })
+            researchLineFiltered = filterItem[0]
+        }
     }
 </script>
 
@@ -40,5 +52,5 @@
     }
 </style>
 
-<Select inputAttributes={{'id': id}} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" containerClasses="research-lines {classes}" items={researchLines} on:select={handleResearchLine} />
+<Select selectedValue={researchLineFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" containerClasses="research-lines {classes}" items={researchLines} on:select={handleResearchLine} />
 <InputError {message} />

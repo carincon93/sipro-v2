@@ -7,8 +7,10 @@
     export let classes = ''
     export let id = ''
     export let message
+    export let formStrategicThematic
 
-    let strategicThematics = []
+    let strategicThematics          = []
+    let strategicThematicFiltered   = null
 
     onMount(() => {
         getStrategicThematics()
@@ -17,10 +19,20 @@
     async function getStrategicThematics() {
         let res       = await axios.get(route('web-api.strategic-thematics'))
         strategicThematics = res.data
+        selectResearchLine()
     }
 
     function handleStrategicThematic(event) {
-        console.log(event.detail)
+        formStrategicThematic = event.detail.value
+    }
+
+    function selectResearchLine() {
+        if (formStrategicThematic) {
+            let filterItem = strategicThematics.filter(function(strategicThematic) {
+                return strategicThematic.value == formStrategicThematic;
+            })
+            strategicThematicFiltered = filterItem[0]
+        }
     }
 </script>
 
@@ -40,5 +52,5 @@
     }
 </style>
 
-<Select inputAttributes={{'id': id}} placeholder="Busque por el nombre de la temática estrategica SENA" containerClasses="strategic-thematics {classes}" items={strategicThematics} on:select={handleStrategicThematic} />
+<Select selectedValue={strategicThematicFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la temática estrategica SENA" containerClasses="strategic-thematics {classes}" items={strategicThematics} on:select={handleStrategicThematic} />
 <InputError {message} />

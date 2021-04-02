@@ -48,13 +48,13 @@ class KnowledgeSubareaDiscipline extends Model
     }
 
     /**
-     * Relationship with SecondRelatedModel
+     * Relationship with RDI
      *
      * @return void
      */
-    public function secondRelatedModel()
+    public function rdi()
     {
-        return $this->hasOne(SecondRelatedModel::class);
+        return $this->hasMany(RDI::class);
     }
 
     /**

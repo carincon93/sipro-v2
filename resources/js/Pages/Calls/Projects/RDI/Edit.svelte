@@ -6,16 +6,13 @@
 <script>
     import { Inertia } from '@inertiajs/inertia'
     import { inertia, remember, page } from '@inertiajs/inertia-svelte'
-    import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import fitTextarea from 'fit-textarea'
     import Stepper from '@/Components/Stepper.svelte'
     import DropdownResearchLine from '@/Dropdowns/DropdownResearchLine.svelte'
     import DropdownProjectType from '@/Dropdowns/DropdownProjectType.svelte'
@@ -24,6 +21,7 @@
     import DropdownCIIUCode from '@/Dropdowns/DropdownCIIUCode.svelte'
     import DropdownStrategicThematic from '@/Dropdowns/DropdownStrategicThematic.svelte'
     import Switch from '@/Components/Switch'
+    import Textarea from '@/Components/Textarea'
 
     export let errors
     export let call
@@ -34,35 +32,38 @@
     let canUpdateRDI = $page.props.auth.user.can.find(element => element == 'rdi.edit')     == 'rdi.edit'
     let canDeleteRDI = $page.props.auth.user.can.find(element => element == 'rdi.delete')   == 'rdi.delete'
 
-    let modal_open  = false
+    let modal_open  = errors.password != undefined ? true : false
     let sending     = false
-    let video       = rdi.video != null
-    let industry_4_justification = rdi.industry_4_justification != null
-    let orange_economy_justification = rdi.orange_economy_justification != null
-    let people_disabilities_justification = rdi.people_disabilities_justification != null
-    let form        = remember({
-        title:              rdi.title,
-        start_date:         rdi.start_date,
-        end_date:           rdi.end_date,
-        research_line_id:   rdi.research_line_id,
-        video:              rdi.video,
-        industry_4_justification:   rdi.industry_4_justification,
-        orange_economy_justification:   rdi.orange_economy_justification,
-        people_disabilities_justification: rdi.people_disabilities_justification,
-        abstract: rdi.abstract,
-        project_background: rdi.project_background,
-        project_methodology: rdi.project_methodology,
-        sustainability_proposal: rdi.sustainability_proposal,
-        bibliography: rdi.bibliography,
-        students: rdi.students,
-        states: rdi.states,
-        states_impact: rdi.states_impact
-    })
 
-    onMount(() => {
-        // Convierte los textareas en fit-textareas
-        fitTextareas()
-	})
+    let video                               = rdi.video != null
+    let industry_4_justification            = rdi.industry_4_justification != null
+    let orange_economy_justification        = rdi.orange_economy_justification != null
+    let people_disabilities_justification   = rdi.people_disabilities_justification != null
+
+    let form = remember({
+        research_line_id:                   rdi.research_line_id,
+        knowledge_subarea_discipline_id:    rdi.knowledge_subarea_discipline_id,
+        strategic_thematic_id:              rdi.strategic_thematic_id,
+        knowledge_network_id:               rdi.knowledge_network_id,
+        project_type_id:                    rdi.project.project_type_id,
+        ciiu_code_id:                       rdi.ciiu_code_id,
+        title:                              rdi.title,
+        start_date:                         rdi.start_date,
+        end_date:                           rdi.end_date,
+        video:                              rdi.video,
+        industry_4_justification:           rdi.industry_4_justification,
+        orange_economy_justification:       rdi.orange_economy_justification,
+        people_disabilities_justification:  rdi.people_disabilities_justification,
+        abstract:                           rdi.abstract,
+        project_background:                 rdi.project_background,
+        conceptual_framework:               rdi.conceptual_framework,
+        project_methodology:                rdi.project_methodology,
+        sustainability_proposal:            rdi.sustainability_proposal,
+        bibliography:                       rdi.bibliography,
+        students:                           rdi.students,
+        states:                             rdi.states,
+        states_impact:                      rdi.states_impact
+    })
 
     function submit() {
         if (canUpdateRDI) {
@@ -73,45 +74,46 @@
         }
     }
 
-    function destroy() {
-        if (canDeleteRDI) {
-            Inertia.delete(route('calls.rdi.destroy', [call.id, rdi.id]))
-        }
+    let values = {
+        password: ''
     }
 
-    function fitTextareas() {
-        setTimeout(() => {
-            const textareas = document.querySelectorAll('textarea')
-            fitTextarea.watch(textareas)
-        }, 1)
+    function destroy() {
+        if (canDeleteRDI) {
+            Inertia.visit(route('calls.rdi.destroy', [call.id, rdi.id]), {
+                method: 'DELETE',
+                data: values,
+            })
+        }
     }
 </script>
 
+<style>
+
+</style>
+
 <Stepper call={call} project={rdi} />
 
-<form on:submit|preventDefault={submit}>
+<form on:submit|preventDefault={submit} novalidate>
     <div class="p-8">
         <div class="mt-28">
             <Label id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
-            <textarea rows="3" id="title" class="bg-transparent block border-0 outline-none-important mt-1 outline-none text-4xl text-center w-full" required>{$form.title}</textarea>
-            <InputError message={errors.title} />
+            <Textarea id="title" rows="3" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
         </div>
 
         <div class="mt-44">
             <p class="text-center">Fecha de ejecución</p>
-            <div class="mt-4 flex items-center justify-around">
-                <div class="mt-4 flex items-center">
-                    <Label id="start_date" value="Del" />
+            <div class="mt-4 flex items-start justify-around">
+                <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
+                    <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                     <div class="ml-4">
-                        <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
-                        <InputError message={errors.start_date} />
+                        <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
                     </div>
                 </div>
-                <div class="mt-4 flex items-center">
-                    <Label id="end_date" value="hasta" />
+                <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
+                    <Label id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                     <div class="ml-4">
-                        <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
-                        <InputError message={errors.end_date} />
+                        <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
                     </div>
                 </div>
             </div>
@@ -122,7 +124,7 @@
                 <Label id="research_line_id" value="Línea de investigación" />
             </div>
             <div>
-                <DropdownResearchLine id="research_line_id" message={errors.research_line_id} />
+                <DropdownResearchLine id="research_line_id" bind:formResearchLine={$form.research_line_id} message={errors.research_line_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -130,7 +132,7 @@
                 <Label id="project_type_id" value="Tipo de proyecto" />
             </div>
             <div>
-                <DropdownProjectType id="project_type_id" message={errors.project_type_id} />
+                <DropdownProjectType id="project_type_id" bind:formProjectType={$form.project_type_id} message={errors.project_type_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -138,7 +140,7 @@
                 <Label id="knowledge_network_id" value="Red de conocimiento sectorial" />
             </div>
             <div>
-                <DropdownKnowledgeNetwork id="knowledge_network_id" message={errors.knowledge_network_id} />
+                <DropdownKnowledgeNetwork id="knowledge_network_id" bind:formKnowledgeNetwork={$form.knowledge_network_id} message={errors.knowledge_network_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -146,7 +148,7 @@
                 <Label id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
             </div>
             <div>
-                <DropdownKnowledgeSubareaDiscipline id="knowledge_subarea_discipline_id" message={errors.knowledge_subarea_discipline_id} />
+                <DropdownKnowledgeSubareaDiscipline id="knowledge_subarea_discipline_id" bind:formKnowledgeSubareaDiscipline={$form.knowledge_subarea_discipline_id} message={errors.knowledge_subarea_discipline_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -154,7 +156,7 @@
                 <Label id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
             </div>
             <div>
-                <DropdownCIIUCode id="ciiu_code_id" message={errors.ciiu_code_id} />
+                <DropdownCIIUCode id="ciiu_code_id" bind:formCiiuCode={$form.ciiu_code_id} message={errors.ciiu_code_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -162,7 +164,7 @@
                 <Label id="strategic_thematic_id" value="Temática estratégica SENA" />
             </div>
             <div>
-                <DropdownStrategicThematic id="strategic_thematic_id" message={errors.strategic_thematic_id} />
+                <DropdownStrategicThematic id="strategic_thematic_id" bind:formStrategicThematic={$form.strategic_thematic_id} message={errors.strategic_thematic_id} />
             </div>
         </div>
         <div class="mt-44 grid grid-cols-2">
@@ -170,13 +172,12 @@
                 <Label id="video" value="¿El proyecto tiene video?" />
             </div>
             <div>
-                <div class="flex items-center">
+                <div class="flex items-center mb-14">
                     <Switch bind:checked={video} />
                     <span class="ml-2">{#if video} Si {:else} No {/if}</span>
                 </div>
                 {#if video}
-                    <Input id="video" type="url" class="mt-1 block w-full" placeholder="Link del video del proyecto https://www.youtube.com/watch?v=gmc4tk" bind:value={$form.video} required={!video ? undefined : 'required'} />
-                    <InputError message={errors.video} />
+                    <Input id="video" type="url" class="mt-1 block w-full" error={errors.video} placeholder="Link del video del proyecto https://www.youtube.com/watch?v=gmc4tk" bind:value={$form.video} required={!video ? undefined : 'required'} />
                     <div class="bg-indigo-100 p-5 text-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -194,13 +195,12 @@
                 <Label id="industry_4_justification" value="¿El proyecto está relacionado con la industria 4.0?" />
             </div>
             <div>
-                <div class="flex items-center">
-                    <Switch bind:checked={industry_4_justification} click={fitTextareas} />
+                <div class="flex items-center mb-14">
+                    <Switch bind:checked={industry_4_justification} />
                     <span class="ml-2">{#if industry_4_justification} Si {:else} No {/if}</span>
                 </div>
                 {#if industry_4_justification}
-                    <textarea rows="10" id="industry_4_justification" class="w-full border-gray-300" required={!industry_4_justification ? undefined : 'required'}>{$form.industry_4_justification}</textarea>
-                    <InputError message={errors.industry_4_justification} />
+                    <Textarea id="industry_4_justification" error={errors.industry_4_justification} bind:value={$form.industry_4_justification} required={!industry_4_justification ? undefined : 'required'} />
                     <div class="bg-indigo-100 p-5 text-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -218,13 +218,12 @@
                 <Label id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
             </div>
             <div>
-                <div class="flex items-center">
-                    <Switch bind:checked={orange_economy_justification} click={fitTextareas} />
+                <div class="flex items-center mb-14">
+                    <Switch bind:checked={orange_economy_justification} />
                     <span class="ml-2">{#if orange_economy_justification} Si {:else} No {/if}</span>
                 </div>
                 {#if orange_economy_justification}
-                    <textarea rows="10" id="orange_economy_justification" class="w-full border-gray-300" required={!orange_economy_justification ? undefined : 'required'}>{$form.orange_economy_justification}</textarea>
-                    <InputError message={errors.orange_economy_justification} />
+                    <Textarea id="orange_economy_justification" error={errors.orange_economy_justification} bind:value={$form.orange_economy_justification} required={!orange_economy_justification ? undefined : 'required'} />
                     <div class="bg-indigo-100 p-5 text-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -242,13 +241,12 @@
                 <Label id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
             </div>
             <div>
-                <div class="flex items-center">
-                    <Switch bind:checked={people_disabilities_justification} click={fitTextareas} />
+                <div class="flex items-center mb-14">
+                    <Switch bind:checked={people_disabilities_justification} />
                     <span class="ml-2">{#if people_disabilities_justification} Si {:else} No {/if}</span>
                 </div>
                 {#if people_disabilities_justification}
-                    <textarea rows="10" id="people_disabilities_justification" class="w-full border-gray-300" required={!people_disabilities_justification ? undefined : 'required'}>{$form.people_disabilities_justification}</textarea>
-                    <InputError message={errors.people_disabilities_justification} />
+                    <Textarea id="people_disabilities_justification" error={errors.people_disabilities_justification} bind:value={$form.people_disabilities_justification} required={!people_disabilities_justification ? undefined : 'required'} />
                     <div class="bg-indigo-100 p-5 text-indigo-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -266,8 +264,7 @@
                 <Label id="abstract" value="Resumen del proyecto" />
             </div>
             <div>
-                <textarea rows="10" id="abstract" class="w-full border-gray-300" required>{$form.abstract}</textarea>
-                <InputError message={errors.abstract} />
+                <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
                 <div class="bg-indigo-100 p-5 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -284,8 +281,7 @@
                 <Label id="project_background" value="Antedecentes" />
             </div>
             <div>
-                <textarea rows="10" id="project_background" class="w-full border-gray-300" required>{$form.project_background}</textarea>
-                <InputError message={errors.project_background} />
+                <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
                 <div class="bg-indigo-100 p-5 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -299,11 +295,27 @@
 
         <div class="mt-44 grid grid-cols-2">
             <div>
+                <Label id="conceptual_framework" value="Marco conceptual" />
+            </div>
+            <div>
+                <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
+                <div class="bg-indigo-100 p-5 text-indigo-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>
+                        Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-44 grid grid-cols-2">
+            <div>
                 <Label id="project_methodology" value="Metodología" />
             </div>
             <div>
-                <textarea rows="10" id="project_methodology" class="w-full border-gray-300" required>{$form.project_methodology}</textarea>
-                <InputError message={errors.project_methodology} />
+                <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
                 <div class="bg-indigo-100 p-5 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -320,8 +332,7 @@
                 <Label id="sustainability_proposal" value="Propuesta de sostenibilidad" />
             </div>
             <div>
-                <textarea rows="10" id="sustainability_proposal" class="w-full border-gray-300" required>{$form.sustainability_proposal}</textarea>
-                <InputError message={errors.sustainability_proposal} />
+                <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
                 <div class="bg-indigo-100 p-5 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -338,8 +349,7 @@
                 <Label id="bibliography" value="Bibliografía" />
             </div>
             <div>
-                <textarea rows="10" id="bibliography" class="w-full border-gray-300" required>{$form.bibliography}</textarea>
-                <InputError message={errors.bibliography} />
+                <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
                 <div class="bg-indigo-100 p-5 text-indigo-600">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -356,8 +366,7 @@
                 <Label id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
             </div>
             <div>
-                <Input id="students" type="number" min="0" max="9999" class="mt-1 block w-full" placeholder="Escriba el número de aprendices que se beneficiarán en la ejecución del proyecto" bind:value={$form.students} required />
-                <InputError message={errors.students} />
+                <Input id="students" type="number" min="0" max="9999" class="mt-1 block w-full" error={errors.students} placeholder="Escriba el número de aprendices que se beneficiarán en la ejecución del proyecto" bind:value={$form.students} required />
             </div>
         </div>
 
@@ -366,8 +375,7 @@
                 <Label id="states" value="Nombre de los municipios beneficiados" />
             </div>
             <div>
-                <textarea rows="10" id="states" class="w-full border-gray-300" required>{$form.states}</textarea>
-                <InputError message={errors.states} />
+                <Textarea id="states" error={errors.states} bind:value={$form.states} required />
             </div>
         </div>
 
@@ -376,8 +384,7 @@
                 <Label id="states_impact" value="Descripción del beneficio en los municipios" />
             </div>
             <div>
-                <textarea rows="10" id="states_impact" class="w-full border-gray-300" required>{$form.states_impact}</textarea>
-                <InputError message={errors.states_impact} />
+                <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
             </div>
         </div>
     </div>
@@ -393,13 +400,24 @@
     </div>
 </form>
 
-<Modal bind:open={modal_open}>
-    <Card>
+<Modal bind:open={modal_open} class="h-3/4 modal rounded-2xl">
+    <Card class="flex flex-col h-full justify-around rounded-2xl bg-mistyrose">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-1/6 m-auto text-red-300 bg-white rounded-full p-4 shadow-md">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
         <div class="p-4">
-            <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                {$_('Confirm')}
-            </button>
-            <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
+            <p class="bg-red-300 max-w-md p-4 rounded text-center text-white">
+                {$_('Are you sure you want to delete this project? Once the project is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete this project.')}
+            </p>
+            <form on:submit|preventDefault={destroy} id="delete-rdi" class="mb-28">
+                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
+            </form>
+            <div class="flex mt/">
+                <button on:click={event => modal_open = false} class="text-red-400" type="button">{$_('Cancel')}</button>
+                <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto shadow-md" form="delete-rdi">
+                    {$_('Confirm')}
+                </button>
+            </div>
         </div>
     </Card>
 </Modal>

@@ -6,6 +6,8 @@ use App\Http\Requests\RDIRequest;
 use App\Models\RDI;
 use App\Models\Call;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class RDIController extends Controller
@@ -58,7 +60,7 @@ class RDIController extends Controller
 
         $rdi->save();
 
-        return redirect()->route('calls.rdi.index', ['call'])->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('calls.rdi.index', [$call])->with('success', __('The resource has been created successfully.'));
     }
 
     /**
@@ -70,6 +72,8 @@ class RDIController extends Controller
     public function show(Call $call, RDI $rdi)
     {
         $this->authorize('view', [RDI::class, $rdi]);
+
+        $rdi->project;
 
         return Inertia::render('Calls/Projects/RDI/Show', [
             'call'  => $call,
@@ -86,6 +90,8 @@ class RDIController extends Controller
     public function edit(Call $call, RDI $rdi)
     {
         $this->authorize('update', [RDI::class, $rdi]);
+
+        $rdi->project;
 
         return Inertia::render('Calls/Projects/RDI/Edit', [
             'call'  => $call,
@@ -104,9 +110,30 @@ class RDIController extends Controller
     {
         $this->authorize('update', [RDI::class, $rdi]);
 
-        $rdi->fieldName = $request->fieldName;
-        $rdi->fieldName = $request->fieldName;
-        $rdi->fieldName = $request->fieldName;
+        $rdi->title                             = $request->title;
+        $rdi->start_date                        = $request->start_date;
+        $rdi->end_date                          = $request->end_date;
+        $rdi->video                             = $request->video;
+        $rdi->industry_4_justification          = $request->industry_4_justification;
+        $rdi->orange_economy_justification      = $request->orange_economy_justification;
+        $rdi->people_disabilities_justification = $request->people_disabilities_justification;
+        $rdi->abstract                          = $request->abstract;
+        $rdi->project_background                = $request->project_background;
+        $rdi->conceptual_framework              = $request->conceptual_framework;
+        $rdi->project_methodology               = $request->project_methodology;
+        $rdi->sustainability_proposal           = $request->sustainability_proposal;
+        $rdi->bibliography                      = $request->bibliography;
+        $rdi->students                          = $request->students;
+        $rdi->states                            = $request->states;
+        $rdi->states_impact                     = $request->states_impact;
+
+        $rdi->project->projectType()->associate($request->project_type_id);
+
+        $rdi->researchLine()->associate($request->research_line_id);
+        $rdi->knowledgeSubareaDiscipline()->associate($request->knowledge_subarea_discipline_id);
+        $rdi->strategicThematic()->associate($request->strategic_thematic_id);
+        $rdi->knowledgeNetwork()->associate($request->knowledge_network_id);
+        $rdi->ciiuCode()->associate($request->ciiu_code_id);
 
         $rdi->save();
 
@@ -119,12 +146,19 @@ class RDIController extends Controller
      * @param  \App\Models\RDI  $rdi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Call $call, RDI $rdi)
+    public function destroy(Request $request, Call $call, RDI $rdi)
     {
         $this->authorize('delete', [RDI::class, $rdi]);
 
-        $rdi->delete();
+        if ( !Hash::check($request->password, Auth::user()->password) ) {
+            return redirect()->back()
+                ->withErrors(['password' => __('The password is incorrect.')]);
+        }
 
-        return redirect()->route('calls.rdi.index', ['call'])->with('success', __('The resource has been deleted successfully.'));
+        $rdi->delete();
+        $message = 'The resource has been deleted successfully.';
+        $status = 'success';
+
+        return redirect()->route('calls.rdi.index', [$call])->with('success', __('The resource has been deleted successfully.'));
     }
 }

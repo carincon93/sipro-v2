@@ -31453,6 +31453,10 @@ text {
   font-size: 10px;
 }
 
+.bg-mistyrose {
+  background-color: mistyrose;
+}
+
 .outline-none-important {
   outline: none !important;
   border-color: transparent !important;

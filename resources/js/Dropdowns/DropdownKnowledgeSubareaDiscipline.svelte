@@ -7,8 +7,10 @@
     export let classes = ''
     export let id = ''
     export let message
+    export let formKnowledgeSubareaDiscipline
 
-    let knowledgeSubareaDisciplines = []
+    let knowledgeSubareaDisciplines         = []
+    let knowledgeSubareaDisciplineFiltered  = null
 
     onMount(() => {
         getKnowledgeSubareaDisciplines()
@@ -17,10 +19,20 @@
     async function getKnowledgeSubareaDisciplines() {
         let res       = await axios.get(route('web-api.knowledge-subarea-disciplines'))
         knowledgeSubareaDisciplines = res.data
+        selectKnowledgeSubareaDiscipline()
     }
 
     function handleKnowledgeSubareaDiscipline(event) {
-        console.log(event.detail)
+        formKnowledgeSubareaDiscipline = event.detail.value
+    }
+
+    function selectKnowledgeSubareaDiscipline() {
+        if (formKnowledgeSubareaDiscipline) {
+            let filterItem = knowledgeSubareaDisciplines.filter(function(knowledgeSubareaDiscipline) {
+                return knowledgeSubareaDiscipline.value == formKnowledgeSubareaDiscipline;
+            })
+            knowledgeSubareaDisciplineFiltered = filterItem[0]
+        }
     }
 </script>
 
@@ -40,5 +52,5 @@
     }
 </style>
 
-<Select inputAttributes={{'id': id}} placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" containerClasses="knowledge-subarea-disciplines {classes}" items={knowledgeSubareaDisciplines} on:select={handleKnowledgeSubareaDiscipline} />
+<Select selectedValue={knowledgeSubareaDisciplineFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" containerClasses="knowledge-subarea-disciplines {classes}" items={knowledgeSubareaDisciplines} on:select={handleKnowledgeSubareaDiscipline} />
 <InputError {message} />

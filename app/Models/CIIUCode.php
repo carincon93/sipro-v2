@@ -44,23 +44,13 @@ class CIIUCode extends Model
     ];
 
     /**
-     * Relationship with FirstRelatedModel
+     * Relationship with RDI
      *
      * @return void
      */
-    public function firstRelatedModel()
+    public function rdi()
     {
-        return $this->belongsTo(FirstRelatedModel::class);
-    }
-
-    /**
-     * Relationship with SecondRelatedModel
-     *
-     * @return void
-     */
-    public function secondRelatedModel()
-    {
-        return $this->hasOne(SecondRelatedModel::class);
+        return $this->hasMany(RDI::class);
     }
 
     /**

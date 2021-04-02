@@ -58,6 +58,16 @@ class ResearchLine extends Model
     }
 
     /**
+     * Relationship with RDI
+     *
+     * @return void
+     */
+    public function rdi()
+    {
+        return $this->hasMany(RDI::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query
