@@ -41,15 +41,21 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">
-        {#if canIndexResearchTeams || canCreateResearchTeams || isSuperAdmin}
-            <a use:inertia href={route('research-teams.index')} class="text-indigo-400 hover:text-indigo-600">
-                {$_('Research teams.plural')}
-            </a>
-        {/if}
-        <span class="text-indigo-400 font-medium">/</span>
-        {$_('Create')}
-    </h1>
+    <header class="shadow bg-white" slot="header">
+        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+            <div>
+                <h1>
+                    {#if canIndexResearchTeams || canCreateResearchTeams || isSuperAdmin}
+                        <a use:inertia href={route('research-teams.index')} class="text-indigo-400 hover:text-indigo-600">
+                            {$_('Research teams.plural')}
+                        </a>
+                    {/if}
+                    <span class="text-indigo-400 font-medium">/</span>
+                    {$_('Create')}
+                </h1>
+            </div>
+        </div>
+    </header>
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>

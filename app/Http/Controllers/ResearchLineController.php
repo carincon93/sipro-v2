@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ResearchLineRequest;
-use App\Models\ResearchGroup;
 use App\Models\ResearchLine;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -35,9 +34,7 @@ class ResearchLineController extends Controller
     {
         $this->authorize('create', [ResearchLine::class]);
 
-        return Inertia::render('ResearchLines/Create',[
-            'researchGroups' => ResearchGroup::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-        ]);
+        return Inertia::render('ResearchLines/Create');
     }
 
     /**
@@ -52,7 +49,7 @@ class ResearchLineController extends Controller
 
         $researchLine = new ResearchLine();
         $researchLine->name         = $request->name;
-        $researchLine->researchGroup()->associate($request->research_group);
+        $researchLine->researchGroup()->associate($request->research_group_id);
 
         $researchLine->save();
 
@@ -84,13 +81,8 @@ class ResearchLineController extends Controller
     {
         $this->authorize('update', [ResearchLine::class, $researchLine]);
 
-        $selectedResearchGroup = ['value' => optional($researchLine->researchGroup)->id, 'label' => optional($researchLine->researchGroup)->name];
-
         return Inertia::render('ResearchLines/Edit', [
-            'researchLine'          => $researchLine,
-            'researchGroups'        => ResearchGroup::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedResearchGroup' => $selectedResearchGroup
-
+            'researchLine' => $researchLine,
         ]);
     }
 
@@ -105,8 +97,8 @@ class ResearchLineController extends Controller
     {
         $this->authorize('update', [ResearchLine::class, $researchLine]);
 
-        $researchLine->name         = $request->name;
-        $researchLine->researchGroup()->associate($request->research_group);
+        $researchLine->name = $request->name;
+        $researchLine->researchGroup()->associate($request->research_group_id);
 
         $researchLine->save();
 

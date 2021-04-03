@@ -9,10 +9,9 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import DropdownResearchGroup from '@/Dropdowns/DropdownResearchGroup.svelte'
 
     export let errors
-    export let researchGroups
 
     $: $title = $_('Create') + ' ' + $_('Research lines.singular').toLowerCase()
 
@@ -42,15 +41,21 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">
-        {#if canIndexResearchLines || canCreateResearchLines || isSuperAdmin}
-            <a use:inertia href={route('research-lines.index')} class="text-indigo-400 hover:text-indigo-600">
-                {$_('Research lines.plural')}
-            </a>
-        {/if}
-        <span class="text-indigo-400 font-medium">/</span>
-        {$_('Create')}
-    </h1>
+    <header class="shadow bg-white" slot="header">
+        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+            <div>
+                <h1>
+                    {#if canIndexResearchLines || canCreateResearchLines || isSuperAdmin}
+                        <a use:inertia href={route('research-lines.index')} class="text-indigo-400 hover:text-indigo-600">
+                            {$_('Research lines.plural')}
+                        </a>
+                    {/if}
+                    <span class="text-indigo-400 font-medium">/</span>
+                    {$_('Create')}
+                </h1>
+            </div>
+        </div>
+    </header>
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
@@ -62,9 +67,9 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label id="research_group" value="Grupo de investigación" />
-                    <Select items={researchGroups} bind:selectedValue={$form.research_group} autocomplete="off" placeholder="Seleccione un grupo de investigación"/>
-                    <InputError message={errors.research_group} />
+                    <Label id="research_group_id" value="Grupo de investigación" />
+                    <DropdownResearchGroup id="research_group_id" bind:formResearchGroup={$form.research_group_id} message={errors.research_group_id} />
+                    <InputError message={errors.research_group_id} />
                 </div>
 
             </div>

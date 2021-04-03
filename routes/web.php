@@ -53,6 +53,8 @@ use App\Models\KnowledgeSubareaDiscipline;
 use App\Models\CIIUCode;
 use App\Models\StrategicThematic;
 use App\Models\AcademicCentre;
+use App\Models\Regional;
+use App\Models\ResearchGroup;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +117,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/academic-centres', function() {
         return response(AcademicCentre::selectRaw('academic_centres.id as value, concat(academic_centres.name, chr(10), \'∙ Código: \', academic_centres.code, chr(10), \'∙ Regional: \', regional.name) as label')->join('regional', 'academic_centres.regional_id', 'regional.id')->orderBy('academic_centres.name', 'ASC')->get());
     })->name('web-api.academic-centres');
+    // Trae las regionales
+    Route::get('web-api/regional', function() {
+        return response(Regional::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.regional');
+    // Trae las líneas programáticas
+    Route::get('web-api/programmatic-lines', function() {
+        return response(ProgrammaticLine::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.programmatic-lines');
+    // Trae las líneas programáticas
+    Route::get('web-api/research-groups', function() {
+        return response(ResearchGroup::selectRaw('research_groups.id as value, concat(research_groups.name, chr(10), \'∙ Acrónimo: \', research_groups.acronym, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
+    })->name('web-api.research-groups');
 
     // Resources
     Route::resources(

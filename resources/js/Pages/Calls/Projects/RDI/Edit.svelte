@@ -232,7 +232,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p>
-                                Si el proyecto está relacionado con la economía naranja por favor realice la justificación, de lo contrario no diligencie el campo. (Ver documento de apoyo: Guía Rápida SENA es NARANJA.)
+                                Si el proyecto está relacionado con la economía naranja por favor realice la justificación. (Ver documento de apoyo: Guía Rápida SENA es NARANJA.)
                             </p>
                         </div>
                     {/if}
@@ -255,7 +255,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             <p>
-                                Si el proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad por favor realice la justificación, de lo contrario no diligencie el campo. RESOLUCIÓN 01726 DE 2014 - Por la cual se adopta la Política Institucional para Atención de las Personas con discapacidad.
+                                Si el proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad por favor realice la justificación. RESOLUCIÓN 01726 DE 2014 - Por la cual se adopta la Política Institucional para Atención de las Personas con discapacidad.
                             </p>
                         </div>
                     {/if}
