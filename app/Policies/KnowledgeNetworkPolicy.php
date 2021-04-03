@@ -18,7 +18,7 @@ class KnowledgeNetworkPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('knowledge-networks.index') ) {
+        if ( $user->hasPermissionTo('knowledge-networks.index') || $user->hasPermissionTo('knowledge-networks.show') || $user->hasPermissionTo('knowledge-networks.create') || $user->hasPermissionTo('knowledge-networks.edit') || $user->hasPermissionTo('knowledge-networks.delete') ) {
             return true;
         }
 

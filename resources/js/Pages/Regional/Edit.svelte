@@ -1,9 +1,5 @@
-<script context="module">
-    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    export const layout = AuthenticatedLayout
-</script>
-
 <script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
     import { inertia, remember, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
@@ -20,8 +16,14 @@
 
     $: $title = regional ? regional.name : null
 
-    let canUpdateRegional = $page.props.auth.user.can.find(element => element == 'regional.edit') == 'regional.edit'
-    let canDeleteRegional = $page.props.auth.user.can.find(element => element == 'regional.delete') == 'regional.delete'
+    // Permisos
+    let authUser = $page.props.auth.user
+    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let canIndexRegional    = authUser.can.find(element => element == 'regional.index') == 'regional.index'
+    let canShowRegional     = authUser.can.find(element => element == 'regional.show') == 'regional.show'
+    let canCreateRegional   = authUser.can.find(element => element == 'regional.create') == 'regional.create'
+    let canEditRegional     = authUser.can.find(element => element == 'regional.edit') == 'regional.edit'
+    let canDeleteRegional   = authUser.can.find(element => element == 'regional.delete') == 'regional.delete'
 
     let modal_open = false
     let sending = false
@@ -31,7 +33,7 @@
     })
 
     function submit() {
-        if (canUpdateRegional) {
+        if (canEditRegional || isSuperAdmin) {
             Inertia.put(route('regional.update', regional.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
@@ -40,55 +42,61 @@
     }
 
     function destroy() {
-        if (canDeleteRegional) {
+        if (canDeleteRegional || isSuperAdmin) {
             Inertia.delete(route('regional.destroy', regional.id))
         }
     }
 </script>
 
-<h1 class="mb-8 font-bold text-3xl">
-    <a use:inertia href={route('regional.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_('Regional.plural')}
-    </a>
-    <span class="text-indigo-400 font-medium">/</span>
-    {regional.name}
-</h1>
+<AuthenticatedLayout>
+    <h1 class="mb-8 font-bold text-3xl">
+        {#if canIndexRegional || canEditRegional || isSuperAdmin}
+            <a use:inertia href={route('regional.index')} class="text-indigo-400 hover:text-indigo-600">
+                {$_('Regional.plural')}
+            </a>
+        {/if}
+        <span class="text-indigo-400 font-medium">/</span>
+        {regional.name}
+    </h1>
 
-<div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-    <form on:submit|preventDefault={submit}>
-        <div class="p-8">
-            <div class="mt-4">
-                <Label id="name" value="Nombre" />
-                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                <InputError message={errors.name} />
-            </div>
+    <div class="bg-white rounded shadow max-w-3xl">
+        <form on:submit|preventDefault={submit}>
+            <div class="p-8">
+                <div class="mt-4">
+                    <Label id="name" value="Nombre" />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
+                    <InputError message={errors.name} />
+                </div>
 
-            <div class="mt-4">
-                <Label id="code" value="Código" />
-                <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} required />
-                <InputError message={errors.code} />
+                <div class="mt-4">
+                    <Label id="code" value="Código" />
+                    <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} required />
+                    <InputError message={errors.code} />
+                </div>
             </div>
-        </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-            {#if canDeleteRegional}
-                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
-                    {$_('Delete')} {$_('Regional.singular').toLowerCase()}
-                </button>
-            {/if}
-            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                {$_('Update')} {$_('Regional.singular')}
-            </LoadingButton>
-        </div>
-    </form>
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+                {#if canDeleteRegional || isSuperAdmin}
+                    <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                        {$_('Delete')} {$_('Regional.singular').toLowerCase()}
+                    </button>
+                {/if}
+                {#if canEditRegional || isSuperAdmin}
+                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                        {$_('Update')} {$_('Regional.singular')}
+                    </LoadingButton>
+                {/if}
+            </div>
+        </form>
 
-    <Modal bind:open={modal_open}>
-        <Card>
-            <div class="p-4">
-                <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                    {$_('Confirm')}
-                </button>
-                <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
-            </div>
-        </Card>
-    </Modal>
-</div>
+        <Modal bind:open={modal_open}>
+            <Card>
+                <div class="p-4">
+                    <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
+                        {$_('Confirm')}
+                    </button>
+                    <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
+                </div>
+            </Card>
+        </Modal>
+    </div>
+</AuthenticatedLayout>

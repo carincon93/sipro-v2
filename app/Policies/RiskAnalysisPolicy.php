@@ -18,7 +18,7 @@ class RiskAnalysisPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('risk-analysis.index') ) {
+        if ( $user->hasPermissionTo('risk-analysis.index') || $user->hasPermissionTo('risk-analysis.show') || $user->hasPermissionTo('risk-analysis.create') || $user->hasPermissionTo('risk-analysis.edit') || $user->hasPermissionTo('risk-analysis.delete') ) {
             return true;
         }
 

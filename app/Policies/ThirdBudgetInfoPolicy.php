@@ -18,7 +18,7 @@ class ThirdBudgetInfoPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('third-budget-info.index') ) {
+        if ( $user->hasPermissionTo('third-budget-info.index') || $user->hasPermissionTo('third-budget-info.show')|| $user->hasPermissionTo('third-budget-info.create') || $user->hasPermissionTo('third-budget-info.edit') || $user->hasPermissionTo('third-budget-info.delete') ) {
             return true;
         }
 

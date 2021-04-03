@@ -18,7 +18,7 @@ class FirstBudgetInfoPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('first-budget-info.index') ) {
+        if ( $user->hasPermissionTo('first-budget-info.index') || $user->hasPermissionTo('first-budget-info.show') || $user->hasPermissionTo('first-budget-info.create') || $user->hasPermissionTo('first-budget-info.edit') || $user->hasPermissionTo('first-budget-info.delete')) {
             return true;
         }
 

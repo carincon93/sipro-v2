@@ -54,7 +54,7 @@ class ThirdBudgetInfoController extends Controller
 
         $thirdBudgetInfo->save();
 
-        return redirect()->route('third-budget-info.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('third-budget-info.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -104,7 +104,7 @@ class ThirdBudgetInfoController extends Controller
 
         $thirdBudgetInfo->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -119,6 +119,6 @@ class ThirdBudgetInfoController extends Controller
 
         $thirdBudgetInfo->delete();
 
-        return redirect()->route('third-budget-info.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('third-budget-info.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

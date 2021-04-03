@@ -14,10 +14,10 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
 
-    export let canResetPassword
     export let status
     export let errors
 
+    let canResetPassword
     let selection = []
     let sending = false
 

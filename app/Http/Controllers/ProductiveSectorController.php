@@ -52,7 +52,7 @@ class ProductiveSectorController extends Controller
 
         $productiveSector->save();
 
-        return redirect()->route('productive-sectors.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('productive-sectors.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -100,7 +100,7 @@ class ProductiveSectorController extends Controller
 
         $productiveSector->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -115,6 +115,6 @@ class ProductiveSectorController extends Controller
 
         $productiveSector->delete();
 
-        return redirect()->route('productive-sectors.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('productive-sectors.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

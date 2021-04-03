@@ -18,7 +18,7 @@ class AnnexePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('annexes.index') ) {
+        if ( $user->hasPermissionTo('annexes.index') || $user->hasPermissionTo('annexes.show') || $user->hasPermissionTo('annexes.create') || $user->hasPermissionTo('annexes.edit') || $user->hasPermissionTo('annexes.delete') ) {
             return true;
         }
 

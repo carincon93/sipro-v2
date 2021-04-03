@@ -18,7 +18,7 @@ class SennovaRolePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('sennova-roles.index') ) {
+        if ( $user->hasPermissionTo('sennova-roles.index') || $user->hasPermissionTo('sennova-roles.show') || $user->hasPermissionTo('sennova-roles.create') || $user->hasPermissionTo('sennova-roles.edit') || $user->hasPermissionTo('sennova-roles.delete') ) {
             return true;
         }
 

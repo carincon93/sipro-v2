@@ -54,7 +54,7 @@ class FirstBudgetInfoController extends Controller
 
         $firstBudgetInfo->save();
 
-        return redirect()->route('first-budget-info.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('first-budget-info.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -104,7 +104,7 @@ class FirstBudgetInfoController extends Controller
 
         $firstBudgetInfo->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -119,6 +119,6 @@ class FirstBudgetInfoController extends Controller
 
         $firstBudgetInfo->delete();
 
-        return redirect()->route('first-budget-info.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('first-budget-info.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

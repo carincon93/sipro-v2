@@ -18,7 +18,7 @@ class TechnicalCommitteePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('technical-committees.index') ) {
+        if ( $user->hasPermissionTo('technical-committees.index') || $user->hasPermissionTo('technical-committees.show') || $user->hasPermissionTo('technical-committees.create') || $user->hasPermissionTo('technical-committees.edit') || $user->hasPermissionTo('technical-committees.delete') ) {
             return true;
         }
 

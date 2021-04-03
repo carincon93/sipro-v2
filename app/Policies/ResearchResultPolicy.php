@@ -18,7 +18,7 @@ class ResearchResultPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('researchResult.index') ) {
+        if ( $user->hasPermissionTo('research-results.index') || $user->hasPermissionTo('research-results.show') || $user->hasPermissionTo('research-results.create') || $user->hasPermissionTo('research-results.edit') || $user->hasPermissionTo('research-results.delete') ) {
             return true;
         }
 
@@ -34,7 +34,7 @@ class ResearchResultPolicy
      */
     public function view(User $user, ResearchResult $researchResult)
     {
-        if ( $user->hasPermissionTo('researchResult.show') ) {
+        if ( $user->hasPermissionTo('research-results.show') ) {
             return true;
         }
 
@@ -49,7 +49,7 @@ class ResearchResultPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('researchResult.create') ) {
+        if ( $user->hasPermissionTo('research-results.create') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class ResearchResultPolicy
      */
     public function update(User $user, ResearchResult $researchResult)
     {
-        if ( $user->hasPermissionTo('researchResult.edit') ) {
+        if ( $user->hasPermissionTo('research-results.edit') ) {
             return true;
         }
 
@@ -81,7 +81,7 @@ class ResearchResultPolicy
      */
     public function delete(User $user, ResearchResult $researchResult)
     {
-        if ( $user->hasPermissionTo('researchResult.delete') ) {
+        if ( $user->hasPermissionTo('research-results.delete') ) {
             return true;
         }
 

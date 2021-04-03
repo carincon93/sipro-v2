@@ -18,7 +18,7 @@ class PrioritizedTopicPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('prioritized-topics.index') ) {
+        if ( $user->hasPermissionTo('prioritized-topics.index') || $user->hasPermissionTo('prioritized-topics.show') || $user->hasPermissionTo('prioritized-topics.create') || $user->hasPermissionTo('prioritized-topics.edit') || $user->hasPermissionTo('prioritized-topics.delete') ) {
             return true;
         }
 

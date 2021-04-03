@@ -33,6 +33,10 @@ text {
     box-shadow: none !important;
 }
 
+.container.svelte-4lwi8h {
+    max-width: 100vw;
+}
+
 .btn-spinner,
 .btn-spinner:after {
     border-radius: 50%;

@@ -18,7 +18,11 @@ class CallBudgetPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('call-budgets.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.index') || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +38,7 @@ class CallBudgetPolicy
      */
     public function view(User $user, CallBudget $callBudget)
     {
-        if ( $user->hasPermissionTo('call-budgets.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.show') ) {
             return true;
         }
 
@@ -49,7 +53,7 @@ class CallBudgetPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('call-budgets.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.create') ) {
             return true;
         }
 
@@ -65,7 +69,7 @@ class CallBudgetPolicy
      */
     public function update(User $user, CallBudget $callBudget)
     {
-        if ( $user->hasPermissionTo('call-budgets.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.edit') ) {
             return true;
         }
 
@@ -81,7 +85,7 @@ class CallBudgetPolicy
      */
     public function delete(User $user, CallBudget $callBudget)
     {
-        if ( $user->hasPermissionTo('call-budgets.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-budgets.delete') ) {
             return true;
         }
 

@@ -68,7 +68,7 @@ class CallController extends Controller
 
         $call->save();
 
-        return redirect()->route('calls.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('calls.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -118,7 +118,7 @@ class CallController extends Controller
 
         $call->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -133,6 +133,6 @@ class CallController extends Controller
 
         $call->delete();
 
-        return redirect()->route('calls.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('calls.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

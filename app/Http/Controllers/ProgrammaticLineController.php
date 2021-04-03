@@ -59,7 +59,7 @@ class ProgrammaticLineController extends Controller
 
         $programmaticLine->save();
 
-        return redirect()->route('programmatic-lines.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('programmatic-lines.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -114,7 +114,7 @@ class ProgrammaticLineController extends Controller
 
         $programmaticLine->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -129,6 +129,6 @@ class ProgrammaticLineController extends Controller
 
         $programmaticLine->delete();
 
-        return redirect()->route('programmatic-lines.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('programmatic-lines.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

@@ -55,7 +55,7 @@ class SpecificObjectiveController extends Controller
 
         $specificObjective->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -105,7 +105,7 @@ class SpecificObjectiveController extends Controller
 
         $specificObjective->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -120,6 +120,6 @@ class SpecificObjectiveController extends Controller
 
         $specificObjective->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

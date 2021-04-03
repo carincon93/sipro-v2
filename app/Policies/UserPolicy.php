@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('users.index') ) {
+        if ( $user->hasPermissionTo('users.index') || $user->hasPermissionTo('users.show') || $user->hasPermissionTo('users.create') || $user->hasPermissionTo('users.edit') || $user->hasPermissionTo('users.delete') ) {
             return true;
         }
 

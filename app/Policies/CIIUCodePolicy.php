@@ -18,7 +18,7 @@ class CIIUCodePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('ciiu-codes.index') ) {
+        if ( $user->hasPermissionTo('ciiu-codes.index') || $user->hasPermissionTo('ciiu-codes.show') || $user->hasPermissionTo('ciiu-codes.create') || $user->hasPermissionTo('ciiu-codes.edit') || $user->hasPermissionTo('ciiu-codes.delete') ) {
             return true;
         }
 

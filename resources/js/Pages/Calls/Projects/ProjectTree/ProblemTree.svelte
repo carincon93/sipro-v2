@@ -1,9 +1,5 @@
-<script context="module">
-    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    export const layout = AuthenticatedLayout
-</script>
-
 <script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
     import { inertia, remember, page } from '@inertiajs/inertia-svelte'
     import { onMount } from 'svelte'
@@ -136,332 +132,336 @@
     }
 </style>
 
-<Stepper {call} {project} />
+<AuthenticatedLayout>
 
-<div class="py-12">
-    <h1 class="text-4xl text-center">Árbol de problemas</h1>
-    <p class="text-center">Debe generar el árbol de problemas desde la problemática central, relacionando sus causas y efectos.</p>
+    <Stepper {call} {project} />
 
-    <div class="mt-16">
-        <!-- Efectos -->
-        <div class="flex mb-14">
-            <div class="flex-1">
-                <!-- Efectos indirectos -->
-                <div id="efecto-indirecto-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                    <small>Efectos indirectos</small>
-                    <div id="arrow-efecto-indirecto" class="arrow" data-popper-arrow></div>
-                </div>
-                <div class="flex mb-14" id="efecto-indirecto" aria-describedby="tooltip">
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Efecto directo -->
-                <div id="efecto-directo-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                    <small>Efectos directos</small>
-                    <div id="arrow-efecto-directo" class="arrow" data-popper-arrow></div>
-                </div>
-                <div class="efectos-directos relative flex-1" id="efecto-directo" aria-describedby="tooltip">
-                    <div class="tree-label h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
-                    </div>
-                </div>
-            </div>
+    <div class="py-12">
+        <h1 class="text-4xl text-center">Árbol de problemas</h1>
+        <p class="text-center">Debe generar el árbol de problemas desde la problemática central, relacionando sus causas y efectos.</p>
 
+        <div class="mt-16">
             <!-- Efectos -->
-            <div class="flex-1">
-                <!-- Efectos indirectos -->
-                <div class="flex mb-14">
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
+            <div class="flex mb-14">
+                <div class="flex-1">
+                    <!-- Efectos indirectos -->
+                    <div id="efecto-indirecto-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                        <small>Efectos indirectos</small>
+                        <div id="arrow-efecto-indirecto" class="arrow" data-popper-arrow></div>
+                    </div>
+                    <div class="flex mb-14" id="efecto-indirecto" aria-describedby="tooltip">
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
+                    <!-- Efecto directo -->
+                    <div id="efecto-directo-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                        <small>Efectos directos</small>
+                        <div id="arrow-efecto-directo" class="arrow" data-popper-arrow></div>
                     </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                    <div class="efectos-directos relative flex-1" id="efecto-directo" aria-describedby="tooltip">
+                        <div class="tree-label h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
                             </p>
                         </div>
                     </div>
                 </div>
-                <!-- Efecto directo -->
-                <div class="efectos-directos relative flex-1">
-                    <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
+
+                <!-- Efectos -->
+                <div class="flex-1">
+                    <!-- Efectos indirectos -->
+                    <div class="flex mb-14">
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Efecto directo -->
+                    <div class="efectos-directos relative flex-1">
+                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Efectos -->
+                <div class="flex-1">
+                    <!-- Efectos indirectos -->
+                    <div class="flex mb-14">
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Efecto directo -->
+                    <div class="efectos-directos relative flex-1">
+                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Efectos -->
+                <div class="flex-1">
+                    <!-- Efectos indirectos -->
+                    <div class="flex mb-14">
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex-1 efectos-directos relative">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Efecto directo -->
+                    <div class="efectos-directos relative flex-1">
+                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Efectos -->
-            <div class="flex-1">
-                <!-- Efectos indirectos -->
-                <div class="flex mb-14">
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Efecto directo -->
-                <div class="efectos-directos relative flex-1">
-                    <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
-                    </div>
-                </div>
+            <!-- Problema central -->
+            <div id="problema-central-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                <small>Problema central</small>
+                <div id="arrow-problema-central" class="arrow" data-popper-arrow></div>
             </div>
-
-            <!-- Efectos -->
-            <div class="flex-1">
-                <!-- Efectos indirectos -->
-                <div class="flex mb-14">
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex-1 efectos-directos relative">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Efecto directo -->
-                <div class="efectos-directos relative flex-1">
-                    <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Problema central -->
-        <div id="problema-central-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-            <small>Problema central</small>
-            <div id="arrow-problema-central" class="arrow" data-popper-arrow></div>
-        </div>
-        <div class="problema-central relative" id="problema-central" aria-describedby="tooltip">
-            <div class="h-36 bg-indigo-500 rounded shadow-lg hover:bg-indigo-600 cursor-pointer mr-1.5">
-                <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis. Proin tincidunt volutpat nunc non congue. Fusce vel lacinia est, ac iaculis magna. Aliquam vestibulum, ex ut sodales blandit, mauris magna porttitor turpis, vitae vehicula sem erat eget risus. Cras sit amet neque commodo nisl hendrerit vulputate. Praesent varius urna a quam aliquet consequat...
-                </p>
-            </div>
-        </div>
-
-        <!-- Causas -->
-        <div class="flex mt-14">
-            <div class="flex-1">
-                <!-- Causa directa -->
-                <div id="causa-directa-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                    <small>Causas directas</small>
-                    <div id="arrow-causa-directa" class="arrow" data-popper-arrow></div>
-                </div>
-                <div class="causas-directas relative flex-1" id="causa-directa" aria-describedby="tooltip">
-                    <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
-                    </div>
-                </div>
-                <!-- Causas indirectas -->
-                <div class="flex mt-14">
-                    <div id="causa-indirecta-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                        <small>Causas indirectas</small>
-                        <div id="arrow-causa-indirecta" class="arrow" data-popper-arrow></div>
-                    </div>
-                    <div class="causas-directas relative flex-1" id="causa-indirecta" aria-describedby="tooltip">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
+            <div class="problema-central relative" id="problema-central" aria-describedby="tooltip">
+                <div class="h-36 bg-indigo-500 rounded shadow-lg hover:bg-indigo-600 cursor-pointer mr-1.5">
+                    <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis. Proin tincidunt volutpat nunc non congue. Fusce vel lacinia est, ac iaculis magna. Aliquam vestibulum, ex ut sodales blandit, mauris magna porttitor turpis, vitae vehicula sem erat eget risus. Cras sit amet neque commodo nisl hendrerit vulputate. Praesent varius urna a quam aliquet consequat...
+                    </p>
                 </div>
             </div>
 
             <!-- Causas -->
-            <div class="flex-1">
-                <!-- Causa directa -->
-                <div class="causas-directas relative flex-1">
-                    <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
+            <div class="flex mt-14">
+                <div class="flex-1">
+                    <!-- Causa directa -->
+                    <div id="causa-directa-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                        <small>Causas directas</small>
+                        <div id="arrow-causa-directa" class="arrow" data-popper-arrow></div>
+                    </div>
+                    <div class="causas-directas relative flex-1" id="causa-directa" aria-describedby="tooltip">
+                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Causas indirectas -->
+                    <div class="flex mt-14">
+                        <div id="causa-indirecta-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <small>Causas indirectas</small>
+                            <div id="arrow-causa-indirecta" class="arrow" data-popper-arrow></div>
+                        </div>
+                        <div class="causas-directas relative flex-1" id="causa-indirecta" aria-describedby="tooltip">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Causas indirectas -->
-                <div class="flex mt-14">
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Causas -->
-            <div class="flex-1">
-                <!-- Causa directa -->
-                <div class="causas-directas relative flex-1">
-                    <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
+                <!-- Causas -->
+                <div class="flex-1">
+                    <!-- Causa directa -->
+                    <div class="causas-directas relative flex-1">
+                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Causas indirectas -->
+                    <div class="flex mt-14">
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Causas indirectas -->
-                <div class="flex mt-14">
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Causas -->
-            <div class="flex-1">
-                <!-- Causa directa -->
-                <div class="causas-directas relative flex-1">
-                    <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                        <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                        </p>
+                <!-- Causas -->
+                <div class="flex-1">
+                    <!-- Causa directa -->
+                    <div class="causas-directas relative flex-1">
+                        <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Causas indirectas -->
+                    <div class="flex mt-14">
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <!-- Causas indirectas -->
-                <div class="flex mt-14">
+
+                <!-- Causas -->
+                <div class="flex-1">
+                    <!-- Causa directa -->
                     <div class="causas-directas relative flex-1">
                         <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
                             </p>
                         </div>
                     </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
+                    <!-- Causas indirectas -->
+                    <div class="flex mt-14">
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="causas-directas relative flex-1">
-                        <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
-                            <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
-                            </p>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
+                        </div>
+                        <div class="causas-directas relative flex-1">
+                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. In eget est a dui molestie fringilla eu id magna. Morbi metus tellus, malesuada ut mi et, dapibus tristique felis...
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</AuthenticatedLayout>
+

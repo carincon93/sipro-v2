@@ -18,7 +18,7 @@ class BudgetProgrammaticLinePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.index') ) {
+        if ( $user->hasPermissionTo('budget-programmatic-lines.index') || $user->hasPermissionTo('budget-programmatic-lines.show') || $user->hasPermissionTo('budget-programmatic-lines.create') || $user->hasPermissionTo('budget-programmatic-lines.edit') || $user->hasPermissionTo('budget-programmatic-lines.delete') ) {
             return true;
         }
 

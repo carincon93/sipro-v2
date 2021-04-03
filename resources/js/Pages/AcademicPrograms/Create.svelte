@@ -1,11 +1,7 @@
-<script context="module">
-    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    export const layout = AuthenticatedLayout
-</script>
-
 <script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember } from '@inertiajs/inertia-svelte'
+    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -14,12 +10,21 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from 'svelte-select'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre.svelte'
 
     export let errors
-    export let academicCentres = {}
     export let studyModes
 
     $: $title = $_('Create') + ' ' + $_('Academic programs.singular').toLowerCase()
+
+    // Permisos
+    let authUser = $page.props.auth.user
+    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let canIndexAcademicPrograms    = authUser.can.find(element => element == 'academic-programs.index') == 'academic-programs.index'
+    let canShowAcademicPrograms     = authUser.can.find(element => element == 'academic-programs.show') == 'academic-programs.show'
+    let canCreateAcademicPrograms   = authUser.can.find(element => element == 'academic-programs.create') == 'academic-programs.create'
+    let canEditAcademicPrograms     = authUser.can.find(element => element == 'academic-programs.edit') == 'academic-programs.edit'
+    let canDeleteAcademicPrograms   = authUser.can.find(element => element == 'academic-programs.delete') == 'academic-programs.delete'
 
     let sending = false
     let form = remember({
@@ -30,52 +35,61 @@
     })
 
     function submit() {
-        Inertia.post(route('academic-programs.store'), $form, {
-            onStart: ()     => sending = true,
-            onFinish: ()    => sending = false,
-        })
+        if (canCreateAcademicPrograms || isSuperAdmin) {
+            Inertia.post(route('academic-programs.store'), $form, {
+                onStart: ()     => sending = true,
+                onFinish: ()    => sending = false,
+            })
+        }
     }
 </script>
 
-<h1 class="mb-8 font-bold text-3xl">
-    <a use:inertia href={route('academic-programs.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_('Academic programs.plural')}
-    </a>
-    <span class="text-indigo-400 font-medium">/</span>
-    {$_('Create')}
-</h1>
+<AuthenticatedLayout>
+    <h1 class="mb-8 font-bold text-3xl">
+        {#if canIndexAcademicPrograms || canCreateAcademicPrograms || isSuperAdmin}
+            <a use:inertia href={route('academic-programs.index')} class="text-indigo-400 hover:text-indigo-600">
+                {$_('Academic programs.plural')}
+            </a>
+        {/if}
+        <span class="text-indigo-400 font-medium">/</span>
+        {$_('Create')}
+    </h1>
 
-<div class="bg-white rounded shadow overflow-hidden max-w-3xl">
-    <form on:submit|preventDefault={submit}>
-        <div class="p-8">
-            <div class="mt-4">
-                <Label id="name" value="Nombre" />
-                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                <InputError message={errors.name} />
-            </div>
+    <div class="bg-white rounded shadow max-w-3xl">
+        <form on:submit|preventDefault={submit}>
+            <div class="p-8">
+                <div class="mt-4">
+                    <Label id="name" value="Nombre" />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
+                    <InputError message={errors.name} />
+                </div>
 
-            <div class="mt-4">
-                <Label id="code" value="Código" />
-                <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
-                <InputError message={errors.code} />
-            </div>
+                <div class="mt-4">
+                    <Label id="code" value="Código" />
+                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
+                    <InputError message={errors.code} />
+                </div>
 
-            <div class="mt-4">
-                <Label id="study_mode" value="Modalidad de estudio" />
-                <Select items={studyModes} bind:selectedValue={$form.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio"/>
-                <InputError message={errors.study_mode} />
-            </div>
+                <div class="mt-4">
+                    <Label id="study_mode" value="Modalidad de estudio" />
+                    <Select items={studyModes} bind:selectedValue={$form.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio"/>
+                    <InputError message={errors.study_mode} />
+                </div>
 
-            <div class="mt-4">
-                <Label id="academic_centre" value="Centro de formación" />
-                <Select items={academicCentres} bind:selectedValue={$form.academic_centre} autocomplete="off" placeholder="Seleccione el centro de formación"/>
-                <InputError message={errors.academic_centre} />
+                <div class="mt-4">
+                    <Label id="academic_centre" value="Centro de formación" />
+                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
+                    <InputError message={errors.academic_centre} />
+                </div>
             </div>
-        </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                {$_('Create')} {$_('Academic programs.singular')}
-            </LoadingButton>
-        </div>
-    </form>
-</div>
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+                {#if canCreateAcademicPrograms || isSuperAdmin}
+                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                        {$_('Create')} {$_('Academic programs.singular')}
+                    </LoadingButton>
+                {/if}
+            </div>
+        </form>
+    </div>
+</AuthenticatedLayout>
+

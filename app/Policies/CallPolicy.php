@@ -18,7 +18,7 @@ class CallPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') ) {
+        if ( $user->hasPermissionTo('calls.index') || $user->hasPermissionTo('calls.show') || $user->hasPermissionTo('calls.create') || $user->hasPermissionTo('calls.edit') || $user->hasPermissionTo('calls.delete') ) {
             return true;
         }
 

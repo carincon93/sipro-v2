@@ -18,7 +18,12 @@ class ProjectSennovaBudgetPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('project-sennova-budgets.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.index')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +39,7 @@ class ProjectSennovaBudgetPolicy
      */
     public function view(User $user, ProjectSennovaBudget $projectSennovaBudget)
     {
-        if ( $user->hasPermissionTo('project-sennova-budgets.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.show') ) {
             return true;
         }
 
@@ -49,7 +54,7 @@ class ProjectSennovaBudgetPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('project-sennova-budgets.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.create') ) {
             return true;
         }
 
@@ -65,7 +70,7 @@ class ProjectSennovaBudgetPolicy
      */
     public function update(User $user, ProjectSennovaBudget $projectSennovaBudget)
     {
-        if ( $user->hasPermissionTo('project-sennova-budgets.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.edit') ) {
             return true;
         }
 
@@ -81,7 +86,7 @@ class ProjectSennovaBudgetPolicy
      */
     public function delete(User $user, ProjectSennovaBudget $projectSennovaBudget)
     {
-        if ( $user->hasPermissionTo('project-sennova-budgets.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-budgets.delete') ) {
             return true;
         }
 

@@ -15,6 +15,7 @@
     "Website": "Sitio web",
     "Photo": "Foto",
     "Created": "Creado",
+    "Index": "Listar",
     "Create": "Crear",
     "Edit": "Editar",
     "Update": "Actualizar",
@@ -108,8 +109,7 @@
     "The resource has been created successfully.": "El recurso se ha creado correctamente.",
     "The resource has been updated successfully.": "El recurso se ha actualizado correctamente.",
     "The resource has been deleted successfully.": "El recurso se ha eliminado correctamente.",
-    "There are": "Hay",
-    "form errors.": "errores en el formulario. Por favor revíselos.",
+    "There are form errors.": "Hay {count} errores en el formulario. Por favor revíselos.",
     "There is one form error.": "Hay un error en el formulario. Por favor revíselo.",
     "Are you sure you want to delete this project? Once the project is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete this project.": "¿Está seguro (a) que desea eliminar este proyecto? Una vez eliminado el proyecto, todos sus recursos y datos se eliminarán de forma permanente. Ingrese su contraseña para confirmar que desea eliminar permanentemente este proyecto.",
     "Calls": {
@@ -144,7 +144,10 @@
         "singular": "Presupuesto de proyecto",
         "plural": "Presupuestos de proyecto"
     },
-    "Risk analysis": "Análisis de riesgos",
+    "Risk analysis": {
+        "singular": "Análisis de riesgos",
+        "plural": "Análisis de riesgos"
+    },
     "Partner organizations": {
         "singular": "Entidad aliada",
         "plural": "Entidades aliadas"
@@ -224,5 +227,73 @@
     "System roles": {
         "singular": "Rol del sistema",
         "plural": "Roles del sistema"
+    },
+    "Ciiu codes": {
+        "singular": "Código CIIU",
+        "plural": "Códigos CIIU"
+    },
+    "Call budgets": {
+        "singular": "Presupuesto de convocatoria",
+        "plural": "Presupuestos de convocatoria"
+    },
+    "Budgets programmatic lines": {
+        "singular": "Presupuesto de línea programática",
+        "plural": "Presupuestos de línea programática"
+    },
+    "Sennova budgets": {
+        "singular": "Presupuesto SENNOVA",
+        "plural": "Presupuestos SENNOVA"
+    },
+    "First budget info": {
+        "singular": "Presupuesto - Nombre de cuenta",
+        "plural": "Presupuesto - Nombres de cuenta"
+    },
+    "Second budget info": {
+        "singular": "Presupuesto - Homologable",
+        "plural": "Presupuesto - Homologables"
+    },
+    "Third budget info": {
+        "singular": "Presupuesto - Nombre de rubro",
+        "plural": "Presupuesto - Nombres de rubro"
+    },
+    "Roles": {
+        "singular": "Rol del sistema",
+        "plural": "Roles del sistema"
+    },
+    "Call sennova roles": {
+        "singular": "Rol SENNOVA de convocatoria",
+        "plural": "Roles SENNOVA de convocatoria"
+    },
+    "Indirect causes": {
+        "singular": "Causa indirecta",
+        "plural": "Causas indirectas"
+    },
+    "Direct effects": {
+        "singular": "Efecto directo",
+        "plural": "Efectos directos"
+    },
+    "Direct causes": {
+        "singular": "Causa directa",
+        "plural": "Causas directas"
+    },
+    "Specific objectives": {
+        "singular": "Objetivo específico",
+        "plural": "Objetivos específicos"
+    },
+    "Rdi outputs": {
+        "singular": "Producto",
+        "plural": "Productos"
+    },
+    "Rdi": {
+        "singular": "Proyecto I+D+i",
+        "plural": "Proyectos I+D+i"
+    },
+    "Research results": {
+        "singular": "Resultado de invesitgación",
+        "plural": "Resultados de invesitgación"
+    },
+    "Sennova roles": {
+        "singular": "Rol SENNOVA",
+        "plural": "Roles SENNOVA"
     }
 }

@@ -58,7 +58,7 @@ class KnowledgeSubareaController extends Controller
 
         $knowledgeSubarea->save();
 
-        return redirect()->route('knowledge-subareas.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('knowledge-subareas.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -111,7 +111,7 @@ class KnowledgeSubareaController extends Controller
 
         $knowledgeSubarea->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -126,6 +126,6 @@ class KnowledgeSubareaController extends Controller
 
         $knowledgeSubarea->delete();
 
-        return redirect()->route('knowledge-subareas.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('knowledge-subareas.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

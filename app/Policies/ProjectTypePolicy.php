@@ -18,7 +18,7 @@ class ProjectTypePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('project-types.index') ) {
+        if ( $user->hasPermissionTo('project-types.index') || $user->hasPermissionTo('project-types.show') || $user->hasPermissionTo('project-types.create') || $user->hasPermissionTo('project-types.edit') || $user->hasPermissionTo('project-types.delete') ) {
             return true;
         }
 

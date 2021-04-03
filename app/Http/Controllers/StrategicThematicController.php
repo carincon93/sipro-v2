@@ -52,7 +52,7 @@ class StrategicThematicController extends Controller
 
         $strategicThematic->save();
 
-        return redirect()->route('strategic-thematics.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('strategic-thematics.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -100,7 +100,7 @@ class StrategicThematicController extends Controller
 
         $strategicThematic->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -115,6 +115,6 @@ class StrategicThematicController extends Controller
 
         $strategicThematic->delete();
 
-        return redirect()->route('strategic-thematics.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('strategic-thematics.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

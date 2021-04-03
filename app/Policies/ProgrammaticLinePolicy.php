@@ -18,7 +18,7 @@ class ProgrammaticLinePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('programmatic-lines.index') ) {
+        if ( $user->hasPermissionTo('programmatic-lines.index') || $user->hasPermissionTo('programmatic-lines.show') || $user->hasPermissionTo('programmatic-lines.create') || $user->hasPermissionTo('programmatic-lines.edit') || $user->hasPermissionTo('programmatic-lines.delete') ) {
             return true;
         }
 

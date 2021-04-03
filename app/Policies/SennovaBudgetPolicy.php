@@ -18,7 +18,7 @@ class SennovaBudgetPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('sennova-budgets.index') ) {
+        if ( $user->hasPermissionTo('sennova-budgets.index') || $user->hasPermissionTo('sennova-budgets.show') || $user->hasPermissionTo('sennova-budgets.create') || $user->hasPermissionTo('sennova-budgets.edit') || $user->hasPermissionTo('sennova-budgets.delete') ) {
             return true;
         }
 

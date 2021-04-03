@@ -65,7 +65,7 @@ class RDIOutputController extends Controller
 
         $rdiOutput->save();
 
-        return redirect()->route('calls.rdi.rdi-outputs.index', ['call', 'rdi'])->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('calls.rdi.rdi-outputs.index', ['call', 'rdi'])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -119,7 +119,7 @@ class RDIOutputController extends Controller
 
         $rdiOutput->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -134,6 +134,6 @@ class RDIOutputController extends Controller
 
         $rdiOutput->delete();
 
-        return redirect()->route('calls.rdi.rdi-outputs.index', ['call', 'rdi'])->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('calls.rdi.rdi-outputs.index', ['call', 'rdi'])->with('success', 'The resource has been deleted successfully.');
     }
 }

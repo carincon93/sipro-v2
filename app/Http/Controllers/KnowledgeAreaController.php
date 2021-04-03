@@ -52,7 +52,7 @@ class KnowledgeAreaController extends Controller
 
         $knowledgeArea->save();
 
-        return redirect()->route('knowledge-areas.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('knowledge-areas.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -100,7 +100,7 @@ class KnowledgeAreaController extends Controller
 
         $knowledgeArea->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -115,6 +115,6 @@ class KnowledgeAreaController extends Controller
 
         $knowledgeArea->delete();
 
-        return redirect()->route('knowledge-areas.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('knowledge-areas.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

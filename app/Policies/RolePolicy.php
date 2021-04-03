@@ -18,7 +18,7 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('roles.index') ) {
+        if ( $user->hasPermissionTo('roles.index') || $user->hasPermissionTo('roles.show') || $user->hasPermissionTo('roles.create') || $user->hasPermissionTo('roles.edit') || $user->hasPermissionTo('roles.delete') ) {
             return true;
         }
 

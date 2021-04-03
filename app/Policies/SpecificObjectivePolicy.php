@@ -18,7 +18,7 @@ class SpecificObjectivePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('specific-objectives.index') ) {
+        if ( $user->hasPermissionTo('specific-objectives.index') || $user->hasPermissionTo('specific-objectives.show') || $user->hasPermissionTo('specific-objectives.create') || $user->hasPermissionTo('specific-objectives.edit') ||$user->hasPermissionTo('specific-objectives.delete') ) {
             return true;
         }
 

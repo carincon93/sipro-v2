@@ -18,7 +18,7 @@ class RegionalPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('regional.index') ) {
+        if ( $user->hasPermissionTo('regional.index') || $user->hasPermissionTo('regional.show') || $user->hasPermissionTo('regional.create') || $user->hasPermissionTo('regional.edit') || $user->hasPermissionTo('regional.delete') ) {
             return true;
         }
 

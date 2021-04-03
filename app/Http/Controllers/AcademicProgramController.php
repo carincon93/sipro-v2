@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AcademicProgramRequest;
 use App\Models\Regional;
-use App\Models\AcademicCentre;
 use App\Models\AcademicProgram;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -41,7 +40,6 @@ class AcademicProgramController extends Controller
         $studyModes = [['value' => 'presencial', 'label' => 'Presencial'], ['value' => 'virtual', 'label' => 'Virtual']];
 
         return Inertia::render('AcademicPrograms/Create', [
-            'academicCentres'   => AcademicCentre::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
             'studyModes'        => $studyModes
         ]);
     }
@@ -64,7 +62,7 @@ class AcademicProgramController extends Controller
 
         $academicProgram->save();
 
-        return redirect()->route('academic-programs.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('academic-programs.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -92,15 +90,11 @@ class AcademicProgramController extends Controller
     {
         $this->authorize('update', [AcademicProgram::class, $academicProgram]);
 
-        $selectedAcademicCentre = ['value' => optional($academicProgram->academicCentre)->id, 'label' => optional($academicProgram->academicCentre)->name];
-        $studyModes = [['value' => 'presencial', 'label' => 'Presencial'], ['value' => 'virtual', 'label' => 'Virtual']];
-
-        $selectedStudyMode = ['value' => $academicProgram->study_mode, 'label' => $academicProgram->study_mode];
+        $studyModes         = [['value' => 'presencial', 'label' => 'Presencial'], ['value' => 'virtual', 'label' => 'Virtual']];
+        $selectedStudyMode  = ['value' => $academicProgram->study_mode, 'label' => $academicProgram->study_mode];
 
         return Inertia::render('AcademicPrograms/Edit', [
-            'academicProgram'           => $academicProgram->only(['id', 'name', 'code']),
-            'selectedAcademicCentre'    => $selectedAcademicCentre,
-            'academicCentres'           => AcademicCentre::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
+            'academicProgram'           => $academicProgram->only(['id', 'name', 'code', 'academic_centre_id']),
             'studyModes'                => $studyModes,
             'selectedStudyMode'         => $selectedStudyMode
         ]);
@@ -124,7 +118,7 @@ class AcademicProgramController extends Controller
 
         $academicProgram->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -139,6 +133,6 @@ class AcademicProgramController extends Controller
 
         $academicProgram->delete();
 
-        return redirect()->route('academic-programs.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('academic-programs.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

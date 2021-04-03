@@ -18,7 +18,7 @@ class StrategicThematicPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('strategic-thematics.index') ) {
+        if ( $user->hasPermissionTo('strategic-thematics.index') || $user->hasPermissionTo('strategic-thematics.show') || $user->hasPermissionTo('strategic-thematics.create') || $user->hasPermissionTo('strategic-thematics.edit') || $user->hasPermissionTo('strategic-thematics.delete') ) {
             return true;
         }
 

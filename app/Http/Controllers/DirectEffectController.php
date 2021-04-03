@@ -55,7 +55,7 @@ class DirectEffectController extends Controller
 
         $directEffect->save();
 
-        return redirect()->route('projects.direct-effects.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('projects.direct-effects.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -105,7 +105,7 @@ class DirectEffectController extends Controller
 
         $directEffect->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -120,6 +120,6 @@ class DirectEffectController extends Controller
 
         $directEffect->delete();
 
-        return redirect()->route('projects.direct-effects.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('projects.direct-effects.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

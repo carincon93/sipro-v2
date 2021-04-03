@@ -18,7 +18,12 @@ class DirectEffectPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('direct-effects.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.index')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +39,7 @@ class DirectEffectPolicy
      */
     public function view(User $user, DirectEffect $directEffect)
     {
-        if ( $user->hasPermissionTo('direct-effects.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.show') ) {
             return true;
         }
 
@@ -49,7 +54,7 @@ class DirectEffectPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('direct-effects.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.create') ) {
             return true;
         }
 
@@ -65,7 +70,7 @@ class DirectEffectPolicy
      */
     public function update(User $user, DirectEffect $directEffect)
     {
-        if ( $user->hasPermissionTo('direct-effects.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.edit') ) {
             return true;
         }
 
@@ -81,7 +86,7 @@ class DirectEffectPolicy
      */
     public function delete(User $user, DirectEffect $directEffect)
     {
-        if ( $user->hasPermissionTo('direct-effects.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('direct-effects.delete') ) {
             return true;
         }
 

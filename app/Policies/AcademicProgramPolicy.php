@@ -18,7 +18,7 @@ class AcademicProgramPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('academic-programs.index') ) {
+        if ( $user->hasPermissionTo('academic-programs.index') || $user->hasPermissionTo('academic-programs.show') || $user->hasPermissionTo('academic-programs.create') || $user->hasPermissionTo('academic-programs.edit') || $user->hasPermissionTo('academic-programs.delete') ) {
             return true;
         }
 

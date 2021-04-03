@@ -18,7 +18,7 @@ class ResearchGroupPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('research-groups.index') ) {
+        if ( $user->hasPermissionTo('research-groups.index') || $user->hasPermissionTo('research-groups.show') || $user->hasPermissionTo('research-groups.create') || $user->hasPermissionTo('research-groups.edit') || $user->hasPermissionTo('research-groups.delete') ) {
             return true;
         }
 

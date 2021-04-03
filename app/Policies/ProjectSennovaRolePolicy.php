@@ -18,7 +18,7 @@ class ProjectSennovaRolePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('project-sennova-roles.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-roles.index') ) {
             return true;
         }
 
@@ -34,7 +34,7 @@ class ProjectSennovaRolePolicy
      */
     public function view(User $user, ProjectSennovaRole $projectSennovaRole)
     {
-        if ( $user->hasPermissionTo('project-sennova-roles.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-roles.show') ) {
             return true;
         }
 
@@ -49,7 +49,7 @@ class ProjectSennovaRolePolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('project-sennova-roles.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-roles.create') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class ProjectSennovaRolePolicy
      */
     public function update(User $user, ProjectSennovaRole $projectSennovaRole)
     {
-        if ( $user->hasPermissionTo('project-sennova-roles.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-roles.edit') ) {
             return true;
         }
 
@@ -81,7 +81,7 @@ class ProjectSennovaRolePolicy
      */
     public function delete(User $user, ProjectSennovaRole $projectSennovaRole)
     {
-        if ( $user->hasPermissionTo('project-sennova-roles.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('project-sennova-roles.delete') ) {
             return true;
         }
 

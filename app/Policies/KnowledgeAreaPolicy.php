@@ -18,7 +18,7 @@ class KnowledgeAreaPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('knowledge-areas.index') ) {
+        if ( $user->hasPermissionTo('knowledge-areas.index') || $user->hasPermissionTo('knowledge-areas.show') || $user->hasPermissionTo('knowledge-areas.create') || $user->hasPermissionTo('knowledge-areas.edit') || $user->hasPermissionTo('knowledge-areas.delete') ) {
             return true;
         }
 

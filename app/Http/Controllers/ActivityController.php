@@ -62,7 +62,7 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return redirect()->route('projects.activities.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('projects.activities.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -112,7 +112,7 @@ class ActivityController extends Controller
 
         $activity->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -127,6 +127,6 @@ class ActivityController extends Controller
 
         $activity->delete();
 
-        return redirect()->route('projects.activities.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('projects.activities.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

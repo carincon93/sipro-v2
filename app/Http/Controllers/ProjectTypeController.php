@@ -59,7 +59,7 @@ class ProjectTypeController extends Controller
 
         $projectType->save();
 
-        return redirect()->route('project-types.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('project-types.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -113,7 +113,7 @@ class ProjectTypeController extends Controller
 
         $projectType->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -128,6 +128,6 @@ class ProjectTypeController extends Controller
 
         $projectType->delete();
 
-        return redirect()->route('project-types.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('project-types.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

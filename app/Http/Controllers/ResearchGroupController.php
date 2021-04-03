@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ResearchGroupRequest;
-use App\Models\AcademicCentre;
 use App\Models\ResearchGroup;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -45,7 +44,6 @@ class ResearchGroupController extends Controller
         ];
 
         return Inertia::render('ResearchGroups/Create', [
-            'academicCentres'       => AcademicCentre::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
             'mincienciasCategories'  => $mincienciasCategories
         ]);
     }
@@ -71,7 +69,7 @@ class ResearchGroupController extends Controller
 
         $researchGroup->save();
 
-        return redirect()->route('research-groups.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('research-groups.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -108,15 +106,12 @@ class ResearchGroupController extends Controller
             ['value' => 'No reconocido', 'label' => 'No reconocido']
         ];
 
-        $selectedAcademicCentre         = ['value' => optional($researchGroup->academicCentre)->id, 'label' => optional($researchGroup->academicCentre)->name];
         $selectedMincienciasCategory    = ['value' => $researchGroup->minciencias_category, 'label' => $researchGroup->minciencias_category];
 
         return Inertia::render('ResearchGroups/Edit', [
-            'academicCentres'       => AcademicCentre::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'researchGroup'         => $researchGroup,
-            'mincienciasCategories'  => $mincienciasCategories,
-            'selectedAcademicCentre' => $selectedAcademicCentre,
-            'selectedMincienciasCategory' => $selectedMincienciasCategory
+            'researchGroup'                 => $researchGroup,
+            'mincienciasCategories'         => $mincienciasCategories,
+            'selectedMincienciasCategory'   => $selectedMincienciasCategory
         ]);
     }
 
@@ -141,7 +136,7 @@ class ResearchGroupController extends Controller
 
         $researchGroup->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -156,6 +151,6 @@ class ResearchGroupController extends Controller
 
         $researchGroup->delete();
 
-        return redirect()->route('research-groups.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('research-groups.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

@@ -52,11 +52,11 @@ class ResearchTeamController extends Controller
 
         $researchTeam = new ResearchTeam();
         $researchTeam->name = $request->name;
-        $researchTeam->researchLine()->associate($request->research_line);
+        $researchTeam->researchLine()->associate($request->research_line_id);
 
         $researchTeam->save();
 
-        return redirect()->route('research-teams.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('research-teams.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -106,11 +106,11 @@ class ResearchTeamController extends Controller
         $this->authorize('update', [ResearchTeam::class, $researchTeam]);
 
         $researchTeam->name = $request->name;
-        $researchTeam->researchLine()->associate($request->research_line);
+        $researchTeam->researchLine()->associate($request->research_line_id);
 
         $researchTeam->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -125,6 +125,6 @@ class ResearchTeamController extends Controller
 
         $researchTeam->delete();
 
-        return redirect()->route('research-teams.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('research-teams.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

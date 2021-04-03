@@ -18,7 +18,12 @@ class RDIPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('rdi.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +39,7 @@ class RDIPolicy
      */
     public function view(User $user, RDI $rdi)
     {
-        if ( $user->hasPermissionTo('rdi.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.show') ) {
             return true;
         }
 
@@ -49,7 +54,7 @@ class RDIPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('rdi.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.create') ) {
             return true;
         }
 
@@ -65,7 +70,7 @@ class RDIPolicy
      */
     public function update(User $user, RDI $rdi)
     {
-        if ( $user->hasPermissionTo('rdi.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.edit') ) {
             return true;
         }
 
@@ -81,7 +86,7 @@ class RDIPolicy
      */
     public function delete(User $user, RDI $rdi)
     {
-        if ( $user->hasPermissionTo('rdi.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.delete') ) {
             return true;
         }
 

@@ -60,7 +60,7 @@ class RDIController extends Controller
 
         $rdi->save();
 
-        return redirect()->route('calls.rdi.index', [$call])->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('calls.rdi.index', [$call])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -137,7 +137,7 @@ class RDIController extends Controller
 
         $rdi->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -159,6 +159,6 @@ class RDIController extends Controller
         $message = 'The resource has been deleted successfully.';
         $status = 'success';
 
-        return redirect()->route('calls.rdi.index', [$call])->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('calls.rdi.index', [$call])->with('success', 'The resource has been deleted successfully.');
     }
 }

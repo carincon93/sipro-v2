@@ -28,7 +28,7 @@ class MaxWords implements Rule
         $words      = explode(' ', $value);
         $nbWords    = count($words);
 
-        return ($nbWords >=0 && $nbWords <= 20);
+        return ($nbWords >= 0 && $nbWords <= 20);
     }
 
     /**

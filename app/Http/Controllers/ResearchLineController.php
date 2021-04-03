@@ -56,7 +56,7 @@ class ResearchLineController extends Controller
 
         $researchLine->save();
 
-        return redirect()->route('research-lines.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('research-lines.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -110,7 +110,7 @@ class ResearchLineController extends Controller
 
         $researchLine->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -125,6 +125,6 @@ class ResearchLineController extends Controller
 
         $researchLine->delete();
 
-        return redirect()->route('research-lines.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('research-lines.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

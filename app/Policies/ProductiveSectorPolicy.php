@@ -18,7 +18,7 @@ class ProductiveSectorPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('productive-sectors.index') ) {
+        if ( $user->hasPermissionTo('productive-sectors.index') || $user->hasPermissionTo('productive-sectors.show') || $user->hasPermissionTo('productive-sectors.create') || $user->hasPermissionTo('productive-sectors.edit') || $user->hasPermissionTo('productive-sectors.delete') ) {
             return true;
         }
 

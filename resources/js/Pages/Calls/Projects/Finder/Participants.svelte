@@ -1,9 +1,5 @@
-<script context="module">
-    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    export const layout = AuthenticatedLayout
-</script>
-
 <script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import Stepper from "@/Components/Stepper.svelte";
 
     import AcademicProgramsFinder from "./AcademicProgramsFinder.svelte";
@@ -17,18 +13,21 @@
 
 </script>
 
-<Stepper {call} {project} />
+<AuthenticatedLayout>
+    <Stepper {call} {project} />
 
-<div class="py-12">
-    <div class="mt-16">
-        <UsersFinder />
+    <div class="py-12">
+        <div class="mt-16">
+            <UsersFinder />
+        </div>
+        <div class="mt-80">
+            <ResearchTeamsFinder />
+        </div>
+        <div class="mt-80">
+            <AcademicProgramsFinder />
+        </div>
     </div>
-    <div class="mt-80">
-        <ResearchTeamsFinder />
-    </div>
-    <div class="mt-80">
-        <AcademicProgramsFinder />
-    </div>
-</div>
+</AuthenticatedLayout>
+
 
 

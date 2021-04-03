@@ -18,7 +18,7 @@ class AcademicCentrePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('academic-centres.index') ) {
+        if ( $user->hasPermissionTo('academic-centres.index') || $user->hasPermissionTo('academic-centres.show') || $user->hasPermissionTo('academic-centres.create') || $user->hasPermissionTo('academic-centres.edit') || $user->hasPermissionTo('academic-centres.delete') ) {
             return true;
         }
 

@@ -18,7 +18,12 @@ class RDIOutputPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('rdi-outputs.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.index')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +39,7 @@ class RDIOutputPolicy
      */
     public function view(User $user, RDIOutput $rdiOutput)
     {
-        if ( $user->hasPermissionTo('rdi-outputs.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.show') ) {
             return true;
         }
 
@@ -49,7 +54,7 @@ class RDIOutputPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('rdi-outputs.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.create') ) {
             return true;
         }
 
@@ -65,7 +70,7 @@ class RDIOutputPolicy
      */
     public function update(User $user, RDIOutput $rdiOutput)
     {
-        if ( $user->hasPermissionTo('rdi-outputs.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.edit') ) {
             return true;
         }
 
@@ -81,7 +86,7 @@ class RDIOutputPolicy
      */
     public function delete(User $user, RDIOutput $rdiOutput)
     {
-        if ( $user->hasPermissionTo('rdi-outputs.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionGTo('rdi.edit') && $user->hasPermissionTo('rdi-outputs.delete') ) {
             return true;
         }
 

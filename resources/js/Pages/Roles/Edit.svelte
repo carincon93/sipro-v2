@@ -1,9 +1,5 @@
-<script context="module">
-    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    export const layout = AuthenticatedLayout
-</script>
-
 <script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
     import { inertia, remember, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
@@ -15,6 +11,7 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Checkbox from '@/Components/Checkbox'
+    import Textarea from '@/Components/Textarea'
 
     export let errors
     export let role   = {}
@@ -23,19 +20,25 @@
 
     $: $title = role ? role.name : null
 
-    let canUpdateRole = $page.props.auth.user.can.find(element => element == 'roles.edit') == 'roles.edit'
-    let canDeleteRole = $page.props.auth.user.can.find(element => element == 'roles.delete') == 'roles.delete'
+    // Permisos
+    let authUser = $page.props.auth.user
+    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let canIndexRoles   = authUser.can.find(element => element == 'roles.index') == 'roles.index'
+    let canShowRoles    = authUser.can.find(element => element == 'roles.show') == 'roles.show'
+    let canCreateRoles  = authUser.can.find(element => element == 'roles.create') == 'roles.create'
+    let canEditRoles    = authUser.can.find(element => element == 'roles.edit') == 'roles.edit'
+    let canDeleteRoles  = authUser.can.find(element => element == 'roles.delete') == 'roles.delete'
 
     let modal_open  = false
     let sending     = false
     let form = remember({
         name:           role.name,
         description:    role.description,
-        role_permissions: role_permissions
+        permissions:    role_permissions
     })
 
     function submit() {
-        if (canUpdateRole) {
+        if (canEditRoles || isSuperAdmin) {
             Inertia.put(route('roles.update', role.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
@@ -44,23 +47,25 @@
     }
 
     function destroy() {
-        if (canDeleteRole) {
+        if (canDeleteRoles || isSuperAdmin) {
             Inertia.delete(route('roles.destroy', role.id))
         }
     }
 </script>
 
-<h1 class="mb-8 font-bold text-3xl">
-    <a use:inertia href={route('roles.index')} class="text-indigo-400 hover:text-indigo-600">
-        {$_('System roles.plural')}
-    </a>
-    <span class="text-indigo-400 font-medium">/</span>
-    {role.name}
-</h1>
+<AuthenticatedLayout>
+    <h1 class="mb-8 font-bold text-3xl">
+        {#if canIndexRoles || canEditRoles || isSuperAdmin}
+            <a use:inertia href={route('roles.index')} class="text-indigo-400 hover:text-indigo-600">
+                {$_('System roles.plural')}
+            </a>
+        {/if}
+        <span class="text-indigo-400 font-medium">/</span>
+        {role.name}
+    </h1>
 
-<div class="bg-white rounded shadow overflow-hidden max-w-3xl">
     <form on:submit|preventDefault={submit}>
-        <div class="p-8">
+        <div class="bg-white rounded shadow max-w-3xl p-8">
             <div class="mt-4">
                 <Label id="name" value="Nombre" />
                 <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
@@ -69,29 +74,35 @@
 
             <div class="mt-4">
                 <Label id="description" value="Descripción" />
-                <textarea name="description" id="description" class="w-full" cols="30" rows="10" bind:value={$form.description} required></textarea>
+                <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 <InputError message={errors.description} />
             </div>
+        </div>
 
-            <div class="block">
-                {#each all_permissions as permission (permission.id)}
-                    <label class="flex items-center" for={permission.name}>
-                        <input type=checkbox checked={role_permissions.includes(permission.id)} bind:value={permission.id} >
-                        <!-- <Checkbox name={permission.name} id={permission.name} bind:value={permission.id} /> -->
-                        <span class="ml-2 text-sm text-gray-600">{$_(permission.name)}</span>
-                    </label>
+        <div class="bg-white rounded shadow overflow-hidden mt-20">
+            <div class="grid grid-cols-6">
+                {#each all_permissions as {id, onlyName, method}, i}
+                    {#if i % 5 === 0}
+                        <div class="p-3 border-t border-b flex items-center text-sm">{$_(onlyName+'.plural')}</div>
+                    {/if}
+                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                        <Label class="text-center mt-6" id={id} value={$_(method)} />
+                        <Checkbox id={id} checked={role_permissions.includes(id)} bind:group={$form.permissions} value={id}/>
+                    </div>
                 {/each}
             </div>
         </div>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-            {#if canDeleteRole}
+            {#if canDeleteRoles || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                     {$_('Delete')} {$_('System roles.singular').toLowerCase()}
                 </button>
             {/if}
-            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                {$_('Update')} {$_('System roles.singular')}
-            </LoadingButton>
+            {#if canEditRoles || isSuperAdmin}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                    {$_('Update')} {$_('System roles.singular')}
+                </LoadingButton>
+            {/if}
         </div>
     </form>
 
@@ -105,4 +116,4 @@
             </div>
         </Card>
     </Modal>
-</div>
+</AuthenticatedLayout>

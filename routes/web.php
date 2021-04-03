@@ -52,6 +52,7 @@ use App\Models\KnowledgeNetwork;
 use App\Models\KnowledgeSubareaDiscipline;
 use App\Models\CIIUCode;
 use App\Models\StrategicThematic;
+use App\Models\AcademicCentre;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +111,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/strategic-thematics', function() {
         return response(StrategicThematic::select('strategic_thematics.id as value', 'strategic_thematics.name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.strategic-thematics');
+    // Trae los centros de formación
+    Route::get('web-api/academic-centres', function() {
+        return response(AcademicCentre::selectRaw('academic_centres.id as value, concat(academic_centres.name, chr(10), \'∙ Código: \', academic_centres.code, chr(10), \'∙ Regional: \', regional.name) as label')->join('regional', 'academic_centres.regional_id', 'regional.id')->orderBy('academic_centres.name', 'ASC')->get());
+    })->name('web-api.academic-centres');
 
     // Resources
     Route::resources(

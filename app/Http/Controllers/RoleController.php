@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RoleRequest;
 use App\Models\Role;
-use Spatie\Permission\Models\Permission;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -58,7 +58,7 @@ class RoleController extends Controller
 
         // $role->syncPermissions($request->permissions);
 
-        return redirect()->route('roles.index')->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('roles.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -88,7 +88,7 @@ class RoleController extends Controller
 
         return Inertia::render('Roles/Edit', [
             'role'              => $role,
-            'all_permissions'   => Permission::orderBy('model')->get(),
+            'all_permissions'   => Permission::orderBy('id')->get(['id', 'name']),
             'role_permissions'  => $role->permissions->pluck('id')
         ]);
     }
@@ -102,7 +102,6 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, Role $role)
     {
-        dd($request->all());
         $this->authorize('update', [Role::class, $role]);
 
         $role->name        = $request->name;
@@ -110,9 +109,9 @@ class RoleController extends Controller
         $role->guard_name  = 'web';
         $role->save();
 
-        // $role->syncPermissions($request->permissions);
+        $role->syncPermissions($request->permissions);
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -127,6 +126,6 @@ class RoleController extends Controller
 
         $role->delete();
 
-        return redirect()->route('roles.index')->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('roles.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

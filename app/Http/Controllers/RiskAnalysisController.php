@@ -58,7 +58,7 @@ class RiskAnalysisController extends Controller
 
         $riskAnalysis->save();
 
-        return redirect()->route('calls.projects.risk-analysis.index', [$call, $project])->with('success', __('The resource has been created successfully.'));
+        return redirect()->route('calls.projects.risk-analysis.index', [$call, $project])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -108,7 +108,7 @@ class RiskAnalysisController extends Controller
 
         $riskAnalysis->save();
 
-        return redirect()->back()->with('success', __('The resource has been updated successfully.'));
+        return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
 
     /**
@@ -123,6 +123,6 @@ class RiskAnalysisController extends Controller
 
         $riskAnalysis->delete();
 
-        return redirect()->route('calls.projects.risk-analysis.index', [$call, $project])->with('success', __('The resource has been deleted successfully.'));
+        return redirect()->route('calls.projects.risk-analysis.index', [$call, $project])->with('success', 'The resource has been deleted successfully.');
     }
 }

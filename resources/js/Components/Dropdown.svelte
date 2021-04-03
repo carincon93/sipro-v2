@@ -6,6 +6,7 @@
     export let placement    = 'bottom-end'
     export let boundary     = 'scrollParent'
     export let autoclose    = true
+    export let classes
 
     let button
     let dropdown
@@ -60,6 +61,7 @@
         black; opacity: .2"
         on:click={() => (show = false)} />
         <div
+            class={classes}
             bind:this={dropdown}
             style="position: absolute; z-index: 99999;"
             on:click|stopPropagation={() => (show = autoclose ? false : true)}

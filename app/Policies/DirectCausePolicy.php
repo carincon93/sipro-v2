@@ -18,7 +18,12 @@ class DirectCausePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('directCause.index') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.index')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.show')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.create')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.edit')
+            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.delete')
+        ) {
             return true;
         }
 
@@ -34,7 +39,7 @@ class DirectCausePolicy
      */
     public function view(User $user, DirectCause $directCause)
     {
-        if ( $user->hasPermissionTo('directCause.show') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.show') ) {
             return true;
         }
 
@@ -49,7 +54,7 @@ class DirectCausePolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('directCause.create') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.create') ) {
             return true;
         }
 
@@ -65,7 +70,7 @@ class DirectCausePolicy
      */
     public function update(User $user, DirectCause $directCause)
     {
-        if ( $user->hasPermissionTo('directCause.edit') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.edit') ) {
             return true;
         }
 
@@ -81,7 +86,7 @@ class DirectCausePolicy
      */
     public function delete(User $user, DirectCause $directCause)
     {
-        if ( $user->hasPermissionTo('directCause.delete') ) {
+        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('directCause.delete') ) {
             return true;
         }
 

@@ -18,7 +18,7 @@ class KnowledgeSubareaPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('knowledge-subareas.index') ) {
+        if ( $user->hasPermissionTo('knowledge-subareas.index') || $user->hasPermissionTo('knowledge-subareas.show') || $user->hasPermissionTo('knowledge-subareas.create') || $user->hasPermissionTo('knowledge-subareas.edit') || $user->hasPermissionTo('knowledge-subareas.delete') ) {
             return true;
         }
 

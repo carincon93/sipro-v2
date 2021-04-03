@@ -18,7 +18,7 @@ class ResearchLinePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('research-lines.index') ) {
+        if ( $user->hasPermissionTo('research-lines.index') || $user->hasPermissionTo('research-lines.show') || $user->hasPermissionTo('research-lines.create') || $user->hasPermissionTo('research-lines.edit') || $user->hasPermissionTo('research-lines.delete') ) {
             return true;
         }
 

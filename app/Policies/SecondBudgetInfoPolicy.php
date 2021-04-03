@@ -18,7 +18,7 @@ class SecondBudgetInfoPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('second-budget-info.index') ) {
+        if ( $user->hasPermissionTo('second-budget-info.index') || $user->hasPermissionTo('second-budget-info.show') || $user->hasPermissionTo('second-budget-info.create') || $user->hasPermissionTo('second-budget-info.edit') || $user->hasPermissionTo('second-budget-info.delete') ) {
             return true;
         }
 
