@@ -35,67 +35,71 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Código</th>
-                <th class="px-6 pt-6 pb-4">Categoría</th>
-            </tr>
-            {#each programmaticLines.data as programmaticLine (programmaticLine.id)}
-            <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                <td class="border-t">
-                    {#if canEditProgrammaticLines || isSuperAdmin}
-                        <a
-                            use:inertia
-                            href={route('programmatic-lines.edit', programmaticLine.id)}
-                            class="px-6 py-4 flex items-center focus:text-indigo-500">
-                            {programmaticLine.name}
-                        </a>
-                    {:else}
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                            {programmaticLine.name}
-                        </p>
-                    {/if}
-                </td>
-                <td class="border-t">
-                    {#if canEditProgrammaticLines || isSuperAdmin}
-                        <a
-                            use:inertia
-                            href={route('programmatic-lines.edit', programmaticLine.id)}
-                            class="px-6 py-4 flex items-center"
-                            tabindex="-1">
-                            {programmaticLine.code}
-                        </a>
-                    {:else}
-                        <p class="px-6 py-4 flex items-center">
-                            {programmaticLine.code}
-                        </p>
-                    {/if}
-                </td>
-                <td class="border-t">
-                    {#if canEditProgrammaticLines || isSuperAdmin}
-                        <a
-                            use:inertia
-                            href={route('programmatic-lines.edit', programmaticLine.id)}
-                            class="px-6 py-4 flex items-center"
-                            tabindex="-1">
-                            {programmaticLine.project_category}
-                        </a>
-                    {:else}
-                        <p class="px-6 py-4 flex items-center">
-                            {programmaticLine.project_category}
-                        </p>
-                    {/if}
-                </td>
-            </tr>
-            {/each}
-
-            {#if programmaticLines.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Código</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Categoría</th>
                 </tr>
-            {/if}
+            </thead>
+            <tbody>
+                {#each programmaticLines.data as programmaticLine (programmaticLine.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditProgrammaticLines || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('programmatic-lines.edit', programmaticLine.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {programmaticLine.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {programmaticLine.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditProgrammaticLines || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('programmatic-lines.edit', programmaticLine.id)}
+                                    class="px-6 py-4 flex items-center"
+                                    tabindex="-1">
+                                    {programmaticLine.code}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center">
+                                    {programmaticLine.code}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditProgrammaticLines || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('programmatic-lines.edit', programmaticLine.id)}
+                                    class="px-6 py-4 flex items-center"
+                                    tabindex="-1">
+                                    {programmaticLine.project_category}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center">
+                                    {programmaticLine.project_category}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
+
+                {#if programmaticLines.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={programmaticLines.links} />

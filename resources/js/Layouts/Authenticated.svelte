@@ -5,7 +5,7 @@
 
 <script>
     import { inertia, page } from '@inertiajs/inertia-svelte'
-    import { route } from '@/Utils'
+    import { route, links } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import ApplicationLogo from '@/Components/ApplicationLogo'
     import Dropdown from '@/Components/Dropdown'
@@ -52,99 +52,16 @@
                                         name="cheveron-down"
                                         class="w-5 h-5 group-hover:fill-indigo-600 fill-gray-700 focus:fill-indigo-600" />
                                 </div>
-                                <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm p-8">
-                                    <h1 class="text-center text-4xl mt-8 mb-8">Menú de navegación</h1>
+                                <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm p-8" style="max-height: 750px; overflow-y: auto;">
+                                    <h1 class="bg-white p-8 sticky text-4xl text-center top-0">Menú de navegación</h1>
                                     <div class="grid grid-cols-3 gap-5">
-                                        {#if authUser.can.find(element => element == 'users.index') == 'users.index' || authUser.can.find(element => element == 'users.create') == 'users.create' || authUser.can.find(element => element == 'users.edit') == 'users.edit' || authUser.can.find(element => element == 'users.delete') == 'users.delete' || isSuperAdmin}
-                                            <a use:inertia href={route('users.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/users/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Users.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'regional.index') == 'regional.index' || authUser.can.find(element => element == 'regional.create') == 'regional.create' || authUser.can.find(element => element == 'regional.edit') == 'regional.edit' || authUser.can.find(element => element == 'regional.delete') == 'regional.delete' || isSuperAdmin}
-                                            <a use:inertia href={route('regional.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/regional/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Regional.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'academic-centres.index') == 'academic-centres.index' || isSuperAdmin}
-                                            <a use:inertia href={route('academic-centres.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/academic-centres/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Academic centres.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'academic-programs.index') == 'academic-programs.index' || isSuperAdmin}
-                                            <a use:inertia href={route('academic-programs.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/academic-programs/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Academic programs.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'knowledge-areas.index') == 'knowledge-areas.index' || isSuperAdmin}
-                                            <a use:inertia href={route('knowledge-areas.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/knowledge-areas/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Knowledge areas.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'knowledge-subareas.index') == 'knowledge-subareas.index' || isSuperAdmin}
-                                            <a use:inertia href={route('knowledge-subareas.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/knowledge-subareas/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Knowledge subareas.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'knowledge-subarea-disciplines.index') == 'knowledge-subarea-disciplines.index' || isSuperAdmin}
-                                            <a use:inertia href={route('knowledge-subarea-disciplines.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/knowledge-subarea-disciplines/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Knowledge subarea disciplines.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'programmatic-lines.index') == 'programmatic-lines.index' || isSuperAdmin}
-                                            <a use:inertia href={route('programmatic-lines.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/programmatic-lines/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Programmatic lines.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'knowledge-networks.index') == 'knowledge-networks.index' || isSuperAdmin}
-                                            <a use:inertia href={route('knowledge-networks.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/knowledge-networks/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Knowledge networks.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'strategic-thematics.index') == 'strategic-thematics.index' || isSuperAdmin}
-                                            <a use:inertia href={route('strategic-thematics.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/strategic-thematics/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Strategic thematics.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'project-types.index') == 'project-types.index' || isSuperAdmin}
-                                            <a use:inertia href={route('project-types.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/project-types/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Project types.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'productive-sectors.index') == 'productive-sectors.index' || isSuperAdmin}
-                                            <a use:inertia href={route('productive-sectors.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/productive-sectors/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Productive sectors.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'technical-committees.index') == 'technical-committees.index' || isSuperAdmin}
-                                            <a use:inertia href={route('technical-committees.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/technical-committees/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Technical committees.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'prioritized-topics.index') == 'prioritized-topics.index' || isSuperAdmin}
-                                            <a use:inertia href={route('prioritized-topics.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/prioritized-topics/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Prioritized topics.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'research-groups.index') == 'research-groups.index' || isSuperAdmin}
-                                            <a use:inertia href={route('research-groups.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/research-groups/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Research groups.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'research-lines.index') == 'research-lines.index' || isSuperAdmin}
-                                            <a use:inertia href={route('research-lines.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/research-lines/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Research lines.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'research-teams.index') == 'research-teams.index' || isSuperAdmin}
-                                            <a use:inertia href={route('research-teams.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/research-teams/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("Research teams.plural")}
-                                            </a>
-                                        {/if}
-                                        {#if authUser.can.find(element => element == 'roles.index') == 'roles.index' || isSuperAdmin}
-                                            <a use:inertia href={route('roles.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/roles/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_("System roles.plural")}
-                                            </a>
-                                        {/if}
+                                        {#each links as link}
+                                            {#if authUser.can.find(element => element == link.route+'.index') == link.route+'.index' || authUser.can.find(element => element == link.route+'.show') == link.route+'.show' || authUser.can.find(element => element == link.route+'.create') == link.route+'.create' || authUser.can.find(element => element == link.route+'.edit') == link.route+'.edit' || authUser.can.find(element => element == link.route+'.delete') == link.route+'.delete' || isSuperAdmin}
+                                                <a use:inertia href={route(link.route+'.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/'+link.route+'/*') ? ' bg-indigo-600 text-white' : ''}">
+                                                    {$_(link.name+'.plural')}
+                                                </a>
+                                            {/if}
+                                        {/each}
                                     </div>
                                     <div class="mt-8 p-4 flex justify-between">
                                         <a use:inertia href={route('dashboard')} class="block border flex hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/dashboard/*') ? ' bg-indigo-600 text-white' : ''}">

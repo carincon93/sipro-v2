@@ -35,35 +35,39 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-            </tr>
-            {#each knowledgeAreas.data as knowledgeArea (knowledgeArea.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditKnowledgeAreas || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('knowledge-areas.edit', knowledgeArea.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {knowledgeArea.name}
-                            </a>
-                        {:else}
-                            <p  class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {knowledgeArea.name}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each knowledgeAreas.data as knowledgeArea (knowledgeArea.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditKnowledgeAreas || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('knowledge-areas.edit', knowledgeArea.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {knowledgeArea.name}
+                                </a>
+                            {:else}
+                                <p  class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {knowledgeArea.name}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if knowledgeAreas.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if knowledgeAreas.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={knowledgeAreas.links} />

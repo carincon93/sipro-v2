@@ -41,35 +41,39 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-            </tr>
-            {#each partnerOrganizations.data as partnerOrganization (partnerOrganization.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditPartnerOrganizations || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('calls.rdi.partner-organizations.edit', [call.id, rdi.id, partnerOrganization.id])}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {partnerOrganization.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {partnerOrganization.name}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each partnerOrganizations.data as partnerOrganization (partnerOrganization.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditPartnerOrganizations || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('calls.rdi.partner-organizations.edit', [call.id, rdi.id, partnerOrganization.id])}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {partnerOrganization.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {partnerOrganization.name}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if partnerOrganizations.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if partnerOrganizations.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={partnerOrganizations.links} />

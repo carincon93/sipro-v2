@@ -35,50 +35,54 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Línea programática</th>
-            </tr>
-            {#each projectTypes.data as projectType (projectType.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditProjectTypes || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('project-types.edit', projectType.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectType.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectType.name}
-                            </p>
-                        {/if}
-                    </td>
-                    <td class="border-t">
-                        {#if canEditProjectTypes || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('project-types.edit', projectType.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectType.programmatic_line?.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectType.programmatic_line?.name}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Línea programática</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each projectTypes.data as projectType (projectType.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditProjectTypes || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('project-types.edit', projectType.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectType.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectType.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditProjectTypes || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('project-types.edit', projectType.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectType.programmatic_line?.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectType.programmatic_line?.name}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if projectTypes.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if projectTypes.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={projectTypes.links} />

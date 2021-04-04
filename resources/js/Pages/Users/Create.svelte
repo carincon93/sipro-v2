@@ -10,12 +10,14 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Switch from '@/Components/Switch'
+    import Checkbox from '@/Components/Checkbox'
     import Select from 'svelte-select'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre.svelte'
 
     export let errors
     export let documentTypes
     export let participationTypes
+    export let roles
 
     $: $title = $_('Create') + ' ' + $_('Users.singular').toLowerCase()
 
@@ -37,7 +39,8 @@
         cellphone:          '',
         is_enabled:         '',
         participation_type: '',
-        academic_centre_id: ''
+        academic_centre_id: '',
+        roles
     })
 
     function submit() {
@@ -67,8 +70,8 @@
         </div>
     </header>
 
-    <div class="bg-white rounded shadow max-w-3xl">
-        <form on:submit|preventDefault={submit}>
+    <form on:submit|preventDefault={submit}>
+        <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">
                     <Label id="name" value="Nombre completo" />
@@ -122,13 +125,26 @@
                     <p>La contraseña de este usuario es: {#if $form.document_number} Sena{$form.document_number}*{/if}</p>
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-                {#if canCreateUsers || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Create')} {$_('Users.singular')}
-                    </LoadingButton>
-                {/if}
+        </div>
+
+        <div class="bg-white rounded shadow overflow-hidden mt-20">
+            <div class="grid grid-cols-2">
+                {#each roles as {id, name}, i}
+                    <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
+
+                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                        <Checkbox id={id} bind:group={$form.roles} value={id}/>
+                    </div>
+                {/each}
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            {#if canCreateUsers || isSuperAdmin}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                    {$_('Create')} {$_('Users.singular')}
+                </LoadingButton>
+            {/if}
+        </div>
+    </form>
 </AuthenticatedLayout>

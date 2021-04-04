@@ -35,65 +35,69 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Centro de formación</th>
-                <th class="px-6 pt-6 pb-4">Regional</th>
-            </tr>
-            {#each researchGroups.data as researchGroup (researchGroup.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditResearchGroups || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('research-groups.edit', researchGroup.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.name}
-                            </p>
-                        {/if}
-                    </td>
-                    <td class="border-t">
-                        {#if canEditResearchGroups || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('research-groups.edit', researchGroup.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.academic_centre?.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.academic_centre?.name}
-                            </p>
-                        {/if}
-                    </td>
-                    <td class="border-t">
-                        {#if canEditResearchGroups || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('research-groups.edit', researchGroup.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.academic_centre?.regional?.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {researchGroup.academic_centre?.regional?.name}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Centro de formación</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Regional</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each researchGroups.data as researchGroup (researchGroup.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditResearchGroups || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('research-groups.edit', researchGroup.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditResearchGroups || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('research-groups.edit', researchGroup.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.academic_centre?.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.academic_centre?.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditResearchGroups || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('research-groups.edit', researchGroup.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.academic_centre?.regional?.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {researchGroup.academic_centre?.regional?.name}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if researchGroups.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if researchGroups.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={researchGroups.links} />

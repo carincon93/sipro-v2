@@ -35,51 +35,55 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Correo electrónico</th>
-            </tr>
-            {#each users.data as user (user.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditUsers || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('users.edit', user.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {user.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {user.name}
-                            </p>
-                        {/if}
-                    </td>
-                    <td class="border-t">
-                        {#if canEditUsers || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('users.edit', user.id)}
-                                class="px-6 py-4 flex items-center"
-                                tabindex="-1">
-                                {user.email}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center">
-                                {user.email}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Correo electrónico</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each users.data as user (user.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditUsers || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('users.edit', user.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {user.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {user.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditUsers || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('users.edit', user.id)}
+                                    class="px-6 py-4 flex items-center"
+                                    tabindex="-1">
+                                    {user.email}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center">
+                                    {user.email}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if users.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if users.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={users.links} />

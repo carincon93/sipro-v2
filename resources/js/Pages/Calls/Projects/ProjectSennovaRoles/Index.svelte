@@ -41,50 +41,54 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Salario</th>
-            </tr>
-            {#each projectSennovaRoles.data as projectSennovaRole (projectSennovaRole.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditProjectSennovaRoles || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
-                            </p>
-                        {/if}
-                    </td>
-                    <td class="border-t">
-                        {#if canEditProjectSennovaRoles || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.salary}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.salary}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Salario</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each projectSennovaRoles.data as projectSennovaRole (projectSennovaRole.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditProjectSennovaRoles || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
+                                </p>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditProjectSennovaRoles || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectSennovaRole?.call_sennova_role?.salary}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {projectSennovaRole?.call_sennova_role?.salary}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
 
-            {#if projectSennovaRoles.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                {#if projectSennovaRoles.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={projectSennovaRoles.links} />

@@ -11,13 +11,16 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Switch from '@/Components/Switch'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import Checkbox from '@/Components/Checkbox'
     import Select from 'svelte-select'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
     export let user = {}
     export let documentTypes
     export let participationTypes
+    export let roles
+    export let user_roles
 
     $: $title = user ? user.name : null
 
@@ -41,7 +44,8 @@
         cellphone:          user.cellphone,
         is_enabled:         user.is_enabled,
         participation_type: user.participation_type,
-        academic_centre_id: user.academic_centre_id
+        academic_centre_id: user.academic_centre_id,
+        roles: user_roles
     })
 
     function submit() {
@@ -77,8 +81,8 @@
         </div>
     </header>
 
-    <div class="bg-white rounded shadow max-w-3xl">
-        <form on:submit|preventDefault={submit}>
+    <form on:submit|preventDefault={submit}>
+        <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">
                     <Label id="name" value="Nombre completo" />
@@ -128,29 +132,42 @@
                     <InputError message={errors.academic_centre_id} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
-                {#if canDeleteUsers || isSuperAdmin}
-                    <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
-                        {$_('Delete')} {$_('Users.singular').toLowerCase()}
-                    </button>
-                {/if}
-                {#if canEditUsers || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Update')} {$_('Users.singular')}
-                    </LoadingButton>
-                {/if}
-            </div>
-        </form>
+        </div>
 
-        <Modal bind:open={modal_open}>
-            <Card>
-                <div class="p-4">
-                    <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                        {$_('Confirm')}
-                    </button>
-                    <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
-                </div>
-            </Card>
-        </Modal>
-    </div>
+        <div class="bg-white rounded shadow overflow-hidden mt-20">
+            <div class="grid grid-cols-2">
+                {#each roles as {id, name}, i}
+                    <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
+
+                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                        <Checkbox id={id} checked={user_roles.includes(id)} bind:group={$form.roles} value={id}/>
+                    </div>
+                {/each}
+            </div>
+        </div>
+
+        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            {#if canDeleteUsers || isSuperAdmin}
+                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                    {$_('Delete')} {$_('Users.singular').toLowerCase()}
+                </button>
+            {/if}
+            {#if canEditUsers || isSuperAdmin}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                    {$_('Update')} {$_('Users.singular')}
+                </LoadingButton>
+            {/if}
+        </div>
+
+    </form>
+    <Modal bind:open={modal_open}>
+        <Card>
+            <div class="p-4">
+                <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
+                    {$_('Confirm')}
+                </button>
+                <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
+            </div>
+        </Card>
+    </Modal>
 </AuthenticatedLayout>

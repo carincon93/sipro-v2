@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -39,7 +40,8 @@ class UserController extends Controller
 
         return Inertia::render('Users/Create', [
             'documentTypes'         => $documentTypes,
-            'participationTypes'    => $participationTypes
+            'participationTypes'    => $participationTypes,
+            'roles'                 => Role::select('id', 'name')->get('id')
         ]);
     }
 
@@ -66,6 +68,8 @@ class UserController extends Controller
         $user->academic_centre_id   = $request->academic_centre_id;
 
         $user->save();
+
+        $user->assignRole($request->roles);
 
         return redirect()->route('users.index')->with('success', 'The resource has been created successfully.');
     }
@@ -101,7 +105,9 @@ class UserController extends Controller
         return Inertia::render('Users/Edit', [
             'user'                  => $user,
             'documentTypes'         => $documentTypes,
-            'participationTypes'    => $participationTypes
+            'participationTypes'    => $participationTypes,
+            'user_roles'            => $user->roles()->pluck('id'),
+            'roles'                 => Role::select('id', 'name')->get('id')
         ]);
     }
 
@@ -126,6 +132,8 @@ class UserController extends Controller
         $user->academic_centre_id   = $request->academic_centre_id;
 
         $user->save();
+
+        $user->syncRoles($request->roles);
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

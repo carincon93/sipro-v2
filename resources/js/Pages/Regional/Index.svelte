@@ -35,52 +35,56 @@
             </Link>
         {/if}
     </div>
-    <div class="bg-white rounded shadow overflow-x-auto">
+    <div class="bg-white rounded shadow ">
         <table class="w-full whitespace-no-wrap">
-            <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4">Nombre</th>
-                <th class="px-6 pt-6 pb-4">Código</th>
-            </tr>
-            {#each regional.data as regional (regional.id)}
-                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                    <td class="border-t">
-                        {#if canEditRegional || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('regional.edit', regional.id)}
-                                class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {regional.name}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {regional.name}
-                            </p>
-                        {/if}
-                    </td>
-
-                    <td class="border-t">
-                        {#if canEditRegional || isSuperAdmin}
-                            <a
-                                use:inertia
-                                href={route('regional.edit', regional.id)}
-                                class="px-6 py-4 flex items-center"
-                                tabindex="-1">
-                                {regional.code}
-                            </a>
-                        {:else}
-                            <p class="px-6 py-4 flex items-center">
-                                {regional.code}
-                            </p>
-                        {/if}
-                    </td>
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Código</th>
                 </tr>
-            {/each}
+            </thead>
+            <tbody>
+                {#each regional.data as regional (regional.id)}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            {#if canEditRegional || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('regional.edit', regional.id)}
+                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {regional.name}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    {regional.name}
+                                </p>
+                            {/if}
+                        </td>
 
-            {#if regional.data.length === 0}
-                <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                </tr>
-            {/if}
+                        <td class="border-t">
+                            {#if canEditRegional || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('regional.edit', regional.id)}
+                                    class="px-6 py-4 flex items-center"
+                                    tabindex="-1">
+                                    {regional.code}
+                                </a>
+                            {:else}
+                                <p class="px-6 py-4 flex items-center">
+                                    {regional.code}
+                                </p>
+                            {/if}
+                        </td>
+                    </tr>
+                {/each}
+
+                {#if regional.data.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
         </table>
     </div>
     <Pagination links={regional.links} />
