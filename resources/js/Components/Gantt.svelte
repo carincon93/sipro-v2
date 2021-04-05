@@ -57,7 +57,7 @@
         }
 
         // Valida si el document.getElementById('chart_div') existe para proceder a dibujar el GanttChart
-        if (typeof(document.getElementById('chart_div')) != 'undefined' && document.getElementById('chart_div') != null) {
+        if (typeof(document.getElementById('chart_div')) != 'undefined' && document.getElementById('chart_div') != null && items.length > 0) {
             var chart = new google.visualization.Gantt(document.getElementById('chart_div'))
 
             loading = true
@@ -77,6 +77,8 @@
                     console.log(newID);
                 }
             }
+        } else {
+            loading = true
         }
     }
 </script>
