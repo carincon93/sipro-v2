@@ -5,7 +5,7 @@
     export let id
     export let value
     export let error
-    export let classes
+    export let classes = ''
     export let rows = 10
 
     let textarea

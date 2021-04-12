@@ -50,8 +50,7 @@ class Activity extends Model
      * @var array
      */
     protected $casts = [
-        'start_date'    => 'date',
-        'end_date'      => 'date',
+        //
     ];
 
     /**
@@ -72,6 +71,30 @@ class Activity extends Model
     public function indirectCause()
     {
         return $this->belongsTo(IndirectCause::class);
+    }
+
+    /**
+     * Relationship with Output
+     *
+     * @return void
+     */
+    public function outputs()
+    {
+        return $this->belongsToMany(Output::class, 'activity_output', 'activity_id', 'output_id');
+    }
+
+    /**
+     * Filtrar registros
+     *
+     * @param  mixed $query
+     * @param  mixed $filters
+     * @return void
+     */
+    public function scopeFilterActivity($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where('description', 'ilike', '%'.$search.'%');
+        });
     }
 
     public function getStartYearAttribute()
@@ -102,19 +125,5 @@ class Activity extends Model
     public function getEndDayAttribute()
     {
         return date('d', strtotime($this->end_date));
-    }
-
-    /**
-     * Filtrar registros
-     *
-     * @param  mixed $query
-     * @param  mixed $filters
-     * @return void
-     */
-    public function scopeFilterActivity($query, array $filters)
-    {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('description', 'ilike', '%'.$search.'%');
-        });
     }
 }

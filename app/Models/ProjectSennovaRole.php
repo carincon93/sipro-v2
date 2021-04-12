@@ -16,7 +16,10 @@ class ProjectSennovaRole extends Model
      */
     protected $fillable = [
         'project_id',
-        'call_sennova_role_id'
+        'call_sennova_role_id',
+        'description',
+        'qty_months',
+        'qty_roles'
     ];
 
     /**

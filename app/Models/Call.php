@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Call extends Model
 {
     use HasFactory;
+
+    public $appends = ['year', 'startDateForHumans', 'endDateForHumans'];
 
     /**
      * The attributes that are mass assignable.
@@ -15,7 +18,12 @@ class Call extends Model
      * @var array
      */
     protected $fillable = [
-        //
+        'description',
+        'start_date',
+        'end_date',
+        'active',
+        'project_start_date',
+        'project_end_date',
     ];
 
     /**
@@ -57,6 +65,16 @@ class Call extends Model
     }
 
     /**
+     * Relationship with CallSennovaRole
+     *
+     * @return void
+     */
+    public function callSennovaRoles()
+    {
+        return $this->hasMany(CallSennovaRole::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query
@@ -66,7 +84,37 @@ class Call extends Model
     public function scopeFilterCall($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('year', 'ilike', '%'.$search.'%');
+            $query->where('start_date', 'ilike', '%'.$search.'%');
         });
+    }
+
+    /**
+     * getYearAttribute
+     *
+     * @return void
+     */
+    public function getYearAttribute()
+    {
+        return date('Y', strtotime($this->end_date));
+    }
+
+    /**
+     * getStartDateForHumansAttribute
+     *
+     * @return void
+     */
+    public function getStartDateForHumansAttribute()
+    {
+        return Carbon::parse($this->start_date, 'UTC')->locale('es')->isoFormat('DD [de] MMMM [de] YYYY');
+    }
+
+    /**
+     * getEndDateForHumansAttribute
+     *
+     * @return void
+     */
+    public function getEndDateForHumansAttribute()
+    {
+        return Carbon::parse($this->end_date, 'UTC')->locale('es')->isoFormat('DD [de] MMMM [de] YYYY');
     }
 }

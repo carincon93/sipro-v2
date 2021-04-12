@@ -37,7 +37,11 @@ class ProjectSennovaRoleController extends Controller
     {
         $this->authorize('create', [ProjectSennovaRole::class]);
 
-        return Inertia::render('Calls/Projects/ProjectSennovaRoles/Create');
+        return Inertia::render('Calls/Projects/ProjectSennovaRoles/Create', [
+            'call'      => $call,
+            'project'   => $project,
+            'programmaticLine'   => $project->projectType->programmaticLine->only('id')
+        ]);
     }
 
     /**
@@ -46,18 +50,20 @@ class ProjectSennovaRoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProjectSennovaRoleRequest $request)
+    public function store(ProjectSennovaRoleRequest $request, Call $call, Project $project)
     {
         $this->authorize('create', [ProjectSennovaRole::class]);
 
         $projectSennovaRole = new ProjectSennovaRole();
-        $projectSennovaRole->fieldName = $request->fieldName;
-        $projectSennovaRole->fieldName = $request->fieldName;
-        $projectSennovaRole->fieldName = $request->fieldName;
+        $projectSennovaRole->qty_months     = $request->qty_months;
+        $projectSennovaRole->qty_roles      = $request->qty_roles;
+        $projectSennovaRole->description    = $request->description;
+        $projectSennovaRole->project()->associate($project->id);
+        $projectSennovaRole->callSennovaRole()->associate($request->call_sennova_role_id);
 
         $projectSennovaRole->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        return redirect()->route('calls.projects.project-sennova-roles.index', [$call, $project])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -86,7 +92,11 @@ class ProjectSennovaRoleController extends Controller
         $this->authorize('update', [ProjectSennovaRole::class, $projectSennovaRole]);
 
         return Inertia::render('Calls/Projects/ProjectSennovaRoles/Edit', [
-            'projectSennovaRole' => $projectSennovaRole
+            'projectSennovaRole'    => $projectSennovaRole,
+            'call'                  => $call,
+            'project'               => $project,
+            'roleName'              => $projectSennovaRole->callSennovaRole->sennovaRole->only('name'),
+            'programmaticLine'      => $project->projectType->programmaticLine->only('id')
         ]);
     }
 
@@ -101,9 +111,11 @@ class ProjectSennovaRoleController extends Controller
     {
         $this->authorize('update', [ProjectSennovaRole::class, $projectSennovaRole]);
 
-        $projectSennovaRole->fieldName = $request->fieldName;
-        $projectSennovaRole->fieldName = $request->fieldName;
-        $projectSennovaRole->fieldName = $request->fieldName;
+        $projectSennovaRole->qty_months     = $request->qty_months;
+        $projectSennovaRole->qty_roles      = $request->qty_roles;
+        $projectSennovaRole->description    = $request->description;
+        $projectSennovaRole->project()->associate($project->id);
+        $projectSennovaRole->callSennovaRole()->associate($request->call_sennova_role_id);
 
         $projectSennovaRole->save();
 
@@ -122,6 +134,6 @@ class ProjectSennovaRoleController extends Controller
 
         $projectSennovaRole->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('calls.projects.project-sennova-roles.index', [$call, $project])->with('success', 'The resource has been deleted successfully.');
     }
 }

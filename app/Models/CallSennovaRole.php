@@ -9,6 +9,8 @@ class CallSennovaRole extends Model
 {
     use HasFactory;
 
+    protected $appends = ['qtyMonthsByDefault', 'qtyRolesByDefault'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,7 +19,9 @@ class CallSennovaRole extends Model
     protected $fillable = [
         'call_id',
         'sennova_role_id',
-        'salary'
+        'salary',
+        'qty_months',
+        'qty_roles',
     ];
 
     /**
@@ -80,5 +84,15 @@ class CallSennovaRole extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('salary', 'ilike', '%'.$search.'%');
         });
+    }
+
+    public function getQtyRolesByDefaultAttribute()
+    {
+        return $this->qty_roles > 0;
+    }
+
+    public function getQtyMonthsByDefaultAttribute()
+    {
+        return $this->qty_months > 0;
     }
 }

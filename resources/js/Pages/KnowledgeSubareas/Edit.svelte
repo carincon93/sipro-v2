@@ -36,7 +36,7 @@
     })
 
     function submit() {
-        if (canIndexKnowledgeSubareas || isSuperAdmin) {
+        if (canEditKnowledgeSubareas || isSuperAdmin) {
             Inertia.put(route('knowledge-subareas.update', knowledgeSubarea.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,

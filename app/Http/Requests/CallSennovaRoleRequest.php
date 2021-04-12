@@ -24,7 +24,24 @@ class CallSennovaRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'sennova_role_id'   => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:sennova_roles,id'],
+            'salary'            => ['required', 'min:0', 'max:2147483647'],
+            'qty_months'        => ['nullable', 'min:0', 'max:12', 'integer'],
+            'qty_roles'         => ['nullable', 'min:0', 'max:999', 'integer']
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if( is_array($this->sennova_role_id) ) {
+            $this->merge([
+                'sennova_role_id' => $this->sennova_role_id['value'],
+            ]);
+        }
     }
 }

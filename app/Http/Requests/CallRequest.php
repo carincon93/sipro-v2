@@ -24,7 +24,12 @@ class CallRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'description'           => ['required'],
+            'start_date'            => ['required', 'date', 'date_format:Y-m-d', 'before:end_date' ],
+            'end_date'              => ['required', 'date', 'date_format:Y-m-d', 'after:start_date'],
+            'active'                => ['required', 'boolean'],
+            'project_start_date'    => ['required', 'date', 'date_format:Y-m-d', 'before:project_end_date' ],
+            'project_end_date'      => ['required', 'date', 'date_format:Y-m-d', 'after:project_start_date'],
         ];
     }
 }

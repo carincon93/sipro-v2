@@ -9,6 +9,11 @@ class RDIOutput extends Model
 {
     use HasFactory;
 
+    /**
+     * table
+     *
+     * @var string
+     */
     protected $table = 'rdi_outputs';
 
     /**
@@ -17,8 +22,8 @@ class RDIOutput extends Model
      * @var array
      */
     protected $fillable = [
-        'research_result_id',
-        'name'
+        'output_id',
+        'minciencias_subtypology_id'
     ];
 
     /**
@@ -40,26 +45,22 @@ class RDIOutput extends Model
     ];
 
     /**
-     * Relationship with ResearchResult
+     * Relationship with MincienciasSubtypology
      *
      * @return void
      */
-    public function researchResult()
+    public function mincienciasSubtypology()
     {
-        return $this->belongsTo(ResearchResult::class);
+        return $this->belongsTo(MincienciasSubtypology::class);
     }
 
     /**
-     * Filtrar registros
+     * Relationship with Output
      *
-     * @param  mixed $query
-     * @param  mixed $filters
      * @return void
      */
-    public function scopeFilterRDIOutput($query, array $filters)
+    public function output()
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('name', 'ilike', '%'.$search.'%');
-        });
+        return $this->belongsTo(Output::class);
     }
 }

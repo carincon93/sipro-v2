@@ -25,7 +25,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CallController;
 use App\Http\Controllers\RDIController;
 use App\Http\Controllers\ProjectTreeController;
-use App\Http\Controllers\RDIOutputController;
+use App\Http\Controllers\OutputController;
 use App\Http\Controllers\DirectCauseController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\DirectEffectController;
@@ -45,6 +45,8 @@ use App\Http\Controllers\RiskAnalysisController;
 use App\Http\Controllers\PartnerOrganizationController;
 use App\Http\Controllers\AnnexeController;
 use App\Http\Controllers\CIIUCodeController;
+use App\Http\Controllers\MincienciasTypologyController;
+use App\Http\Controllers\MincienciasSubtypologyController;
 
 use App\Models\ResearchLine;
 use App\Models\ProjectType;
@@ -55,6 +57,9 @@ use App\Models\StrategicThematic;
 use App\Models\AcademicCentre;
 use App\Models\Regional;
 use App\Models\ResearchGroup;
+use App\Models\MincienciasSubtypology;
+use App\Models\ProgrammaticLine;
+use App\Models\CallSennovaRole;
 
 /*
 |--------------------------------------------------------------------------
@@ -127,12 +132,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('web-api.programmatic-lines');
     // Trae las líneas programáticas
     Route::get('web-api/research-groups', function() {
-        return response(ResearchGroup::selectRaw('research_groups.id as value, concat(research_groups.name, chr(10), \'∙ Acrónimo: \', research_groups.acronym, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
+        return response(ResearchGroup::selectRaw('research_groups.id as value, concat(research_groups.name, chr(10), \'∙ Acrónimo: \', research_groups.acronym, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('academic_centres', 'research_groups.academic_centre_id', 'academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-groups');
+    // Trae las subtipologías Minciencias
+    Route::get('web-api/minciencias-subtypologies', function() {
+        return response(MincienciasSubtypology::selectRaw('minciencias_subtypologies.id as value, concat(minciencias_subtypologies.name, chr(10), \'∙ Tipología Minciencias: \', minciencias_typologies.name) as label')->join('minciencias_typologies', 'minciencias_subtypologies.minciencias_typology_id', 'minciencias_typologies.id')->orderBy('minciencias_subtypologies.name')->get());
+    })->name('web-api.minciencias-subtypologies');
+
+    Route::get('web-api/calls/{call}/{programmaticLine}/project-sennova-roles', function($call, $programmaticLine) {
+        return response(CallSennovaRole::selectRaw('call_sennova_roles.id as value, concat(sennova_roles.name, chr(10), \'∙ Asignación mensual: \', call_sennova_roles.salary) as label, call_sennova_roles.qty_months, call_sennova_roles.qty_roles')
+            ->join('sennova_roles', 'call_sennova_roles.sennova_role_id', 'sennova_roles.id')
+            ->where('sennova_roles.programmatic_line_id', $programmaticLine)
+            ->where('call_sennova_roles.call_id', $call)
+            ->orderBy('sennova_roles.name')->get());
+    })->name('web-api.calls.project-sennova-roles');
 
     // Resources
+    Route::resource('calls.projects.risk-analysis', RiskAnalysisController::class)->parameters(['risk-analysis' => 'risk_analysis']);
     Route::resources(
         [
+            'minciencias-typologies' => MincienciasTypologyController::class,
+            'minciencias-subtypologies' => MincienciasSubtypologyController::class,
             'ciiu-codes' => CIIUCodeController::class,
             'regional' => RegionalController::class,
             'users' => UserController::class,
@@ -154,22 +174,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'roles' => RoleController::class,
             'calls' => CallController::class,
             'calls.rdi' => RDIController::class,
-            'calls.rdi.rdi-outputs' => RDIOutputController::class,
+            'calls.projects.outputs' => OutputController::class,
             'calls.projects.activities' => ActivityController::class,
             'calls.projects.project-sennova-budgets' => ProjectSennovaBudgetController::class,
             'calls.projects.project-sennova-roles' => ProjectSennovaRoleController::class,
-            'calls.projects.risk-analysis' => RiskAnalysisController::class,
             'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
             'calls.projects.annexes' => AnnexeController::class,
-            'sennova-roles' => SennovaRoleController::class,
+            'calls.call-sennova-roles' => CallSennovaRoleController::class,
             'projects.direct-causes' => DirectCauseController::class,
             'projects.direct-effects' => DirectEffectController::class,
             'direct-causes.indirect-causes' => IndirectCauseController::class,
-            'call-sennova-roles' => CallSennovaRoleController::class,
             'first-budget-info' => FirstBudgetInfoController::class,
             'second-budget-info' => SecondBudgetInfoController::class,
             'third-budget-info' => ThirdBudgetInfoController::class,
             'sennova-budgets' => SennovaBudgetController::class,
+            'sennova-roles' => SennovaRoleController::class,
             'budgets-programmatic-lines' => BudgetProgrammaticLineController::class,
             'call-budgets' => CallBudgetController::class,
         ]

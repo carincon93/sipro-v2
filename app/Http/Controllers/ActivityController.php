@@ -42,7 +42,11 @@ class ActivityController extends Controller
     {
         $this->authorize('create', [Activity::class]);
 
-        return Inertia::render('Calls/Projects/Activities/Create');
+        return Inertia::render('Calls/Projects/Activities/Create', [
+            'call' => $call,
+            'project' => $project,
+            'outputs' => $project->outputs
+        ]);
     }
 
     /**
@@ -91,7 +95,11 @@ class ActivityController extends Controller
         $this->authorize('update', [Activity::class, $activity]);
 
         return Inertia::render('Calls/Projects/Activities/Edit', [
-            'activity' => $activity
+            'activity' => $activity,
+            'call' => $call,
+            'project' => $project,
+            'outputs' => $project->directEffects()->with('researchResult.outputs')->get()->pluck('researchResult.outputs')->flatten(),
+            'activity_outputs' => $activity->outputs()->pluck('id'),
         ]);
     }
 
@@ -106,9 +114,10 @@ class ActivityController extends Controller
     {
         $this->authorize('update', [Activity::class, $activity]);
 
-        $activity->fieldName = $request->fieldName;
-        $activity->fieldName = $request->fieldName;
-        $activity->fieldName = $request->fieldName;
+        $activity->description  = $request->description;
+        $activity->start_date   = $request->start_date;
+        $activity->end_date     = $request->end_date;
+        $activity->outputs()->sync($request->output_id);
 
         $activity->save();
 

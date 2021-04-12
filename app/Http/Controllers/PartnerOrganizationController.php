@@ -8,6 +8,8 @@ use App\Models\RDI;
 use App\Models\PartnerOrganization;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PartnerOrganizationController extends Controller
 {
@@ -38,7 +40,10 @@ class PartnerOrganizationController extends Controller
     {
         $this->authorize('create', [PartnerOrganization::class]);
 
-        return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Create');
+        return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Create', [
+            'call' => $call,
+            'rdi'  => $rdi,
+        ]);
     }
 
     /**
@@ -47,18 +52,46 @@ class PartnerOrganizationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PartnerOrganizationRequest $request)
+    public function store(PartnerOrganizationRequest $request, Call $call, RDI $rdi)
     {
         $this->authorize('create', [PartnerOrganization::class]);
 
         $partnerOrganization = new PartnerOrganization();
-        $partnerOrganization->fieldName = $request->fieldName;
-        $partnerOrganization->fieldName = $request->fieldName;
-        $partnerOrganization->fieldName = $request->fieldName;
+        $partnerOrganization->partner_organization_type         = $request->partner_organization_type;
+        $partnerOrganization->name                              = $request->name;
+        $partnerOrganization->legal_status                      = $request->legal_status;
+        $partnerOrganization->company_type                      = $request->company_type;
+        $partnerOrganization->nit                               = $request->nit;
+        $partnerOrganization->agreement_description             = $request->agreement_description;
+        $partnerOrganization->research_group                    = $request->research_group;
+        $partnerOrganization->gruplac_code                      = $request->gruplac_code;
+        $partnerOrganization->gruplac_link                      = $request->gruplac_link;
+        $partnerOrganization->knowledge_transfer_activities     = $request->knowledge_transfer_activities;
+
+        $endDate       = date('Y', strtotime($rdi->end_date));
+        $companyName   = Str::slug(substr($request->name, 0, 30), '-');
+
+        $letterOfIntent = $request->letter_of_intent;
+
+        $letterOfIntentFileName = ($rdi->id + 8000)."-SGPS-$endDate-carta-de-intencion-$companyName.".$letterOfIntent->extension();
+        $letterOfIntentFile = $letterOfIntent->storeAs(
+            'partner-organizations', $letterOfIntentFileName
+        );
+        $partnerOrganization->letter_of_intent = $letterOfIntentFile;
+
+        $intellectualProperty = $request->intellectual_property;
+        $intelectualPropertyFileName = ($rdi->id + 8000)."-SGPS-$endDate-propiedad-intelectual-$companyName.".$intellectualProperty->extension();
+        $intelectualPropertyFile = $intellectualProperty->storeAs(
+            'intellectual-properties', $intelectualPropertyFileName
+        );
+
+        $partnerOrganization->intellectual_property = $intelectualPropertyFile;
+
+        $partnerOrganization->rdi()->associate($rdi);
 
         $partnerOrganization->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        return redirect()->route('calls.rdi.partner-organizations.index', [$call, $rdi])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -67,7 +100,7 @@ class PartnerOrganizationController extends Controller
      * @param  \App\Models\PartnerOrganization  $partnerOrganization
      * @return \Illuminate\Http\Response
      */
-    public function show(PartnerOrganization $partnerOrganization)
+    public function show(Call $call, RDI $rdi, PartnerOrganization $partnerOrganization)
     {
         $this->authorize('view', [PartnerOrganization::class, $partnerOrganization]);
 
@@ -82,12 +115,14 @@ class PartnerOrganizationController extends Controller
      * @param  \App\Models\PartnerOrganization  $partnerOrganization
      * @return \Illuminate\Http\Response
      */
-    public function edit(PartnerOrganization $partnerOrganization)
+    public function edit(Call $call, RDI $rdi, PartnerOrganization $partnerOrganization)
     {
         $this->authorize('update', [PartnerOrganization::class, $partnerOrganization]);
 
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Edit', [
-            'partnerOrganization' => $partnerOrganization
+            'call'                  => $call,
+            'rdi'                   => $rdi,
+            'partnerOrganization'   => $partnerOrganization
         ]);
     }
 
@@ -98,13 +133,44 @@ class PartnerOrganizationController extends Controller
      * @param  \App\Models\PartnerOrganization  $partnerOrganization
      * @return \Illuminate\Http\Response
      */
-    public function update(PartnerOrganizationRequest $request, PartnerOrganization $partnerOrganization)
+    public function update(PartnerOrganizationRequest $request, Call $call, RDI $rdi, PartnerOrganization $partnerOrganization)
     {
         $this->authorize('update', [PartnerOrganization::class, $partnerOrganization]);
 
-        $partnerOrganization->fieldName = $request->fieldName;
-        $partnerOrganization->fieldName = $request->fieldName;
-        $partnerOrganization->fieldName = $request->fieldName;
+        $partnerOrganization->partner_organization_type         = $request->partner_organization_type;
+        $partnerOrganization->name                              = $request->name;
+        $partnerOrganization->legal_status                      = $request->legal_status;
+        $partnerOrganization->company_type                      = $request->company_type;
+        $partnerOrganization->nit                               = $request->nit;
+        $partnerOrganization->agreement_description             = $request->agreement_description;
+        $partnerOrganization->research_group                    = $request->research_group;
+        $partnerOrganization->gruplac_code                      = $request->gruplac_code;
+        $partnerOrganization->gruplac_link                      = $request->gruplac_link;
+        $partnerOrganization->knowledge_transfer_activities     = $request->knowledge_transfer_activities;
+
+        $endDate       = date('Y', strtotime($rdi->end_date));
+        $companyName   = Str::slug(substr($request->name, 0, 30), '-');
+
+        if ($request->hasFile('letter_of_intent')) {
+            Storage::delete($partnerOrganization->letter_of_intent);
+            $letterOfIntent = $request->letter_of_intent;
+            $letterOfIntentFileName = ($rdi->id + 8000)."-SGPS-$endDate-carta-de-intencion-$companyName.".$letterOfIntent->extension();
+            $letterOfIntentFile = $letterOfIntent->storeAs(
+                'partner-organizations', $letterOfIntentFileName
+            );
+            $partnerOrganization->letter_of_intent = $letterOfIntentFile;
+        }
+        if ($request->hasFile('intellectual_property')) {
+            Storage::delete($partnerOrganization->intellectual_property);
+            $intellectualProperty = $request->intellectual_property;
+            $intelectualPropertyFileName = ($rdi->id + 8000)."-SGPS-$endDate-propiedad-intelectual-$companyName.".$intellectualProperty->extension();
+            $intelectualPropertyFile = $intellectualProperty->storeAs(
+                'intellectual-properties', $intelectualPropertyFileName
+            );
+            $partnerOrganization->intellectual_property = $intelectualPropertyFile;
+        }
+
+        $partnerOrganization->rdi()->associate($rdi);
 
         $partnerOrganization->save();
 
@@ -117,12 +183,15 @@ class PartnerOrganizationController extends Controller
      * @param  \App\Models\PartnerOrganization  $partnerOrganization
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PartnerOrganization $partnerOrganization)
+    public function destroy(Call $call, RDI $rdi, PartnerOrganization $partnerOrganization)
     {
         $this->authorize('delete', [PartnerOrganization::class, $partnerOrganization]);
 
+        Storage::delete($partnerOrganization->letter_of_intent);
+        Storage::delete($partnerOrganization->intellectual_property);
+
         $partnerOrganization->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('calls.rdi.partner-organizations.index', [$call, $rdi])->with('success', 'The resource has been deleted successfully.');
     }
 }

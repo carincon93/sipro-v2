@@ -22,4 +22,7 @@ export const links = [
     { name: "Research lines", route: "research-lines" },
     { name: "Research teams", route: "research-teams" },
     { name: "System roles", route: "roles" },
+    { name: "Minciencias typologies", route: "minciencias-typologies" },
+    { name: "Minciencias subtypologies", route: "minciencias-subtypologies" },
+    { name: "Sennova roles", route: "sennova-roles" },
 ];

@@ -28,11 +28,9 @@
 <AuthenticatedLayout>
     <Stepper {call} {project} />
 
-    <h1 class="mb-8 font-bold text-3xl">{$_('Activities.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
+    <h1 class="font-bold text-3xl m-24 text-center">{$_('Activities.plural')}</h1>
+    <div class="mb-6 flex justify-between items-center"></div>
 
-    </div>
-
-    <Gantt items={activities.data} />
+    <Gantt items={activities.data} request={canEditActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
 </AuthenticatedLayout>
 

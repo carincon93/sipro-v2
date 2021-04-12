@@ -17,9 +17,8 @@ class CallController extends Controller
     public function dashboard(Call $call)
     {
         $this->authorize('viewAny', [Call::class]);
-
         return Inertia::render('Calls/Dashboard', [
-            'call' => $call,
+            'call' => $call
         ]);
     }
 
@@ -34,8 +33,10 @@ class CallController extends Controller
 
         return Inertia::render('Calls/Index', [
             'filters'   => request()->all('search'),
-            'calls' => Call::orderBy('year', 'ASC')
+            'calls' => Call::orderBy('start_date', 'ASC')
                 ->filterCall(request()->only('search'))->paginate(),
+            'activeCall' => Call::where('active', 1)->first(),
+
         ]);
     }
 
@@ -62,9 +63,12 @@ class CallController extends Controller
         $this->authorize('create', [Call::class]);
 
         $call = new Call();
-        $call->fieldName = $request->fieldName;
-        $call->fieldName = $request->fieldName;
-        $call->fieldName = $request->fieldName;
+        $call->description          = $request->description;
+        $call->start_date           = $request->start_date;
+        $call->end_date             = $request->end_date;
+        $call->project_start_date   = $request->project_start_date;
+        $call->project_end_date     = $request->project_end_date;
+        $call->active               = $request->active;
 
         $call->save();
 
@@ -112,9 +116,12 @@ class CallController extends Controller
     {
         $this->authorize('update', [Call::class, $call]);
 
-        $call->fieldName = $request->fieldName;
-        $call->fieldName = $request->fieldName;
-        $call->fieldName = $request->fieldName;
+        $call->description          = $request->description;
+        $call->start_date           = $request->start_date;
+        $call->end_date             = $request->end_date;
+        $call->project_start_date   = $request->project_start_date;
+        $call->project_end_date     = $request->project_end_date;
+        $call->active               = $request->active;
 
         $call->save();
 

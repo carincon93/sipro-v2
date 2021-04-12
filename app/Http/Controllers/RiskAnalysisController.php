@@ -38,7 +38,10 @@ class RiskAnalysisController extends Controller
     {
         $this->authorize('create', [RiskAnalysis::class]);
 
-        return Inertia::render('Calls/Projects/RiskAnalysis/Create');
+        return Inertia::render('Calls/Projects/RiskAnalysis/Create', [
+            'call'      => $call,
+            'project'   => $project
+        ]);
     }
 
     /**
@@ -52,9 +55,14 @@ class RiskAnalysisController extends Controller
         $this->authorize('create', [RiskAnalysis::class]);
 
         $riskAnalysis = new RiskAnalysis();
-        $riskAnalysis->fieldName = $request->fieldName;
-        $riskAnalysis->fieldName = $request->fieldName;
-        $riskAnalysis->fieldName = $request->fieldName;
+        $riskAnalysis->level                = $request->level;
+        $riskAnalysis->type                 = $request->type;
+        $riskAnalysis->description          = $request->description;
+        $riskAnalysis->probability          = $request->probability;
+        $riskAnalysis->impact               = $request->impact;
+        $riskAnalysis->effects              = $request->effects;
+        $riskAnalysis->mitigation_measures  = $request->mitigation_measures;
+        $riskAnalysis->project()->associate($project);
 
         $riskAnalysis->save();
 
@@ -87,7 +95,9 @@ class RiskAnalysisController extends Controller
         $this->authorize('update', [RiskAnalysis::class, $riskAnalysis]);
 
         return Inertia::render('Calls/Projects/RiskAnalysis/Edit', [
-            'riskAnalysis' => $riskAnalysis
+            'call'          => $call,
+            'project'       => $project,
+            'riskAnalysis'  => $riskAnalysis
         ]);
     }
 
@@ -102,9 +112,14 @@ class RiskAnalysisController extends Controller
     {
         $this->authorize('update', [RiskAnalysis::class, $riskAnalysis]);
 
-        $riskAnalysis->fieldName = $request->fieldName;
-        $riskAnalysis->fieldName = $request->fieldName;
-        $riskAnalysis->fieldName = $request->fieldName;
+        $riskAnalysis->level                = $request->level;
+        $riskAnalysis->type                 = $request->type;
+        $riskAnalysis->description          = $request->description;
+        $riskAnalysis->probability          = $request->probability;
+        $riskAnalysis->impact               = $request->impact;
+        $riskAnalysis->effects              = $request->effects;
+        $riskAnalysis->mitigation_measures  = $request->mitigation_measures;
+        $riskAnalysis->project()->associate($project);
 
         $riskAnalysis->save();
 

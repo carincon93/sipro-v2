@@ -1,1 +1,192 @@
-<script>import { inertia } from '@inertiajs/inertia-svelte'</script>
+<script>
+    import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
+    import { Inertia } from '@inertiajs/inertia'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
+    import { route } from '@/Utils'
+    import { _ } from 'svelte-i18n'
+
+    import Label from '@/Components/Label'
+    import InputError from '@/Components/InputError'
+    import LoadingButton from '@/Components/LoadingButton'
+    import Select from 'svelte-select'
+    import Textarea from '@/Components/Textarea'
+    import Input from '@/Components/Input'
+    import Switch from '@/Components/Switch'
+    import File from '@/Components/File.svelte'
+    import FilterSelect from '@/Components/FilterSelect.svelte'
+
+    export let call
+    export let rdi
+    export let errors
+
+    let researchGroup   = false
+    let agreement       = false
+
+    $: $title = $_('Create') + ' ' + $_('Partner organizations.singular').toLowerCase()
+
+    // Permisos
+    let authUser = $page.props.auth.user
+    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'
+    let canShowPartnerOrganizations     = authUser.can.find(element => element == 'partner-organizations.show') == 'partner-organizations.show'
+    let canCreatePartnerOrganizations   = authUser.can.find(element => element == 'partner-organizations.create') == 'partner-organizations.create'
+    let canEditPartnerOrganizations     = authUser.can.find(element => element == 'partner-organizations.edit') == 'partner-organizations.edit'
+    let canDeletePartnerOrganizations   = authUser.can.find(element => element == 'partner-organizations.delete') == 'partner-organizations.delete'
+
+    let sending = false
+    let form = useForm({
+        partner_organization_type: '',
+        name: '',
+        legal_status: '',
+        company_type: '',
+        nit: '',
+        agreement_description: '',
+        research_group: '',
+        gruplac_code: '',
+        gruplac_link: '',
+        knowledge_transfer_activities: '',
+        letter_of_intent: '',
+        intellectual_property: ''
+    })
+
+    let partnerOrganizationTypes = [{'value': 1, 'label': 'Empresa'}, {'value': 2, 'label': 'Universidad'}, {'value': 3, 'label': 'Entidades sin ánimo de lucro'}, {'value': 4, 'label': 'Centro de formación SENA'}, {'value': 5, 'label': 'Otra'}]
+    let legalStatus = [{'value': 1, 'label': 'Pública'}, {'value': 2, 'label': 'Privado'}, {'value': 3, 'label': 'Mixta'}, {'value': 4, 'label': 'ONG'}]
+    let companyTypes = [{'value': 1, 'label': 'Microempresa'}, {'value': 2, 'label': 'Pequeña'}, {'value': 3, 'label': 'Mediana'}, {'value': 4, 'label': 'Grande'}]
+
+    function submit() {
+        if (canCreatePartnerOrganizations || isSuperAdmin) {
+            let formData = new FormData()
+            formData.append('partner_organization_type', $form.partner_organization_type)
+            formData.append('name', $form.name)
+            formData.append('legal_status', $form.legal_status)
+            formData.append('company_type', $form.company_type)
+            formData.append('nit', $form.nit)
+            if (agreement) formData.append('agreement_description', $form.agreement_description)
+            if (researchGroup) formData.append('research_group', $form.research_group)
+            if (researchGroup) formData.append('gruplac_code', $form.gruplac_code)
+            if (researchGroup) formData.append('gruplac_link', $form.gruplac_link)
+            formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
+            formData.append('letter_of_intent', $form.letter_of_intent)
+            formData.append('intellectual_property', $form.intellectual_property)
+
+            Inertia.post(route('calls.rdi.partner-organizations.store', [call.id, rdi.id]), formData, {
+                onStart: ()     => sending = true,
+                onFinish: ()    => sending = false,
+            })
+        }
+    }
+</script>
+
+<AuthenticatedLayout>
+    <header class="shadow bg-white" slot="header">
+        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+            <div>
+                <h1>
+                    {#if canIndexPartnerOrganizations || canCreatePartnerOrganizations || isSuperAdmin}
+                        <a use:inertia href={route('calls.rdi.partner-organizations.index', [call.id, rdi.id])} class="text-indigo-400 hover:text-indigo-600">
+                            {$_('Partner organizations.plural')}
+                        </a>
+                    {/if}
+                    <span class="text-indigo-400 font-medium">/</span>
+                    {$_('Create')}
+                </h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="bg-white rounded shadow max-w-3xl">
+        <form on:submit|preventDefault={submit}>
+            <div class="p-8">
+                <div class="mt-4">
+                    <Label id="partner_organization_type" value="Tipo de entidad aliada" />
+                    <FilterSelect items={partnerOrganizationTypes} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" id="partner_organization_type" />
+                    <InputError message={errors.partner_organization_type} />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="name" value="Nombre de la entidad aliada/Centro de formación" />
+                    <Textarea id="name" error={errors.name} bind:value={$form.name} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="legal_status" value="Naturaleza de la entidad" />
+                    <FilterSelect items={legalStatus} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" id="legal_status" />
+                    <InputError message={errors.legal_status} />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="company_type" value="Tipo de empresa" />
+                    <FilterSelect items={companyTypes} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" id="company_type" />
+                    <InputError message={errors.company_type} />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="nit" value="NIT" />
+                    <Input id="nit" type="text" class="mt-1 block w-full" bind:value={$form.nit} error={errors.nit} required />
+                </div>
+
+                <div class="mt-4">
+                    <p>¿Hay convenio?</p>
+                    <Switch bind:checked={agreement} />
+                    <span class="ml-2">{#if agreement} Si {:else} No {/if}</span>
+                </div>
+                {#if agreement}
+                    <div class="mt-4">
+                        <Label id="agreement_description" value="Descipción del convenio" />
+                        <Textarea id="agreement_description" error={errors.agreement_description} bind:value={$form.agreement_description} required />
+                    </div>
+                {/if}
+
+                <div class="mt-4">
+                    <p>¿La entidad aliada tiene grupo de investigación?</p>
+                    <Switch bind:checked={researchGroup} />
+                    <span class="ml-2">{#if researchGroup} Si {:else} No {/if}</span>
+                </div>
+                {#if researchGroup}
+                    <div class="mt-4">
+                        <Label id="research_group" value="Grupo de investigación" />
+                        <Textarea id="research_group" error={errors.research_group} bind:value={$form.research_group} required />
+                    </div>
+
+                    <div class="mt-4">
+                        <Label id="gruplac_code" value="Código del GrupLAC" />
+                        <Input id="gruplac_code" type="text" class="mt-1 block w-full" error={errors.gruplac_code} placeholder="Ejemplo: COL0000000" bind:value={$form.gruplac_code} required={!researchGroup ? undefined : 'required'} />
+                    </div>
+
+                    <div class="mt-4">
+                        <Label id="gruplac_link" value="Enlace del GrupLAC" />
+                        <Input id="gruplac_link" type="url" class="mt-1 block w-full" error={errors.gruplac_link} placeholder="Ejemplo: https://scienti.minciencias.gov.co/gruplac/jsp/Medicion/graficas/verPerfiles.jsp?id_convocatoria=0nroIdGrupo=0000000" bind:value={$form.gruplac_link} required={!researchGroup ? undefined : 'required'} />
+                    </div>
+                {/if}
+
+                <div class="mt-4">
+                    <Label id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
+                    <Textarea id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
+                    <File id="letter_of_intent" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.letter_of_intent} error={errors.letter_of_intent} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
+                    <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} required />
+                </div>
+
+                {#if $form.progress}
+                    <progress value={$form.progress.percentage} max="100">
+                    {$form.progress.percentage}%
+                    </progress>
+                {/if}
+            </div>
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+                {#if canCreatePartnerOrganizations || isSuperAdmin}
+                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                        {$_('Create')} {$_('Partner organizations.singular')}
+                    </LoadingButton>
+                {/if}
+            </div>
+        </form>
+    </div>
+</AuthenticatedLayout>

@@ -15,7 +15,18 @@ class PartnerOrganization extends Model
      * @var array
      */
     protected $fillable = [
-        'rdi'
+        'partner_organization_type',
+        'name',
+        'legal_status',
+        'company_type',
+        'nit',
+        'agreement_description',
+        'research_group',
+        'gruplac_code',
+        'gruplac_link',
+        'knowledge_transfer_activities',
+        'letter_of_intent',
+        'intellectual_property'
     ];
 
     /**
@@ -68,5 +79,89 @@ class PartnerOrganization extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('name', 'ilike', '%'.$search.'%');
         });
+    }
+
+    /**
+     * getPartnerOrganizationTypeAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getPartnerOrganizationTypeAttribute($value)
+    {
+        switch ($value) {
+            case 1:
+                $value = 'Empresa';
+                break;
+            case 2:
+                $value = 'Universidad';
+                break;
+            case 3:
+                $value = 'Entidades sin ánimo de lucro';
+                break;
+            case 4:
+                $value = 'Centro de formación SENA';
+                break;
+            case 5:
+                $value = 'Otra';
+                break;
+            default:
+                break;
+        }
+        return $value;
+    }
+
+    /**
+     * getLegalStatusAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getLegalStatusAttribute($value)
+    {
+        switch ($value) {
+            case 1:
+                $value = 'Pública';
+                break;
+            case 2:
+                $value = 'Privado';
+                break;
+            case 3:
+                $value = 'Mixta';
+                break;
+            case 4:
+                $value = 'ONG';
+                break;
+            default:
+                break;
+        }
+        return $value;
+    }
+
+    /**
+     * getCompanyTypeAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getCompanyTypeAttribute($value)
+    {
+        switch ($value) {
+            case 1:
+                $value = 'Microempresa';
+                break;
+            case 2:
+                $value = 'Pequeña';
+                break;
+            case 3:
+                $value = 'Mediana';
+                break;
+            case 4:
+                $value = 'Grande';
+                break;
+            default:
+                break;
+        }
+        return $value;
     }
 }

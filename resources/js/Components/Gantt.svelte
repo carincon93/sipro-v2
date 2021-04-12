@@ -1,7 +1,10 @@
 <script>
     import Loading from './Loading.svelte'
+    import { route } from '@/Utils'
+import { _ } from 'svelte-i18n';
 
     export let items
+    export let request = null
 
     let loading = false
 
@@ -81,6 +84,15 @@
             loading = true
         }
     }
+
+    function arrayPush(item, i) {
+        // El último ítem agregado al array se debe eliminar para darle paso a un ítem nuevo
+        if (i > 0) {
+            request.params.pop()
+        }
+        request.params.push(item)
+        return request.params
+    }
 </script>
 
 <svelte:head>
@@ -88,16 +100,24 @@
 </svelte:head>
 
 <div class="flex relative">
-    <aside class="labels" style="overflow: auto; {items.length > 0 ? 'flex: 0.5' : ''}">
-        <ul class="list-unstyled">
-            {#each items as item}
-                <li style="height: 120px; padding: 7px;line-height: 1.2;display: flex;justify-content: space-between;width: 100%;">
-                    <span style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description}</span>
-                </li>
-            {/each}
-        </ul>
-    </aside>
-    <div id="chart_div" style="flex: 1;"></div>
+    {#if items.length === 0}
+        <p>{$_('No data recorded')}</p>
+    {:else}
+        <aside class="labels" style="overflow: auto; {items.length > 0 ? 'flex: 0.5' : ''}">
+            <ul class="list-unstyled">
+                {#each items as item, i}
+                    <li style="height: 120px; padding: 7px;line-height: 1.2;display: flex;justify-content: space-between;width: 100%;">
+                        {#if request}
+                            <a href={route(request.uri, arrayPush(item.id, i))} style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</a>
+                        {:else}
+                            <span style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</span>
+                        {/if}
+                    </li>
+                {/each}
+            </ul>
+        </aside>
+        <div id="chart_div" style="flex: 1;"></div>
+    {/if}
     <Loading {loading} bg="transparent"/>
 </div>
 

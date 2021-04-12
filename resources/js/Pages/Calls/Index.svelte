@@ -5,6 +5,7 @@
     import { _ } from 'svelte-i18n'
 
     export let calls
+    export let activeCall
 
     let authUser = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
@@ -18,6 +19,38 @@
 </script>
 
 <AuthenticatedLayout>
+    <header class="shadow bg-white" slot="header">
+        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+            <div>
+                {#if activeCall}
+                    <h1 class="font-bold text-5xl">Convocatoria {activeCall.year}</h1>
+                    <p class="text-2xl mt-4">La convocatoria empezó el {activeCall.startDateForHumans} y finaliza el {activeCall.endDateForHumans}.</p>
+                    {#if canIndexCalls || isSuperAdmin}
+                        <a use:inertia href={route('calls.dashboard', activeCall.id)} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+                            {$_('Calls.singular')} { activeCall.year }
+                        </a>
+                    {/if}
+                {:else}
+                    <h1 class="font-bold text-5xl">Aún no hay una convocatoria activa.</h1>
+                    <a use:inertia href={route('dashboard')} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+                        {$_('Dashboard')}
+                    </a>
+                    {#if canCreateCalls || isSuperAdmin}
+                        <a use:inertia href={route('calls.create')} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+                            <span>{$_('Create')}</span>
+                            <span class="hidden md:inline">{$_('Calls.singular').toLowerCase()}</span>
+                        </a>
+                    {/if}
+
+                {/if}
+            </div>
+            <div>
+                <figure>
+                    <img src="/storage/images/dashboard.png" alt="">
+                </figure>
+            </div>
+        </div>
+    </header>
     <div class="py-12">
         <div class="grid grid-cols-3 gap-10">
             {#if canIndexCalls || isSuperAdmin}

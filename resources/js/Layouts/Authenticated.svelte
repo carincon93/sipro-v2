@@ -52,9 +52,9 @@
                                         name="cheveron-down"
                                         class="w-5 h-5 group-hover:fill-indigo-600 fill-gray-700 focus:fill-indigo-600" />
                                 </div>
-                                <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm p-8" style="max-height: 750px; overflow-y: auto;">
-                                    <h1 class="bg-white p-8 sticky text-4xl text-center top-0">Menú de navegación</h1>
-                                    <div class="grid grid-cols-3 gap-5">
+                                <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm" style="max-height: 750px; overflow-y: auto;">
+                                    <h1 class="bg-white p-8 sticky text-4xl shadow text-center top-0">Menú de navegación</h1>
+                                    <div class="grid grid-cols-3 gap-5 p-8">
                                         {#each links as link}
                                             {#if authUser.can.find(element => element == link.route+'.index') == link.route+'.index' || authUser.can.find(element => element == link.route+'.show') == link.route+'.show' || authUser.can.find(element => element == link.route+'.create') == link.route+'.create' || authUser.can.find(element => element == link.route+'.edit') == link.route+'.edit' || authUser.can.find(element => element == link.route+'.delete') == link.route+'.delete' || isSuperAdmin}
                                                 <a use:inertia href={route(link.route+'.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/'+link.route+'/*') ? ' bg-indigo-600 text-white' : ''}">

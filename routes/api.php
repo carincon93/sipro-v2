@@ -21,7 +21,7 @@ use App\Http\Controllers\API\ActivityController as ActivityAPIController;
 use App\Http\Controllers\API\DirectEffectController as DirectEffectAPIController;
 use App\Http\Controllers\API\DirectCauseController as DirectCauseAPIController;
 use App\Http\Controllers\API\RDIController as RDIAPIController;
-use App\Http\Controllers\API\RDIOutputController as RDIOutputAPIController;
+use App\Http\Controllers\API\OutputController as OutputAPIController;
 use App\Http\Controllers\API\CallController as CallAPIController;
 use App\Http\Controllers\API\RoleController as RoleAPIController;
 use App\Http\Controllers\API\ResearchTeamController as ResearchTeamAPIController;
@@ -42,6 +42,9 @@ use App\Http\Controllers\API\RegionalController as RegionalAPIController;
 use App\Http\Controllers\API\UserController as UserAPIController;
 use App\Http\Controllers\API\AcademicCentreController as AcademicCentreAPIController;
 use App\Http\Controllers\API\CIIUCodeController as CIIUCodeAPIController;
+use App\Http\Controllers\API\MincienciasTypologyController as MincienciasTypologyAPIController;
+use App\Http\Controllers\API\MincienciasSubtypologyController as MincienciasSubtypologyAPIController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +78,7 @@ Route::middleware('auth:api')->group(function () {
             'specific-objectives.activities' => ActivityAPIController::class,
             'projects.direct-effects' => DirectEffectAPIController::class,
             'projects.direct-causes' => DirectCauseAPIController::class,
-            'rdi-outputs' => RDIOutputAPIController::class,
+            'outputs' => OutputAPIController::class,
             'rdi' => RDIAPIController::class,
             'calls' => CallAPIController::class,
             'roles' => RoleAPIController::class,
@@ -96,7 +99,9 @@ Route::middleware('auth:api')->group(function () {
             'academic-centres' => AcademicCentreAPIController::class,
             'users' => UserAPIController::class,
             'regional' => RegionalAPIController::class,
-            'ciiu-codes' => CIIUCodeAPIController::class
+            'ciiu-codes' => CIIUCodeAPIController::class,
+            'minciencias-typologies' => MincienciasTypologyAPIController::class,
+            'minciencias-subtypologies' => MincienciasSubtypologyAPIController::class
         ]
     );
 });

@@ -15,7 +15,9 @@ class SennovaRole extends Model
      * @var array
      */
     protected $fillable = [
-        //
+        'programmatic_line_id',
+        'name',
+        'description'
     ];
 
     /**
@@ -35,6 +37,16 @@ class SennovaRole extends Model
     protected $casts = [
         //
     ];
+
+    /**
+     * Relationship with ProgrammaticLine
+     *
+     * @return void
+     */
+    public function programmaticLine()
+    {
+        return $this->belongsTo(ProgrammaticLine::class);
+    }
 
     /**
      * Relationship with CallSennovaRole

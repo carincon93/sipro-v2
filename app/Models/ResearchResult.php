@@ -59,13 +59,13 @@ class ResearchResult extends Model
     }
 
     /**
-     * Relationship with RDIOutput
+     * Relationship with Output
      *
      * @return void
      */
-    public function rdiOutputs()
+    public function outputs()
     {
-        return $this->hasMany(RDIOutput::class);
+        return $this->hasMany(Output::class);
     }
 
     /**

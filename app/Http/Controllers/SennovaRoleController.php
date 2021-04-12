@@ -20,7 +20,7 @@ class SennovaRoleController extends Controller
 
         return Inertia::render('SennovaRoles/Index', [
             'filters'   => request()->all('search'),
-            'sennovaRoles' => SennovaRole::orderBy('', 'ASC')
+            'sennovaRoles' => SennovaRole::orderBy('name', 'ASC')
                 ->filterSennovaRole(request()->only('search'))->paginate(),
         ]);
     }
@@ -48,13 +48,13 @@ class SennovaRoleController extends Controller
         $this->authorize('create', [SennovaRole::class]);
 
         $sennovaRole = new SennovaRole();
-        $sennovaRole->fieldName = $request->fieldName;
-        $sennovaRole->fieldName = $request->fieldName;
-        $sennovaRole->fieldName = $request->fieldName;
+        $sennovaRole->name = $request->name;
+        $sennovaRole->description = $request->description;
+        $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
 
         $sennovaRole->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        return redirect()->route('sennova-roles.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -98,10 +98,9 @@ class SennovaRoleController extends Controller
     {
         $this->authorize('update', [SennovaRole::class, $sennovaRole]);
 
-        $sennovaRole->fieldName = $request->fieldName;
-        $sennovaRole->fieldName = $request->fieldName;
-        $sennovaRole->fieldName = $request->fieldName;
-
+        $sennovaRole->name = $request->name;
+        $sennovaRole->description = $request->description;
+        $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
         $sennovaRole->save();
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
@@ -119,6 +118,6 @@ class SennovaRoleController extends Controller
 
         $sennovaRole->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('sennova-roles.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

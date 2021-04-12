@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CallSennovaRoleRequest;
+use App\Models\Call;
 use App\Models\CallSennovaRole;
+use App\Models\SennovaRole;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,14 +16,17 @@ class CallSennovaRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Call $call)
     {
         $this->authorize('viewAny', [CallSennovaRole::class]);
 
-        return Inertia::render('CallSennovaRoles/Index', [
+        return Inertia::render('Calls/CallSennovaRoles/Index', [
             'filters'   => request()->all('search'),
-            'callSennovaRoles' => CallSennovaRole::orderBy('', 'ASC')
-                ->filterCallSennovaRole(request()->only('search'))->paginate(),
+            'callSennovaRoles' =>
+                $call->callSennovaRoles()->select('call_sennova_roles.id', 'sennova_roles.name', 'call_sennova_roles.salary', 'call_sennova_roles.qty_months')
+                    ->join('sennova_roles', 'call_sennova_roles.sennova_role_id', 'sennova_roles.id')
+                    ->filterCallSennovaRole(request()->only('search'))->paginate(),
+            'call' => $call,
         ]);
     }
 
@@ -30,11 +35,14 @@ class CallSennovaRoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Call $call)
     {
         $this->authorize('create', [CallSennovaRole::class]);
 
-        return Inertia::render('CallSennovaRoles/Create');
+        return Inertia::render('Calls/CallSennovaRoles/Create', [
+            'call' => $call,
+            'sennovaRoles' => SennovaRole::select('id as value', 'name as label')->orderBy('name', 'ASC')->get()
+        ]);
     }
 
     /**
@@ -43,18 +51,20 @@ class CallSennovaRoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CallSennovaRoleRequest $request)
+    public function store(CallSennovaRoleRequest $request, Call $call)
     {
         $this->authorize('create', [CallSennovaRole::class]);
 
         $callSennovaRole = new CallSennovaRole();
-        $callSennovaRole->fieldName = $request->fieldName;
-        $callSennovaRole->fieldName = $request->fieldName;
-        $callSennovaRole->fieldName = $request->fieldName;
+        $callSennovaRole->salary = $request->salary;
+        $callSennovaRole->qty_months = $request->qty_months;
+        $callSennovaRole->qty_roles = $request->qty_months;
+        $callSennovaRole->call()->associate($call);
+        $callSennovaRole->sennovaRole()->associate($request->sennova_role_id);
 
         $callSennovaRole->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        return redirect()->route('calls.call-sennova-roles.index', [$call])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -63,11 +73,11 @@ class CallSennovaRoleController extends Controller
      * @param  \App\Models\CallSennovaRole  $callSennovaRole
      * @return \Illuminate\Http\Response
      */
-    public function show(CallSennovaRole $callSennovaRole)
+    public function show(Call $call, CallSennovaRole $callSennovaRole)
     {
         $this->authorize('view', [CallSennovaRole::class, $callSennovaRole]);
 
-        return Inertia::render('CallSennovaRoles/Show', [
+        return Inertia::render('Calls/CallSennovaRoles/Show', [
             'callSennovaRole' => $callSennovaRole
         ]);
     }
@@ -78,12 +88,17 @@ class CallSennovaRoleController extends Controller
      * @param  \App\Models\CallSennovaRole  $callSennovaRole
      * @return \Illuminate\Http\Response
      */
-    public function edit(CallSennovaRole $callSennovaRole)
+    public function edit(Call $call, CallSennovaRole $callSennovaRole)
     {
         $this->authorize('update', [CallSennovaRole::class, $callSennovaRole]);
 
-        return Inertia::render('CallSennovaRoles/Edit', [
-            'callSennovaRole' => $callSennovaRole
+        $callSennovaRole->sennovaRole;
+        $selectedSennovaRoleValue = ['value' => optional($callSennovaRole->sennovaRole)->id, 'label' => optional($callSennovaRole->sennovaRole)->name];
+
+        return Inertia::render('Calls/CallSennovaRoles/Edit', [
+            'callSennovaRole'   => $callSennovaRole,
+            'call'              => $call,
+            'selectedSennovaRoleValue' => $selectedSennovaRoleValue
         ]);
     }
 
@@ -94,13 +109,15 @@ class CallSennovaRoleController extends Controller
      * @param  \App\Models\CallSennovaRole  $callSennovaRole
      * @return \Illuminate\Http\Response
      */
-    public function update(CallSennovaRoleRequest $request, CallSennovaRole $callSennovaRole)
+    public function update(CallSennovaRoleRequest $request, Call $call, CallSennovaRole $callSennovaRole)
     {
         $this->authorize('update', [CallSennovaRole::class, $callSennovaRole]);
 
-        $callSennovaRole->fieldName = $request->fieldName;
-        $callSennovaRole->fieldName = $request->fieldName;
-        $callSennovaRole->fieldName = $request->fieldName;
+        $callSennovaRole->salary        = $request->salary;
+        $callSennovaRole->qty_months    = $request->qty_months;
+        $callSennovaRole->qty_roles     = $request->qty_roles;
+        $callSennovaRole->call()->associate($call);
+        $callSennovaRole->sennovaRole()->associate($request->sennova_role_id);
 
         $callSennovaRole->save();
 
@@ -113,12 +130,12 @@ class CallSennovaRoleController extends Controller
      * @param  \App\Models\CallSennovaRole  $callSennovaRole
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CallSennovaRole $callSennovaRole)
+    public function destroy(Call $call, CallSennovaRole $callSennovaRole)
     {
         $this->authorize('delete', [CallSennovaRole::class, $callSennovaRole]);
 
         $callSennovaRole->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('calls.call-sennova-roles.index', [$call])->with('success', 'The resource has been deleted successfully.');
     }
 }

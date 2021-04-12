@@ -128,7 +128,7 @@
         "singular": "Servicio tecnológico",
         "plural": "Servicios tecnológicos"
     },
-    "RDIOutputs": {
+    "Outputs": {
         "singular": "Producto",
         "plural": "Productos"
     },
@@ -295,5 +295,13 @@
     "Sennova roles": {
         "singular": "Rol SENNOVA",
         "plural": "Roles SENNOVA"
+    },
+    "Minciencias typologies": {
+        "singular": "Tipología Minciencias",
+        "plural": "Tipologías Minciencias"
+    },
+    "Minciencias subtypologies": {
+        "singular": "Subtipología Minciencias",
+        "plural": "Subtipologías Minciencias"
     }
 }

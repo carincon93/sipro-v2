@@ -4,7 +4,7 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
-    import Link from '@inertiajs/inertia-svelte/src/Link.svelte'
+
 
     export let rdi
     export let call
@@ -28,12 +28,12 @@
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateRDI || isSuperAdmin}
-            <Link href={route('calls.rdi.create', [call.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
+            <a use:inertia href={route('calls.rdi.create', [call.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
                 <div>
                     <span>{$_('Create')}</span>
                     <span class="hidden md:inline">proyecto {$_('RDI.singular')}</span>
                 </div>
-            </Link>
+            </a>
         {/if}
     </div>
     <div class="bg-white rounded shadow ">
