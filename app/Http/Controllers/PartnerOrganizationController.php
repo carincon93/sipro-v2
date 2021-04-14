@@ -6,6 +6,7 @@ use App\Http\Requests\PartnerOrganizationRequest;
 use App\Models\Call;
 use App\Models\RDI;
 use App\Models\PartnerOrganization;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -40,9 +41,15 @@ class PartnerOrganizationController extends Controller
     {
         $this->authorize('create', [PartnerOrganization::class]);
 
+        $specificObjective = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
+
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Create', [
             'call' => $call,
             'rdi'  => $rdi,
+            'activities' => Activity::whereIn('specific_objective_id',
+                $specificObjective->map(function ($specificObjective) {
+                    return $specificObjective->id;
+                }))->orderBy('start_date', 'ASC')->get(),
         ]);
     }
 
@@ -88,8 +95,9 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->intellectual_property = $intelectualPropertyFile;
 
         $partnerOrganization->rdi()->associate($rdi);
-
         $partnerOrganization->save();
+
+        $partnerOrganization->activities()->attach(json_decode($request->activity_id));
 
         return redirect()->route('calls.rdi.partner-organizations.index', [$call, $rdi])->with('success', 'The resource has been created successfully.');
     }
@@ -119,10 +127,17 @@ class PartnerOrganizationController extends Controller
     {
         $this->authorize('update', [PartnerOrganization::class, $partnerOrganization]);
 
+        $specificObjective = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
+
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Edit', [
             'call'                  => $call,
             'rdi'                   => $rdi,
-            'partnerOrganization'   => $partnerOrganization
+            'partnerOrganization'   => $partnerOrganization,
+            'activities'            => Activity::whereIn('specific_objective_id',
+                $specificObjective->map(function ($specificObjective) {
+                    return $specificObjective->id;
+                }))->orderBy('start_date', 'ASC')->get(),
+            'activity_partner_organizations' => $partnerOrganization->activities()->pluck('id'),
         ]);
     }
 
@@ -171,6 +186,7 @@ class PartnerOrganizationController extends Controller
         }
 
         $partnerOrganization->rdi()->associate($rdi);
+        $partnerOrganization->activities()->sync(json_decode($request->activity_id));
 
         $partnerOrganization->save();
 

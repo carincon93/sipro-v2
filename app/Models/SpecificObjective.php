@@ -56,6 +56,16 @@ class SpecificObjective extends Model
         return $this->hasOne(ResearchResult::class);
     }
 
+     /**
+     * Relationship with Activity
+     *
+     * @return void
+     */
+    public function activities()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     /**
      * Filtrar registros
      *

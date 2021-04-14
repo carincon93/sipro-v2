@@ -6,6 +6,7 @@ use App\Http\Requests\AnnexeRequest;
 use App\Models\Call;
 use App\Models\Project;
 use App\Models\Annexe;
+use App\Models\ProgrammaticLine;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,15 +17,13 @@ class AnnexeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Call $call, Project $project)
+    public function index()
     {
         $this->authorize('viewAny', [Annexe::class]);
 
-        return Inertia::render('Calls/Projects/Annexes/Index', [
-            'call'      => $call,
-            'project'   => $project,
+        return Inertia::render('Annexes/Index', [
             'filters'   => request()->all('search'),
-            'annexes'   => Annexe::where('project_id', $project->id)->orderBy('name', 'ASC')
+            'annexes'   => Annexe::orderBy('name', 'ASC')
                 ->filterAnnexe(request()->only('search'))->paginate(),
         ]);
     }
@@ -34,11 +33,13 @@ class AnnexeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Call $call, Project $project)
+    public function create()
     {
         $this->authorize('create', [Annexe::class]);
 
-        return Inertia::render('Calls/Projects/Annexes/Create');
+        return Inertia::render('Annexes/Create', [
+            'programmaticLines' => ProgrammaticLine::orderBy('name', 'ASC')->get()
+        ]);
     }
 
     /**
@@ -47,18 +48,20 @@ class AnnexeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AnnexeRequest $request, Call $call, Project $project)
+    public function store(AnnexeRequest $request)
     {
         $this->authorize('create', [Annexe::class]);
 
         $annexe = new Annexe();
-        $annexe->fieldName = $request->fieldName;
-        $annexe->fieldName = $request->fieldName;
-        $annexe->fieldName = $request->fieldName;
+        $annexe->name           = $request->name;
+        $annexe->description    = $request->description;
 
         $annexe->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        $annexe->programmaticLines()->attach($request->programmatic_line_id);
+
+
+        return redirect()->route('annexes.index')->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -67,11 +70,11 @@ class AnnexeController extends Controller
      * @param  \App\Models\Annexe  $annexe
      * @return \Illuminate\Http\Response
      */
-    public function show(Call $call, Project $project, Annexe $annexe)
+    public function show(Annexe $annexe)
     {
         $this->authorize('view', [Annexe::class, $annexe]);
 
-        return Inertia::render('Calls/Projects/Annexes/Show', [
+        return Inertia::render('Annexes/Show', [
             'annexe' => $annexe
         ]);
     }
@@ -82,12 +85,14 @@ class AnnexeController extends Controller
      * @param  \App\Models\Annexe  $annexe
      * @return \Illuminate\Http\Response
      */
-    public function edit(Call $call, Project $project, Annexe $annexe)
+    public function edit(Annexe $annexe)
     {
         $this->authorize('update', [Annexe::class, $annexe]);
 
-        return Inertia::render('Calls/Projects/Annexes/Edit', [
-            'annexe' => $annexe
+        return Inertia::render('Annexes/Edit', [
+            'annexe'                    => $annexe,
+            'programmaticLines'         => ProgrammaticLine::orderBy('name', 'ASC')->get(),
+            'annexeProgrammaticLines'   => $annexe->programmaticLines()->pluck('id'),
         ]);
     }
 
@@ -98,13 +103,13 @@ class AnnexeController extends Controller
      * @param  \App\Models\Annexe  $annexe
      * @return \Illuminate\Http\Response
      */
-    public function update(AnnexeRequest $request, Call $call, Project $project, Annexe $annexe)
+    public function update(AnnexeRequest $request, Annexe $annexe)
     {
         $this->authorize('update', [Annexe::class, $annexe]);
 
-        $annexe->fieldName = $request->fieldName;
-        $annexe->fieldName = $request->fieldName;
-        $annexe->fieldName = $request->fieldName;
+        $annexe->name           = $request->name;
+        $annexe->description    = $request->description;
+        $annexe->programmaticLines()->sync($request->programmatic_line_id);
 
         $annexe->save();
 
@@ -117,12 +122,12 @@ class AnnexeController extends Controller
      * @param  \App\Models\Annexe  $annexe
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Call $call, Project $project, Annexe $annexe)
+    public function destroy(Annexe $annexe)
     {
         $this->authorize('delete', [Annexe::class, $annexe]);
 
         $annexe->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('annexes.index')->with('success', 'The resource has been deleted successfully.');
     }
 }

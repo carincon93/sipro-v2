@@ -70,6 +70,16 @@ class ProgrammaticLine extends Model
     }
 
     /**
+     * Relationship with Annexe
+     *
+     * @return void
+     */
+    public function annexes()
+    {
+        return $this->belongsToMany(Annexe::class, 'annexe_programmatic_line', 'programmatic_line_id', 'annexe_id');
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

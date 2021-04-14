@@ -53,6 +53,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\CIIUCode' => 'App\Policies\CIIUCodePolicy',
         'App\Models\MincienciasSubtypology' => 'App\Policies\MincienciasSubtypologyPolicy',
         'App\Models\MincienciasTypology' => 'App\Policies\MincienciasTypologyPolicy',
+        'App\Models\ProjectAnnexe' => 'App\Policies\ProjectAnnexePolicy',
     ];
 
     /**

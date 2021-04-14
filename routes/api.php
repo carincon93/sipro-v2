@@ -44,7 +44,7 @@ use App\Http\Controllers\API\AcademicCentreController as AcademicCentreAPIContro
 use App\Http\Controllers\API\CIIUCodeController as CIIUCodeAPIController;
 use App\Http\Controllers\API\MincienciasTypologyController as MincienciasTypologyAPIController;
 use App\Http\Controllers\API\MincienciasSubtypologyController as MincienciasSubtypologyAPIController;
-
+use App\Http\Controllers\API\ProjectAnnexeController as ProjectAnnexeAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +61,7 @@ Route::middleware('auth:api')->group(function () {
     // API Resources
     Route::apiResources(
         [
+            'project-annexes' => ProjectAnnexeAPIController::class,
             'annexes' => AnnexeAPIController::class,
             'partner-organizations' => PartnerOrganizationAPIController::class,
             'risk-analysis' => RiskAnalysisAPIController::class,

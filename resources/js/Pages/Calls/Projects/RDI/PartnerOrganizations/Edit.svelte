@@ -9,7 +9,7 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
     import Switch from '@/Components/Switch'
@@ -20,6 +20,8 @@
     export let call
     export let rdi
     export let partnerOrganization
+    export let activities
+    export let activity_partner_organizations
 
     let researchGroup   = partnerOrganization.research_group != null ? true : false
     let agreement       = partnerOrganization.agreement_description != null ? true : false
@@ -51,6 +53,7 @@
         knowledge_transfer_activities: partnerOrganization.knowledge_transfer_activities,
         letter_of_intent: '',
         intellectual_property: '',
+        activity_id: activity_partner_organizations
     })
 
     let partnerOrganizationTypes = [{'value': 1, 'label': 'Empresa'}, {'value': 2, 'label': 'Universidad'}, {'value': 3, 'label': 'Entidades sin ánimo de lucro'}, {'value': 4, 'label': 'Centro de formación SENA'}, {'value': 5, 'label': 'Otra'}]
@@ -73,6 +76,7 @@
             formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
             formData.append('letter_of_intent', $form.letter_of_intent)
             formData.append('intellectual_property', $form.intellectual_property)
+            formData.append('activity_id', JSON.stringify($form.activity_id))
 
             Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), formData, {
                 onStart: ()     => sending = true,
@@ -183,6 +187,19 @@
                 <div class="mt-4">
                     <Label id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
                     <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
+                </div>
+
+                <h6 class="mt-20">{$_('Activities.plural')}</h6>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <div class="grid grid-cols-2">
+                        {#each activities as {id, description}, i}
+                            <div class="p-3 border-t border-b flex items-center text-sm">{description}</div>
+
+                            <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                                <Checkbox id={id} checked={activity_partner_organizations.includes(id)} bind:group={$form.activity_id} value={id}/>
+                            </div>
+                        {/each}
+                    </div>
                 </div>
 
                 {#if $form.progress}

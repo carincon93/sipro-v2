@@ -69,7 +69,7 @@
         </a>
     </div>
     <div class="w-10/12">
-        <a use:inertia href={route('calls.projects.annexes.index', [call.id, project.id])} class="flex flex-col items-center inline-block">
+        <a use:inertia href={route('calls.projects.project-annexes.index', [call.id, project.id])} class="flex flex-col items-center inline-block">
             <div class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2">11</div>
             <p class="text-sm text-center">Anexos</p>
         </a>

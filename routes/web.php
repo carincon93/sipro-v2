@@ -47,6 +47,7 @@ use App\Http\Controllers\AnnexeController;
 use App\Http\Controllers\CIIUCodeController;
 use App\Http\Controllers\MincienciasTypologyController;
 use App\Http\Controllers\MincienciasSubtypologyController;
+use App\Http\Controllers\ProjectAnnexeController;
 
 use App\Models\ResearchLine;
 use App\Models\ProjectType;
@@ -93,6 +94,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('calls/{call}/projects/{project}/objectives-tree', [ProjectTreeController::class, 'showObjectivesTree'])->name('calls.projects.objectives-tree');
     // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
+
+    Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
 
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
@@ -149,6 +152,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Resources
     Route::resource('calls.projects.risk-analysis', RiskAnalysisController::class)->parameters(['risk-analysis' => 'risk_analysis']);
+    Route::resource('calls.projects.project-annexes', ProjectAnnexeController::class)->parameters(['project-annexes' => 'project-annexe']);
+    Route::resource('annexes', AnnexeController::class)->parameters(['annexes' => 'annexe']);
     Route::resources(
         [
             'minciencias-typologies' => MincienciasTypologyController::class,
@@ -179,7 +184,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'calls.projects.project-sennova-budgets' => ProjectSennovaBudgetController::class,
             'calls.projects.project-sennova-roles' => ProjectSennovaRoleController::class,
             'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
-            'calls.projects.annexes' => AnnexeController::class,
             'calls.call-sennova-roles' => CallSennovaRoleController::class,
             'projects.direct-causes' => DirectCauseController::class,
             'projects.direct-effects' => DirectEffectController::class,

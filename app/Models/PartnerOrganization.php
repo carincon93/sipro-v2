@@ -58,13 +58,13 @@ class PartnerOrganization extends Model
     }
 
     /**
-     * Relationship with SecondRelatedModel
+     * Relationship with Activity
      *
      * @return void
      */
-    public function secondRelatedModel()
+    public function activities()
     {
-        return $this->hasOne(SecondRelatedModel::class);
+        return $this->belongsToMany(Activity::class, 'activity_partner_organization', 'partner_organization_id', 'activity_id');
     }
 
     /**
