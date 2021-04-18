@@ -12,8 +12,8 @@
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
     import Switch from '@/Components/Switch'
-    import File from '@/Components/File.svelte'
-    import FilterSelect from '@/Components/FilterSelect.svelte'
+    import File from '@/Components/File'
+    import FilterSelect from '@/Components/FilterSelect'
 
     export let call
     export let rdi
@@ -46,6 +46,10 @@
         gruplac_code: '',
         gruplac_link: '',
         knowledge_transfer_activities: '',
+        in_kind: '',
+        in_kind_description: '',
+        funds: '',
+        funds_description: '',
         letter_of_intent: '',
         intellectual_property: '',
         activity_id: []
@@ -68,6 +72,10 @@
             if (researchGroup) formData.append('gruplac_code', $form.gruplac_code)
             if (researchGroup) formData.append('gruplac_link', $form.gruplac_link)
             formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
+            formData.append('in_kind', $form.in_kind)
+            formData.append('in_kind_description', $form.in_kind_description)
+            formData.append('funds', $form.funds)
+            formData.append('funds_description', $form.funds_description)
             formData.append('letter_of_intent', $form.letter_of_intent)
             formData.append('intellectual_property', $form.intellectual_property)
             formData.append('activity_id', JSON.stringify($form.activity_id))
@@ -161,6 +169,26 @@
                         <Input id="gruplac_link" type="url" class="mt-1 block w-full" error={errors.gruplac_link} placeholder="Ejemplo: https://scienti.minciencias.gov.co/gruplac/jsp/Medicion/graficas/verPerfiles.jsp?id_convocatoria=0nroIdGrupo=0000000" bind:value={$form.gruplac_link} required={!researchGroup ? undefined : 'required'} />
                     </div>
                 {/if}
+
+                <div class="mt-4">
+                    <Label id="in_kind" value="Recursos en especie entidad aliada ($COP)" />
+                    <Input id="in_kind" type="number" min="0" class="mt-1 block w-full" error={errors.in_kind} placeholder="COP" bind:value={$form.in_kind} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="in_kind_description" value="Descripción de los recursos en especie aportados" />
+                    <Textarea id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="funds" value="Recursos en especie entidad aliada ($COP)" />
+                    <Input id="funds" type="number" min="0" class="mt-1 block w-full" error={errors.funds} placeholder="COP" bind:value={$form.funds} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="funds_description" value="Descripción de la destinación del dinero aportado" />
+                    <Textarea id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
+                </div>
 
                 <div class="mt-4">
                     <Label id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />

@@ -9,7 +9,7 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownResearchGroup from '@/Dropdowns/DropdownResearchGroup.svelte'
+    import DropdownResearchGroup from '@/Dropdowns/DropdownResearchGroup'
 
     export let errors
 

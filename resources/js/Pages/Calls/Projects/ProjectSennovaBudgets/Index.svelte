@@ -5,7 +5,7 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
 
-    import Stepper from '@/Components/Stepper.svelte'
+    import Stepper from '@/Components/Stepper'
 
     export let call
     export let project
@@ -29,7 +29,7 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="mb-8 font-bold text-3xl">{$_('Project sennova budgets.plural')}</h1>
+    <h1 class="font-bold text-3xl m-24 text-center">{$_('Project sennova budgets.plural')}</h1>
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateProjectSennovaBudgets || isSuperAdmin}
@@ -41,7 +41,7 @@
             </a>
         {/if}
     </div>
-    <div class="bg-white rounded shadow ">
+    <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
@@ -57,11 +57,11 @@
                                     use:inertia
                                     href={route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])}
                                     class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {projectSennovaBudget.call_budget?.budget_programmatic_line?.sennova_budget?.third_budget_info.name}
+                                    {projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
                                 </a>
                             {:else}
                                 <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {projectSennovaBudget.call_budget?.budget_programmatic_line?.sennova_budget?.third_budget_info.name}
+                                    {projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
                                 </p>
                             {/if}
                         </td>

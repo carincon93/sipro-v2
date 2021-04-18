@@ -5,8 +5,8 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
 
-    import Stepper from '@/Components/Stepper.svelte'
-    import Gantt from '@/Components/Gantt.svelte'
+    import Stepper from '@/Components/Stepper'
+    import Gantt from '@/Components/Gantt'
 
     export let call
     export let project

@@ -17,7 +17,10 @@ class SennovaBudget extends Model
     protected $fillable = [
         'first_budget_info_id',
         'second_budget_info_id',
-        'third_budget_info_id'
+        'third_budget_info_id',
+        'budget_ussage_id',
+        'programmatic_line_id',
+        'required_batch',
     ];
 
     /**
@@ -39,13 +42,13 @@ class SennovaBudget extends Model
     ];
 
     /**
-     * Relationship with FirstBudgeInfo
+     * Relationship with FirstBudgetInfo
      *
      * @return void
      */
-    public function firstBudgeInfo()
+    public function firstBudgetInfo()
     {
-        return $this->belongsTo(FirstBudgeInfo::class);
+        return $this->belongsTo(FirstBudgetInfo::class);
     }
 
     /**
@@ -69,13 +72,33 @@ class SennovaBudget extends Model
     }
 
     /**
-     * Relationship with BudgetProgrammaticLine
+     * Relationship with BudgetUsage
      *
      * @return void
      */
-    public function budgetProgrammaticLines()
+    public function budgetUsage()
     {
-        return $this->hasMany(BudgetProgrammaticLine::class);
+        return $this->belongsTo(BudgetUsage::class);
+    }
+
+    /**
+     * Relationship with ProgrammaticLine
+     *
+     * @return void
+     */
+    public function programmaticLine()
+    {
+        return $this->belongsTo(ProgrammaticLine::class);
+    }
+
+    /**
+     * Relationship with CallBudget
+     *
+     * @return void
+     */
+    public function callBudgets()
+    {
+        return $this->hasMany(CallBudget::class);
     }
 
     /**

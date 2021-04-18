@@ -26,7 +26,11 @@ class PartnerOrganization extends Model
         'gruplac_link',
         'knowledge_transfer_activities',
         'letter_of_intent',
-        'intellectual_property'
+        'intellectual_property',
+        'in_kind',
+        'in_kind_description',
+        'funds',
+        'funds_description'
     ];
 
     /**

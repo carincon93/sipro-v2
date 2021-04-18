@@ -32124,6 +32124,10 @@ text {
   max-width: 100vw;
 }
 
+input, select, textarea {
+  width: 100%;
+}
+
 .btn-spinner,
 .btn-spinner:after {
   border-radius: 50%;

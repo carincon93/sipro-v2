@@ -9,7 +9,7 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownResearchLine from '@/Dropdowns/DropdownResearchLine'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
 
@@ -68,7 +68,7 @@
 
                 <div class="mt-4">
                     <Label id="research_line_id" value="Línea de investigación" />
-                    <DropdownResearchLine id="research_line_id" bind:formResearchLine={$form.research_line_id} message={errors.research_line_id} />
+                    <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
                     <InputError message={errors.research_line} />
                 </div>
 

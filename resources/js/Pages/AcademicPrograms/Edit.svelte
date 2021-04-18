@@ -11,7 +11,7 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from 'svelte-select'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre.svelte'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
     export let academicProgram = {}

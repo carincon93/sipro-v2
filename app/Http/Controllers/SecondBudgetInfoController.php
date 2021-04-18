@@ -48,9 +48,8 @@ class SecondBudgetInfoController extends Controller
         $this->authorize('create', [SecondBudgetInfo::class]);
 
         $secondBudgetInfo = new SecondBudgetInfo();
-        $secondBudgetInfo->fieldName = $request->fieldName;
-        $secondBudgetInfo->fieldName = $request->fieldName;
-        $secondBudgetInfo->fieldName = $request->fieldName;
+        $secondBudgetInfo->name = $request->name;
+        $secondBudgetInfo->code = $request->code;
 
         $secondBudgetInfo->save();
 
@@ -98,9 +97,8 @@ class SecondBudgetInfoController extends Controller
     {
         $this->authorize('update', [SecondBudgetInfo::class, $secondBudgetInfo]);
 
-        $secondBudgetInfo->fieldName = $request->fieldName;
-        $secondBudgetInfo->fieldName = $request->fieldName;
-        $secondBudgetInfo->fieldName = $request->fieldName;
+        $secondBudgetInfo->name = $request->name;
+        $secondBudgetInfo->code = $request->code;
 
         $secondBudgetInfo->save();
 

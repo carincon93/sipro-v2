@@ -127,6 +127,10 @@ class RDIController extends Controller
         $rdi->states                            = $request->states;
         $rdi->states_impact                     = $request->states_impact;
 
+        $rdi->sampling                          = $request->sampling;
+        $rdi->sampling_activity                 = $request->sampling == 1 ? $request->sampling_activity : null;
+        $rdi->sampling_objective                = $request->sampling == 1 ? $request->sampling_objective : null;
+
         $rdi->project->projectType()->associate($request->project_type_id);
 
         $rdi->researchLine()->associate($request->research_line_id);

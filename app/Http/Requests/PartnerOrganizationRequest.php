@@ -37,6 +37,10 @@ class PartnerOrganizationRequest extends FormRequest
                 'knowledge_transfer_activities' => ['required', 'max:10000'],
                 'letter_of_intent'              => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
                 'intellectual_property'         => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
+                'in_kind'                       => ['required', 'numeric'],
+                'in_kind_description'           => ['required'],
+                'funds'                         => ['required', 'numeric'],
+                'funds_description'             => ['required'],
             ];
         } else {
             return [
@@ -52,6 +56,10 @@ class PartnerOrganizationRequest extends FormRequest
                 'knowledge_transfer_activities' => ['required', 'max:10000'],
                 'letter_of_intent'              => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
                 'intellectual_property'         => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
+                'in_kind'                       => ['required', 'numeric'],
+                'in_kind_description'           => ['required'],
+                'funds'                         => ['required', 'numeric'],
+                'funds_description'             => ['required'],
             ];
         }
     }

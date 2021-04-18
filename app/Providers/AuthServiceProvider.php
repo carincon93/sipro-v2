@@ -44,7 +44,6 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\SecondBudgetInfo' => 'App\Policies\SecondBudgetInfoPolicy',
         'App\Models\ThirdBudgetInfo' => 'App\Policies\ThirdBudgetInfoPolicy',
         'App\Models\SennovaBudget' => 'App\Policies\SennovaBudgetPolicy',
-        'App\Models\BudgetProgrammaticLine' => 'App\Policies\BudgetProgrammaticLinePolicy',
         'App\Models\CallBudget' => 'App\Policies\CallBudgetPolicy',
         'App\Models\ProjectSennovaBudget' => 'App\Policies\ProjectSennovaBudgetPolicy',
         'App\Models\RiskAnalysis' => 'App\Policies\RiskAnalysisPolicy',
@@ -54,6 +53,9 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\MincienciasSubtypology' => 'App\Policies\MincienciasSubtypologyPolicy',
         'App\Models\MincienciasTypology' => 'App\Policies\MincienciasTypologyPolicy',
         'App\Models\ProjectAnnexe' => 'App\Policies\ProjectAnnexePolicy',
+        'App\Models\BudgetUsage' => 'App\Policies\BudgetUsagePolicy',
+        'App\Models\ProjectBudgetBatch' => 'App\Policies\ProjectBudgetBatchPolicy',
+        'App\Models\MarketResearch' => 'App\Policies\MarketResearchPolicy',
     ];
 
     /**

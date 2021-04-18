@@ -8,9 +8,9 @@ use App\Models\RDI;
 use App\Models\PartnerOrganization;
 use App\Models\Activity;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class PartnerOrganizationController extends Controller
 {
@@ -74,6 +74,10 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->gruplac_code                      = $request->gruplac_code;
         $partnerOrganization->gruplac_link                      = $request->gruplac_link;
         $partnerOrganization->knowledge_transfer_activities     = $request->knowledge_transfer_activities;
+        $partnerOrganization->in_kind                           = $request->in_kind;
+        $partnerOrganization->in_kind_description               = $request->in_kind_description;
+        $partnerOrganization->funds                             = $request->funds;
+        $partnerOrganization->funds_description                 = $request->funds_description;
 
         $endDate       = date('Y', strtotime($rdi->end_date));
         $companyName   = Str::slug(substr($request->name, 0, 30), '-');
@@ -127,17 +131,18 @@ class PartnerOrganizationController extends Controller
     {
         $this->authorize('update', [PartnerOrganization::class, $partnerOrganization]);
 
-        $specificObjective = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
+        $specificObjectives = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
 
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Edit', [
             'call'                  => $call,
             'rdi'                   => $rdi,
             'partnerOrganization'   => $partnerOrganization,
             'activities'            => Activity::whereIn('specific_objective_id',
-                $specificObjective->map(function ($specificObjective) {
+                $specificObjectives->map(function ($specificObjective) {
                     return $specificObjective->id;
                 }))->orderBy('start_date', 'ASC')->get(),
             'activity_partner_organizations' => $partnerOrganization->activities()->pluck('id'),
+            'activity_specific_objective' => $partnerOrganization->activities()->with('specificObjective')->get()->pluck('specificObjective')
         ]);
     }
 
@@ -162,10 +167,13 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->gruplac_code                      = $request->gruplac_code;
         $partnerOrganization->gruplac_link                      = $request->gruplac_link;
         $partnerOrganization->knowledge_transfer_activities     = $request->knowledge_transfer_activities;
+        $partnerOrganization->in_kind                           = $request->in_kind;
+        $partnerOrganization->in_kind_description               = $request->in_kind_description;
+        $partnerOrganization->funds                             = $request->funds;
+        $partnerOrganization->funds_description                 = $request->funds_description;
 
         $endDate       = date('Y', strtotime($rdi->end_date));
         $companyName   = Str::slug(substr($request->name, 0, 30), '-');
-
         if ($request->hasFile('letter_of_intent')) {
             Storage::delete($partnerOrganization->letter_of_intent);
             $letterOfIntent = $request->letter_of_intent;
@@ -175,6 +183,7 @@ class PartnerOrganizationController extends Controller
             );
             $partnerOrganization->letter_of_intent = $letterOfIntentFile;
         }
+
         if ($request->hasFile('intellectual_property')) {
             Storage::delete($partnerOrganization->intellectual_property);
             $intellectualProperty = $request->intellectual_property;

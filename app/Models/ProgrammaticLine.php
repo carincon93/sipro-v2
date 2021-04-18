@@ -50,13 +50,13 @@ class ProgrammaticLine extends Model
     }
 
     /**
-     * Relationship with BudgetProgrammaticLine
+     * Relationship with SennovaBudget
      *
      * @return void
      */
-    public function budgetProgrammaticLines()
+    public function sennovaBudgets()
     {
-        return $this->hasMany(BudgetProgrammaticLine::class);
+        return $this->hasMany(SennovaBudget::class);
     }
 
     /**

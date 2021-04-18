@@ -9,7 +9,7 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from 'svelte-select'
-    import File from '@/Components/File.svelte'
+    import File from '@/Components/File'
 
     export let errors
     export let call

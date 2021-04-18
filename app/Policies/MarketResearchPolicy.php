@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\BudgetProgrammaticLine;
+use App\Models\MarketResearch;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BudgetProgrammaticLinePolicy
+class MarketResearchPolicy
 {
     use HandlesAuthorization;
 
@@ -18,7 +18,7 @@ class BudgetProgrammaticLinePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.index') || $user->hasPermissionTo('budget-programmatic-lines.show') || $user->hasPermissionTo('budget-programmatic-lines.create') || $user->hasPermissionTo('budget-programmatic-lines.edit') || $user->hasPermissionTo('budget-programmatic-lines.delete') ) {
+        if ( $user->hasPermissionTo('market-research.index') ) {
             return true;
         }
 
@@ -29,12 +29,12 @@ class BudgetProgrammaticLinePolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BudgetProgrammaticLine  $budgetProgrammaticLine
+     * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function view(User $user, BudgetProgrammaticLine $budgetProgrammaticLine)
+    public function view(User $user, MarketResearch $marketResearch)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.show') ) {
+        if ( $user->hasPermissionTo('market-research.show') ) {
             return true;
         }
 
@@ -49,7 +49,7 @@ class BudgetProgrammaticLinePolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.create') ) {
+        if ( $user->hasPermissionTo('market-research.create') ) {
             return true;
         }
 
@@ -60,12 +60,12 @@ class BudgetProgrammaticLinePolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BudgetProgrammaticLine  $budgetProgrammaticLine
+     * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function update(User $user, BudgetProgrammaticLine $budgetProgrammaticLine)
+    public function update(User $user, MarketResearch $marketResearch)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.edit') ) {
+        if ( $user->hasPermissionTo('market-research.edit') ) {
             return true;
         }
 
@@ -76,12 +76,12 @@ class BudgetProgrammaticLinePolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BudgetProgrammaticLine  $budgetProgrammaticLine
+     * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function delete(User $user, BudgetProgrammaticLine $budgetProgrammaticLine)
+    public function delete(User $user, MarketResearch $marketResearch)
     {
-        if ( $user->hasPermissionTo('budget-programmatic-lines.delete') ) {
+        if ( $user->hasPermissionTo('market-research.delete') ) {
             return true;
         }
 
@@ -92,10 +92,10 @@ class BudgetProgrammaticLinePolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BudgetProgrammaticLine  $budgetProgrammaticLine
+     * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function restore(User $user, BudgetProgrammaticLine $budgetProgrammaticLine)
+    public function restore(User $user, MarketResearch $marketResearch)
     {
         //
     }
@@ -104,10 +104,10 @@ class BudgetProgrammaticLinePolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\BudgetProgrammaticLine  $budgetProgrammaticLine
+     * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function forceDelete(User $user, BudgetProgrammaticLine $budgetProgrammaticLine)
+    public function forceDelete(User $user, MarketResearch $marketResearch)
     {
         //
     }

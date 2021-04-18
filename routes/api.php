@@ -8,7 +8,6 @@ use App\Http\Controllers\API\PartnerOrganizationController as PartnerOrganizatio
 use App\Http\Controllers\API\RiskAnalysisController as RiskAnalysisAPIController;
 use App\Http\Controllers\API\ProjectSennovaBudgetController as ProjectSennovaBudgetAPIController;
 use App\Http\Controllers\API\CallBudgetController as CallBudgetAPIController;
-use App\Http\Controllers\API\BudgetProgrammaticLineController as BudgetProgrammaticLineAPIController;
 use App\Http\Controllers\API\SennovaBudgetController as SennovaBudgetAPIController;
 use App\Http\Controllers\API\ThirdBudgetInfoController as ThirdBudgetInfoAPIController;
 use App\Http\Controllers\API\SecondBudgetInfoController as SecondBudgetInfoAPIController;
@@ -45,6 +44,9 @@ use App\Http\Controllers\API\CIIUCodeController as CIIUCodeAPIController;
 use App\Http\Controllers\API\MincienciasTypologyController as MincienciasTypologyAPIController;
 use App\Http\Controllers\API\MincienciasSubtypologyController as MincienciasSubtypologyAPIController;
 use App\Http\Controllers\API\ProjectAnnexeController as ProjectAnnexeAPIController;
+use App\Http\Controllers\API\BudgetUsageController as BudgetUsageAPIController;
+use App\Http\Controllers\API\ProjectBudgetBatchController as ProjectBudgetBatchAPIController;
+use App\Http\Controllers\API\MarketResearchController as MarketResearchAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,13 +63,15 @@ Route::middleware('auth:api')->group(function () {
     // API Resources
     Route::apiResources(
         [
+            'project-budget-batches' => ProjectBudgetBatchAPIController::class,
+            'market-research' => MarketResearchAPIController::class,
+            'budget-usages' => BudgetUsageAPIController::class,
             'project-annexes' => ProjectAnnexeAPIController::class,
             'annexes' => AnnexeAPIController::class,
             'partner-organizations' => PartnerOrganizationAPIController::class,
             'risk-analysis' => RiskAnalysisAPIController::class,
             'project-sennova-budgets' => ProjectSennovaBudgetAPIController::class,
             'call-budgets' => CallBudgetAPIController::class,
-            'budgets-programmatic-lines' => BudgetProgrammaticLineAPIController::class,
             'sennova-budgets' => SennovaBudgetAPIController::class,
             'third-budget-info' => ThirdBudgetInfoAPIController::class,
             'second-budget-info' => SecondBudgetInfoAPIController::class,

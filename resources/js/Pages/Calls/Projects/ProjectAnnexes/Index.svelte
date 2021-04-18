@@ -6,9 +6,9 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
     import LoadingButton from '@/Components/LoadingButton'
-    import File from '@/Components/File.svelte'
+    import File from '@/Components/File'
 
-    import Stepper from '@/Components/Stepper.svelte';
+    import Stepper from '@/Components/Stepper';
 
     export let call
     export let project
@@ -47,7 +47,7 @@
     <Stepper {call} {project} />
 
     <h1 class="font-bold text-3xl m-24 text-center">{$_('Project annexes.plural')}</h1>
-    <div class="bg-white rounded shadow ">
+    <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
@@ -69,16 +69,18 @@
                             {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
                                 <form on:submit|preventDefault={(e) => submit(e)} class="mt-4 p-4">
                                     <input type="hidden" name="annexe_id" value={annexe.id}>
-                                    <div>
-                                        <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
-                                        {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
-                                            <a target="_blank" class="text-indigo-400 underline inline-block mt-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
-                                        {/if}
-                                    </div>
-                                    <div class="px-8 py-4 flex items-center">
-                                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                                            {$_('Upload')}
-                                        </LoadingButton>
+                                    {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
+                                        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
+                                    {/if}
+                                    <div class="flex">
+                                        <div class="flex-1">
+                                            <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
+                                        </div>
+                                        <div class="flex items-center">
+                                            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
+                                                {$_('Upload')}
+                                            </LoadingButton>
+                                        </div>
                                     </div>
                                 </form>
                             {/if}

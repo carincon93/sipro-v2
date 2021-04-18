@@ -12,7 +12,7 @@
     import Switch from '@/Components/Switch'
     import Checkbox from '@/Components/Checkbox'
     import Select from 'svelte-select'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre.svelte'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
     export let documentTypes

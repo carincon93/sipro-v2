@@ -36,7 +36,7 @@
             </a>
         {/if}
     </div>
-    <div class="bg-white rounded shadow ">
+    <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
