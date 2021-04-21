@@ -84,6 +84,16 @@ class Activity extends Model
     }
 
     /**
+     * Relationship with PartnerOrganization
+     *
+     * @return void
+     */
+    public function partnerOrganizations()
+    {
+        return $this->belongsToMany(PartnerOrganization::class, 'activity_partner_organization', 'activity_id', 'partner_organization_id');
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

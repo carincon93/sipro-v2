@@ -12,7 +12,7 @@
     import Switch from '@/Components/Switch'
     import Checkbox from '@/Components/Checkbox'
     import Select from 'svelte-select'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre.svelte'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
     export let documentTypes
@@ -40,7 +40,7 @@
         is_enabled:         '',
         participation_type: '',
         academic_centre_id: '',
-        roles
+        role_id: []
     })
 
     function submit() {
@@ -133,7 +133,7 @@
                     <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
 
                     <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <Checkbox id={id} bind:group={$form.roles} value={id}/>
+                        <Checkbox id={id} bind:group={$form.role_id} value={id}/>
                     </div>
                 {/each}
             </div>

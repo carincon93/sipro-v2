@@ -10,7 +10,6 @@
     import ApplicationLogo from '@/Components/ApplicationLogo'
     import Dropdown from '@/Components/Dropdown'
     import Icon from '@/Components/Icon'
-    import NavLink from '@/Components/NavLink'
     import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
     import Toast from '@/Components/Toast.svelte'
 

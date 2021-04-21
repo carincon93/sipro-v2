@@ -98,13 +98,13 @@ class Project extends Model
     }
 
     /**
-     * Relationship with Annexe
+     * Relationship with ProjectAnnexe
      *
      * @return void
      */
-    public function annexes()
+    public function projectAnnexes()
     {
-        return $this->hasMany(Annexe::class);
+        return $this->hasMany(ProjectAnnexe::class);
     }
 
     /**

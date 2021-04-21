@@ -9,7 +9,7 @@
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
-    import DropdownProjectSennovaRole from '@/Dropdowns/DropdownProjectSennovaRole.svelte'
+    import DropdownProjectSennovaRole from '@/Dropdowns/DropdownProjectSennovaRole'
 
     export let call
     export let project

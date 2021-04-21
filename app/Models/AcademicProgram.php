@@ -50,16 +50,6 @@ class AcademicProgram extends Model
     }
 
     /**
-     * Relationship with SecondRelatedModel
-     *
-     * @return void
-     */
-    public function secondRelatedModel()
-    {
-        return $this->hasOne(SecondRelatedModel::class);
-    }
-
-    /**
      * Filtrar registros
      *
      * @param  mixed $query

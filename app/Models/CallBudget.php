@@ -16,7 +16,7 @@ class CallBudget extends Model
      */
     protected $fillable = [
         'call_id',
-        'budget_programmatic_line_id'
+        'sennova_budget_id'
     ];
 
     /**
@@ -48,13 +48,13 @@ class CallBudget extends Model
     }
 
     /**
-     * Relationship with BudgetProgrammaticLine
+     * Relationship with SennovaBudget
      *
      * @return void
      */
-    public function budgetProgrammaticLine()
+    public function sennovaBudget()
     {
-        return $this->belongsTo(BudgetProgrammaticLine::class);
+        return $this->belongsTo(SennovaBudget::class);
     }
 
     /**
@@ -67,7 +67,6 @@ class CallBudget extends Model
         return $this->hasMany(ProjectSennovaBudget::class);
     }
 
-
     /**
      * Filtrar registros
      *
@@ -78,7 +77,7 @@ class CallBudget extends Model
     public function scopeFilterCallBudget($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('replace', 'ilike', '%'.$search.'%');
+            $query->where('call_id', 'ilike', '%'.$search.'%');
         });
     }
 }

@@ -9,17 +9,20 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
     import Switch from '@/Components/Switch'
-    import File from '@/Components/File.svelte'
-    import FilterSelect from '@/Components/FilterSelect.svelte'
+    import File from '@/Components/File'
+    import FilterSelect from '@/Components/FilterSelect'
 
     export let errors
     export let call
     export let rdi
     export let partnerOrganization
+    export let activities
+    export let activity_partner_organizations
+    export let activity_specific_objective
 
     let researchGroup   = partnerOrganization.research_group != null ? true : false
     let agreement       = partnerOrganization.agreement_description != null ? true : false
@@ -49,8 +52,13 @@
         gruplac_code: partnerOrganization.gruplac_code || '',
         gruplac_link: partnerOrganization.gruplac_link || '',
         knowledge_transfer_activities: partnerOrganization.knowledge_transfer_activities,
+        in_kind: partnerOrganization.in_kind,
+        in_kind_description: partnerOrganization.in_kind_description,
+        funds: partnerOrganization.funds,
+        funds_description: partnerOrganization.funds_description,
         letter_of_intent: '',
         intellectual_property: '',
+        activity_id: activity_partner_organizations
     })
 
     let partnerOrganizationTypes = [{'value': 1, 'label': 'Empresa'}, {'value': 2, 'label': 'Universidad'}, {'value': 3, 'label': 'Entidades sin ánimo de lucro'}, {'value': 4, 'label': 'Centro de formación SENA'}, {'value': 5, 'label': 'Otra'}]
@@ -71,8 +79,13 @@
             if (researchGroup) formData.append('gruplac_code', $form.gruplac_code)
             if (researchGroup) formData.append('gruplac_link', $form.gruplac_link)
             formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
+            formData.append('in_kind', $form.in_kind)
+            formData.append('in_kind_description', $form.in_kind_description)
+            formData.append('funds', $form.funds)
+            formData.append('funds_description', $form.funds_description)
             formData.append('letter_of_intent', $form.letter_of_intent)
             formData.append('intellectual_property', $form.intellectual_property)
+            formData.append('activity_id', JSON.stringify($form.activity_id))
 
             Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), formData, {
                 onStart: ()     => sending = true,
@@ -171,6 +184,26 @@
                 {/if}
 
                 <div class="mt-4">
+                    <Label id="in_kind" value="Recursos en especie entidad aliada ($COP)" />
+                    <Input id="in_kind" type="number" min="0" class="mt-1 block w-full" error={errors.in_kind} placeholder="COP" bind:value={$form.in_kind} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="in_kind_description" value="Descripción de los recursos en especie aportados" />
+                    <Textarea id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="funds" value="Recursos en especie entidad aliada ($COP)" />
+                    <Input id="funds" type="number" min="0" class="mt-1 block w-full" error={errors.funds} placeholder="COP" bind:value={$form.funds} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label id="funds_description" value="Descripción de la destinación del dinero aportado" />
+                    <Textarea id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
+                </div>
+
+                <div class="mt-4">
                     <Label id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
                     <Textarea id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
                 </div>
@@ -183,6 +216,19 @@
                 <div class="mt-4">
                     <Label id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
                     <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
+                </div>
+
+                <h6 class="mt-20 mb-12 text-2xl">{$_('Activities.plural')}</h6>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <div class="grid grid-cols-2">
+                        {#each activities as {id, description}, i}
+                            <div class="p-3 border-t border-b flex items-center text-sm">{description}</div>
+
+                            <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                                <Checkbox id={id} checked={activity_partner_organizations.includes(id)} bind:group={$form.activity_id} value={id}/>
+                            </div>
+                        {/each}
+                    </div>
                 </div>
 
                 {#if $form.progress}
@@ -215,5 +261,33 @@
                 </div>
             </Card>
         </Modal>
+    </div>
+
+    <h1 class="mt-20 mb-12 text-2xl">{$_('Specific objectives.plural')}</h1>
+    <div class="bg-white rounded shadow">
+        <table class="w-full whitespace-no-wrap">
+            <thead>
+                <tr class="text-left font-bold">
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {#each activity_specific_objective as {id, description}}
+                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                        <td class="border-t">
+                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                {description}
+                            </p>
+                        </td>
+                    </tr>
+                {/each}
+
+                {#if activity_specific_objective.length === 0}
+                    <tr>
+                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    </tr>
+                {/if}
+            </tbody>
+        </table>
     </div>
 </AuthenticatedLayout>

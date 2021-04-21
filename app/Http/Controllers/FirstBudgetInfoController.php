@@ -48,9 +48,10 @@ class FirstBudgetInfoController extends Controller
         $this->authorize('create', [FirstBudgetInfo::class]);
 
         $firstBudgetInfo = new FirstBudgetInfo();
-        $firstBudgetInfo->fieldName = $request->fieldName;
-        $firstBudgetInfo->fieldName = $request->fieldName;
-        $firstBudgetInfo->fieldName = $request->fieldName;
+        $firstBudgetInfo->description   = $request->description;
+        $firstBudgetInfo->code          = $request->code;
+        $firstBudgetInfo->cta           = $request->cta;
+        $firstBudgetInfo->bpin          = $request->bpin;
 
         $firstBudgetInfo->save();
 
@@ -98,9 +99,10 @@ class FirstBudgetInfoController extends Controller
     {
         $this->authorize('update', [FirstBudgetInfo::class, $firstBudgetInfo]);
 
-        $firstBudgetInfo->fieldName = $request->fieldName;
-        $firstBudgetInfo->fieldName = $request->fieldName;
-        $firstBudgetInfo->fieldName = $request->fieldName;
+        $firstBudgetInfo->description   = $request->description;
+        $firstBudgetInfo->code          = $request->code;
+        $firstBudgetInfo->cta           = $request->cta;
+        $firstBudgetInfo->bpin          = $request->bpin;
 
         $firstBudgetInfo->save();
 

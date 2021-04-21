@@ -8,9 +8,7 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
     import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
 

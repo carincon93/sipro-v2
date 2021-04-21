@@ -13,7 +13,7 @@
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import fitTextarea from 'fit-textarea'
-    import Stepper from '@/Components/Stepper.svelte'
+    import Stepper from '@/Components/Stepper'
 
     import { createPopper } from '@popperjs/core'
 

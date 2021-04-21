@@ -22,7 +22,8 @@ class SecondBudgetInfo extends Model
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
+        'code'
     ];
 
     /**

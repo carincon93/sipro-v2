@@ -48,9 +48,8 @@ class ThirdBudgetInfoController extends Controller
         $this->authorize('create', [ThirdBudgetInfo::class]);
 
         $thirdBudgetInfo = new ThirdBudgetInfo();
-        $thirdBudgetInfo->fieldName = $request->fieldName;
-        $thirdBudgetInfo->fieldName = $request->fieldName;
-        $thirdBudgetInfo->fieldName = $request->fieldName;
+        $thirdBudgetInfo->name = $request->name;
+        $thirdBudgetInfo->code = $request->code;
 
         $thirdBudgetInfo->save();
 
@@ -98,9 +97,8 @@ class ThirdBudgetInfoController extends Controller
     {
         $this->authorize('update', [ThirdBudgetInfo::class, $thirdBudgetInfo]);
 
-        $thirdBudgetInfo->fieldName = $request->fieldName;
-        $thirdBudgetInfo->fieldName = $request->fieldName;
-        $thirdBudgetInfo->fieldName = $request->fieldName;
+        $thirdBudgetInfo->name = $request->name;
+        $thirdBudgetInfo->code = $request->code;
 
         $thirdBudgetInfo->save();
 

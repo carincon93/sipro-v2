@@ -5,16 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BudgetProgrammaticLine extends Model
+class ProjectAnnexe extends Model
 {
     use HasFactory;
-
-    /**
-     * table
-     *
-     * @var string
-     */
-    protected $table = 'budgets_programmatic_lines';
 
     /**
      * The attributes that are mass assignable.
@@ -22,8 +15,9 @@ class BudgetProgrammaticLine extends Model
      * @var array
      */
     protected $fillable = [
-        'programmatic_line_id',
-        'sennova_budget_id'
+        'annexe_id',
+        'project_id',
+        'file'
     ];
 
     /**
@@ -45,33 +39,23 @@ class BudgetProgrammaticLine extends Model
     ];
 
     /**
-     * Relationship with ProgrammaticLine
+     * Relationship with Project
      *
      * @return void
      */
-    public function programmaticLine()
+    public function project()
     {
-        return $this->belongsTo(ProgrammaticLine::class);
+        return $this->belongsTo(Project::class);
     }
 
     /**
-     * Relationship with SennovaBudget
+     * Relationship with Annexe
      *
      * @return void
      */
-    public function sennovaBudget()
+    public function annexe()
     {
-        return $this->belongsTo(SennovaBudget::class);
-    }
-
-    /**
-     * Relationship with CallBudget
-     *
-     * @return void
-     */
-    public function callBudgets()
-    {
-        return $this->hasMany(CallBudget::class);
+        return $this->belongsTo(Annexe::class);
     }
 
     /**
@@ -81,10 +65,10 @@ class BudgetProgrammaticLine extends Model
      * @param  mixed $filters
      * @return void
      */
-    public function scopeFilterBudgetProgrammaticLine($query, array $filters)
+    public function scopeFilterProjectAnnexe($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('replace', 'ilike', '%'.$search.'%');
+            $query->join('annexes', 'project_annexes.annexe_id', 'annexes.id')->where('annexes.name', 'ilike', '%'.$search.'%');
         });
     }
 }

@@ -9,7 +9,7 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownMincienciasSubtypology from '@/Dropdowns/DropdownMincienciasSubtypology.svelte'
+    import DropdownMincienciasSubtypology from '@/Dropdowns/DropdownMincienciasSubtypology'
     import Select from 'svelte-select'
 
     export let call

@@ -10,7 +10,7 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
-    import DropdownProgrammaticLine from '@/Dropdowns/DropdownProgrammaticLine.svelte'
+    import DropdownProgrammaticLine from '@/Dropdowns/DropdownProgrammaticLine'
 
     export let errors
 

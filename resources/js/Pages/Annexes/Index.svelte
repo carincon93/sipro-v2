@@ -5,10 +5,6 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
 
-    import Stepper from '@/Components/Stepper.svelte';
-
-    export let call
-    export let project
     export let annexes = []
 
     $title = $_('Annexes.plural')
@@ -26,14 +22,11 @@
 </script>
 
 <AuthenticatedLayout>
-
-    <Stepper {call} {project} />
-
     <h1 class="mb-8 font-bold text-3xl">{$_('Annexes.plural')}</h1>
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateAnnexes || isSuperAdmin}
-            <a use:inertia href={route('calls.projects.annexes.create', [call.id, project.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
+            <a use:inertia href={route('annexes.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
                 <div>
                     <span>{$_('Create')}</span>
                     <span class="hidden md:inline">{$_('Annexes.singular')}</span>
@@ -41,7 +34,7 @@
             </a>
         {/if}
     </div>
-    <div class="bg-white rounded shadow ">
+    <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
@@ -55,7 +48,7 @@
                             {#if canEditAnnexes || isSuperAdmin}
                                 <a
                                     use:inertia
-                                    href={route('calls.projects.annexes.edit', [call.id, project.id, annexe.id])}
+                                    href={route('annexes.edit', annexe.id)}
                                     class="px-6 py-4 flex items-center focus:text-indigo-500">
                                     {annexe.name}
                                 </a>

@@ -3,8 +3,8 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Stepper from '@/Components/Stepper.svelte'
-    import Gantt from '@/Components/Gantt.svelte';
+    import Stepper from '@/Components/Stepper'
+    import Gantt from '@/Components/Gantt';
 
     export let call
     export let project

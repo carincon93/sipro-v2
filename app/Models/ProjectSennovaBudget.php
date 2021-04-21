@@ -16,7 +16,9 @@ class ProjectSennovaBudget extends Model
      */
     protected $fillable = [
         'project_id',
-        'call_budget_id'
+        'call_budget_id',
+        'description',
+        'justification'
     ];
 
     /**
@@ -55,6 +57,16 @@ class ProjectSennovaBudget extends Model
     public function callBudget()
     {
         return $this->belongsTo(CallBudget::class);
+    }
+
+    /**
+     * Relationship with ProjectBudgetBatch
+     *
+     * @return void
+     */
+    public function projectBudgetBatches()
+    {
+        return $this->callBudget->sennovaBudget->required_batch ? $this->hasMany(ProjectBudgetBatch::class) : $this->hasOne(ProjectBudgetBatch::class);
     }
 
     /**

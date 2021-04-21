@@ -15,7 +15,9 @@ class Annexe extends Model
      * @var array
      */
     protected $fillable = [
-        //
+        'programmatic_line_id',
+        'name',
+        'description'
     ];
 
     /**
@@ -37,23 +39,23 @@ class Annexe extends Model
     ];
 
     /**
-     * Relationship with Project
+     * Relationship with ProgrammaticLine
      *
      * @return void
      */
-    public function project()
+    public function programmaticLines()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsToMany(ProgrammaticLine::class, 'annexe_programmatic_line', 'annexe_id', 'programmatic_line_id');
     }
 
     /**
-     * Relationship with SecondRelatedModel
+     * Relationship with ProjectAnnexe
      *
      * @return void
      */
-    public function secondRelatedModel()
+    public function projectAnnexes()
     {
-        return $this->hasOne(SecondRelatedModel::class);
+        return $this->hasMany(ProjectAnnexe::class);
     }
 
     /**

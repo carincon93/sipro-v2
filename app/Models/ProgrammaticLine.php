@@ -50,13 +50,13 @@ class ProgrammaticLine extends Model
     }
 
     /**
-     * Relationship with BudgetProgrammaticLine
+     * Relationship with SennovaBudget
      *
      * @return void
      */
-    public function budgetProgrammaticLines()
+    public function sennovaBudgets()
     {
-        return $this->hasMany(BudgetProgrammaticLine::class);
+        return $this->hasMany(SennovaBudget::class);
     }
 
     /**
@@ -67,6 +67,16 @@ class ProgrammaticLine extends Model
     public function sennovaRoles()
     {
         return $this->hasMany(SennovaRole::class);
+    }
+
+    /**
+     * Relationship with Annexe
+     *
+     * @return void
+     */
+    public function annexes()
+    {
+        return $this->belongsToMany(Annexe::class, 'annexe_programmatic_line', 'programmatic_line_id', 'annexe_id');
     }
 
     /**

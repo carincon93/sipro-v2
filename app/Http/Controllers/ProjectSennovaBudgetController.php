@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectSennovaBudgetRequest;
 use App\Models\Call;
+use App\Models\CallBudget;
 use App\Models\Project;
 use App\Models\ProjectSennovaBudget;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class ProjectSennovaBudgetController extends Controller
@@ -24,7 +27,7 @@ class ProjectSennovaBudgetController extends Controller
             'call'                  => $call,
             'project'               => $project,
             'filters'               => request()->all('search'),
-            'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.budgetProgrammaticLine.sennovaBudget.thirdBudgetInfo')->paginate(),
+            'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.sennovaBudget.thirdBudgetInfo')->paginate(),
         ]);
     }
 
@@ -37,7 +40,10 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('create', [ProjectSennovaBudget::class]);
 
-        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Create');
+        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Create', [
+            'call'      => $call,
+            'project'   => $project
+        ]);
     }
 
     /**
@@ -50,14 +56,32 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('create', [ProjectSennovaBudget::class]);
 
-        $projectSennovaBudget = new ProjectSennovaBudget();
-        $projectSennovaBudget->fieldName = $request->fieldName;
-        $projectSennovaBudget->fieldName = $request->fieldName;
-        $projectSennovaBudget->fieldName = $request->fieldName;
+        $callBudget = CallBudget::find($request->call_budget_id);
 
+        $projectSennovaBudget = new ProjectSennovaBudget();
+        $projectSennovaBudget->description      = $request->description;
+        $projectSennovaBudget->justification    = $request->justification;
+
+        $projectSennovaBudget->project()->associate($project);
+        $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been created successfully.');
+        $endDate                = date('Y', strtotime($project->rdi->end_date));
+        $secondBudgetInfoName   = Str::slug(substr($callBudget->sennovaBudget->secondBudgetInfo->name, 0, 30), '-');
+
+        $factSheet = $request->fact_sheet;
+
+        $factSheetFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-ficha-tecnica-$secondBudgetInfoName.".$factSheet->extension();
+        $factSheetFile = $factSheet->storeAs(
+            'fact-sheets', $factSheetFileName
+        );
+
+        $projectBudgetBatches = $projectSennovaBudget->projectBudgetBatches()->create([
+            'qty_items'  => $request->qty_items,
+            'fact_sheet' => $factSheetFile
+        ]);
+
+        return response()->json(['projectSennovaBudget' => $projectSennovaBudget->only('id'), 'projectBudgetBatch' => $projectBudgetBatches->only('id')]);
     }
 
     /**
@@ -86,7 +110,10 @@ class ProjectSennovaBudgetController extends Controller
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Edit', [
-            'projectSennovaBudget' => $projectSennovaBudget
+            'call'                  =>  $call,
+            'project'               => $project,
+            'projectSennovaBudget'  => $projectSennovaBudget,
+            'projectBudgetBatch'    => $projectSennovaBudget->projectBudgetBatches()
         ]);
     }
 
@@ -101,11 +128,34 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
-        $projectSennovaBudget->fieldName = $request->fieldName;
-        $projectSennovaBudget->fieldName = $request->fieldName;
-        $projectSennovaBudget->fieldName = $request->fieldName;
+        $callBudget = CallBudget::find($request->call_budget_id);
 
+        $projectSennovaBudget = new ProjectSennovaBudget();
+        $projectSennovaBudget->description      = $request->description;
+        $projectSennovaBudget->justification    = $request->justification;
+
+
+        $projectSennovaBudget->project()->associate($project);
+        $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
+
+        if ($request->hasFile('fact_sheet')) {
+            Storage::delete($projectSennovaBudget->projectBudgetBatches()->first()->fact_sheet);
+            $endDate                = date('Y', strtotime($project->rdi->end_date));
+            $secondBudgetInfoName   = Str::slug(substr($callBudget->sennovaBudget->secondBudgetInfo->name, 0, 30), '-');
+
+            $factSheet = $request->fact_sheet;
+
+            $factSheetFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-ficha-tecnica-$secondBudgetInfoName.".$factSheet->extension();
+            $factSheetFile = $factSheet->storeAs(
+                'fact-sheets', $factSheetFileName
+            );
+
+            $projectSennovaBudget->projectBudgetBatches()->update([
+                'qty_items'  => $request->qty_items,
+                'fact_sheet' => $factSheetFile
+            ]);
+        }
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }
@@ -122,6 +172,6 @@ class ProjectSennovaBudgetController extends Controller
 
         $projectSennovaBudget->delete();
 
-        return redirect()->route('resourceRoute.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project])->with('success', 'The resource has been deleted successfully.');
     }
 }

@@ -24,7 +24,9 @@ class AnnexeRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'programmatic_line_id.*'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:programmatic_lines,id'],
+            'name'                      => ['required', 'max:191'],
+            'description'               => ['required']
         ];
     }
 }

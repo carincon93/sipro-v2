@@ -38,7 +38,6 @@ use App\Http\Controllers\FirstBudgetInfoController;
 use App\Http\Controllers\SecondBudgetInfoController;
 use App\Http\Controllers\ThirdBudgetInfoController;
 use App\Http\Controllers\SennovaBudgetController;
-use App\Http\Controllers\BudgetProgrammaticLineController;
 use App\Http\Controllers\CallBudgetController;
 use App\Http\Controllers\ProjectSennovaBudgetController;
 use App\Http\Controllers\RiskAnalysisController;
@@ -47,6 +46,10 @@ use App\Http\Controllers\AnnexeController;
 use App\Http\Controllers\CIIUCodeController;
 use App\Http\Controllers\MincienciasTypologyController;
 use App\Http\Controllers\MincienciasSubtypologyController;
+use App\Http\Controllers\ProjectAnnexeController;
+use App\Http\Controllers\BudgetUsageController;
+use App\Http\Controllers\ProjectBudgetBatchController;
+use App\Http\Controllers\MarketResearchController;
 
 use App\Models\ResearchLine;
 use App\Models\ProjectType;
@@ -60,6 +63,9 @@ use App\Models\ResearchGroup;
 use App\Models\MincienciasSubtypology;
 use App\Models\ProgrammaticLine;
 use App\Models\CallSennovaRole;
+use App\Models\SecondBudgetInfo;
+use App\Models\ThirdBudgetInfo;
+use App\Models\SennovaBudget;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,6 +111,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
 
+    Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
+
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
         return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name, chr(10), \'∙ Grupo de investigación: \', research_groups.name, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
@@ -149,6 +157,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/minciencias-subtypologies', function() {
         return response(MincienciasSubtypology::selectRaw('minciencias_subtypologies.id as value, concat(minciencias_subtypologies.name, chr(10), \'∙ Tipología Minciencias: \', minciencias_typologies.name) as label')->join('minciencias_typologies', 'minciencias_subtypologies.minciencias_typology_id', 'minciencias_typologies.id')->orderBy('minciencias_subtypologies.name')->get());
     })->name('web-api.minciencias-subtypologies');
+    // Trae los conceptos internos SENA
+    Route::get('web-api/second-budget-info', function() {
+        return response(SecondBudgetInfo::select('second_budget_info.id as value', 'second_budget_info.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.second-budget-info');
+
+    Route::get('web-api/third-budget-info/{secondBudgetInfo}', function($secondBudgetInfo) {
+        return response(ThirdBudgetInfo::selectRaw('DISTINCT(third_budget_info.id) as value, third_budget_info.name as label')
+            ->join('sennova_budgets', 'third_budget_info.id', 'sennova_budgets.third_budget_info_id')
+            ->where('sennova_budgets.second_budget_info_id', $secondBudgetInfo)
+            ->get());
+    })->name('web-api.third-budget-info');
+    // Trae los usos presupuestales
+    Route::get('web-api/sennova-budgets/{secondBudgetInfo}/{thirdBudgetInfo}', function($secondBudgetInfo, $thirdBudgetInfo) {
+        return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label')
+            ->join('budget_usages', 'sennova_budgets.budget_usage_id', 'budget_usages.id')
+            ->join('call_budgets', 'sennova_budgets.id', 'call_budgets.sennova_budget_id')
+            ->where('sennova_budgets.second_budget_info_id', $secondBudgetInfo)
+            ->where('sennova_budgets.third_budget_info_id', $thirdBudgetInfo)
+            ->orderBy('budget_usages.description', 'ASC')->get());
+    })->name('web-api.budget-usages');
 
     Route::get('web-api/calls/{call}/{programmaticLine}/project-sennova-roles', function($call, $programmaticLine) {
         return response(CallSennovaRole::selectRaw('call_sennova_roles.id as value, concat(sennova_roles.name, chr(10), \'∙ Asignación mensual: \', call_sennova_roles.salary) as label, call_sennova_roles.qty_months, call_sennova_roles.qty_roles')
@@ -160,8 +188,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Resources
     Route::resource('calls.projects.risk-analysis', RiskAnalysisController::class)->parameters(['risk-analysis' => 'risk_analysis']);
+    Route::resource('calls.projects.project-annexes', ProjectAnnexeController::class)->parameters(['project-annexes' => 'project-annexe']);
+    Route::resource('annexes', AnnexeController::class)->parameters(['annexes' => 'annexe']);
     Route::resources(
         [
+            'calls.projects.project-sennova-budgets.project-budget-batches.market-research' => MarketResearchController::class,
+            'calls.projects.project-sennova-budgets.project-budget-batches' => ProjectBudgetBatchController::class,
+            'budget-usages' => BudgetUsageController::class,
             'minciencias-typologies' => MincienciasTypologyController::class,
             'minciencias-subtypologies' => MincienciasSubtypologyController::class,
             'ciiu-codes' => CIIUCodeController::class,
@@ -190,7 +223,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'calls.projects.project-sennova-budgets' => ProjectSennovaBudgetController::class,
             'calls.projects.project-sennova-roles' => ProjectSennovaRoleController::class,
             'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
-            'calls.projects.annexes' => AnnexeController::class,
             'calls.call-sennova-roles' => CallSennovaRoleController::class,
             'projects.direct-causes' => DirectCauseController::class,
             'projects.direct-effects' => DirectEffectController::class,
@@ -200,7 +232,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'third-budget-info' => ThirdBudgetInfoController::class,
             'sennova-budgets' => SennovaBudgetController::class,
             'sennova-roles' => SennovaRoleController::class,
-            'budgets-programmatic-lines' => BudgetProgrammaticLineController::class,
             'call-budgets' => CallBudgetController::class,
         ]
     );
