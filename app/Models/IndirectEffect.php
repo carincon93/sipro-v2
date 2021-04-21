@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DirectEffect extends Model
+class IndirectEffect extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class DirectEffect extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id', 'description',
+        'direct_effect_id', 'description',
     ];
 
     /**
@@ -37,33 +37,13 @@ class DirectEffect extends Model
     ];
 
     /**
-     * Relationship with IndirectEffect
+     * Relationship with EfectDirect
      *
      * @return void
      */
-    public function indirectEffects()
+    public function effectDirect()
     {
-        return $this->hasMany(IndirectEffect::class, 'direct_effect_id');
-    }
-
-    /**
-     * Relationship with Project
-     *
-     * @return void
-     */
-    public function project()
-    {
-        return $this->belongsTo(Project::class);
-    }
-
-    /**
-     * Relationship with ResearchResult
-     *
-     * @return void
-     */
-    public function researchResult()
-    {
-        return $this->hasOne(ResearchResult::class);
+        return $this->belongsTo(EfectDirect::class);
     }
 
     /**
@@ -73,7 +53,7 @@ class DirectEffect extends Model
      * @param  mixed $filters
      * @return void
      */
-    public function scopeFilterDirectEffect($query, array $filters)
+    public function scopeFilterIndirectCause($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('description', 'ilike', '%'.$search.'%');

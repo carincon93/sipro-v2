@@ -43,7 +43,9 @@ class RDI extends Model
         'bibliography',
         'students',
         'states',
-        'states_impact'
+        'states_impact',
+        'primary_objective',
+        'research_problem',
     ];
 
     /**

@@ -64,7 +64,7 @@ class Project extends Model
      */
     public function directCauses()
     {
-        return $this->hasMany(DirectCause::class);
+        return $this->hasMany(DirectCause::class)->orderBy('id', 'asc');
     }
 
     /**
@@ -74,7 +74,7 @@ class Project extends Model
      */
     public function directEffects()
     {
-        return $this->hasMany(DirectEffect::class);
+        return $this->hasMany(DirectEffect::class)->orderBy('id', 'asc');
     }
 
     /**
