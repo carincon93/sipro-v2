@@ -47,6 +47,16 @@ class IndirectCause extends Model
     }
 
     /**
+     * Relationship with Activity
+     *
+     * @return void
+     */
+    public function activity()
+    {
+        return $this->hasOne(Activity::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

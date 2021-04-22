@@ -47,6 +47,16 @@ class IndirectEffect extends Model
     }
 
     /**
+     * Relationship with Impact
+     *
+     * @return void
+     */
+    public function impact()
+    {
+        return $this->hasOne(Impact::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

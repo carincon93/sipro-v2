@@ -258,7 +258,7 @@
                         {/each}
                         {#each {length: (3-efect.indirect_effects.length)} as _empty}
                         <div class="flex-1 efectos-directos relative" on:click={modal_showEI(null, efect.id)}>
-                            <div class="h-36 bg-indigo-300 rounded shadow-lg hover:bg-indigo-400 cursor-pointer mr-1.5">
+                            <div class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
                                 <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
                                 </p>
                             </div>
@@ -346,7 +346,7 @@
                         {/each}
                         {#each {length: (3-cause.indirect_causes.length)} as _empty}
                         <div class="causas-directas relative flex-1">
-                            <div on:click={modal_showCI(null, cause.id)} class="h-36 bg-indigo-400 rounded shadow-lg hover:bg-indigo-500 cursor-pointer mr-1.5">
+                            <div on:click={modal_showCI(null, cause.id)} class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
                                 <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
                                 </p>
                             </div>

@@ -10,9 +10,68 @@ use App\Models\DirectEffect;
 use App\Models\IndirectEffect;
 use App\Models\DirectCause;
 use App\Models\IndirectCause;
+use App\Models\ResearchResult;
 
 class ProjectTreeController extends Controller
 {
+
+    private function generateTree(Project $project)
+    {
+        if($project->directEffects()->count()<4){
+            for ($i=0; $i < (4-$project->directEffects()->count()); $i++) {
+                $result = $project->directEffects()->create([
+                    ['description' => null],
+                ]);
+
+                $result2 = $result->researchResult()->create([
+                    ['description' => null],
+                ]);
+            }
+        }
+        if($project->directCauses()->count()<4){
+            for ($i=0; $i < (5-$project->directCauses()->count()); $i++) {
+                $result = $project->directCauses()->create([
+                    ['description' => null],
+                ]);
+
+                $result2 = $result->SpecificObjective()->create([
+                    ['description' => null],
+                ]);
+            }
+        }
+
+        foreach($project->directEffects()->get() as $directEffect){
+            if(empty($directEffect->researchResult)){
+                $result = $directEffect->researchResult()->create([
+                    ['description' => null],
+                ]);
+            }
+            foreach($directEffect->indirectEffects as $indEffect){
+                if(empty($indEffect->impact)){
+                    $rest = $indEffect->impact()->create([
+                        ['description' => null],
+                    ]);
+                }
+            }
+        }
+
+        foreach($project->directCauses()->get() as $directCause){
+            if(empty($directCause->SpecificObjective)){
+                $result = $directCause->SpecificObjective()->create([
+                    ['description' => null],
+                ]);
+            }
+            
+            foreach($directCause->indirectCauses as $indCause){
+                if(empty($indCause->activity)){
+                    $rest = $indCause->activity()->create([
+                        ['description' => null],
+                    ]);
+                }
+            }
+        }
+    }
+
     /**
      * showProblemTree
      *
@@ -24,20 +83,7 @@ class ProjectTreeController extends Controller
     {
         switch ($project) {
             case $project->rdi()->exists():
-                if($project->directEffects()->count()<4){
-                    for ($i=0; $i < (4-$project->directEffects()->count()); $i++) {
-                        $result = $project->directEffects()->create([
-                            ['description' => null],
-                        ]);
-                    }
-                }
-                if($project->directCauses()->count()<4){
-                    for ($i=0; $i < (5-$project->directCauses()->count()); $i++) {
-                        $result = $project->directCauses()->create([
-                            ['description' => null],
-                        ]);
-                    }
-                }
+                $this->generateTree($project);
                 $directEffects = $project->directEffects()->with('indirectEffects')->get();
                 $directCauses = $project->directCauses()->with('indirectCauses')->get();
                 $rdi = $project->rdi()->first();
@@ -57,35 +103,6 @@ class ProjectTreeController extends Controller
             'project'   => $rdi,
             'directEffects' => $directEffects,
             'directCauses'  => $directCauses
-        ]);
-    }
-
-    /**
-     * showObjectivesTree
-     *
-     * @param  mixed $call
-     * @param  mixed $project
-     * @return void
-     */
-    public function showObjectivesTree(Call $call, Project $project)
-    {
-        switch ($project) {
-            case $project->rdi()->exists():
-                $project = $project->rdi()->first();
-                break;
-            case 'value':
-                # code...
-                break;
-            case 'value':
-                # code...
-                break;
-            default:
-                # code...
-                break;
-        }
-        return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
-            'call'      => $call,
-            'project'   => $project
         ]);
     }
 
@@ -124,18 +141,22 @@ class ProjectTreeController extends Controller
             $indEffect->fill($request->all());
             $indEffect->save();
 
-            return redirect()->back()->with('success', 'The resource has been saved successfully.');
-
         }elseif(!empty($request->id)){
             $indEffect = IndirectEffect::find($request->id);
             $indEffect->description = $request->description;
             $indEffect->save();
 
-            return redirect()->back()->with('success', 'The resource has been saved successfully.');
-
+        }else{
+            return redirect()->back()->with('errors', 'Cannot add more indirect effects.');
         }
 
-        return redirect()->back()->with('errors', 'Cannot add more indirect effects.');
+        if(empty($indEffect->impact)){
+            $rest = $indEffect->impact()->create([
+                ['description' => null],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
     public function updateDirectCause(Project $project, DirectCause $direct_cause, Request $request)
@@ -160,17 +181,56 @@ class ProjectTreeController extends Controller
             $indCause->fill($request->all());
             $indCause->save();
 
-            return redirect()->back()->with('success', 'The resource has been saved successfully.');
-
         }elseif(!empty($request->id)){
             $indCause = IndirectCause::find($request->id);
             $indCause->description = $request->description;
             $indCause->save();
 
-            return redirect()->back()->with('success', 'The resource has been saved successfully.');
-
+        }else{
+            return redirect()->back()->with('errors', 'Cannot add more indirect causes.');
         }
 
-        return redirect()->back()->with('errors', 'Cannot add more indirect causes.');
+        if(empty($indCause->activity)){
+            $rest = $indCause->activity()->create([
+                ['description' => null],
+            ]);
+        }
+        return redirect()->back()->with('success', 'The resource has been saved successfully.');
+
+    }
+
+    /**
+     * showObjectivesTree
+     *
+     * @param  mixed $call
+     * @param  mixed $project
+     * @return void
+     */
+    public function showObjectivesTree(Call $call, Project $project)
+    {
+        switch ($project) {
+            case $project->rdi()->exists():
+                $this->generateTree($project);
+                $directEffects = $project->directEffects()->with(['indirectEffects.impact', 'researchResult'])->get();
+                $directCauses = $project->directCauses()->with('indirectCauses.activity', 'SpecificObjective')->get();
+                $rdi = $project->rdi()->first();
+                break;
+            case 'value':
+                # code...
+                break;
+            case 'value':
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+        
+        return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
+            'call'      => $call,
+            'project'   => $rdi,
+            'directEffects' => $directEffects,
+            'directCauses'  => $directCauses
+        ]);
     }
 }

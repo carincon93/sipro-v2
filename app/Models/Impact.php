@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ResearchResult extends Model
+class Impact extends Model
 {
     use HasFactory;
 
@@ -15,10 +15,7 @@ class ResearchResult extends Model
      * @var array
      */
     protected $fillable = [
-        'direct_effect_id',
-        'specific_objective_id',
-        'description',
-        'type',
+        'indirect_effect_id', 'description',
     ];
 
     /**
@@ -40,34 +37,13 @@ class ResearchResult extends Model
     ];
 
     /**
-     * Relationship with SpecificObjective
+     * Relationship with IndirectEffect
      *
      * @return void
      */
-    public function specificObjective()
+    public function indirectEffect()
     {
-        return $this->belongsTo(SpecificObjective::class);
-    }
-
-
-    /**
-     * Relationship with DirectEffect
-     *
-     * @return void
-     */
-    public function directEffect()
-    {
-        return $this->belongsTo(DirectEffect::class);
-    }
-
-    /**
-     * Relationship with Output
-     *
-     * @return void
-     */
-    public function outputs()
-    {
-        return $this->hasMany(Output::class);
+        return $this->belongsTo(IndirectEffect::class);
     }
 
     /**
@@ -77,10 +53,10 @@ class ResearchResult extends Model
      * @param  mixed $filters
      * @return void
      */
-    public function scopeFilterResearchResult($query, array $filters)
+    public function scopeFilterImpact($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('name', 'ilike', '%'.$search.'%');
+            $query->where('description', 'ilike', '%'.$search.'%');
         });
     }
 }
