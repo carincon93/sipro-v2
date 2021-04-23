@@ -117,7 +117,7 @@
         primary_objective:   project.primary_objective
     })
     let modal_openOG  = false
-    const modal_showOG = event => modal_openOG = true;
+    const modal_showOG = event =>{formOG.primary_objective=project.primary_objective; modal_openOG = true;};
     const modal_hideOG = event => modal_openOG = false;
 
     function submitGeneralObjetive() {

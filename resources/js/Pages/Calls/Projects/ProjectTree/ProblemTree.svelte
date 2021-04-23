@@ -70,7 +70,7 @@
         research_problem:   project.research_problem
     })
     let modal_openRP  = false
-    const modal_showRP = event => modal_openRP = true;
+    const modal_showRP = event => {formRP.research_problem=project.research_problem;modal_openRP = true;};
     const modal_hideRP = event => modal_openRP = false;
 
     function submitGeneralProblem() {
