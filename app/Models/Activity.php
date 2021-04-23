@@ -32,7 +32,8 @@ class Activity extends Model
         'specific_objective_id',
         'indirect_cause_id',
         'start_date',
-        'end_date'
+        'end_date',
+        'description',
     ];
 
     /**

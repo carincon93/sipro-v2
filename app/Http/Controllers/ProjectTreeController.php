@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Call;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Http\Requests\ResearchResultRequest;
+use App\Http\Requests\ActivityRequest;
+use App\Models\Call;
 use App\Models\Project;
 use App\Models\DirectEffect;
 use App\Models\IndirectEffect;
 use App\Models\DirectCause;
 use App\Models\IndirectCause;
 use App\Models\ResearchResult;
+use App\Models\Impact;
+use App\Models\SpecificObjective;
+use App\Models\Activity;
 
 class ProjectTreeController extends Controller
 {
@@ -233,4 +238,69 @@ class ProjectTreeController extends Controller
             'directCauses'  => $directCauses
         ]);
     }
+
+    public function updateObjective(Project $project, Request $request)
+    {
+        $validated = $request->validate([
+            'primary_objective' => 'required|string|max:1200',
+        ]);
+        $rdi = $project->rdi;
+        $rdi->primary_objective = $request->primary_objective;
+
+        $rdi->save();
+
+        return redirect()->back()->with('success', 'The resource has been saved successfully.');
+    }
+
+    public function updateImpact(Project $project, Impact $impact, Request $request)
+    {
+        $validated = $request->validate([
+            'description' => 'required|string|max:1200',
+        ]);
+
+        $impact->description=$request->description;
+        
+        if($impact->save()){
+            return redirect()->back()->with('success', 'The resource has been saved successfully.');
+        }
+        return redirect()->back()->with('errors', 'Error updating impact.');
+    }
+
+    public function updateResearchResult(Project $project, ResearchResult $research_result, ResearchResultRequest $request)
+    {
+        $research_result->fill($request->all());
+        
+        if($research_result->save()){
+            return redirect()->back()->with('success', 'The resource has been saved successfully.');
+        }
+        return redirect()->back()->with('errors', 'Error updating result.');
+    }
+
+    public function updateSpecificObjective(Project $project, SpecificObjective $specific_objective, Request $request)
+    {
+        $validated = $request->validate([
+            'description' => 'required|string|max:1200',
+            'number' => 'required|integer',
+        ]);
+
+        $specific_objective->description=$request->description;
+        $specific_objective->number=$request->number;
+        
+        if($specific_objective->save()){
+            return redirect()->back()->with('success', 'The resource has been saved successfully.');
+        }
+        return redirect()->back()->with('errors', 'Error updating specific objective.');
+    }
+
+    public function updateActivity(Call $call, Project $project, Activity $activity, ActivityRequest $request)
+    {
+        $activity->fill($request->all());
+        
+        if($activity->save()){
+            return redirect()->back()->with('success', 'The resource has been saved successfully.');
+        }
+        return redirect()->back()->with('errors', 'Error updating activity.');
+    }
+
+    
 }

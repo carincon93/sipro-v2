@@ -108,6 +108,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Muestra el árbol de objetivos
     Route::get('calls/{call}/projects/{project}/objectives-tree', [ProjectTreeController::class, 'showObjectivesTree'])->name('calls.projects.objectives-tree');
+    // Actualiza el impacto en el arbol de objetivos
+    Route::post('projects/{project}/impact/{impact}', [ProjectTreeController::class, 'updateImpact'])->name('projects.impact');
+    // Actualiza el impacto en el arbol de objetivos
+    Route::post('projects/{project}/research_result/{research_result}', [ProjectTreeController::class, 'updateResearchResult'])->name('projects.research_result');
+    // Actualiza el problema general del proyecto en el arbol de problemas
+    Route::post('projects/{project}/primary-objective', [ProjectTreeController::class, 'updateObjective'])->name('projects.primary_objective');
+    // Actualiza el objetivo especifico en el arbol de objetivos
+    Route::post('projects/{project}/specific_objective/{specific_objective}', [ProjectTreeController::class, 'updateSpecificObjective'])->name('projects.specific_objective');
+    // Actualiza la actividad en el arbol de objetivos
+    Route::post('calls/{call}/projects/{project}/activity/{activity}', [ProjectTreeController::class, 'updateActivity'])->name('projects.activity');
+
     // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
 

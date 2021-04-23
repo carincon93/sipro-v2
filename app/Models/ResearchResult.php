@@ -19,6 +19,9 @@ class ResearchResult extends Model
         'specific_objective_id',
         'description',
         'type',
+        'trl',
+        'indicator',
+        'means_of_verification',
     ];
 
     /**

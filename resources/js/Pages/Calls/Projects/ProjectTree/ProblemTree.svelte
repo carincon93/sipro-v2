@@ -74,7 +74,7 @@
     const modal_hideRP = event => modal_openRP = false;
 
     function submitGeneralProblem() {
-        Inertia.post(route('projects.research_problem', project.id), $formRP, {
+        Inertia.post(route('projects.research_problem', project.id), formRP, {
             onStart: ()     =>{ sending = true;},
             onSuccess: ()   =>  modal_openRP = false,
             onFinish: ()    => {sending = false;},
@@ -384,7 +384,7 @@
         <Card>
             <form on:submit|preventDefault={submitDirectEffect} class="p-4">
                 <h2>
-                    Describa el efecto directo <b>EFE-{formED.id}</b>:
+                    Describa el efecto directo Cod. <b>EFE-{formED.id}</b>:
                 </h2>
                 <div class="mt-4">
                     <Label id="description" value="Descripción" />
@@ -405,7 +405,7 @@
         <Card>
             <form on:submit|preventDefault={submitIndirectEffect} class="p-4">
                 <h2>
-                    Describa el efecto indirecto <b>{formEI.id!=null?'EFE-'+formEI.direct_effect_id+'-IND-'+formEI.id:''}</b>:
+                    Describa el efecto indirecto Cod. <b>{formEI.id!=null?'EFE-'+formEI.direct_effect_id+'-IND-'+formEI.id:''}</b>:
                 </h2>
                 <div class="mt-4">
                     <Label id="description" value="Descripción" />
@@ -426,7 +426,7 @@
         <Card>
             <form on:submit|preventDefault={submitDirectCause} class="p-4">
                 <h2>
-                    Describa la causa directa <b>CAU-{formCD.id}</b>:
+                    Describa la causa directa Cod. <b>CAU-{formCD.id}</b>:
                 </h2>
                 <div class="mt-4">
                     <Label id="description" value="Descripción" />
@@ -447,7 +447,7 @@
         <Card>
             <form on:submit|preventDefault={submitIndirectCause} class="p-4">
                 <h2>
-                    Describa la causa indirecta <b>{formCI.id!=null?'CAU-'+formCI.direct_cause_id+'-IND-'+formCI.id:''}</b>:
+                    Describa la causa indirecta Cod. <b>{formCI.id!=null?'CAU-'+formCI.direct_cause_id+'-IND-'+formCI.id:''}</b>:
                 </h2>
                 <div class="mt-4">
                     <Label id="description" value="Descripción" />
