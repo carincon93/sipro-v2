@@ -60,4 +60,14 @@ class BudgetUsage extends Model
             $query->where('description', 'ilike', '%'.$search.'%');
         });
     }
+
+    /**
+     * getDescriptionAttribute
+     *
+     * @return void
+     */
+    public function getDescriptionAttribute($value)
+    {
+        return ucfirst($value);
+    }
 }

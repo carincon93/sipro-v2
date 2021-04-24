@@ -98,7 +98,7 @@
     <form on:submit|preventDefault={submit}>
         <div class="p-8">
             <div class="mt-28">
-                <Label id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
+                <Label required id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
                 <Textarea id="title" rows="3" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
             </div>
 
@@ -106,13 +106,13 @@
                 <p class="text-center">Fecha de ejecución</p>
                 <div class="mt-4 flex items-start justify-around">
                     <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                        <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                        <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                         <div class="ml-4">
                             <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
                         </div>
                     </div>
                     <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                        <Label id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                        <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                         <div class="ml-4">
                             <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
                         </div>
@@ -122,7 +122,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="research_line_id" value="Línea de investigación" />
+                    <Label required id="research_line_id" value="Línea de investigación" />
                 </div>
                 <div>
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
@@ -130,7 +130,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="project_type_id" value="Tipo de proyecto" />
+                    <Label required id="project_type_id" value="Tipo de proyecto" />
                 </div>
                 <div>
                     <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
@@ -138,7 +138,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="knowledge_network_id" value="Red de conocimiento sectorial" />
+                    <Label required id="knowledge_network_id" value="Red de conocimiento sectorial" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
@@ -146,7 +146,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
+                    <Label required id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
@@ -154,7 +154,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
+                    <Label required id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
                 </div>
                 <div>
                     <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" message={errors.ciiu_code_id} required />
@@ -162,7 +162,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="strategic_thematic_id" value="Temática estratégica SENA" />
+                    <Label required id="strategic_thematic_id" value="Temática estratégica SENA" />
                 </div>
                 <div>
                     <DynamicList id="strategic_thematic_id" bind:value={$form.strategic_thematic_id} routeWebApi={route('web-api.strategic-thematics')} placeholder="Busque por el nombre de la temática estrategica SENA" message={errors.strategic_thematic_id} required />
@@ -170,7 +170,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="video" value="¿El proyecto tiene video?" />
+                    <Label required id="video" value="¿El proyecto tiene video?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -193,7 +193,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="industry_4_justification" value="¿El proyecto está relacionado con la industria 4.0?" />
+                    <Label required id="industry_4_justification" value="¿El proyecto está relacionado con la industria 4.0?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -216,7 +216,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
+                    <Label required id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -239,7 +239,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
+                    <Label required id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -264,7 +264,7 @@
                 <p class="text-center mt-36 mb-20">¿Cuál es el origen de las muestras con las que se realizarán las actividades de investigación, bioprospección y/o aprovechamiento comercial o industrial?</p>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="1" type="radio" bind:group={$form.sampling} value="1">
-                    <Label id="1" value="Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)"/>
+                    <Label required id="1" value="Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)"/>
                 </div>
 
                 <!-- Si seleccionan Especies nativas -->
@@ -280,45 +280,45 @@
                     <div class="flex mb-20">
                         <div class="bg-gray-200 flex-1 p-8">
                             <div class="flex items-center">
-                                <Label id="1.1" value="¿Qué actividad pretende realizar con la especie nativa?"/>
+                                <Label required id="1.1" value="¿Qué actividad pretende realizar con la especie nativa?"/>
                             </div>
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.1" type="radio" bind:group={$form.sampling_activity} value="1.1.1">
-                                <Label id="1.1.1" value="Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza."/>
+                                <Label required id="1.1.1" value="Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.2" type="radio" bind:group={$form.sampling_activity} value="1.1.2">
-                                <Label id="1.1.2" value="Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo."/>
+                                <Label required id="1.1.2" value="Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.3" type="radio" bind:group={$form.sampling_activity} value="1.1.3">
-                                <Label id="1.1.3" value="Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado."/>
+                                <Label required id="1.1.3" value="Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.4" type="radio" bind:group={$form.sampling_activity} value="1.1.4">
-                                <Label id="1.1.4" value="No logro identificar la actividad a desarrollar con la especie nativa"/>
+                                <Label required id="1.1.4" value="No logro identificar la actividad a desarrollar con la especie nativa"/>
                             </div>
                         </div>
 
                         <div class="bg-gray-300 flex-1 p-8">
                             <div class="flex items-center">
-                                <Label id="1.2" value="¿Cuál es la finalidad de las actividades a realizar con la especie nativa?"/>
+                                <Label required id="1.2" value="¿Cuál es la finalidad de las actividades a realizar con la especie nativa?"/>
                             </div>
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.1" type="radio" bind:group={$form.sampling_objective} value="1.2.1">
-                                <Label id="1.2.1" value="Investigación básica sin fines comerciales"/>
+                                <Label required id="1.2.1" value="Investigación básica sin fines comerciales"/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.2" type="radio" bind:group={$form.sampling_objective} value="1.2.2">
-                                <Label id="1.2.2" value="Bioprospección en cualquiera de sus fases"/>
+                                <Label required id="1.2.2" value="Bioprospección en cualquiera de sus fases"/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.3" type="radio" bind:group={$form.sampling_objective} value="1.2.3">
-                                <Label id="1.2.3" value="Comercial o Industrial"/>
+                                <Label required id="1.2.3" value="Comercial o Industrial"/>
                             </div>
                         </div>
                     </div>
@@ -326,29 +326,29 @@
 
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="2" type="radio" bind:group={$form.sampling} value="2">
-                    <Label id="2" value="Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)"/>
+                    <Label required id="2" value="Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="3" type="radio" bind:group={$form.sampling} value="3">
-                    <Label id="3" value="Recursos genéticos humanos y sus productos derivados."/>
+                    <Label required id="3" value="Recursos genéticos humanos y sus productos derivados."/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="4" type="radio" bind:group={$form.sampling} value="4">
-                    <Label id="4" value="Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)"/>
+                    <Label required id="4" value="Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="5" type="radio" bind:group={$form.sampling} value="5">
-                    <Label id="5" value="Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)"/>
+                    <Label required id="5" value="Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="6" type="radio" bind:group={$form.sampling} value="6">
-                    <Label id="6" value="No aplica"/>
+                    <Label required id="6" value="No aplica"/>
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="abstract" value="Resumen del proyecto" />
+                    <Label required id="abstract" value="Resumen del proyecto" />
                 </div>
                 <div>
                     <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
@@ -365,7 +365,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="project_background" value="Antecedentes" />
+                    <Label required id="project_background" value="Antecedentes" />
                 </div>
                 <div>
                     <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
@@ -382,7 +382,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="conceptual_framework" value="Marco conceptual" />
+                    <Label required id="conceptual_framework" value="Marco conceptual" />
                 </div>
                 <div>
                     <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
@@ -399,7 +399,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="project_methodology" value="Metodología" />
+                    <Label required id="project_methodology" value="Metodología" />
                 </div>
                 <div>
                     <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
@@ -416,7 +416,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="sustainability_proposal" value="Propuesta de sostenibilidad" />
+                    <Label required id="sustainability_proposal" value="Propuesta de sostenibilidad" />
                 </div>
                 <div>
                     <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
@@ -433,7 +433,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="bibliography" value="Bibliografía" />
+                    <Label required id="bibliography" value="Bibliografía" />
                 </div>
                 <div>
                     <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
@@ -450,7 +450,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
+                    <Label required id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
                 </div>
                 <div>
                     <Input id="students" type="number" min="0" max="9999" class="mt-1 block w-full" error={errors.students} placeholder="Escriba el número de aprendices que se beneficiarán en la ejecución del proyecto" bind:value={$form.students} required />
@@ -459,7 +459,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="states" value="Nombre de los municipios beneficiados" />
+                    <Label required id="states" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
                     <Textarea id="states" error={errors.states} bind:value={$form.states} required />
@@ -468,14 +468,14 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="states_impact" value="Descripción del beneficio en los municipios" />
+                    <Label required id="states_impact" value="Descripción del beneficio en los municipios" />
                 </div>
                 <div>
                     <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
                 </div>
             </div>
         </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canDeleteRDI || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                     {$_('Delete')}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\MarketResearchRequest;
+use App\Models\CallBudget;
 use App\Models\Call;
 use App\Models\Project;
 use App\Models\ProjectSennovaBudget;
@@ -20,15 +21,9 @@ class MarketResearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index( Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch)
+    public function index( Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
-        $this->authorize('viewAny', [MarketResearch::class]);
-
-        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/ProjectBudgetBatches/MarketResearch/Index', [
-            'filters'   => request()->all('search'),
-            'marketResearchs' => MarketResearch::orderBy('company_name', 'ASC')
-                ->filterMarketResearch(request()->only('search'))->paginate(),
-        ]);
+        //
     }
 
     /**
@@ -36,16 +31,9 @@ class MarketResearchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create( Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch)
+    public function create( Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
-        $this->authorize('create', [MarketResearch::class]);
-
-        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/ProjectBudgetBatches/MarketResearch/Create', [
-            'call'                 => $call,
-            'project'              => $project,
-            'projectSennovaBudget' => $projectSennovaBudget,
-            'projectBudgetBatch'   => $projectBudgetBatch
-        ]);
+        //
     }
 
     /**
@@ -54,30 +42,9 @@ class MarketResearchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MarketResearchRequest $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch)
+    public function store(MarketResearchRequest $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
-        $this->authorize('create', [MarketResearch::class]);
-
-        $marketResearch = new MarketResearch();
-
-        $marketResearch->price_quote    = $request->price_quote;
-        $marketResearch->company_name   = $request->company_name;
-
-        $endDate       = date('Y', strtotime($project->rdi->end_date));
-        $companyName   = Str::slug(substr($request->company_name, 0, 30), '-');
-
-        $factSheet = $request->price_quote_file;
-
-        $priceQuoteFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-estudio-de-mercado-$companyName.".$factSheet->extension();
-        $pruceQuoteFile = $factSheet->storeAs(
-            'market-research', $priceQuoteFileName
-        );
-        $marketResearch->price_quote_file = $pruceQuoteFile;
-
-        $marketResearch->projectBudgetBatch()->associate($projectBudgetBatch);
-        $marketResearch->save();
-
-        return redirect()->back()->with('success', 'The resource has been created successfully.');
+        //
     }
 
     /**
@@ -86,11 +53,11 @@ class MarketResearchController extends Controller
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return \Illuminate\Http\Response
      */
-    public function show(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch, MarketResearch $marketResearch)
+    public function show(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, MarketResearch $marketResearch)
     {
         $this->authorize('view', [MarketResearch::class, $marketResearch]);
 
-        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/ProjectBudgetBatches/MarketResearch/Show', [
+        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/MarketResearch/Show', [
             'marketResearch' => $marketResearch
         ]);
     }
@@ -101,17 +68,9 @@ class MarketResearchController extends Controller
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return \Illuminate\Http\Response
      */
-    public function edit(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch, MarketResearch $marketResearch)
+    public function edit(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch)
     {
-        $this->authorize('update', [MarketResearch::class, $marketResearch]);
-
-        return Inertia::render('Calls/Projects/ProjectSennovaBudgets/ProjectBudgetBatches/MarketResearch/Edit', [
-            'call'                 => $call,
-            'project'              => $project,
-            'projectSennovaBudget' => $projectSennovaBudget,
-            'projectBudgetBatch'   => $projectBudgetBatch,
-            'marketResearch'       => $marketResearch
-        ]);
+        //
     }
 
     /**
@@ -121,31 +80,9 @@ class MarketResearchController extends Controller
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return \Illuminate\Http\Response
      */
-    public function update(MarketResearchRequest $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch, MarketResearch $marketResearch)
+    public function update(MarketResearchRequest $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch)
     {
-        $this->authorize('update', [MarketResearch::class, $marketResearch]);
-
-        $marketResearch->price_quote    = $request->price_quote;
-        $marketResearch->company_name   = $request->company_name;
-
-        if ($request->hasFile('price_quote_file')) {
-            Storage::delete($marketResearch->price_quote_file);
-            $endDate       = date('Y', strtotime($project->rdi->end_date));
-            $companyName   = Str::slug(substr($request->company_name, 0, 30), '-');
-
-            $factSheet = $request->price_quote_file;
-
-            $priceQuoteFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-estudio-de-mercado-$companyName.".$factSheet->extension();
-            $pruceQuoteFile = $factSheet->storeAs(
-                'market-research', $priceQuoteFileName
-            );
-            $marketResearch->price_quote_file = $pruceQuoteFile;
-        }
-
-        $marketResearch->projectBudgetBatch()->associate($projectBudgetBatch);
-        $marketResearch->save();
-
-        return redirect()->back()->with('success', 'The resource has been updated successfully.');
+        //
     }
 
     /**
@@ -154,12 +91,8 @@ class MarketResearchController extends Controller
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, ProjectBudgetBatch $projectBudgetBatch, MarketResearch $marketResearch)
+    public function destroy(Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, MarketResearch $marketResearch)
     {
-        $this->authorize('delete', [MarketResearch::class, $marketResearch]);
-
-        $marketResearch->delete();
-
-        return redirect()->route('calls.projects.project-sennova-budgets.project-budget-batches.index', [$call, $project, $projectSennovaBudget, $projectBudgetBatch])->with('success', 'The resource has been deleted successfully.');
+        //
     }
 }

@@ -27,6 +27,7 @@
     "Logout": "Salir",
     "Save": "Guardar",
     "Close": "Cerrar",
+    "Add": "Añadir",
     "Enable": "Habilitar",
     "Back": "Atrás",
     "Disable": "Inhabilitar",
@@ -309,5 +310,13 @@
     "Minciencias subtypologies": {
         "singular": "Subtipología Minciencias",
         "plural": "Subtipologías Minciencias"
+    },
+    "Market research": {
+        "singular": "Estudio de mercado",
+        "plural": "Estudios de mercado"
+    },
+    "Batch": {
+        "singular": "Lote",
+        "plural": "Lotes"
     }
 }

@@ -79,19 +79,19 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->funds                             = $request->funds;
         $partnerOrganization->funds_description                 = $request->funds_description;
 
-        $endDate       = date('Y', strtotime($rdi->end_date));
         $companyName   = Str::slug(substr($request->name, 0, 30), '-');
+        $random = Str::random(5);
 
         $letterOfIntent = $request->letter_of_intent;
 
-        $letterOfIntentFileName = ($rdi->id + 8000)."-SGPS-$endDate-carta-de-intencion-$companyName.".$letterOfIntent->extension();
+        $letterOfIntentFileName = "{$rdi->project->code}-carta-de-intencion-$companyName-cod$random.".$letterOfIntent->extension();
         $letterOfIntentFile = $letterOfIntent->storeAs(
             'partner-organizations', $letterOfIntentFileName
         );
         $partnerOrganization->letter_of_intent = $letterOfIntentFile;
 
         $intellectualProperty = $request->intellectual_property;
-        $intelectualPropertyFileName = ($rdi->id + 8000)."-SGPS-$endDate-propiedad-intelectual-$companyName.".$intellectualProperty->extension();
+        $intelectualPropertyFileName = "{$rdi->project->code}-propiedad-intelectual-$companyName.".$intellectualProperty->extension();
         $intelectualPropertyFile = $intellectualProperty->storeAs(
             'intellectual-properties', $intelectualPropertyFileName
         );
@@ -172,12 +172,12 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->funds                             = $request->funds;
         $partnerOrganization->funds_description                 = $request->funds_description;
 
-        $endDate       = date('Y', strtotime($rdi->end_date));
         $companyName   = Str::slug(substr($request->name, 0, 30), '-');
+        $random = Str::random(5);
         if ($request->hasFile('letter_of_intent')) {
             Storage::delete($partnerOrganization->letter_of_intent);
             $letterOfIntent = $request->letter_of_intent;
-            $letterOfIntentFileName = ($rdi->id + 8000)."-SGPS-$endDate-carta-de-intencion-$companyName.".$letterOfIntent->extension();
+            $letterOfIntentFileName = "{$rdi->project->code}-carta-de-intencion-$companyName-cod$random.".$letterOfIntent->extension();
             $letterOfIntentFile = $letterOfIntent->storeAs(
                 'partner-organizations', $letterOfIntentFileName
             );
@@ -187,7 +187,7 @@ class PartnerOrganizationController extends Controller
         if ($request->hasFile('intellectual_property')) {
             Storage::delete($partnerOrganization->intellectual_property);
             $intellectualProperty = $request->intellectual_property;
-            $intelectualPropertyFileName = ($rdi->id + 8000)."-SGPS-$endDate-propiedad-intelectual-$companyName.".$intellectualProperty->extension();
+            $intelectualPropertyFileName = "{$rdi->project->code}-propiedad-intelectual-$companyName-cod$random.".$intellectualProperty->extension();
             $intelectualPropertyFile = $intellectualProperty->storeAs(
                 'intellectual-properties', $intelectualPropertyFileName
             );

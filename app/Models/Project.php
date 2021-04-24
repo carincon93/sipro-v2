@@ -9,6 +9,8 @@ class Project extends Model
 {
     use HasFactory;
 
+    protected $appends = ['code', 'totalProjectBudget'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -131,5 +133,26 @@ class Project extends Model
                 'qty_months',
                 'qty_hours'
             ]);
+    }
+
+    /**
+     * Get code e.g. SGPS-8000-2021
+     *
+     * @return void
+     */
+    public function getCodeAttribute()
+    {
+        return 'SGPS-' . ($this->id + 8000) .'-' . date('Y', strtotime($this->rdi->end_date));
+    }
+
+    public function getTotalProjectBudgetAttribute()
+    {
+        $total = 0;
+
+        foreach($this->projectSennovaBudgets as $projectSennovaBudget) {
+            $total += $projectSennovaBudget->getTotalByBudgetWithoutMarketResearchAttribute() + $projectSennovaBudget->getAverageAttribute();
+        }
+
+        return $total;
     }
 }

@@ -73,24 +73,24 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="maximum_value" value="Valor máximo" />
+                    <Label required id="maximum_value" value="Valor máximo" />
                     <Input id="maximum_value" type="number" min="0" class="mt-1 block w-full" bind:value={$form.maximum_value} required autofocus />
                     <InputError message={errors.maximum_value} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="programmatic_line" value="Línea programática" />
+                    <Label required id="programmatic_line" value="Línea programática" />
                     <Select items={programmaticLines} bind:selectedValue={$form.programmatic_line} autocomplete="off" placeholder="Seleccione una subárea de conocimiento"/>
                     <InputError message={errors.programmatic_line} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteProjectTypes || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                         {$_('Delete')} {$_('Project types.singular').toLowerCase()}

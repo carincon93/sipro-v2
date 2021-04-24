@@ -74,45 +74,45 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="level" value="Nivel de riesgo" />
+                    <Label required id="level" value="Nivel de riesgo" />
                     <Select items={riskLevels} bind:selectedValue={$form.level} autocomplete="off"  placeholder="Seleccione el nivel del riesgo" inputAttributes={{'id': 'level'}} />
                     <InputError message={errors.level} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="type" value="Tipo de riesgo" />
+                    <Label required id="type" value="Tipo de riesgo" />
                     <Select items={types} bind:selectedValue={$form.type} autocomplete="off"  placeholder="Seleccione el tipo de riesgo" inputAttributes={{'id': 'type'}} />
                     <InputError message={errors.type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="description" value="Descripción" />
+                    <Label required id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="probability" value="Probabilidad" />
+                    <Label required id="probability" value="Probabilidad" />
                     <Select items={probabilities} bind:selectedValue={$form.probability} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'probability'}} />
                     <InputError message={errors.probability} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="impact" value="Impactos" />
+                    <Label required id="impact" value="Impactos" />
                     <Select items={impacts} bind:selectedValue={$form.impact} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'impact'}} />
                     <InputError message={errors.impact} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="effects" value="Efectos" />
+                    <Label required id="effects" value="Efectos" />
                     <Textarea id="effects" error={errors.effects} bind:value={$form.effects} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="mitigation_measures" value="Medidas de mitigación" />
+                    <Label required id="mitigation_measures" value="Medidas de mitigación" />
                     <Textarea id="mitigation_measures" error={errors.mitigation_measures} bind:value={$form.mitigation_measures} required />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateRiskAnalysis || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Risk analysis.singular')}

@@ -32,19 +32,19 @@
 
 <form on:submit|preventDefault={handleSubmit}>
     <div>
-        <Label id="email" value={$_('Email')} />
+        <Label required id="email" value={$_('Email')} />
         <Input id="email" type="email" class="mt-1 block w-full" bind:value={form.email} name="email" required autofocus autocomplete="email" />
         <InputError message={errors.email} />
     </div>
 
     <div class="mt-4">
-        <Label id="password" value={$_('Password')} />
+        <Label required id="password" value={$_('Password')} />
         <Input id="password" type="password" class="mt-1 block w-full" bind:value={form.password} name="password" required autocomplete="new-password" />
         <InputError message={errors.password} />
     </div>
 
     <div class="mt-4">
-        <Label id="password_confirmation" value={$_('Confirm Password')} />
+        <Label required id="password_confirmation" value={$_('Confirm Password')} />
         <Input id="password_confirmation" type="password" class="mt-1 block w-full" bind:value={form.password_confirmation} name="password_confirmation" required autocomplete="new-password" />
         <InputError message={errors.password_confirmation} />
     </div>

@@ -24,9 +24,11 @@ class ProjectSennovaBudgetRequest extends FormRequest
     public function rules()
     {
         return [
-            'call_budget_id' => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:call_budgets,id'],
-            'description'    => ['required'],
-            'justification'  => ['required']
+            'call_budget_id'    => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:call_budgets,id'],
+            'description'       => ['required'],
+            'justification'     => ['required'],
+            'value'             => ['nullable', 'min:0', 'numeric'],
+            'qty_items'         => ['nullable', 'min:0', 'numeric'],
         ];
     }
 }

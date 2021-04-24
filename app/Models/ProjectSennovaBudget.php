@@ -9,6 +9,8 @@ class ProjectSennovaBudget extends Model
 {
     use HasFactory;
 
+    protected $appends = ['average', 'totalByBudgetWithoutMarketResearch'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,7 +20,9 @@ class ProjectSennovaBudget extends Model
         'project_id',
         'call_budget_id',
         'description',
-        'justification'
+        'justification',
+        'value',
+        'qty_items'
     ];
 
     /**
@@ -66,7 +70,7 @@ class ProjectSennovaBudget extends Model
      */
     public function projectBudgetBatches()
     {
-        return $this->callBudget->sennovaBudget->required_batch ? $this->hasMany(ProjectBudgetBatch::class) : $this->hasOne(ProjectBudgetBatch::class);
+        return $this->hasMany(ProjectBudgetBatch::class);
     }
 
     /**
@@ -90,5 +94,51 @@ class ProjectSennovaBudget extends Model
                 ->orWhere('second_budget_info.name', 'ilike', '%'.$search.'%')
                 ->orWhere('third_budget_info.name', 'ilike', '%'.$search.'%');
         });
+    }
+
+    /**
+     * getDescriptionAttribute
+     *
+     * @param  mixed $value
+     * @return void
+     */
+    public function getDescriptionAttribute($value)
+    {
+        return ucfirst($value);
+    }
+
+    /**
+     * getAverageAttribute
+     *
+     * @return void
+     */
+    public function getAverageAttribute()
+    {
+        $average    = 0;
+
+        if (is_iterable($this->projectBudgetBatches)) {
+            foreach ($this->projectBudgetBatches as $projectBudgetBatch) {
+                $average += $projectBudgetBatch->getAverageAttribute();
+            }
+        } else {
+            $average += $this->projectBudgetBatches->getAverageAttribute();
+        }
+        return $average;
+    }
+
+    /**
+     * getTotalByBudgetWithoutMarketResearchAttribute
+     *
+     * @return void
+     */
+    public function getTotalByBudgetWithoutMarketResearchAttribute()
+    {
+        $total = 0;
+
+        $this->value > 0 && $this->callBudget->sennovaBudget->can_be_added ?
+            $total = ($this->qty_items * $this->value)
+            : $total = 0;
+
+        return $total;
     }
 }

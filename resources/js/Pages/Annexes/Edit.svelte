@@ -72,12 +72,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre del anexo" />
+                    <Label required id="name" value="Nombre del anexo" />
                     <Textarea id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="description" value="Descripción" />
+                    <Label required id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteAnnexes || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                         {$_('Delete')} {$_('Annexes.singular').toLowerCase()}

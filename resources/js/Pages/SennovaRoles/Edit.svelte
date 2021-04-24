@@ -73,22 +73,22 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="description" value="Descripción" />
+                    <Label required id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="programmatic_line_id" value={$_('Programmatic lines.singular')} />
+                    <Label required id="programmatic_line_id" value={$_('Programmatic lines.singular')} />
                     <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteSennovaRoles || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                         {$_('Delete')} {$_('Sennova roles.singular').toLowerCase()}

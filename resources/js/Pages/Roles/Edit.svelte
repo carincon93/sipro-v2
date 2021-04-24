@@ -73,13 +73,13 @@
     <form on:submit|preventDefault={submit}>
         <div class="bg-white rounded shadow max-w-3xl p-8">
             <div class="mt-4">
-                <Label id="name" value="Nombre" />
+                <Label required id="name" value="Nombre" />
                 <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                 <InputError message={errors.name} />
             </div>
 
             <div class="mt-4">
-                <Label id="description" value="Descripción" />
+                <Label required id="description" value="Descripción" />
                 <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 <InputError message={errors.description} />
             </div>
@@ -92,13 +92,13 @@
                         <div class="p-3 border-t border-b flex items-center text-sm">{$_(onlyName+'.plural')}</div>
                     {/if}
                     <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <Label class="text-center mt-6" id={id} value={$_(method)} />
+                        <Label required class="text-center mt-6" id={id} value={$_(method)} />
                         <Checkbox id={id} checked={role_permissions.includes(id)} bind:group={$form.permissions} value={id}/>
                     </div>
                 {/each}
             </div>
         </div>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canDeleteRoles || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                     {$_('Delete')} {$_('System roles.singular').toLowerCase()}

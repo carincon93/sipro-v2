@@ -62,18 +62,18 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="knowledge_area" value="Área de conocimiento" />
+                    <Label required id="knowledge_area" value="Área de conocimiento" />
                     <Select items={knowledgeAreas} bind:selectedValue={$form.knowledge_area} autocomplete="off" placeholder="Seleccione una área de conocimiento"/>
                     <InputError message={errors.knowledge_area} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateKnowledgeSubareas || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Knowledge subareas.singular')}

@@ -41,6 +41,7 @@
             </a>
         {/if}
     </div>
+    ${new Intl.NumberFormat('de-DE').format(project.totalProjectBudget)} COP
     <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>

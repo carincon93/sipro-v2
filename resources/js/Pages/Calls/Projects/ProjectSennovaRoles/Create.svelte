@@ -70,12 +70,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="call_sennova_role_id" value="Rol SENNOVA" />
+                    <Label required id="call_sennova_role_id" value="Rol SENNOVA" />
                     <DropdownProjectSennovaRole id="call_sennova_role_id" bind:qtyMonthsByDefault={qtyMonthsByDefault} bind:qtyRolesByDefault={qtyRolesByDefault} bind:qtyMonths={$form.qty_months} bind:qtyRoles={$form.qty_roles} {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} message={errors.call_sennova_role_id} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="description" value="Descripción" />
+                    <Label required id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
@@ -89,7 +89,7 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label id="qty_months" value="Número de meses que requiere el apoyo" />
+                        <Label required id="qty_months" value="Número de meses que requiere el apoyo" />
                         <Input id="qty_months" type="number" min="1" class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
                     </div>
                 {/if}
@@ -104,12 +104,12 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label id="qty_roles" value="Número de personas requeridas" />
+                        <Label required id="qty_roles" value="Número de personas requeridas" />
                         <Input id="qty_roles" type="number" min="1" class="mt-1 block w-full" error={errors.qty_roles} bind:value={$form.qty_roles} required />
                     </div>
                 {/if}
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateProjectSennovaRoles || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Project sennova roles.singular')}

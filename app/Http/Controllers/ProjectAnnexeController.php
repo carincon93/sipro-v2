@@ -62,11 +62,10 @@ class ProjectAnnexeController extends Controller
 
         $annexe = Annexe::select('id', 'name')->where('id', $request->annexe_id)->first();
 
-        $endDate      = date('Y', strtotime($project->rdi->end_date ?? $project->tatp->end_date ?? $project->technologyServices->end_date));
-        $annexeName   = Str::slug(substr($annexe->name, 0, 30), '-');
-
+        $annexeName     = Str::slug(substr($annexe->name, 0, 30), '-');
+        $random         = Str::random(5);
         $requestFile    = $request->file;
-        $fileName       = ($project->id + 8000)."-SGPS-$endDate-$annexeName.".$requestFile->extension();
+        $fileName       = "$project->code-$annexeName-cod$random.".$requestFile->extension();
         $file = $requestFile->storeAs(
             'annexes', $fileName
         );

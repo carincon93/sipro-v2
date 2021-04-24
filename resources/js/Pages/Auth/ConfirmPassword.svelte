@@ -31,7 +31,7 @@
 
 <form on:submit|preventDefault={handleSubmit}>
     <div>
-        <Label id="password" value={$_('Password')} />
+        <Label required id="password" value={$_('Password')} />
         <Input id="password" type="password" class="mt-1 block w-full" bind:value={form.password} required autocomplete="current-password" autofocus />
         <InputError message={errors.password} />
     </div>

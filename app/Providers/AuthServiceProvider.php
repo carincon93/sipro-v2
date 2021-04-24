@@ -71,8 +71,8 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerSuperAdminPolicy()
     {
-        Gate::before(function ($user, $ability) {
-            return $user->hasRole(1) ? true : null;
-        });
+        // Gate::before(function ($user, $ability) {
+        //     return $user->hasRole(1) ? true : null;
+        // });
     }
 }

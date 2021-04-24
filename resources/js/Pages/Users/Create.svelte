@@ -74,49 +74,49 @@
         <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre completo" />
+                    <Label required id="name" value="Nombre completo" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="email" value="Correo electrónico" />
+                    <Label required id="email" value="Correo electrónico" />
                     <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
                     <InputError message={errors.email} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="document_type" value="Tipo de documento" />
+                    <Label required id="document_type" value="Tipo de documento" />
                     <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
                     <InputError message={errors.document_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="document_number" value="Número de documento" />
+                    <Label required id="document_number" value="Número de documento" />
                     <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
                     <InputError message={errors.document_number} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="cellphone" value="Número de celular" />
+                    <Label required id="cellphone" value="Número de celular" />
                     <Input id="cellphone" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone} required />
                     <InputError message={errors.cellphone} />
                 </div>
                 <div class="mt-4">
-                    <Label id="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
+                    <Label required id="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
                     <br>
                     <Switch bind:checked={$form.is_enabled} />
                     <InputError message={errors.is_enabled} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="participation_type" value="Tipo de participación" />
+                    <Label required id="participation_type" value="Tipo de participación" />
                     <Select noOptionsMessage={$_('No data recorded')} items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
                     <InputError message={errors.participation_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="academic_centre_id" value="Centro de formación" />
+                    <Label required id="academic_centre_id" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} />
                     <InputError message={errors.academic_centre_id} />
                 </div>
@@ -139,7 +139,7 @@
             </div>
         </div>
 
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canCreateUsers || isSuperAdmin}
                 <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                     {$_('Create')} {$_('Users.singular')}

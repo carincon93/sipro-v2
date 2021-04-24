@@ -55,7 +55,7 @@ class ProjectBudgetBatch extends Model
      */
     public function marketResearch()
     {
-        return $this->hasOne(MarketResearch::class);
+        return $this->hasMany(MarketResearch::class);
     }
 
     /**
@@ -70,5 +70,21 @@ class ProjectBudgetBatch extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('qty_items', 'ilike', '%'.$search.'%');
         });
+    }
+
+    /**
+     * getAverageAttribute
+     *
+     * @return void
+     */
+    public function getAverageAttribute()
+    {
+        $average    = 0;
+
+        foreach ($this->marketResearch as $marketResearch) {
+            $average += (int) $marketResearch->price_quote;
+        }
+
+        return $this->marketResearch->count() > 0 ? ($average / $this->marketResearch->count()) : 0;
     }
 }

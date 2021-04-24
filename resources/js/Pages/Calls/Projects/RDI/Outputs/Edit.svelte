@@ -78,20 +78,20 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="research_result_id" value={$_('Research results.singular')} />
+                    <Label required id="research_result_id" value={$_('Research results.singular')} />
                     <Select items={researchResults} bind:selectedValue={$form.research_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
                     <InputError message={errors.research_result_id} />
                 </div>
 
                 {#if output.rdi_output}
                     <div class="mt-4">
-                        <Label id="minciencias_subtypology_id" value={$_('Outputs.singular')} />
+                        <Label required id="minciencias_subtypology_id" value={$_('Outputs.singular')} />
                         <DropdownMincienciasSubtypology id="minciencias_subtypology_id" bind:formMincienciasSubtypology={$form.minciencias_subtypology_id} message={errors.minciencias_subtypology_id} />
                         <InputError message={errors.name} />
                     </div>
@@ -101,13 +101,13 @@
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                            <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
                                 <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                            <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
                                 <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
                             </div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteRDIOutputs || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                         {$_('Delete')} {$_('Outputs.singular').toLowerCase()}

@@ -64,24 +64,24 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="productive_sector" value="Sector productivo" />
+                    <Label required id="productive_sector" value="Sector productivo" />
                     <Select items={productiveSectors} bind:selectedValue={$form.productive_sector} autocomplete="off" placeholder="Seleccione un sector productivo"/>
                     <InputError message={errors.productive_sector} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="technical_committee" value="Mesa técnica de servicios tecnológicos" />
+                    <Label required id="technical_committee" value="Mesa técnica de servicios tecnológicos" />
                     <Select items={technicalCommittees} bind:selectedValue={$form.technical_committee} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos"/>
                     <InputError message={errors.technical_committee} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreatePrioritizedTopics || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Prioritized topics.singular')}

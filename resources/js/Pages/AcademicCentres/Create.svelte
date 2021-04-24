@@ -63,24 +63,24 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="code" value="Código" />
+                    <Label required id="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="regional" value="Regional" />
+                    <Label required id="regional" value="Regional" />
                     <Select items={regional} bind:selectedValue={$form.regional} autocomplete="off" placeholder="Seleccione la regional"/>
                     <InputError message={errors.regional} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateAcademicCentres || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Academic centres.singular')}

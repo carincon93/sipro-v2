@@ -5,7 +5,7 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
-    import LoadingButton from '@/Components/LoadingButton'
+    import Button from '@/Components/Button'
     import File from '@/Components/File'
 
     import Stepper from '@/Components/Stepper';
@@ -77,9 +77,9 @@
                                             <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
                                         </div>
                                         <div class="flex items-center">
-                                            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                                                {$_('Upload')}
-                                            </LoadingButton>
+                                            <Button loading={sending} class="btn-indigo ml-auto" type="submit">
+                                                {$_('Upload')} {projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}
+                                            </Button>
                                         </div>
                                     </div>
                                 </form>

@@ -101,6 +101,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
 
     Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
+    Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/download', [ProjectBudgetBatchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download');
+    Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/market-research/{market_research}/download', [MarketResearchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');
 
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
@@ -146,6 +148,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/minciencias-subtypologies', function() {
         return response(MincienciasSubtypology::selectRaw('minciencias_subtypologies.id as value, concat(minciencias_subtypologies.name, chr(10), \'∙ Tipología Minciencias: \', minciencias_typologies.name) as label')->join('minciencias_typologies', 'minciencias_subtypologies.minciencias_typology_id', 'minciencias_typologies.id')->orderBy('minciencias_subtypologies.name')->get());
     })->name('web-api.minciencias-subtypologies');
+
     // Trae los conceptos internos SENA
     Route::get('web-api/second-budget-info', function() {
         return response(SecondBudgetInfo::select('second_budget_info.id as value', 'second_budget_info.name as label')->orderBy('name', 'ASC')->get());
@@ -167,6 +170,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->orderBy('budget_usages.description', 'ASC')->get());
     })->name('web-api.budget-usages');
 
+    Route::get('web-api/call-budgets/{call_budget}', function($callBudget) {
+        return response(SennovaBudget::select('sennova_budgets.requires_market_research')
+            ->join('call_budgets', 'sennova_budgets.id', 'call_budgets.sennova_budget_id')
+            ->where('call_budgets.id', $callBudget)
+            ->first());
+    })->name('web-api.budget-requires-market-research');
+
     Route::get('web-api/calls/{call}/{programmaticLine}/project-sennova-roles', function($call, $programmaticLine) {
         return response(CallSennovaRole::selectRaw('call_sennova_roles.id as value, concat(sennova_roles.name, chr(10), \'∙ Asignación mensual: \', call_sennova_roles.salary) as label, call_sennova_roles.qty_months, call_sennova_roles.qty_roles')
             ->join('sennova_roles', 'call_sennova_roles.sennova_role_id', 'sennova_roles.id')
@@ -181,7 +191,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('annexes', AnnexeController::class)->parameters(['annexes' => 'annexe']);
     Route::resources(
         [
-            'calls.projects.project-sennova-budgets.project-budget-batches.market-research' => MarketResearchController::class,
+            'calls.projects.project-sennova-budgets.market-research' => MarketResearchController::class,
             'calls.projects.project-sennova-budgets.project-budget-batches' => ProjectBudgetBatchController::class,
             'budget-usages' => BudgetUsageController::class,
             'minciencias-typologies' => MincienciasTypologyController::class,

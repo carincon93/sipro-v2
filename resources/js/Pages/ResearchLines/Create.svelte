@@ -61,19 +61,19 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="research_group_id" value="Grupo de investigación" />
+                    <Label required id="research_group_id" value="Grupo de investigación" />
                     <DropdownResearchGroup id="research_group_id" bind:formResearchGroup={$form.research_group_id} message={errors.research_group_id} />
                     <InputError message={errors.research_group_id} />
                 </div>
 
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateResearchLines || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Research lines.singular')}

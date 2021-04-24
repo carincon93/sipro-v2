@@ -65,30 +65,30 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="code" value="Código" />
+                    <Label required id="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="study_mode" value="Modalidad de estudio" />
+                    <Label required id="study_mode" value="Modalidad de estudio" />
                     <Select items={studyModes} bind:selectedValue={$form.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio"/>
                     <InputError message={errors.study_mode} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="academic_centre" value="Centro de formación" />
+                    <Label required id="academic_centre" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
                     <InputError message={errors.academic_centre} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateAcademicPrograms || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Academic programs.singular')}

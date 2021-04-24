@@ -4,6 +4,9 @@ namespace App\Policies;
 
 use App\Models\MarketResearch;
 use App\Models\User;
+use App\Models\Call;
+use App\Models\Project;
+use App\Models\ProjectSennovaBudget;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MarketResearchPolicy
@@ -47,7 +50,7 @@ class MarketResearchPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
         if ( $user->hasPermissionTo('market-research.create') ) {
             return true;
@@ -63,7 +66,7 @@ class MarketResearchPolicy
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function update(User $user, MarketResearch $marketResearch)
+    public function update(User $user, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, MarketResearch $marketResearch)
     {
         if ( $user->hasPermissionTo('market-research.edit') ) {
             return true;
@@ -79,7 +82,7 @@ class MarketResearchPolicy
      * @param  \App\Models\MarketResearch  $marketResearch
      * @return mixed
      */
-    public function delete(User $user, MarketResearch $marketResearch)
+    public function delete(User $user, ProjectSennovaBudget $projectSennovaBudget, MarketResearch $marketResearch)
     {
         if ( $user->hasPermissionTo('market-research.delete') ) {
             return true;

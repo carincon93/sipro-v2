@@ -21,7 +21,7 @@ class ProjectSennovaBudgetController extends Controller
      */
     public function index(Call $call, Project $project)
     {
-        $this->authorize('viewAny', [ProjectSennovaBudget::class]);
+        $this->authorize('viewAny', ProjectSennovaBudget::class);
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Index', [
             'call'                  => $call,
@@ -61,27 +61,14 @@ class ProjectSennovaBudgetController extends Controller
         $projectSennovaBudget = new ProjectSennovaBudget();
         $projectSennovaBudget->description      = $request->description;
         $projectSennovaBudget->justification    = $request->justification;
+        $projectSennovaBudget->value            = $request->value;
+        $projectSennovaBudget->qty_items        = $request->qty_items;
 
         $projectSennovaBudget->project()->associate($project);
         $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
 
-        $endDate                = date('Y', strtotime($project->rdi->end_date));
-        $secondBudgetInfoName   = Str::slug(substr($callBudget->sennovaBudget->secondBudgetInfo->name, 0, 30), '-');
-
-        $factSheet = $request->fact_sheet;
-
-        $factSheetFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-ficha-tecnica-$secondBudgetInfoName.".$factSheet->extension();
-        $factSheetFile = $factSheet->storeAs(
-            'fact-sheets', $factSheetFileName
-        );
-
-        $projectBudgetBatches = $projectSennovaBudget->projectBudgetBatches()->create([
-            'qty_items'  => $request->qty_items,
-            'fact_sheet' => $factSheetFile
-        ]);
-
-        return response()->json(['projectSennovaBudget' => $projectSennovaBudget->only('id'), 'projectBudgetBatch' => $projectBudgetBatches->only('id')]);
+        return redirect()->route('calls.projects.project-sennova-budgets.market-research.index', [$call, $project, $projectSennovaBudget])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -109,11 +96,13 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
+        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage;
+
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Edit', [
-            'call'                  =>  $call,
-            'project'               => $project,
-            'projectSennovaBudget'  => $projectSennovaBudget,
-            'projectBudgetBatch'    => $projectSennovaBudget->projectBudgetBatches()
+            'call'                          => $call,
+            'project'                       => $project,
+            'projectSennovaBudget'          => $projectSennovaBudget,
+            'projectSennovaBudgetBatches'   => $projectSennovaBudget->with('projectBudgetBatches.marketResearch')->where('id', $projectSennovaBudget->id)->first(),
         ]);
     }
 
@@ -124,38 +113,35 @@ class ProjectSennovaBudgetController extends Controller
      * @param  \App\Models\ProjectSennovaBudget  $projectSennovaBudget
      * @return \Illuminate\Http\Response
      */
-    public function update(ProjectSennovaBudgetRequest $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
+    public function update(Request $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
         $callBudget = CallBudget::find($request->call_budget_id);
 
-        $projectSennovaBudget = new ProjectSennovaBudget();
         $projectSennovaBudget->description      = $request->description;
         $projectSennovaBudget->justification    = $request->justification;
+        $projectSennovaBudget->value            = null;
+        $projectSennovaBudget->qty_items        = null;
 
+        if (!$callBudget->sennovaBudget->requires_market_research) {
+            foreach ($projectSennovaBudget->projectBudgetBatches as $projectBudgetBatch) {
+                Storage::delete($projectBudgetBatch->fact_sheet);
+
+                foreach ($projectBudgetBatch->marketResearch as $marketResearch) {
+                    Storage::delete($marketResearch->price_quote_file);
+                }
+
+                $projectBudgetBatch->delete();
+            }
+
+            $projectSennovaBudget->value      = $request->value;
+            $projectSennovaBudget->qty_items  = $request->qty_items;
+        }
 
         $projectSennovaBudget->project()->associate($project);
         $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
-
-        if ($request->hasFile('fact_sheet')) {
-            Storage::delete($projectSennovaBudget->projectBudgetBatches()->first()->fact_sheet);
-            $endDate                = date('Y', strtotime($project->rdi->end_date));
-            $secondBudgetInfoName   = Str::slug(substr($callBudget->sennovaBudget->secondBudgetInfo->name, 0, 30), '-');
-
-            $factSheet = $request->fact_sheet;
-
-            $factSheetFileName = ($project->rdi->id + 8000)."-SGPS-$endDate-ficha-tecnica-$secondBudgetInfoName.".$factSheet->extension();
-            $factSheetFile = $factSheet->storeAs(
-                'fact-sheets', $factSheetFileName
-            );
-
-            $projectSennovaBudget->projectBudgetBatches()->update([
-                'qty_items'  => $request->qty_items,
-                'fact_sheet' => $factSheetFile
-            ]);
-        }
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

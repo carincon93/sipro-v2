@@ -69,16 +69,16 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="annexes" value={$_('Annexes.singular')} />
+                    <Label required id="annexes" value={$_('Annexes.singular')} />
                     <Select items={annexes} bind:selectedValue={$form.annexe_id} autocomplete="off" placeholder="Seleccione el anexo"/>
                     <InputError message={errors.annexes} />
                 </div>
                 <div class="mt-4">
-                    <Label id="file" value="Anexo" />
+                    <Label required id="file" value="Anexo" />
                     <File id="file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.file} error={errors.file} required />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateProjectAnnexes || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Project annexes.singular')}

@@ -20,7 +20,9 @@ class SennovaBudget extends Model
         'third_budget_info_id',
         'budget_ussage_id',
         'programmatic_line_id',
-        'required_batch',
+        'requires_market_research',
+        'requires_market_research_batch',
+        'can_be_added'
     ];
 
     /**

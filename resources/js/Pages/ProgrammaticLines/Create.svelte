@@ -65,30 +65,30 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="code" value="Código" />
+                    <Label required id="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="project_category" value="Categoría" />
+                    <Label required id="project_category" value="Categoría" />
                     <Select items={projectCategories} bind:selectedValue={$form.project_category} autocomplete="off" placeholder="Seleccione una categoría"/>
                     <InputError message={errors.project_category} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="description" value="Descripción" />
+                    <Label required id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                     <InputError message={errors.description} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateProgrammaticLines || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Programmatic lines.singular')}

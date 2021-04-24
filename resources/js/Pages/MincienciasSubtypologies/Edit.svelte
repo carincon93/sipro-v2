@@ -72,18 +72,18 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label id="name" value="Nombre" />
+                    <Label required id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="minciencias_typology_id" value="Tipología Minciencias" />
+                    <Label required id="minciencias_typology_id" value="Tipología Minciencias" />
                     <Select items={mincienciasTypologies} bind:selectedValue={$form.minciencias_typology_id} autocomplete="off" placeholder="Seleccione una tipología Minciencias"/>
                     <InputError message={errors.minciencias_typology_id} />
                 </div>
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteMincienciasSubtypologies || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
                         {$_('Delete')} {$_('Minciencias subtypologies.singular').toLowerCase()}

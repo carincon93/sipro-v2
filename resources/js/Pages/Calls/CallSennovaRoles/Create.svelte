@@ -66,31 +66,31 @@
             <div class="p-8">
 
                 <div class="mt-4">
-                    <Label id="sennova_role_id" value={$_('Sennova roles.singular')} />
+                    <Label required id="sennova_role_id" value={$_('Sennova roles.singular')} />
                     <Select items={sennovaRoles} bind:selectedValue={$form.sennova_role_id} autocomplete="off" placeholder="Seleccione un rol SENNOVA"/>
                     <InputError message={errors.sennova_role_id} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="salary" value="Asignación mensual" />
+                    <Label required id="salary" value="Asignación mensual" />
                     <Input id="salary" type="number" min="0" class="mt-1 block w-full" bind:value={$form.salary} required autofocus />
                     <InputError message={errors.salary} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="qty_months" value="Número de meses que requiere el apoyo" />
+                    <Label required id="qty_months" value="Número de meses que requiere el apoyo" />
                     <Input id="qty_months" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_months} required autofocus />
                     <InputError message={errors.qty_months} />
                 </div>
 
                 <div class="mt-4">
-                    <Label id="qty_roles" value="Número de personas requeridas" />
+                    <Label required id="qty_roles" value="Número de personas requeridas" />
                     <Input id="qty_roles" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_roles} required autofocus />
                     <InputError message={errors.qty_roles} />
                 </div>
 
             </div>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center">
+            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateSennovaRoles || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Call sennova roles.singular')}
