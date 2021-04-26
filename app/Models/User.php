@@ -23,6 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'document_type',
+        'document_number',
+        'cellphone_number',
+        'is_enabled',
+        'participation_type',
+        'academic_centre_id'
     ];
 
     /**

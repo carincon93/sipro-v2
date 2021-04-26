@@ -50,6 +50,7 @@ use App\Http\Controllers\ProjectAnnexeController;
 use App\Http\Controllers\BudgetUsageController;
 use App\Http\Controllers\ProjectBudgetBatchController;
 use App\Http\Controllers\MarketResearchController;
+use App\Http\Controllers\PartnerOrganizationMemberController;
 
 use App\Models\ResearchLine;
 use App\Models\ProjectType;
@@ -66,6 +67,7 @@ use App\Models\CallSennovaRole;
 use App\Models\SecondBudgetInfo;
 use App\Models\ThirdBudgetInfo;
 use App\Models\SennovaBudget;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -222,6 +224,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'calls.projects.project-sennova-budgets' => ProjectSennovaBudgetController::class,
             'calls.projects.project-sennova-roles' => ProjectSennovaRoleController::class,
             'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
+            'calls.rdi.partner-organizations.partner-organization-members' => PartnerOrganizationMemberController::class,
             'calls.call-sennova-roles' => CallSennovaRoleController::class,
             'projects.direct-causes' => DirectCauseController::class,
             'projects.direct-effects' => DirectEffectController::class,

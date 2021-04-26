@@ -97,7 +97,8 @@
                         </div>
                     </div>
                 </div>
-                <h6 class="mt-20">{$_('Outputs.plural')}</h6>
+
+                <h6 class="mt-20 mb-12 text-2xl">{$_('Outputs.plural')}</h6>
                 <div class="bg-white rounded shadow overflow-hidden">
                     <div class="grid grid-cols-2">
                         {#each outputs as {id, name}, i}

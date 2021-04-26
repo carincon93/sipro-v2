@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -31,12 +31,12 @@
     let canDeleteUsers  = authUser.can.find(element => element == 'users.delete') == 'users.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name:               '',
         email:              '',
         document_type:      '',
         document_number:    '',
-        cellphone:          '',
+        cellphone_number:   '',
         is_enabled:         '',
         participation_type: '',
         academic_centre_id: '',
@@ -98,9 +98,9 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="cellphone" value="Número de celular" />
-                    <Input id="cellphone" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone} required />
-                    <InputError message={errors.cellphone} />
+                    <Label required id="cellphone_number" value="Número de celular" />
+                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
+                    <InputError message={errors.cellphone_number} />
                 </div>
                 <div class="mt-4">
                     <Label required id="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />

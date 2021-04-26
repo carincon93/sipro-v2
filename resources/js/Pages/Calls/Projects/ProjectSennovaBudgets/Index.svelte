@@ -29,7 +29,10 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="font-bold text-3xl m-24 text-center">{$_('Project sennova budgets.plural')}</h1>
+    <h1 class="font-bold text-3xl mt-24 text-center">{$_('Project sennova budgets.plural')}</h1>
+    <h2 class="text-center mt-10 mb-24">
+        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(project.totalProjectBudget)} COP
+    </h2>
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateProjectSennovaBudgets || isSuperAdmin}
@@ -41,12 +44,12 @@
             </a>
         {/if}
     </div>
-    ${new Intl.NumberFormat('de-DE').format(project.totalProjectBudget)} COP
     <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Información</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Subtotal del costo de los productos o servicios requeridos</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,13 +60,50 @@
                                 <a
                                     use:inertia
                                     href={route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
+                                    class="px-6 py-4 block focus:text-indigo-500">
+                                    <div class="mt-3">
+                                        <small>Concepto interno SENA</small>
+                                        <p>{projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}</p>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small>Rubro</small>
+                                        <p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}</p>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small>Uso presupuestal</small>
+                                        <p>{projectSennovaBudget.call_budget?.sennova_budget?.budget_usage.description}</p>
+                                    </div>
                                 </a>
                             {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
-                                </p>
+                                <div class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                    <div class="mt-3">
+                                        <small>Concepto interno SENA</small>
+                                        <p>{projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}</p>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small>Rubro</small>
+                                        <p></p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
+                                    </div>
+                                    <div class="mt-3">
+                                        <small>Uso presupuestal</small>
+                                        <p>{projectSennovaBudget.call_budget?.sennova_budget?.budget_usage.description}</p>
+                                    </div>
+                                </div>
+                            {/if}
+                        </td>
+                        <td class="border-t">
+                            {#if canEditProjectSennovaBudgets || isSuperAdmin}
+                                <a
+                                    use:inertia
+                                    href={route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])}
+                                    class="px-6 py-4 block focus:text-indigo-500">
+                                    <div class="mt-3">
+                                        {#if projectSennovaBudget.average > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.average)} COP {:else if projectSennovaBudget.totalByBudgetWithoutMarketResearch > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.totalByBudgetWithoutMarketResearch)} {/if}
+                                    </div>
+                                    {#if !projectSennovaBudget.call_budget?.sennova_budget?.can_be_added}
+                                        <span class="bg-red-200 p-2 rounded-3xl mt-4 inline-block text-xs">Este uso presupuestal NO suma al total del presupuesto</span>
+                                    {/if}
+                                </a>
                             {/if}
                         </td>
                     </tr>

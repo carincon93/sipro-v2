@@ -144,8 +144,8 @@
         "plural": "Roles de proyecto"
     },
     "Project sennova budgets": {
-        "singular": "Presupuesto de proyecto",
-        "plural": "Presupuestos de proyecto"
+        "singular": "Rubro",
+        "plural": "Rubros"
     },
     "Risk analysis": {
         "singular": "Análisis de riesgos",
@@ -154,6 +154,10 @@
     "Partner organizations": {
         "singular": "Entidad aliada",
         "plural": "Entidades aliadas"
+    },
+    "Partner organization members": {
+        "singular": "Miembro de entidad aliada",
+        "plural": "Miembros de entidad aliada"
     },
     "Annexes": {
         "singular": "Anexo",
@@ -240,28 +244,28 @@
         "plural": "Códigos CIIU"
     },
     "Call budgets": {
-        "singular": "Presupuesto de convocatoria",
-        "plural": "Presupuestos de convocatoria"
+        "singular": "Rubro de convocatoria",
+        "plural": "Rubros de convocatoria"
     },
     "Budget usages": {
         "singular": "Uso presupuestal",
         "plural": "Usos presupuestales"
     },
     "Sennova budgets": {
-        "singular": "Presupuesto SENNOVA",
-        "plural": "Presupuestos SENNOVA"
+        "singular": "Rubro SENNOVA",
+        "plural": "Rubros SENNOVA"
     },
     "First budget info": {
-        "singular": "Presupuesto - Nombre de cuenta",
-        "plural": "Presupuesto - Nombres de cuenta"
+        "singular": "Rubro - Nombre de cuenta",
+        "plural": "Rubro - Nombres de cuenta"
     },
     "Second budget info": {
-        "singular": "Presupuesto - Homologable",
-        "plural": "Presupuesto - Homologables"
+        "singular": "Rubro - Homologable",
+        "plural": "Rubro - Homologables"
     },
     "Third budget info": {
-        "singular": "Presupuesto - Nombre de rubro",
-        "plural": "Presupuesto - Nombres de rubro"
+        "singular": "Rubro - Nombre de rubro",
+        "plural": "Rubro - Nombres de rubro"
     },
     "Roles": {
         "singular": "Rol del sistema",

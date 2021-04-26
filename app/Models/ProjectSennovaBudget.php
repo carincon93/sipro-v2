@@ -135,7 +135,7 @@ class ProjectSennovaBudget extends Model
     {
         $total = 0;
 
-        $this->value > 0 && $this->callBudget->sennovaBudget->can_be_added ?
+        $this->value > 0 ?
             $total = ($this->qty_items * $this->value)
             : $total = 0;
 

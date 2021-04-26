@@ -39,9 +39,9 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Sector productivo</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Mesa técnica de servicios tecnológicos</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Sector productivo</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Mesa técnica de servicios tecnológicos</th>
                 </tr>
             </thead>
             <tbody>

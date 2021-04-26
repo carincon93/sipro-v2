@@ -142,7 +142,7 @@
                 <table class="w-full whitespace-no-wrap bg-white">
                     <thead>
                         <tr class="text-left font-bold">
-                            <th class="px-6 pt-6 pb-4 sticky top-0 bg-white" colspan="2">Estudio(s) de mercado</th>
+                            <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl" colspan="2">Estudio(s) de mercado</th>
                         </tr>
                     </thead>
                     <tbody>

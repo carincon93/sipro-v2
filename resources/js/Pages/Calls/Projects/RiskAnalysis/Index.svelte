@@ -29,7 +29,10 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="font-bold text-3xl m-24 text-center">{$_('Risk analysis.plural')}</h1>
+    <h1 class="font-bold text-3xl mt-24 text-center">{$_('Risk analysis.plural')}</h1>
+    <h2 class="text-center mt-10 mb-24">
+        Debe ingresar mínimo un análisis de riesgo por cada nivel (A nivel de objetivo general - A nivel de actividades - A nivel de productos).
+    </h2>
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateRiskAnalysis || isSuperAdmin}
@@ -45,8 +48,8 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nivel</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nivel</th>
                 </tr>
             </thead>
             <tbody>

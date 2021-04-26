@@ -39,8 +39,8 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white">Subárea de conocimiento</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Subárea de conocimiento</th>
                 </tr>
             </thead>
             <tbody>

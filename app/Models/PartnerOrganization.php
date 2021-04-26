@@ -72,6 +72,16 @@ class PartnerOrganization extends Model
     }
 
     /**
+     * Relationship with PartnerOrganizationMember
+     *
+     * @return void
+     */
+    public function partnerOrganizationMembers()
+    {
+        return $this->hasMany(PartnerOrganizationMember::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

@@ -24,11 +24,11 @@ class PartnerOrganizationController extends Controller
         $this->authorize('viewAny', [PartnerOrganization::class]);
 
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Index', [
-            'call'      => $call,
-            'rdi'       => $rdi,
+            'call'      => $call->only('id'),
+            'rdi'       => $rdi->only('id'),
             'filters'   => request()->all('search'),
             'partnerOrganizations' => PartnerOrganization::where('rdi_id', $rdi->id)->orderBy('name', 'ASC')
-                ->filterPartnerOrganization(request()->only('search'))->paginate(),
+                ->filterPartnerOrganization(request()->only('search'))->select('id', 'name')->paginate(),
         ]);
     }
 
@@ -103,7 +103,7 @@ class PartnerOrganizationController extends Controller
 
         $partnerOrganization->activities()->attach(json_decode($request->activity_id));
 
-        return redirect()->route('calls.rdi.partner-organizations.index', [$call, $rdi])->with('success', 'The resource has been created successfully.');
+        return redirect()->route('calls.rdi.partner-organizations.partner-organization-members.index', [$call, $rdi, $partnerOrganization])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -133,6 +133,8 @@ class PartnerOrganizationController extends Controller
 
         $specificObjectives = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
 
+        $partnerOrganization->partnerOrganizationMembers->only('id', 'name', 'email', 'cellphone_number');
+
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Edit', [
             'call'                  => $call,
             'rdi'                   => $rdi,
@@ -141,8 +143,8 @@ class PartnerOrganizationController extends Controller
                 $specificObjectives->map(function ($specificObjective) {
                     return $specificObjective->id;
                 }))->orderBy('start_date', 'ASC')->get(),
-            'activity_partner_organizations' => $partnerOrganization->activities()->pluck('id'),
-            'activity_specific_objective' => $partnerOrganization->activities()->with('specificObjective')->get()->pluck('specificObjective')
+            'activityPartnerOrganizations'    => $partnerOrganization->activities()->pluck('id'),
+            'activitySpecificObjective'       => $partnerOrganization->activities()->with('specificObjective')->get()->pluck('specificObjective')
         ]);
     }
 

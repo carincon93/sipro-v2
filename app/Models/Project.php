@@ -150,7 +150,9 @@ class Project extends Model
         $total = 0;
 
         foreach($this->projectSennovaBudgets as $projectSennovaBudget) {
-            $total += $projectSennovaBudget->getTotalByBudgetWithoutMarketResearchAttribute() + $projectSennovaBudget->getAverageAttribute();
+            if ($projectSennovaBudget->callBudget->sennovaBudget->can_be_added) {
+                $total += $projectSennovaBudget->getTotalByBudgetWithoutMarketResearchAttribute() + $projectSennovaBudget->getAverageAttribute();
+            }
         }
 
         return $total;

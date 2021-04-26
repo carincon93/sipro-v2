@@ -27,7 +27,7 @@ class ProjectSennovaBudgetController extends Controller
             'call'                  => $call,
             'project'               => $project,
             'filters'               => request()->all('search'),
-            'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.sennovaBudget.thirdBudgetInfo')->paginate(),
+            'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.sennovaBudget.thirdBudgetInfo:id,name', 'callBudget.sennovaBudget.secondBudgetInfo:id,name', 'callBudget.sennovaBudget.budgetUsage:id,description')->paginate(),
         ]);
     }
 

@@ -62,10 +62,10 @@ class UserController extends Controller
         $user->password             = $user::makePassword($request->document_number);
         $user->document_type        = $request->document_type;
         $user->document_number      = $request->document_number;
-        $user->cellphone            = $request->cellphone;
+        $user->cellphone_number     = $request->cellphone_number;
         $user->is_enabled           = $request->is_enabled;
         $user->participation_type   = $request->participation_type;
-        $user->academic_centre_id   = $request->academic_centre_id;
+        $user->academicCentre()->associate($request->academic_centre_id);
 
         $user->save();
 
@@ -126,10 +126,10 @@ class UserController extends Controller
         $user->email                = $request->email;
         $user->document_type        = $request->document_type;
         $user->document_number      = $request->document_number;
-        $user->cellphone            = $request->cellphone;
+        $user->cellphone_number     = $request->cellphone_number;
         $user->is_enabled           = $request->is_enabled;
         $user->participation_type   = $request->participation_type;
-        $user->academic_centre_id   = $request->academic_centre_id;
+        $user->academicCentre()->associate($request->academic_centre_id);
 
         $user->save();
 

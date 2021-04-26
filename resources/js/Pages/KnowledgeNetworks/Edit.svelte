@@ -32,7 +32,7 @@
     })
 
     function submit() {
-        if (canEdiKnowledgeNetworks || isSuperAdmin) {
+        if (canEditKnowledgeNetworks || isSuperAdmin) {
             Inertia.put(route('knowledge-networks.update', knowledgeNetwork.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
