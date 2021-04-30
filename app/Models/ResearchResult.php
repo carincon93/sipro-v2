@@ -16,7 +16,12 @@ class ResearchResult extends Model
      */
     protected $fillable = [
         'direct_effect_id',
-        'specific_objective_id'
+        'specific_objective_id',
+        'description',
+        'type',
+        'trl',
+        'indicator',
+        'means_of_verification',
     ];
 
     /**

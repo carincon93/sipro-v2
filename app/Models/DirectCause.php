@@ -15,7 +15,7 @@ class DirectCause extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id'
+        'project_id', 'description',
     ];
 
     /**
@@ -35,6 +35,16 @@ class DirectCause extends Model
     protected $casts = [
         //
     ];
+
+    /**
+     * Relationship with IndirectCause
+     *
+     * @return void
+     */
+    public function indirectCauses()
+    {
+        return $this->hasMany(IndirectCause::class, 'direct_cause_id');
+    }
 
     /**
      * Relationship with Project

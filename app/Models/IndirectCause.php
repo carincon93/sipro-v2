@@ -15,7 +15,7 @@ class IndirectCause extends Model
      * @var array
      */
     protected $fillable = [
-        'cause_direct_id'
+        'direct_cause_id', 'description',
     ];
 
     /**
@@ -47,13 +47,13 @@ class IndirectCause extends Model
     }
 
     /**
-     * Relationship with SecondRelatedModel
+     * Relationship with Activity
      *
      * @return void
      */
-    public function secondRelatedModel()
+    public function activity()
     {
-        return $this->hasOne(SecondRelatedModel::class);
+        return $this->hasOne(Activity::class);
     }
 
     /**

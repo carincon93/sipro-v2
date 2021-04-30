@@ -24,7 +24,31 @@ class ResearchResultRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'specific_objective_id' => ['required', 'exists:specific_objectives,id'],
+            'description' => ['required', 'string', 'max:200'],
+            'type' => ['required', 'string'],
+            'trl' => ['required', 'digits_between:1,9'],
+            'indicator' => ['required', 'string', 'max:200'],
+            'means_of_verification' => ['required', 'string', 'max:200'],
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if(is_array($this->specific_objective_id)) {
+            $this->merge([
+                'specific_objective_id' => $this->specific_objective_id['value'],
+            ]);
+        }
+        if( is_array($this->type) ) {
+            $this->merge([
+                'type' => $this->type['value'],
+            ]);
+        }
     }
 }

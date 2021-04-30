@@ -97,8 +97,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('calls/{call}/dashboard', [CallController::class, 'dashboard'])->name('calls.dashboard');
     // Muestra el árbol de problemas
     Route::get('calls/{call}/projects/{project}/problem-tree', [ProjectTreeController::class, 'showProblemTree'])->name('calls.projects.problem-tree');
+    // Actualiza el problema general del proyecto en el arbol de problemas
+    Route::post('projects/{project}/research-problem', [ProjectTreeController::class, 'updateProblem'])->name('projects.research_problem');
+    // Actualiza efecto directo en el arbol de problemas
+    Route::post('projects/{project}/direct-effect/{direct_effect}', [ProjectTreeController::class, 'updateDirectEffect'])->name('projects.direct_effect');
+    // Crea o Actualiza efecto indirecto en el arbol de problemas
+    Route::post('projects/{project}/indirect-effect/{direct_effect}', [ProjectTreeController::class, 'createOrUpdateIndirectEffect'])->name('projects.indirect_effect');
+    // Actualiza causa directa en el arbol de problemas
+    Route::post('projects/{project}/direct-cause/{direct_cause}', [ProjectTreeController::class, 'updateDirectCause'])->name('projects.direct_cause');
+    // Crea o Actualiza causa indirecta en el arbol de problemas
+    Route::post('projects/{project}/indirect-cause/{direct_cause}', [ProjectTreeController::class, 'createOrUpdateIndirectCause'])->name('projects.indirect_cause');
+
     // Muestra el árbol de objetivos
     Route::get('calls/{call}/projects/{project}/objectives-tree', [ProjectTreeController::class, 'showObjectivesTree'])->name('calls.projects.objectives-tree');
+    // Actualiza el impacto en el arbol de objetivos
+    Route::post('projects/{project}/impact/{impact}', [ProjectTreeController::class, 'updateImpact'])->name('projects.impact');
+    // Actualiza el impacto en el arbol de objetivos
+    Route::post('projects/{project}/research_result/{research_result}', [ProjectTreeController::class, 'updateResearchResult'])->name('projects.research_result');
+    // Actualiza el problema general del proyecto en el arbol de problemas
+    Route::post('projects/{project}/primary-objective', [ProjectTreeController::class, 'updateObjective'])->name('projects.primary_objective');
+    // Actualiza el objetivo especifico en el arbol de objetivos
+    Route::post('projects/{project}/specific_objective/{specific_objective}', [ProjectTreeController::class, 'updateSpecificObjective'])->name('projects.specific_objective');
+    // Actualiza la actividad en el arbol de objetivos
+    Route::post('calls/{call}/projects/{project}/activity/{activity}', [ProjectTreeController::class, 'updateActivity'])->name('projects.activity');
+
     // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
 
