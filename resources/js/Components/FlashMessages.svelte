@@ -49,11 +49,11 @@
                 <div class="py-4 text-white text-sm font-medium">{$page.props.flash.error}</div>
             {:else}
                 <div class="py-4 text-white text-sm font-medium">
-                {#if Object.keys($page.props.errors).length === 1}
-                    <span>{$_("There is one form error.")}</span>
-                {:else}
-                    <span>{$_("There are")} {Object.keys($page.props.errors).length} {$_("form errors.")}</span>
-                {/if}
+                    {#if Object.keys($page.props.errors).length === 1}
+                        <span>{$_("There is one form error.")}</span>
+                    {:else}
+                        <span>{$_("There are")} {Object.keys($page.props.errors).length} {$_("form errors.")}</span>
+                    {/if}
                 </div>
             {/if}
         </div>

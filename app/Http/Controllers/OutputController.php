@@ -23,7 +23,7 @@ class OutputController extends Controller
 
         $researchResult = $project->directEffects()->with('researchResult')->get()->pluck('researchResult')->flatten()->filter();
 
-        return Inertia::render('Calls/Projects/RDI/Outputs/Index', [
+        return Inertia::render('Calls/Projects/Outputs/Index', [
             'call'          => $call,
             'project'       => $project,
             'filters'       => request()->all('search'),
@@ -45,7 +45,7 @@ class OutputController extends Controller
 
         $project->rdi;
 
-        return Inertia::render('Calls/Projects/RDI/Outputs/Create', [
+        return Inertia::render('Calls/Projects/Outputs/Create', [
             'call' => $call,
             'project'  => $project,
             'researchResults' => $project->directEffects()->with('researchResult:id as value,description as label,direct_effect_id')->get()->pluck('researchResult')
@@ -90,7 +90,7 @@ class OutputController extends Controller
     {
         $this->authorize('view', [Output::class, $output]);
 
-        return Inertia::render('Calls/Projects/RDI/Outputs/Show', [
+        return Inertia::render('Calls/Projects/Outputs/Show', [
             'call' => $call,
             'project'  => $project,
             'output' => $output
@@ -111,7 +111,7 @@ class OutputController extends Controller
         $output->rdiOutput;
         $selectedResearchResult = ['value' => optional($output->researchResult)->id, 'label' => optional($output->researchResult)->description];
 
-        return Inertia::render('Calls/Projects/RDI/Outputs/Edit', [
+        return Inertia::render('Calls/Projects/Outputs/Edit', [
             'call' => $call,
             'project'  => $project,
             'output' => $output,

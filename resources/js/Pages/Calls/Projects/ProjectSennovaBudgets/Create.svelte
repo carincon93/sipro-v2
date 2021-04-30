@@ -7,7 +7,6 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import DropdownCallBudget from '@/Dropdowns/DropdownCallBudget'
     import Textarea from '@/Components/Textarea'
@@ -27,7 +26,7 @@
     let canEditProjectSennovaBudgets     = authUser.can.find(element => element == 'project-sennova-budgets.edit') == 'project-sennova-budgets.edit'
     let canDeleteProjectSennovaBudgets   = authUser.can.find(element => element == 'project-sennova-budgets.delete') == 'project-sennova-budgets.delete'
 
-    let enabled = false
+    let showQtyInput = true
     let sending = false
     let form = useForm({
         call_budget_id: '',
@@ -69,8 +68,7 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <DropdownCallBudget bind:selectedBudgetUsage={$form.call_budget_id} bind:enabled={enabled} message={errors.call_budget_id} required />
-                    <InputError message={errors.call_budget_id} />
+                    <DropdownCallBudget bind:selectedBudgetUsage={$form.call_budget_id} bind:showQtyInput={showQtyInput} message={errors.call_budget_id} {call} programmaticLine={project.project_type.programmatic_line} required />
                 </div>
 
                 <div class="mt-4">
@@ -83,19 +81,19 @@
                     <Textarea id="justification" error={errors.justification} bind:value={$form.justification} required />
                 </div>
 
-                {#if !enabled}
+                {#if !showQtyInput}
                     <div class="mt-4">
                         <Label required id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
-                        <Input id="qty_items" type="text" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
+                        <Input id="qty_items" type="number" min="1" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
                     </div>
                     <div class="mt-4">
                         <Label required id="value" value="Valor" />
-                        <Input id="value" type="text" class="mt-1 block w-full" bind:value={$form.value} error={errors.value} required />
+                        <Input id="value" type="number" min="1" class="mt-1 block w-full" bind:value={$form.value} error={errors.value} required />
                     </div>
                 {/if}
             </div>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
-                {#if canCreateProjectSennovaBudgets || isSuperAdmin}
+                {#if canCreateProjectSennovaBudgets && $form.call_budget_id != ''|| isSuperAdmin && $form.call_budget_id != ''}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Create')} {$_('Project sennova budgets.singular')}
                     </LoadingButton>
@@ -104,4 +102,3 @@
         </form>
     </div>
 </AuthenticatedLayout>
-

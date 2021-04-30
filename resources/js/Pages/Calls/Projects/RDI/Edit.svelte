@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
@@ -13,6 +13,7 @@
     import DynamicList from '@/Dropdowns/DynamicList'
     import Switch from '@/Components/Switch'
     import Textarea from '@/Components/Textarea'
+    import InfoMessage from '@/Components/InfoMessage'
 
     export let errors
     export let call
@@ -37,7 +38,7 @@
     let orange_economy_justification        = rdi.orange_economy_justification != null
     let people_disabilities_justification   = rdi.people_disabilities_justification != null
 
-    let form = remember({
+    let form = useForm({
         research_line_id:                   rdi.research_line_id,
         knowledge_subarea_discipline_id:    rdi.knowledge_subarea_discipline_id,
         strategic_thematic_id:              rdi.strategic_thematic_id,
@@ -170,7 +171,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="video" value="¿El proyecto tiene video?" />
+                    <Label id="video" value="¿El proyecto tiene video?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -179,21 +180,14 @@
                     </div>
                     {#if video}
                         <Input id="video" type="url" class="mt-1 block w-full" error={errors.video} placeholder="Link del video del proyecto https://www.youtube.com/watch?v=gmc4tk" bind:value={$form.video} required={!video ? undefined : 'required'} />
-                        <div class="bg-indigo-100 p-5 text-indigo-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p>
-                                Video de 3 minutos, en donde se presente de manera sencilla y dinámica la justificación del proyecto, la problemática, el objetivo general, los objetivos específicos, las actividades, los productos y su impacto en el marco del mecanismo de participación seleccionado como regional.
-                            </p>
-                        </div>
+                        <InfoMessage message="Video de 3 minutos, en donde se presente de manera sencilla y dinámica la justificación del proyecto, la problemática, el objetivo general, los objetivos específicos, las actividades, los productos y su impacto en el marco del mecanismo de participación seleccionado como regional." />
                     {/if}
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="industry_4_justification" value="¿El proyecto está relacionado con la industria 4.0?" />
+                    <Label id="industry_4_justification" value="¿El proyecto está relacionado con la industria 4.0?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -202,21 +196,14 @@
                     </div>
                     {#if industry_4_justification}
                         <Textarea id="industry_4_justification" error={errors.industry_4_justification} bind:value={$form.industry_4_justification} required={!industry_4_justification ? undefined : 'required'} />
-                        <div class="bg-indigo-100 p-5 text-indigo-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p>
-                                Si el proyecto está relacionado con la industria 4.0 por favor realice la justificación.
-                            </p>
-                        </div>
+                        <InfoMessage message="Si el proyecto está relacionado con la industria 4.0 por favor realice la justificación." />
                     {/if}
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
+                    <Label id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -225,21 +212,14 @@
                     </div>
                     {#if orange_economy_justification}
                         <Textarea id="orange_economy_justification" error={errors.orange_economy_justification} bind:value={$form.orange_economy_justification} required={!orange_economy_justification ? undefined : 'required'} />
-                        <div class="bg-indigo-100 p-5 text-indigo-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p>
-                                Si el proyecto está relacionado con la economía naranja por favor realice la justificación. (Ver documento de apoyo: Guía Rápida SENA es NARANJA.)
-                            </p>
-                        </div>
+                        <InfoMessage message="Si el proyecto está relacionado con la economía naranja por favor realice la justificación. (Ver documento de apoyo: Guía Rápida SENA es NARANJA.)" />
                     {/if}
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
+                    <Label id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -248,14 +228,7 @@
                     </div>
                     {#if people_disabilities_justification}
                         <Textarea id="people_disabilities_justification" error={errors.people_disabilities_justification} bind:value={$form.people_disabilities_justification} required={!people_disabilities_justification ? undefined : 'required'} />
-                        <div class="bg-indigo-100 p-5 text-indigo-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <p>
-                                Si el proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad por favor realice la justificación. RESOLUCIÓN 01726 DE 2014 - Por la cual se adopta la Política Institucional para Atención de las Personas con discapacidad.
-                            </p>
-                        </div>
+                        <InfoMessage message="Si el proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad por favor realice la justificación. RESOLUCIÓN 01726 DE 2014 - Por la cual se adopta la Política Institucional para Atención de las Personas con discapacidad." />
                     {/if}
                 </div>
             </div>
@@ -264,19 +237,12 @@
                 <p class="text-center mt-36 mb-20">¿Cuál es el origen de las muestras con las que se realizarán las actividades de investigación, bioprospección y/o aprovechamiento comercial o industrial?</p>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="1" type="radio" bind:group={$form.sampling} value="1">
-                    <Label required id="1" value="Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)"/>
+                    <Label id="1" value="Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)"/>
                 </div>
 
                 <!-- Si seleccionan Especies nativas -->
                 {#if $form.sampling == 1}
-                    <div class="bg-indigo-100 p-5 text-indigo-600 mt-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="m-0">
-                            Ha seleccionado <strong>Especies Nativas</strong>. Por favor responda las siguientes preguntas:
-                        </p>
-                    </div>
+                    <InfoMessage classes="mt-10" message="Ha seleccionado Especies Nativas. Por favor responda las siguientes preguntas:" />
                     <div class="flex mb-20">
                         <div class="bg-gray-200 flex-1 p-8">
                             <div class="flex items-center">
@@ -286,19 +252,19 @@
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.1" type="radio" bind:group={$form.sampling_activity} value="1.1.1">
-                                <Label required id="1.1.1" value="Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza."/>
+                                <Label id="1.1.1" value="Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.2" type="radio" bind:group={$form.sampling_activity} value="1.1.2">
-                                <Label required id="1.1.2" value="Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo."/>
+                                <Label id="1.1.2" value="Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.3" type="radio" bind:group={$form.sampling_activity} value="1.1.3">
-                                <Label required id="1.1.3" value="Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado."/>
+                                <Label id="1.1.3" value="Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado."/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.1.4" type="radio" bind:group={$form.sampling_activity} value="1.1.4">
-                                <Label required id="1.1.4" value="No logro identificar la actividad a desarrollar con la especie nativa"/>
+                                <Label id="1.1.4" value="No logro identificar la actividad a desarrollar con la especie nativa"/>
                             </div>
                         </div>
 
@@ -310,15 +276,15 @@
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.1" type="radio" bind:group={$form.sampling_objective} value="1.2.1">
-                                <Label required id="1.2.1" value="Investigación básica sin fines comerciales"/>
+                                <Label id="1.2.1" value="Investigación básica sin fines comerciales"/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.2" type="radio" bind:group={$form.sampling_objective} value="1.2.2">
-                                <Label required id="1.2.2" value="Bioprospección en cualquiera de sus fases"/>
+                                <Label id="1.2.2" value="Bioprospección en cualquiera de sus fases"/>
                             </div>
                             <div class="flex mt-4 items-center">
                                 <input class="mr-4" id="1.2.3" type="radio" bind:group={$form.sampling_objective} value="1.2.3">
-                                <Label required id="1.2.3" value="Comercial o Industrial"/>
+                                <Label id="1.2.3" value="Comercial o Industrial"/>
                             </div>
                         </div>
                     </div>
@@ -326,23 +292,23 @@
 
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="2" type="radio" bind:group={$form.sampling} value="2">
-                    <Label required id="2" value="Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)"/>
+                    <Label id="2" value="Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="3" type="radio" bind:group={$form.sampling} value="3">
-                    <Label required id="3" value="Recursos genéticos humanos y sus productos derivados."/>
+                    <Label id="3" value="Recursos genéticos humanos y sus productos derivados."/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="4" type="radio" bind:group={$form.sampling} value="4">
-                    <Label required id="4" value="Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)"/>
+                    <Label id="4" value="Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="5" type="radio" bind:group={$form.sampling} value="5">
-                    <Label required id="5" value="Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)"/>
+                    <Label id="5" value="Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)"/>
                 </div>
                 <div class="flex mt-4 items-center">
                     <input class="mr-4" id="6" type="radio" bind:group={$form.sampling} value="6">
-                    <Label required id="6" value="No aplica"/>
+                    <Label id="6" value="No aplica"/>
                 </div>
             </div>
 
@@ -352,14 +318,7 @@
                 </div>
                 <div>
                     <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto.
-                        </p>
-                    </div>
+                    <InfoMessage message="Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto." />
                 </div>
             </div>
 
@@ -369,14 +328,7 @@
                 </div>
                 <div>
                     <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición.
-                        </p>
-                    </div>
+                    <InfoMessage message="Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición." />
                 </div>
             </div>
 
@@ -386,14 +338,7 @@
                 </div>
                 <div>
                     <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones.
-                        </p>
-                    </div>
+                    <InfoMessage message="Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones." />
                 </div>
             </div>
 
@@ -403,14 +348,7 @@
                 </div>
                 <div>
                     <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto.
-                        </p>
-                    </div>
+                    <InfoMessage message="Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto." />
                 </div>
             </div>
 
@@ -420,14 +358,7 @@
                 </div>
                 <div>
                     <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013.
-                        </p>
-                    </div>
+                    <InfoMessage message="Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013." />
                 </div>
             </div>
 
@@ -437,14 +368,7 @@
                 </div>
                 <div>
                     <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
-                    <div class="bg-indigo-100 p-5 text-indigo-600">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p>
-                            Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf).
-                        </p>
-                    </div>
+                    <InfoMessage message="Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf)." />
                 </div>
             </div>
 
@@ -511,4 +435,3 @@
         </Card>
     </Modal>
 </AuthenticatedLayout>
-

@@ -11,6 +11,8 @@ use App\Models\MarketResearch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Traits\BudgetValidationTrait;
 use Inertia\Inertia;
 
 class ProjectBudgetBatchController extends Controller
@@ -25,20 +27,23 @@ class ProjectBudgetBatchController extends Controller
         $this->authorize('viewAny', [ProjectBudgetBatch::class]);
 
         // Denega si el rubro no requiere lotes y ya hay un estudio de mercado guardado o si el rubro no requiere de estudio de mercado.
-        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research_batch && $projectSennovaBudget->projectBudgetBatches->count() > 0 || !$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
-            return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project]);
+        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
+            return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project])->with('success', 'The resource has been created successfully.');
         }
-
-        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage;
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/MarketResearch/Index', [
             'filters'               => request()->all('search'),
             'projectBudgetBatches'  => $projectSennovaBudget->projectBudgetBatches()
                 ->with('marketResearch')
                 ->filterProjectBudgetBatch(request()->only('search'))->paginate(),
-            'call'                          => $call,
-            'project'                       => $project,
-            'projectSennovaBudget'          => $projectSennovaBudget,
+            'call'                          => $call->only('id'),
+            'project'                       => $project->only('id', 'percentageIndustrialMachinery'),
+            'projectSennovaBudget'          => $projectSennovaBudget->only('id', 'average'),
+            'sennovaBudget'                 => $projectSennovaBudget->callBudget->sennovaBudget->only('id', 'message'),
+            'budgetUsage'                   => $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->only('id', 'description'),
+            'callBudget'                    => $projectSennovaBudget->callBudget->only('id'),
+            'requiresMarketResearch'        => $projectSennovaBudget->callBudget->sennovaBudget->requires_market_research,
+            'requiresMarketResearchBatch'   => $projectSennovaBudget->callBudget->sennovaBudget->requires_market_research_batch,
         ]);
     }
 
@@ -67,6 +72,21 @@ class ProjectBudgetBatchController extends Controller
         // Denega si el rubro no requiere lotes y ya hay un estudio de mercado guardado o si el rubro no requiere de estudio de mercado.
         if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research_batch && $projectSennovaBudget->projectBudgetBatches->count() > 0 || !$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
             return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project]);
+        }
+
+        // Validaciones
+        // Línea 66
+        if ($project->projectType->programmaticLine->code == 66) {
+            // Trae el porcentaje calculado del rubro de "MAQUINARIA INDUSTRIAL"
+            $percentageIndustrialMachinery = $project->percentageIndustrialMachinery;
+            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->totalSpecialConstructionServices, 0, $percentageIndustrialMachinery)) {
+                return redirect()->back()->with('error', "Este estudio de mercado supera el 5% ($ {$percentageIndustrialMachinery} COP) del total del rubro 'Maquinaria industrial'. Vuelva a diligenciar.");
+            }
+
+            $projectPercentage = $project->totalProjectBudget * 0.05;
+            if (BudgetValidationTrait::totalProjectBudgetValidation($project->totalProjectBudget, 0.05, $project->totalMachineryMaintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, 0)) {
+                return redirect()->back()->with('error', "Este estudio de mercado supera el 5% del ($ {$projectPercentage}) COP total del proyecto. Vuelva a diligenciar.");
+            }
         }
 
         $projectBudgetBatch = new ProjectBudgetBatch();
@@ -181,8 +201,8 @@ class ProjectBudgetBatchController extends Controller
         $this->authorize('update', [ProjectBudgetBatch::class, $projectBudgetBatch]);
 
         // Denega si el rubro no requiere lotes y ya hay un estudio de mercado guardado o si el rubro no requiere de estudio de mercado.
-        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research_batch && $projectSennovaBudget->projectBudgetBatches->count() > 0 || !$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
-            return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project]);
+        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
+            return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project])->with('success', 'The resource has been created successfully.');
         }
 
         $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage;
@@ -208,8 +228,23 @@ class ProjectBudgetBatchController extends Controller
         $this->authorize('update', [ProjectBudgetBatch::class, $projectBudgetBatch]);
 
         // Denega si el rubro no requiere lotes y ya hay un estudio de mercado guardado o si el rubro no requiere de estudio de mercado.
-        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research_batch && $projectSennovaBudget->projectBudgetBatches->count() > 0 || !$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
+        if (!$projectSennovaBudget->callBudget->sennovaBudget->requires_market_research) {
             return redirect()->route('calls.projects.project-sennova-budgets.index', [$call, $project]);
+        }
+
+        // Validaciones
+        // Línea 66
+        if ($project->projectType->programmaticLine->code == 66) {
+            // Trae el porcentaje calculado del rubro de "MAQUINARIA INDUSTRIAL"
+            $percentageIndustrialMachinery = $project->percentageIndustrialMachinery;
+            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->totalSpecialConstructionServices, $projectSennovaBudget->average, $percentageIndustrialMachinery)) {
+                return redirect()->back()->with('error', "Este estudio de mercado supera el 5% ($ {$percentageIndustrialMachinery} COP) del total del rubro 'Maquinaria industrial'. Vuelva a diligenciar.");
+            }
+
+            $projectPercentage = $project->totalProjectBudget * 0.05;
+            if (BudgetValidationTrait::totalProjectBudgetValidation($project->totalProjectBudget, 0.05, $project->totalMachineryMaintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $projectSennovaBudget->average)) {
+                return redirect()->back()->with('error', "Este estudio de mercado supera el 5% del ($ {$projectPercentage}) COP total del proyecto. Vuelva a diligenciar.");
+            }
         }
 
         $projectBudgetBatch->qty_items = $request->qty_items;

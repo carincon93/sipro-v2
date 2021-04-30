@@ -12,11 +12,16 @@
     export let project
     export let projectSennovaBudget
     export let projectBudgetBatches = []
+    export let budgetUsage
+    export let requiresMarketResearch
+    export let requiresMarketResearchBatch
+    export let callBudget
+    export let sennovaBudget
     export let errors
 
     $title = $_('Market research.plural')
 
-    let modal_open = $page.props.flash.success || errors.length > 0 ? true : false
+    let modal_open = false
 
     // Permisos
     let authUser = $page.props.auth.user
@@ -26,6 +31,8 @@
     let canCreateMarketResearch  = authUser.can.find(element => element == 'market-research.create') == 'market-research.create'
     let canEditMarketResearch    = authUser.can.find(element => element == 'market-research.edit') == 'market-research.edit'
     let canDeleteMarketResearch  = authUser.can.find(element => element == 'market-research.delete') == 'market-research.delete'
+
+    let canEditProjectSennovaBudgets    = authUser.can.find(element => element == 'project-sennova-budgets.edit') == 'project-sennova-budgets.edit'
 
     let filters = {}
 </script>
@@ -42,7 +49,11 @@
                         </a>
                     {/if}
                     <span class="text-indigo-400 font-medium">/</span>
-                    {projectSennovaBudget.call_budget.sennova_budget.budget_usage.description}
+                    {#if canEditProjectSennovaBudgets || isSuperAdmin}
+                        <a use:inertia href={route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])} class="text-indigo-400 hover:text-indigo-600">
+                            {budgetUsage.description}
+                        </a>
+                    {/if}
                     <span class="text-indigo-400 font-medium">/</span>
                     {$_('Market research.plural')}
                 </h1>
@@ -56,13 +67,18 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        {#if projectSennovaBudget.call_budget.sennova_budget.requires_market_research}
-            {#if projectSennovaBudget.call_budget.sennova_budget.requires_market_research_batch}
+        {#if requiresMarketResearch}
+            {#if requiresMarketResearchBatch}
                 <p class="mb-4">
-                    El uso presupuestal <strong>{projectSennovaBudget.call_budget.sennova_budget.budget_usage.description}</strong> permite que se agreguen multiples estudios de mercado. De clic en el botón <strong>'{$_('Add')} {$_('Market research.singular').toLowerCase()}'</strong> y añada los que considere necesarios.
+                    El uso presupuestal <strong>{budgetUsage.description}</strong> permite que se agreguen multiples estudios de mercado. De clic en el botón <strong>'{$_('Add')} {$_('Market research.singular').toLowerCase()}'</strong> y añada los que considere necesarios.
                 </p>
             {/if}
-            {#if !projectSennovaBudget.call_budget.sennova_budget.requires_market_research_batch && projectBudgetBatches.data.length < 1 || projectSennovaBudget.call_budget.sennova_budget.requires_market_research_batch}
+            {#if sennovaBudget.message}
+                <p class="mb-4">
+                    <strong>Importante: </strong>{sennovaBudget.message} No debe superar los ${project.percentageIndustrialMachinery} COP
+                </p>
+            {/if}
+            {#if !requiresMarketResearchBatch && projectBudgetBatches.data.length < 1 || requiresMarketResearchBatch}
                 <div class="mb-6 flex justify-between items-center">
                     <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
                     {#if canCreateMarketResearch || isSuperAdmin}
@@ -128,7 +144,7 @@
 
     <Modal bind:open={modal_open}>
         <Card>
-            <CreateMarketResearch {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches}/>
+            <CreateMarketResearch bind:modal_open={modal_open} {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches} {callBudget} />
         </Card>
     </Modal>
 

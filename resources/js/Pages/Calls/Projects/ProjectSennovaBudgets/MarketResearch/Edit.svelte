@@ -148,7 +148,7 @@
 
                 <div class="mt-4">
                     <Label required id="first_price_quote" value="Valor (incluido IVA)" />
-                    <Input id="first_price_quote" type="number" min="0" class="mt-1 block w-full" bind:value={$form.first_price_quote} error={errors.first_price_quote} required />
+                    <Input id="first_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.first_price_quote} error={errors.first_price_quote} required />
                 </div>
 
                 <div class="mt-4">
@@ -166,7 +166,7 @@
 
                 <div class="mt-4">
                     <Label required id="second_price_quote" value="Valor (incluido IVA)" />
-                    <Input id="second_price_quote" type="number" min="0" class="mt-1 block w-full" bind:value={$form.second_price_quote} error={errors.second_price_quote} required />
+                    <Input id="second_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.second_price_quote} error={errors.second_price_quote} required />
                 </div>
 
                 <div class="mt-4">

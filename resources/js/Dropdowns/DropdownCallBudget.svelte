@@ -3,16 +3,20 @@
     import axios from 'axios'
     import InputError from '@/Components/InputError'
     import Label from '@/Components/Label'
+    import InfoMessage from '@/Components/InfoMessage'
 
     export let classes  = ''
     export let message
     export let sennovaBudget
     export let selectedBudgetUsage
     export let required
-    export let enabled
+    export let showQtyInput
+    export let call
+    export let programmaticLine
 
     let selectedSecondBudgetInfoID
     let selectedThirdBudgetInfoID
+    let budgetMessage
 
     let secondBudgetInfo    = []
     let thirdBudgetInfo     = []
@@ -22,6 +26,7 @@
         getSecondBudgetInfo()
         sennovaBudget?.call_budget?.sennova_budget?.second_budget_info_id ? getThirdBudgetInfo(sennovaBudget?.call_budget?.sennova_budget?.second_budget_info_id) : null
         sennovaBudget?.call_budget?.sennova_budget?.third_budget_info_id ? getBudgetUsages(sennovaBudget?.call_budget?.sennova_budget?.second_budget_info_id, sennovaBudget?.call_budget?.sennova_budget?.third_budget_info_id) : null
+        sennovaBudget?.call_budget?.id ? checkIfBudgetRequiresMarketResearch(sennovaBudget?.call_budget?.id) : null
 	})
 
     async function getSecondBudgetInfo() {
@@ -31,7 +36,8 @@
 
     function handleSecondBudgetInfo(e) {
         selectedSecondBudgetInfoID = e.target.value
-        getThirdBudgetInfo(selectedSecondBudgetInfoID)
+        if (selectedSecondBudgetInfoID != '')
+            getThirdBudgetInfo(selectedSecondBudgetInfoID)
     }
 
     async function getThirdBudgetInfo(secondBudgetInfoID) {
@@ -43,17 +49,25 @@
 
     function handleThirdBudgetInfo(e) {
         selectedThirdBudgetInfoID = e.target.value
-        getBudgetUsages(selectedSecondBudgetInfoID, selectedThirdBudgetInfoID)
+
+        if (selectedSecondBudgetInfoID != '' && selectedThirdBudgetInfoID != '')
+            getBudgetUsages(selectedSecondBudgetInfoID, selectedThirdBudgetInfoID)
     }
 
     async function getBudgetUsages(secondBudgetInfoID, thirdBudgetInfoID) {
-        let res   = await axios.get(route('web-api.budget-usages', [secondBudgetInfoID, thirdBudgetInfoID]))
+        let res   = await axios.get(route('web-api.budget-usages', [call, programmaticLine, secondBudgetInfoID, thirdBudgetInfoID]))
         budgetUsages = res.data
     }
 
-    async function checkIfBudgetRequiresMarketResearch(e) {
-        let res = await axios.get(route('web-api.budget-requires-market-research', [e.target.value]))
-        enabled = res.data.requires_market_research
+    function handleSennovaBudget(e) {
+        if (e.target.value != '')
+            checkIfBudgetRequiresMarketResearch(e.target.value)
+    }
+
+    async function checkIfBudgetRequiresMarketResearch(sennovaBudgetID) {
+        let res = await axios.get(route('web-api.budget-requires-market-research', [sennovaBudgetID]))
+        showQtyInput = res.data.requires_market_research
+        budgetMessage = res.data.message
     }
 </script>
 
@@ -98,7 +112,7 @@
 <div class="mt-4">
     <Label id="budget_usage_id" value="Uso presupuestal" {required} />
     <!-- svelte-ignore a11y-no-onchange -->
-    <select id="budget_usage_id" disabled={!(budgetUsages.length > 0)} class="budget-info w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:border-indigo-200 focus:ring-indigo-200 {classes}" bind:value={selectedBudgetUsage} on:change={(e) => checkIfBudgetRequiresMarketResearch(e)}>
+    <select id="budget_usage_id" disabled={!(budgetUsages.length > 0)} class="budget-info w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50 focus:border-indigo-200 focus:ring-indigo-200 {classes}" bind:value={selectedBudgetUsage} on:change={(e) => handleSennovaBudget(e)}>
         <option value="">Seleccione el uso presupuestal</option>
         {#each budgetUsages as {value, label}}
             <option class="shadow p-8 hover:bg-gray-100" value={value} selected={sennovaBudget?.call_budget?.id == value ? true : false}>{label}</option>
@@ -106,4 +120,8 @@
     </select>
     <InputError {message} />
 </div>
+
+{#if budgetMessage}
+    <InfoMessage message={budgetMessage} />
+{/if}
 

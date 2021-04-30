@@ -15,6 +15,8 @@
     export let call
     export let project
     export let projectSennovaBudget
+    export let callBudget
+    export let modal_open
 
     // $: $title = $_('Create') + ' ' + $_('Market research.singular').toLowerCase()
 
@@ -30,7 +32,7 @@
     let sending = false
     let form = useForm({
         requires_third_market_research: false,
-        call_budget_id: projectSennovaBudget.call_budget.id,
+        call_budget_id: callBudget.id,
         qty_items: '',
         fact_sheet: '',
         first_price_quote: '',
@@ -71,7 +73,8 @@
             Inertia.post(route('calls.projects.project-sennova-budgets.project-budget-batches.store', [call.id, project.id, projectSennovaBudget]), formData, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => {
-                    sending     = false
+                    sending     = false,
+                    modal_open  = false
                 },
                 onError: () => {
                     $form.requires_third_market_research = errors.third_price_quote || errors.third_company_name || errors.third_price_quote_file ? true : false
@@ -91,8 +94,7 @@
                     document.getElementById('fact_sheet').value = ''
                     document.getElementById('first_price_quote_file').value = ''
                     document.getElementById('second_price_quote_file').value = ''
-                    document.getElementById('third_price_quote_file').value = ''
-
+                    document.getElementById('third_price_quote_file') ? document.getElementById('third_price_quote_file').value = '' : null
                 },
             })
         }
@@ -126,7 +128,7 @@
 
         <div class="mt-4">
             <Label required id="first_price_quote" value="Valor (incluido IVA)" />
-            <Input id="first_price_quote" type="number" min="0" class="mt-1 block w-full" bind:value={$form.first_price_quote} error={errors.first_price_quote} required />
+            <Input id="first_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.first_price_quote} error={errors.first_price_quote} required />
         </div>
 
         <div class="mt-4">
@@ -143,7 +145,7 @@
 
         <div class="mt-4">
             <Label required id="second_price_quote" value="Valor (incluido IVA)" />
-            <Input id="second_price_quote" type="number" min="0" class="mt-1 block w-full" bind:value={$form.second_price_quote} error={errors.second_price_quote} required />
+            <Input id="second_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.second_price_quote} error={errors.second_price_quote} required />
         </div>
 
         <div class="mt-4">

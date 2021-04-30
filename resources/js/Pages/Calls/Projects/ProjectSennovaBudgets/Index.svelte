@@ -10,6 +10,7 @@
     export let call
     export let project
     export let projectSennovaBudgets = []
+    export let secondBudgetInfo
 
     $title = $_('Project sennova budgets.plural')
 
@@ -33,6 +34,19 @@
     <h2 class="text-center mt-10 mb-24">
         Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(project.totalProjectBudget)} COP
     </h2>
+    <div class="px-4">
+        <h1 class="mb-4 text-center">Filtros</h1>
+        <ul class="flex flex-wrap">
+            {#each secondBudgetInfo as {name}}
+                <li class="mr-2 mb-2 inline-flex">
+                    <a class="bg-indigo-100 hover:bg-indigo-200 px-2 py-1 rounded-3xl text-center text-indigo-400" use:inertia="{{ preserveScroll: true }}" href="?search={name}">{name}</a>
+                </li>
+            {/each}
+            <li class="mr-2 mb-2 inline-flex">
+                <a class="bg-green-100 hover:bg-green-200 px-2 py-1 rounded-3xl text-center text-green-400" use:inertia="{{ preserveScroll: true }}" href="?search=">Todos</a>
+            </li>
+        </ul>
+    </div>
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateProjectSennovaBudgets || isSuperAdmin}

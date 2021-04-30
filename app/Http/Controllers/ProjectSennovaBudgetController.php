@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProjectSennovaBudgetRequest;
 use App\Models\Call;
 use App\Models\CallBudget;
+use App\Models\SecondBudgetInfo;
 use App\Models\Project;
 use App\Models\ProjectSennovaBudget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Http\Traits\BudgetValidationTrait;
 use Inertia\Inertia;
 
 class ProjectSennovaBudgetController extends Controller
@@ -24,10 +26,11 @@ class ProjectSennovaBudgetController extends Controller
         $this->authorize('viewAny', ProjectSennovaBudget::class);
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Index', [
-            'call'                  => $call,
-            'project'               => $project,
+            'call'                  => $call->only('id'),
+            'project'               => $project->only('id'),
             'filters'               => request()->all('search'),
             'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.sennovaBudget.thirdBudgetInfo:id,name', 'callBudget.sennovaBudget.secondBudgetInfo:id,name', 'callBudget.sennovaBudget.budgetUsage:id,description')->paginate(),
+            'secondBudgetInfo'      => SecondBudgetInfo::orderBy('name', 'ASC')->get('name'),
         ]);
     }
 
@@ -39,6 +42,8 @@ class ProjectSennovaBudgetController extends Controller
     public function create(Call $call, Project $project)
     {
         $this->authorize('create', [ProjectSennovaBudget::class]);
+
+        $project->projectType->programmaticLine->only('id');
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Create', [
             'call'      => $call,
@@ -56,6 +61,14 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('create', [ProjectSennovaBudget::class]);
 
+        // Validaciones
+        // Línea 66
+        if ($project->projectType->programmaticLine->code == 66) {
+            if (BudgetValidationTrait::viaticsValidation($project->totalViatics, $request->value, $request->qty_items, 0, 0)) {
+                return redirect()->back()->with('error', "La sumatoria de todos los rubros de viáticos no debe superar el valor de $4.000.000");
+            }
+        }
+
         $callBudget = CallBudget::find($request->call_budget_id);
 
         $projectSennovaBudget = new ProjectSennovaBudget();
@@ -68,7 +81,7 @@ class ProjectSennovaBudgetController extends Controller
         $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
 
-        return redirect()->route('calls.projects.project-sennova-budgets.market-research.index', [$call, $project, $projectSennovaBudget])->with('success', 'The resource has been created successfully.');
+        return redirect()->route('calls.projects.project-sennova-budgets.project-budget-batches.index', [$call, $project, $projectSennovaBudget])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -96,13 +109,13 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
-        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage;
+        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->only('id', 'description');
+        $project->projectType->programmaticLine->only('id');
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Edit', [
-            'call'                          => $call,
+            'call'                          => $call->only('id'),
             'project'                       => $project,
             'projectSennovaBudget'          => $projectSennovaBudget,
-            'projectSennovaBudgetBatches'   => $projectSennovaBudget->with('projectBudgetBatches.marketResearch')->where('id', $projectSennovaBudget->id)->first(),
         ]);
     }
 
@@ -116,6 +129,14 @@ class ProjectSennovaBudgetController extends Controller
     public function update(Request $request, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget)
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
+
+        // Validaciones
+        // Línea 66
+        if ($project->projectType->programmaticLine->code == 66) {
+            if (BudgetValidationTrait::viaticsValidation($project->totalViatics, $request->value, $request->qty_items, $projectSennovaBudget->value, $projectSennovaBudget->qty_items)) {
+                return redirect()->back()->with('error', "La sumatoria de todos los rubros de viáticos no debe superar el valor de $4.000.000");
+            }
+        }
 
         $callBudget = CallBudget::find($request->call_budget_id);
 

@@ -9,7 +9,7 @@ class ProjectSennovaBudget extends Model
 {
     use HasFactory;
 
-    protected $appends = ['average', 'totalByBudgetWithoutMarketResearch'];
+    protected $appends = ['average'];
 
     /**
      * The attributes that are mass assignable.
@@ -84,15 +84,11 @@ class ProjectSennovaBudget extends Model
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query
+                ->select('project_sennova_budgets.*')
                 ->join('call_budgets', 'project_sennova_budgets.call_budget_id', 'call_budgets.id')
-                ->join('budgets_programmatic_lines', 'call_budgets.budget_programmatic_line_id', 'budgets_programmatic_lines.id')
-                ->join('sennova_budgets', 'budgets_programmatic_lines.sennova_budget_id', 'sennova_budgets.id')
-                ->join('first_budget_info', 'sennova_budgets.first_budget_info_id', 'first_budget_info.id')
+                ->join('sennova_budgets', 'call_budgets.sennova_budget_id', 'sennova_budgets.id')
                 ->join('second_budget_info', 'sennova_budgets.second_budget_info_id', 'second_budget_info.id')
-                ->join('third_budget_info', 'sennova_budgets.third_budget_info_id', 'third_budget_info.id')
-                ->where('first_budget_info.name', 'ilike', '%'.$search.'%')
-                ->orWhere('second_budget_info.name', 'ilike', '%'.$search.'%')
-                ->orWhere('third_budget_info.name', 'ilike', '%'.$search.'%');
+                ->where('second_budget_info.name', 'ilike', '%'.$search.'%');
         });
     }
 
@@ -114,30 +110,19 @@ class ProjectSennovaBudget extends Model
      */
     public function getAverageAttribute()
     {
-        $average    = 0;
-
-        if (is_iterable($this->projectBudgetBatches)) {
-            foreach ($this->projectBudgetBatches as $projectBudgetBatch) {
-                $average += $projectBudgetBatch->getAverageAttribute();
-            }
-        } else {
-            $average += $this->projectBudgetBatches->getAverageAttribute();
-        }
-        return $average;
-    }
-
-    /**
-     * getTotalByBudgetWithoutMarketResearchAttribute
-     *
-     * @return void
-     */
-    public function getTotalByBudgetWithoutMarketResearchAttribute()
-    {
         $total = 0;
 
-        $this->value > 0 ?
-            $total = ($this->qty_items * $this->value)
-            : $total = 0;
+        if ($this->projectBudgetBatches()->exists()) {
+            if ($this->projectBudgetBatches->count() > 0) {
+                foreach ($this->projectBudgetBatches as $projectBudgetBatch) {
+                    $total += $projectBudgetBatch->getAverageAttribute();
+                }
+            } else {
+                $total += $this->projectBudgetBatches->getAverageAttribute();
+            }
+        } elseif (!$this->projectBudgetBatches()->exists() && !$this->callBudget->sennovaBudget->requires_market_research) {
+            $this->value > 0 ? $total = ($this->qty_items * $this->value) : $total = 0;
+        }
 
         return $total;
     }

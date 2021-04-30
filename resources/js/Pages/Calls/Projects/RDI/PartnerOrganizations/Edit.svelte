@@ -267,14 +267,17 @@
                 </Card>
             </Modal>
         </div>
-        <ul class="p-4">
-            <li>
-                <a class="bg-indigo-100 hover:bg-indigo-200 mb-4 px-6 py-2 rounded-3xl text-center text-indigo-400" href="#partner-organization-members">{$_('Partner organization members.plural')}</a>
-            </li>
-            <li class="mt-6">
-                <a class="bg-indigo-100 hover:bg-indigo-200 mb-4 px-6 py-2 rounded-3xl text-center text-indigo-400" href="#specific-objectives">{$_('Specific objectives.plural')} relacionados con la entidad aliada</a>
-            </li>
-        </ul>
+        <div class="px-4">
+            <h1 class="mb-4">Enlaces de interés</h1>
+            <ul>
+                <li>
+                    <a class="bg-indigo-100 hover:bg-indigo-200 mb-4 px-6 py-2 rounded-3xl text-center text-indigo-400" href="#partner-organization-members">{$_('Partner organization members.plural')}</a>
+                </li>
+                <li class="mt-6">
+                    <a class="bg-indigo-100 hover:bg-indigo-200 mb-4 px-6 py-2 rounded-3xl text-center text-indigo-400" href="#specific-objectives">{$_('Specific objectives.plural')} relacionados</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <h1 class="mt-20 mb-12 text-2xl" id="partner-organization-members">{$_('Partner organization members.plural')}</h1>
