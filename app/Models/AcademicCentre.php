@@ -49,6 +49,16 @@ class AcademicCentre extends Model
     }
 
     /**
+     * Relationship with Project
+     *
+     * @return void
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+
+    /**
      * Relationship with AcademicProgram
      *
      * @return void

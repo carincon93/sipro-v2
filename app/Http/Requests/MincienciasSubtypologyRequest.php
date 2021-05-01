@@ -24,7 +24,7 @@ class MincienciasSubtypologyRequest extends FormRequest
     public function rules()
     {
         return [
-            'minciencias_typology_id'   => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:minciencias_typologies,id'],
+            'minciencias_typology_id'   => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:minciencias_typologies,id'],
             'name'                      => ['required', 'max:191'],
         ];
     }

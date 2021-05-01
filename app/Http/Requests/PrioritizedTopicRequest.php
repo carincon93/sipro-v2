@@ -24,8 +24,8 @@ class PrioritizedTopicRequest extends FormRequest
     public function rules()
     {
         return [
-            'productive_sector'      => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:productive_sectors,id'],
-            'technical_committee' => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:technical_committees,id'],
+            'productive_sector'      => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:productive_sectors,id'],
+            'technical_committee' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:technical_committees,id'],
             'name'                   => ['required', 'max:191'],
         ];
     }

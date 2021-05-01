@@ -26,4 +26,5 @@ export const links = [
     { name: "Minciencias subtypologies", route: "minciencias-subtypologies" },
     { name: "Sennova roles", route: "sennova-roles" },
     { name: "Annexes", route: "annexes" },
+    { name: "Techno academies", route: "techno-academies" },
 ];

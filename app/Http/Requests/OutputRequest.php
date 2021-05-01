@@ -26,7 +26,7 @@ class OutputRequest extends FormRequest
     public function rules()
     {
         return [
-            'research_result_id'            => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:research_results,id'],
+            'research_result_id'            => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:research_results,id'],
             'name'                          => ['required', 'max:191'],
             'start_date'                    => ['required', 'date', 'date_format:Y-m-d', 'before:end_date', new ProjectStartDate($this->route('call'))],
             'end_date'                      => ['required', 'date', 'date_format:Y-m-d', 'after:start_date', new ProjectEndDate($this->route('call'))],

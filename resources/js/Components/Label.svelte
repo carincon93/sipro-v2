@@ -10,5 +10,5 @@
 </script>
 
 {#if value}
-    <label {...props} for={id}>{value} {#if required}<small class="text-red-400 block">* Campo obligatorio</small> {/if}</label>
+    <label {...props} for={id}>{value} {#if required}<small class="text-red-400">* Campo obligatorio</small> {/if}</label>
 {/if}

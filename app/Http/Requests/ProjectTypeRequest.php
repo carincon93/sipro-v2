@@ -24,7 +24,7 @@ class ProjectTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'programmatic_line' => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:programmatic_lines,id'],
+            'programmatic_line' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:programmatic_lines,id'],
             'name'              => ['required', 'max:191'],
             'maximum_value'     => ['required', 'min:0', 'max:9999999999', 'integer'],
         ];

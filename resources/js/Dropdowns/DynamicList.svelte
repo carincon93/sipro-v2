@@ -15,7 +15,7 @@
 
     let items           = []
     let itemFiltered    = null
-    let select = null
+    let select          = null
 
     onMount(() => {
         getItems()
@@ -29,8 +29,8 @@
     })
 
     async function getItems() {
-        let res       = await axios.get(routeWebApi)
-        items = res.data
+        let res = await axios.get(routeWebApi)
+        items   = res.data
         selectItem()
     }
 
@@ -63,7 +63,7 @@
         padding-bottom: 10px;
     }
 
-    :global(.listContainer) {
+    :global(.min-h .listContainer) {
         min-height: 50vh;
     }
 </style>

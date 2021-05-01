@@ -17,6 +17,7 @@ class CallController extends Controller
     public function dashboard(Call $call)
     {
         $this->authorize('viewAny', [Call::class]);
+
         return Inertia::render('Calls/Dashboard', [
             'call' => $call
         ]);

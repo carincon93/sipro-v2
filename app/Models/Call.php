@@ -49,9 +49,9 @@ class Call extends Model
      *
      * @return void
      */
-    public function rdi()
+    public function projects()
     {
-        return $this->hasMany(RDI::class);
+        return $this->hasMany(Project::class);
     }
 
     /**

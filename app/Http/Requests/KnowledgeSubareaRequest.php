@@ -24,7 +24,7 @@ class KnowledgeSubareaRequest extends FormRequest
     public function rules()
     {
         return [
-            'knowledge_area' => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:knowledge_areas,id'],
+            'knowledge_area' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_areas,id'],
             'name'           => ['required', 'max:191'],
         ];
     }

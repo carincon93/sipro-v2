@@ -57,6 +57,9 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\ProjectBudgetBatch' => 'App\Policies\ProjectBudgetBatchPolicy',
         'App\Models\MarketResearch' => 'App\Policies\MarketResearchPolicy',
         'App\Models\PartnerOrganizationMember' => 'App\Policies\PartnerOrganizationMemberPolicy',
+        'App\Models\TechnoAcademy' => 'App\Policies\TechnoAcademyPolicy',
+        'App\Models\TechnologicalLine' => 'App\Policies\TechnologicalLinePolicy',
+        'App\Models\SectorBasedCommittee' => 'App\Policies\SectorBasedCommitteePolicy',
     ];
 
     /**

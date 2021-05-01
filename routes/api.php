@@ -48,6 +48,9 @@ use App\Http\Controllers\API\BudgetUsageController as BudgetUsageAPIController;
 use App\Http\Controllers\API\ProjectBudgetBatchController as ProjectBudgetBatchAPIController;
 use App\Http\Controllers\API\MarketResearchController as MarketResearchAPIController;
 use App\Http\Controllers\API\PartnerOrganizationMemberController as PartnerOrganizationMemberAPIController;
+use App\Http\Controllers\API\TechnoAcademyController as TechnoAcademyAPIController;
+use App\Http\Controllers\API\TechnologicalLineController as TechnologicalLineAPIController;
+use App\Http\Controllers\API\SectorBasedCommitteeController as SectorBasedCommitteeAPIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +67,9 @@ Route::middleware('auth:api')->group(function () {
     // API Resources
     Route::apiResources(
         [
+            'sector-based-committees' => SectorBasedCommitteeSectorBasedCommitteeAPIController::class,
+            'technological-lines' => TechnologicalLineAPIController::class,
+            'techno-academies' => TechnoAcademyAPIController::class,
             'partner-organization-members' => PartnerOrganizationMemberAPIController::class,
             'project-budget-batches' => ProjectBudgetBatchAPIController::class,
             'market-research' => MarketResearchAPIController::class,

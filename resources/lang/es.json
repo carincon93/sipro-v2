@@ -34,6 +34,7 @@
     "Confirm": "Confirmar",
     "Cancel": "Cancelar",
     "Upload": "Cargar",
+    "Continue": "Continuar",
     "The password is incorrect.": "La contraseña es incorrecta",
     "Update Password": "Actualizar contraseña",
     "Current Password": "Contraseña actual",
@@ -111,6 +112,7 @@
     "The resource has been created successfully.": "El recurso se ha creado correctamente.",
     "The resource has been updated successfully.": "El recurso se ha actualizado correctamente.",
     "The resource has been deleted successfully.": "El recurso se ha eliminado correctamente.",
+    "The resource has been saved successfully.": "El recurso se ha guardado correctamente.",
     "There are form errors.": "Hay {count} errores en el formulario. Por favor revíselos.",
     "There is one form error.": "Hay un error en el formulario. Por favor revíselo.",
     "Are you sure you want to delete this project? Once the project is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete this project.": "¿Está seguro (a) que desea eliminar este proyecto? Una vez eliminado el proyecto, todos sus recursos y datos se eliminarán de forma permanente. Ingrese su contraseña para confirmar que desea eliminar permanentemente este proyecto.",
@@ -322,5 +324,11 @@
     "Batch": {
         "singular": "Lote",
         "plural": "Lotes"
-    }
+    },
+    "Techno academies": {
+        "singular": "Tecnoacademia",
+        "plural": "Tecnoacademias"
+    },
+    "Problem tree": "Árbol de problemas",
+    "Objectives tree": "Árbol de objetivos"
 }

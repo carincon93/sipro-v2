@@ -37,7 +37,7 @@ class TechnicalCommittee extends Model
     ];
 
     /**
-     * Relationship with FirstRelatedModel
+     * Relationship with FirstRelatedModelcl
      *
      * @return void
      */

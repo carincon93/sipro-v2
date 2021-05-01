@@ -106,7 +106,6 @@
                 <div class="mt-4">
                     <Label required id="academic_centre" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
-                    <InputError message={errors.academic_centre} />
                 </div>
 
             </div>

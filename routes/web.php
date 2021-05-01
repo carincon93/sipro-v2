@@ -51,6 +51,9 @@ use App\Http\Controllers\BudgetUsageController;
 use App\Http\Controllers\ProjectBudgetBatchController;
 use App\Http\Controllers\MarketResearchController;
 use App\Http\Controllers\PartnerOrganizationMemberController;
+use App\Http\Controllers\TechnoAcademyController;
+use App\Http\Controllers\TechnologicalLineController;
+use App\Http\Controllers\SectorBasedCommitteeController;
 
 use App\Models\ResearchLine;
 use App\Models\ProjectType;
@@ -67,7 +70,8 @@ use App\Models\CallSennovaRole;
 use App\Models\SecondBudgetInfo;
 use App\Models\ThirdBudgetInfo;
 use App\Models\SennovaBudget;
-
+use App\Models\TechnoAcademy;
+use App\Models\TechnologicalLine;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +132,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/download', [ProjectBudgetBatchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/market-research/{market_research}/download', [MarketResearchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');
 
+    // Trae las Tecnoacademias
+    Route::get('web-api/techno-academies', function() {
+        return response(TechnoAcademy::select('techno_academies.id as value', 'techno_academies.name as label')->get());
+    })->name('web-api.techno-academies');
+    // Trae las líneas tecnológicas
+    Route::get('web-api/techno-academies/{techno_academy}/technological-lines', function($technoAcademy) {
+        return response(TechnologicalLine::select('id', 'name')->where('technological_lines.techno_academy_id', $technoAcademy)->get());
+    })->name('web-api.techno-academies.technological-lines');
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
         return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name, chr(10), \'∙ Grupo de investigación: \', research_groups.name, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
@@ -217,6 +229,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('annexes', AnnexeController::class)->parameters(['annexes' => 'annexe']);
     Route::resources(
         [
+            'sector-based-committees' => SectorBasedCommitteeSectorBasedCommitteeController::class,
+            'technological-lines' => TechnologicalLineController::class,
+            'techno-academies' => TechnoAcademyController::class,
             'calls.projects.project-sennova-budgets.project-budget-batches' => ProjectBudgetBatchController::class,
             'budget-usages' => BudgetUsageController::class,
             'minciencias-typologies' => MincienciasTypologyController::class,

@@ -49,6 +49,10 @@ class RDI extends Model
         'states_impact',
         'primary_objective',
         'research_problem',
+        'related_with_technological_plan',
+        'related_with_competitiveness_innovation',
+        'related_with_sector_based_committee',
+        'related_with_techno_academy'
     ];
 
     /**
@@ -68,16 +72,6 @@ class RDI extends Model
     protected $casts = [
         //
     ];
-
-    /**
-     * Relationship with Call
-     *
-     * @return void
-     */
-    public function call()
-    {
-        return $this->belongsTo(Call::class);
-    }
 
     /**
      * Relationship with Project
@@ -137,6 +131,36 @@ class RDI extends Model
     public function ciiuCode()
     {
         return $this->belongsTo(CIIUCode::class);
+    }
+
+    /**
+     * Relationship with TechnologicalLine
+     *
+     * @return void
+     */
+    public function technologicalLines()
+    {
+        return $this->belongsToMany(TechnologicalLine::class, 'rdi_technological_lines', 'rdi_id', 'technological_line_id');
+    }
+
+    /**
+     * Relationship with SectorBasedCommittee
+     *
+     * @return void
+     */
+    public function sectorBasedCommittees()
+    {
+        return $this->belongsToMany(SectorBasedCommittee::class, 'rdi_sector_based_committee', 'rdi_id', 'sector_based_committee_id');
+    }
+
+    /**
+     * Relationship with TechnicalCommittee
+     *
+     * @return void
+     */
+    public function technicalCommittee()
+    {
+        return $this->belongsTo(TechnicalCommittee::class);
     }
 
     /**

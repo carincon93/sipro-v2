@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RDIRequest;
+use App\Models\Project;
 use App\Models\RDI;
 use App\Models\Call;
+use App\Models\SectorBasedCommittee;
+use App\Models\TechnoAcademy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +27,7 @@ class RDIController extends Controller
         return Inertia::render('Calls/Projects/RDI/Index', [
             'filters'   => request()->all('search'),
             'call'      => $call,
-            'rdi'       => $call->rdi()->select('id', 'title', 'start_date')->orderBy('title', 'ASC')
+            'rdi'       => RDI::select('rdi.id', 'rdi.title', 'rdi.start_date')->join('projects', 'rdi.id', 'projects.id')->where('projects.call_id', $call->id)->orderBy('title', 'ASC')
                 ->filterRDI(request()->only('search'))->paginate(),
         ]);
     }
@@ -39,7 +42,7 @@ class RDIController extends Controller
         $this->authorize('create', [RDI::class]);
 
         return Inertia::render('Calls/Projects/RDI/Create', [
-            'call' => $call
+            'call' => $call->only('id')
         ]);
     }
 
@@ -53,14 +56,43 @@ class RDIController extends Controller
     {
         $this->authorize('create', [RDI::class]);
 
+        $project = new Project();
+        $project->academicCentre()->associate($request->academic_centre_id);
+        $project->projectType()->associate($request->project_type_id);
+        $project->call()->associate($call);
+        $project->save();
+
         $rdi = new RDI();
-        $rdi->fieldName = $request->fieldName;
-        $rdi->fieldName = $request->fieldName;
-        $rdi->fieldName = $request->fieldName;
+        $rdi->title                             = $request->title;
+        $rdi->start_date                        = $request->start_date;
+        $rdi->end_date                          = $request->end_date;
+        $rdi->video                             = null;
+        $rdi->industry_4_justification          = null;
+        $rdi->orange_economy_justification      = null;
+        $rdi->people_disabilities_justification = null;
+        $rdi->abstract                          = 'Por favor diligencie el resumen del proyecto';
+        $rdi->project_background                = 'Por favor diligencie los antecedentes del proyecto';
+        $rdi->conceptual_framework              = 'Por favor diligencie el marco conceptual del proyecto';
+        $rdi->project_methodology               = 'Por favor diligencie la metodología del proyecto';
+        $rdi->sustainability_proposal           = 'Por favor diligencie la propuesta de sotenibilidad del proyecto';
+        $rdi->bibliography                      = 'Por favor diligencie la bibliografía';
+        $rdi->students                          = 0;
+        $rdi->states                            = 'Escriba el nombre de los municipios beneficiados los municipios';
+        $rdi->states_impact                     = 'Describa el beneficio en los municipios';
 
-        $rdi->save();
+        $rdi->sampling                          = null;
+        $rdi->sampling_activity                 = $request->sampling == 1 ? $request->sampling_activity : null;
+        $rdi->sampling_objective                = $request->sampling == 1 ? $request->sampling_objective : null;
 
-        return redirect()->route('calls.rdi.index', [$call])->with('success', 'The resource has been created successfully.');
+        $rdi->researchLine()->associate($request->research_line_id);
+        $rdi->knowledgeSubareaDiscipline()->associate($request->knowledge_subarea_discipline_id);
+        $rdi->strategicThematic()->associate($request->strategic_thematic_id);
+        $rdi->knowledgeNetwork()->associate($request->knowledge_network_id);
+        $rdi->ciiuCode()->associate($request->ciiu_code_id);
+
+        $project->rdi()->save($rdi);
+
+        return redirect()->route('calls.rdi.edit', [$call, $rdi])->with('success', 'The resource has been created successfully.');
     }
 
     /**
@@ -94,8 +126,13 @@ class RDIController extends Controller
         $rdi->project;
 
         return Inertia::render('Calls/Projects/RDI/Edit', [
-            'call'  => $call,
-            'rdi'   => $rdi,
+            'call'                          => $call->only('id'),
+            'rdi'                           => $rdi,
+            'relatedSectorBasedCommittees'  => $rdi->sectorBasedCommittees()->pluck('id'),
+            'relatedTechnologicalLines'     => $rdi->technologicalLines()->pluck('id'),
+            'technoAcademy'                 => $rdi->technologicalLines->first() ? $rdi->technologicalLines->first()->technoAcademy->only('id', 'name') : null,
+            'sectorBasedCommittees'         => SectorBasedCommittee::select('id', 'name')->get('id'),
+            'technoAcademies'               => TechnoAcademy::select('id as value', 'name as label')->get()
         ]);
     }
 
@@ -131,15 +168,24 @@ class RDIController extends Controller
         $rdi->sampling_activity                 = $request->sampling == 1 ? $request->sampling_activity : null;
         $rdi->sampling_objective                = $request->sampling == 1 ? $request->sampling_objective : null;
 
-        $rdi->project->projectType()->associate($request->project_type_id);
-
         $rdi->researchLine()->associate($request->research_line_id);
         $rdi->knowledgeSubareaDiscipline()->associate($request->knowledge_subarea_discipline_id);
         $rdi->strategicThematic()->associate($request->strategic_thematic_id);
         $rdi->knowledgeNetwork()->associate($request->knowledge_network_id);
         $rdi->ciiuCode()->associate($request->ciiu_code_id);
 
+        $rdi->related_with_technological_plan           = $request->related_with_technological_plan;
+        $rdi->related_with_competitiveness_innovation   = $request->related_with_competitiveness_innovation;
+        $rdi->related_with_sector_based_committee       = $request->related_with_sector_based_committee;
+        $rdi->related_with_techno_academy               = $request->related_with_techno_academy;
+
+        $rdi->project()->update(['project_type_id' => $request->project_type_id]);
+        $rdi->project()->update(['academic_centre_id' => $request->academic_centre_id]);
+
         $rdi->save();
+
+        $rdi->sectorBasedCommittees()->sync($request->sector_based_committee_id);
+        $rdi->technologicalLines()->sync($request->technological_line_id);
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

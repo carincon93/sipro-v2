@@ -24,7 +24,7 @@ class ResearchTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'research_line' => ['required', 'min:0', 'max:99999999999999999999', 'integer', 'exists:research_lines,id'],
+            'research_line' => ['required', 'min:0', 'max:2147483647999', 'integer', 'exists:research_lines,id'],
             'name'          => ['required', 'max:191'],
         ];
     }

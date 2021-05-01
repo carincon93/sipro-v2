@@ -66,7 +66,7 @@ class ProjectTreeController extends Controller
                     ['description' => null],
                 ]);
             }
-            
+
             foreach($directCause->indirectCauses as $indCause){
                 if(empty($indCause->activity)){
                     $rest = $indCause->activity()->create([
@@ -217,20 +217,13 @@ class ProjectTreeController extends Controller
             case $project->rdi()->exists():
                 $this->generateTree($project);
                 $directEffects = $project->directEffects()->with(['indirectEffects.impact', 'researchResult'])->get();
-                $directCauses = $project->directCauses()->with('indirectCauses.activity', 'SpecificObjective')->get();
+                $directCauses = $project->directCauses()->with('indirectCauses.activity', 'specificObjective')->get();
                 $rdi = $project->rdi()->first();
                 break;
-            case 'value':
-                # code...
-                break;
-            case 'value':
-                # code...
-                break;
             default:
-                # code...
                 break;
         }
-        
+
         return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
             'call'      => $call,
             'project'   => $rdi,
@@ -259,7 +252,7 @@ class ProjectTreeController extends Controller
         ]);
 
         $impact->description=$request->description;
-        
+
         if($impact->save()){
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
@@ -269,7 +262,7 @@ class ProjectTreeController extends Controller
     public function updateResearchResult(Project $project, ResearchResult $research_result, ResearchResultRequest $request)
     {
         $research_result->fill($request->all());
-        
+
         if($research_result->save()){
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
@@ -285,7 +278,7 @@ class ProjectTreeController extends Controller
 
         $specific_objective->description=$request->description;
         $specific_objective->number=$request->number;
-        
+
         if($specific_objective->save()){
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
@@ -295,12 +288,12 @@ class ProjectTreeController extends Controller
     public function updateActivity(Call $call, Project $project, Activity $activity, ActivityRequest $request)
     {
         $activity->fill($request->all());
-        
+
         if($activity->save()){
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
         return redirect()->back()->with('errors', 'Error updating activity.');
     }
 
-    
+
 }

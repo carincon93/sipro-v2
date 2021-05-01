@@ -17,6 +17,8 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
+        'call_id',
+        'academic_centre_id',
         'project_type_id',
         'is_finished'
     ];
@@ -40,6 +42,17 @@ class Project extends Model
     ];
 
     /**
+     * Relationship with Call
+     *
+     * @return void
+     */
+    public function call()
+    {
+        return $this->belongsTo(Call::class);
+    }
+
+
+    /**
      * Relationship with ProjectType
      *
      * @return void
@@ -47,6 +60,16 @@ class Project extends Model
     public function projectType()
     {
         return $this->belongsTo(ProjectType::class);
+    }
+
+    /**
+     * Relationship with AcademicCentre
+     *
+     * @return void
+     */
+    public function academicCentre()
+    {
+        return $this->belongsTo(AcademicCentre::class);
     }
 
     /**

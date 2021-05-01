@@ -7,6 +7,7 @@
     import { Modal, Card } from 'svelte-chota'
 
     import Input from '@/Components/Input'
+    import InputError from '@/Components/InputError'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
     import Stepper from '@/Components/Stepper'
@@ -14,10 +15,20 @@
     import Switch from '@/Components/Switch'
     import Textarea from '@/Components/Textarea'
     import InfoMessage from '@/Components/InfoMessage'
+    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import Select from 'svelte-select'
+    import Checkbox from '@/Components/Checkbox'
+    import axios from 'axios';
+import { onMount } from 'svelte';
 
     export let errors
     export let call
     export let rdi
+    export let sectorBasedCommittees
+    export let relatedSectorBasedCommittees
+    export let relatedTechnologicalLines
+    export let technoAcademies
+    export let technoAcademy
 
     $: $title = rdi ? rdi.title : null
 
@@ -38,7 +49,11 @@
     let orange_economy_justification        = rdi.orange_economy_justification != null
     let people_disabilities_justification   = rdi.people_disabilities_justification != null
 
+    let listOptions = [{'value': 1, 'label': 'Si'}, {'value': 2, 'label': 'No'}, {'value': 3, 'label': 'No aplica'}]
+    let technologicalLines = []
+
     let form = useForm({
+        academic_centre_id:                 rdi.project.academic_centre_id,
         research_line_id:                   rdi.research_line_id,
         knowledge_subarea_discipline_id:    rdi.knowledge_subarea_discipline_id,
         strategic_thematic_id:              rdi.strategic_thematic_id,
@@ -64,6 +79,22 @@
         sampling:                           rdi.sampling,
         sampling_activity:                  rdi.sampling_activity,
         sampling_objective:                 rdi.sampling_objective,
+
+        related_with_technological_plan:           {'value': rdi.related_with_technological_plan},
+        related_with_competitiveness_innovation:   {'value': rdi.related_with_competitiveness_innovation},
+        related_with_sector_based_committee:       {'value': rdi.related_with_sector_based_committee},
+        related_with_techno_academy:               {'value': rdi.related_with_techno_academy},
+
+        techno_academy_id: technoAcademy?.id ? {'value': technoAcademy.id, 'label': technoAcademy.name} : null,
+
+        technological_line_id: relatedTechnologicalLines,
+        sector_based_committee_id: relatedSectorBasedCommittees
+    })
+
+    onMount(() => {
+        if (technoAcademy) {
+            getTechnologicalLines(technoAcademy)
+        }
     })
 
     function submit() {
@@ -71,6 +102,7 @@
             Inertia.put(route('calls.rdi.update', [call.id, rdi.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -87,17 +119,23 @@
             })
         }
     }
+
+    function handleTechnoAcademy(e) {
+        getTechnologicalLines(e.detail.value)
+        $form.techno_academy_id = e.detail
+    }
+
+    async function getTechnologicalLines(technoAcademy) {
+        let res = await axios.get(route('web-api.techno-academies.technological-lines', [technoAcademy]))
+        technologicalLines = res.data
+    }
 </script>
-
-<style>
-
-</style>
 
 <AuthenticatedLayout>
     <Stepper call={call} project={rdi} />
 
     <form on:submit|preventDefault={submit}>
-        <div class="p-8">
+        <fieldset class="p-8" disabled={canEditRDI ? undefined : true}>
             <div class="mt-28">
                 <Label required id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
                 <Textarea id="title" rows="3" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
@@ -123,10 +161,20 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
+                    <Label required id="academic_centre_id" value="Centro de formación" />
+                    <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
+                </div>
+                <div>
+                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} required />
+                </div>
+            </div>
+
+            <div class="mt-44 grid grid-cols-2">
+                <div>
                     <Label required id="research_line_id" value="Línea de investigación" />
                 </div>
                 <div>
-                    <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
+                    <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} classes="min-h" placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
                 </div>
             </div>
             <div class="mt-44 grid grid-cols-2">
@@ -134,7 +182,7 @@
                     <Label required id="project_type_id" value="Tipo de proyecto" />
                 </div>
                 <div>
-                    <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
+                    <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} classes="min-h" placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
                 </div>
             </div>
             <div class="mt-44 grid grid-cols-2">
@@ -142,7 +190,7 @@
                     <Label required id="knowledge_network_id" value="Red de conocimiento sectorial" />
                 </div>
                 <div>
-                    <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
+                    <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} classes="min-h" placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
                 </div>
             </div>
             <div class="mt-44 grid grid-cols-2">
@@ -150,7 +198,7 @@
                     <Label required id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
                 </div>
                 <div>
-                    <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
+                    <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} classes="min-h" placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
                 </div>
             </div>
             <div class="mt-44 grid grid-cols-2">
@@ -158,7 +206,7 @@
                     <Label required id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
                 </div>
                 <div>
-                    <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" message={errors.ciiu_code_id} required />
+                    <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" classes="min-h" message={errors.ciiu_code_id} required />
                 </div>
             </div>
             <div class="mt-44 grid grid-cols-2">
@@ -314,6 +362,93 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
+                    <Label required id="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
+                </div>
+                <div>
+                    <Select items={listOptions} inputAttributes={{'id': 'related_with_technological_plan'}} bind:selectedValue={$form.related_with_technological_plan} autocomplete="off" placeholder="Seleccione una opción"/>
+                    <InputError message={errors.related_with_technological_plan} />
+                </div>
+            </div>
+
+            <div class="mt-44 grid grid-cols-2">
+                <div>
+                    <Label required id="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
+                </div>
+                <div>
+                    <Select items={listOptions} inputAttributes={{'id': 'related_with_competitiveness_innovation'}} bind:selectedValue={$form.related_with_competitiveness_innovation} autocomplete="off" placeholder="Seleccione una opción"/>
+                    <InputError message={errors.related_with_competitiveness_innovation} />
+                </div>
+            </div>
+
+            <div class="mt-44 grid grid-cols-2">
+                <div>
+                    <Label required id="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
+                </div>
+                <div>
+                    <Select items={listOptions} inputAttributes={{'id': 'related_with_sector_based_committee'}} bind:selectedValue={$form.related_with_sector_based_committee} autocomplete="off" placeholder="Seleccione una opción"/>
+                    <InputError message={errors.related_with_sector_based_committee} />
+                </div>
+            </div>
+            {#if $form.related_with_sector_based_committee?.value == 1}
+
+                <div class="bg-indigo-100 p-5 mt-10">
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <p class="text-indigo-600">Por favor seleccione la o las mesas sectoriales con la cual o las cuales se alinea el proyecto</p>
+                            <InputError message={errors.sector_based_committee_id} />
+                        </div>
+                        <div class="bg-white grid grid-cols-2 max-w-xl overflow-y-scroll shadow-2xl mt-4 h-80">
+                            {#each sectorBasedCommittees as {id, name}, i}
+                                <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
+
+                                <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                                    <Checkbox id={id} checked={relatedSectorBasedCommittees.includes(id)} bind:group={$form.sector_based_committee_id} value={id}/>
+                                </div>
+                            {/each}
+                        </div>
+                    </div>
+                </div>
+            {/if}
+
+            <div class="mt-40 grid grid-cols-2">
+                <div>
+                    <Label required id="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
+                </div>
+                <div>
+                    <Select items={listOptions} inputAttributes={{'id': 'related_with_techno_academy'}} bind:selectedValue={$form.related_with_techno_academy} autocomplete="off" placeholder="Seleccione una opción"/>
+                    <InputError message={errors.related_with_techno_academy} />
+                </div>
+            </div>
+
+            {#if $form.related_with_techno_academy?.value == 1}
+                <div class="bg-indigo-100 p-5 mt-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div class="grid grid-cols-2">
+                        <div>
+                            <p class="text-indigo-600">Por favor seleccione la Tecnoacademia con la cual articuló el proyecto</p>
+                            <InputError message={errors.technological_line_id} />
+                        </div>
+                        <div>
+                            <Select items={technoAcademies} inputAttributes={{'id': 'techno_academy_id'}} selectedValue={$form.techno_academy_id} on:select={handleTechnoAcademy} autocomplete="off" placeholder="Seleccione una opción"/>
+                            {#if technologicalLines.length > 0}
+                                <div class="bg-white grid grid-cols-2 max-w-xl overflow-y-scroll shadow-2xl mt-4 h-80">
+                                    {#each technologicalLines as {id, name}, i}
+                                        <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
+
+                                        <div class="border-b border-t flex items-center justify-center">
+                                            <Checkbox id={id} checked={relatedTechnologicalLines.includes(id)} bind:group={$form.technological_line_id} value={id}/>
+                                        </div>
+                                    {/each}
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            {/if}
+
+            <div class="mt-40 grid grid-cols-2">
+                <div>
                     <Label required id="abstract" value="Resumen del proyecto" />
                 </div>
                 <div>
@@ -398,7 +533,7 @@
                     <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
                 </div>
             </div>
-        </div>
+        </fieldset>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canDeleteRDI || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>

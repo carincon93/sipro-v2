@@ -1,4 +1,6 @@
 <script>
+    import Button, { Label } from '@smui/button'
+
     export let loading = false
 
     $: props = {
@@ -7,10 +9,12 @@
     }
 </script>
 
-<button {...props} disabled={loading}>
+<Button {...props} disabled={loading} variant="raised">
     {#if loading}
         <div class="btn-spinner mr-2" />
     {/if}
 
-    <slot />
-</button>
+    <Label>
+        <slot />
+    </Label>
+</Button>

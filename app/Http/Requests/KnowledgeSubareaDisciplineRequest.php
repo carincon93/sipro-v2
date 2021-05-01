@@ -24,7 +24,7 @@ class KnowledgeSubareaDisciplineRequest extends FormRequest
     public function rules()
     {
         return [
-            'knowledge_subarea'  => ['required', 'min:0', 'max:99999999999999999', 'integer', 'exists:knowledge_subareas,id'],
+            'knowledge_subarea'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_subareas,id'],
             'name'               => ['required', 'max:191'],
         ];
     }

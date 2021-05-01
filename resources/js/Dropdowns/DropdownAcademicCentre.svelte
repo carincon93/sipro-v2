@@ -1,6 +1,7 @@
 <script>
-    import { onMount } from 'svelte'
+    import { afterUpdate, onMount } from 'svelte'
     import axios from 'axios'
+    import { _ } from 'svelte-i18n'
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
 
@@ -8,13 +9,22 @@
     export let id       = ''
     export let message
     export let formAcademicCentre
+    export let required
 
     let academicCentres           = []
-    let academmicCentreFiltered    = null
+    let academmicCentreFiltered   = null
+    let select                    = null
 
     onMount(() => {
         getAcademicCentres()
+        select = document.getElementById(id)
 	})
+
+    afterUpdate(() => {
+        if (required) {
+            formAcademicCentre != null && select != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+        }
+    })
 
     async function getAcademicCentres() {
         let res   = await axios.get(route('web-api.academic-centres'))
