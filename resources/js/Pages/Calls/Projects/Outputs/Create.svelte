@@ -68,20 +68,20 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="project_result_id" value={$_('Research results.singular')} />
+                    <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
                     <Select items={researchResults} bind:selectedValue={$form.project_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
                     <InputError message={errors.project_result_id} />
                 </div>
 
                 {#if project.rdi}
                     <div class="mt-4">
-                        <Label required id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
+                        <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
                         <DropdownMincienciasSubtypology id="minciencias_subtypology_id" bind:formMincienciasSubtypology={$form.minciencias_subtypology_id} message={errors.minciencias_subtypology_id} />
                         <InputError message={errors.name} />
                     </div>

@@ -2,7 +2,7 @@
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
     import { useForm } from '@inertiajs/inertia-svelte'
-    import { onMount } from 'svelte'
+    import { onDestroy, onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Dialog, { Title, Content } from '@smui/dialog'
@@ -58,7 +58,6 @@
     }
 
     function submitIndirectEffect() {
-        console.log('rest');
         Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), $formIndirectEffect, {
             onStart: ()     =>  { sending = true },
             onSuccess: ()   =>  { closeDialog() },
@@ -388,7 +387,7 @@
 
             <!-- Planteamiento del problema -->
             <div id="statement-problem-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                <small>Planteamiento <br> del problema</small>
+                <small class="block line-height-1">Planteamiento <br> del problema</small>
                 <div id="arrow-statement-problem" class="arrow" data-popper-arrow></div>
             </div>
             <div class="statement-problem relative" id="statement-problem-tooltip-placement" aria-describedby="tooltip">
@@ -471,9 +470,11 @@
                 <div class="text-primary">
                     {dialogTitle}
                 </div>
-                <small class="block text-primary-light">
-                    Código: {code}
-                </small>
+                {#if code}
+                    <small class="block text-primary-light">
+                        Código: {code}
+                    </small>
+                {/if}
             </div>
             <div class="flex justify-end">
                 <div>
@@ -490,38 +491,37 @@
             {#if showIndirectCauseForm}
                 <form on:submit|preventDefault={submitIndirectCause} id="indirect-cause">
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label required class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formIndirectCause.description} required />
                     </div>
                 </form>
             {:else if showDirectCauseForm}
                 <form on:submit|preventDefault={submitDirectCause} id="direct-cause">
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label required class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formDirectCause.description} required />
                     </div>
                 </form>
             {:else if showIndirectEffectForm}
                 <form on:submit|preventDefault={submitIndirectEffect} id="indirect-effect">
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label required class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formIndirectEffect.description} required />
                     </div>
                 </form>
             {:else if showStatementProblemForm}
                 <form on:submit|preventDefault={submitStatementProblem} id="statement-problem">
                     <div class="mt-4">
-                        <Label id="problem_statement" value="Planteamiento del problema" />
+                        <Label required class="mb-4" id="problem_statement" value="Planteamiento del problema" />
                         <Textarea id="problem_statement" error={errors.problem_statement} bind:value={$formStatementProblem.problem_statement} required />
                     </div>
                 </form>
             {:else if showDirectEffectForm}
                 <form on:submit|preventDefault={submitDirectEffect} id="direct-effect">
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label required class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formDirectEffect.description} required />
                     </div>
-                    <button>Test</button>
                 </form>
             {/if}
         </Content>

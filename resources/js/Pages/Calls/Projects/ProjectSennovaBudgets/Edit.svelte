@@ -96,22 +96,22 @@
                     {/if}
 
                     <div class="mt-4">
-                        <Label required id="description" value="Describa el bien o servicio a adquirir. Sea específico"/>
+                        <Label required class="mb-4" id="description" value="Describa el bien o servicio a adquirir. Sea específico"/>
                         <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="justification" value="Justificación de la necesidad: ¿por qué se requiere este producto o servicio?"/>
+                        <Label required class="mb-4" id="justification" value="Justificación de la necesidad: ¿por qué se requiere este producto o servicio?"/>
                         <Textarea id="justification" error={errors.justification} bind:value={$form.justification} required />
                     </div>
 
                     {#if !showQtyInput}
                         <div class="mt-4">
-                            <Label required id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
+                            <Label required class="mb-4" id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
                             <Input id="qty_items" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
                         </div>
                         <div class="mt-4">
-                            <Label required id="value" value="Valor" />
+                            <Label required class="mb-4" id="value" value="Valor" />
                             <Input id="value" type="number" min="0" class="mt-1 block w-full" bind:value={$form.value} error={errors.value} required />
                         </div>
                     {/if}

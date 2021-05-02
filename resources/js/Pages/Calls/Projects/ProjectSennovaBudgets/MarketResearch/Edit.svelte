@@ -134,12 +134,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
+                    <Label required class="mb-4" id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
                     <Input id="qty_items" type="number" min="1" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="fact_sheet" value="ANEXO 2. Fichas técnicas para maquinaria y equipos" />
+                    <Label required class="mb-4" id="fact_sheet" value="ANEXO 2. Fichas técnicas para maquinaria y equipos" />
                     <File id="fact_sheet" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.fact_sheet} error={errors.fact_sheet} />
                     <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])}>Descargar ficha técnica</a>
                 </div>
@@ -147,17 +147,17 @@
                 <h1 class="text-center mt-20 mb-20">Primer estudio de mercado</h1>
 
                 <div class="mt-4">
-                    <Label required id="first_price_quote" value="Valor (incluido IVA)" />
+                    <Label required class="mb-4" id="first_price_quote" value="Valor (incluido IVA)" />
                     <Input id="first_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.first_price_quote} error={errors.first_price_quote} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="first_company_name" value="Nombre de la empresa" />
+                    <Label required class="mb-4" id="first_company_name" value="Nombre de la empresa" />
                     <Input id="first_company_name" type="text" class="mt-1 block w-full" bind:value={$form.first_company_name} error={errors.first_company_name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="first_price_quote_file" value="Soporte" />
+                    <Label required class="mb-4" id="first_price_quote_file" value="Soporte" />
                     <File id="first_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.first_price_quote_file} error={errors.first_price_quote_file} />
                     <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[0].id])}>Descargar soporte</a>
                 </div>
@@ -165,17 +165,17 @@
                 <h1 class="text-center mt-20 mb-20">Segundo estudio de mercado</h1>
 
                 <div class="mt-4">
-                    <Label required id="second_price_quote" value="Valor (incluido IVA)" />
+                    <Label required class="mb-4" id="second_price_quote" value="Valor (incluido IVA)" />
                     <Input id="second_price_quote" type="number" min="1" class="mt-1 block w-full" bind:value={$form.second_price_quote} error={errors.second_price_quote} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="second_company_name" value="Nombre de la empresa" />
+                    <Label required class="mb-4" id="second_company_name" value="Nombre de la empresa" />
                     <Input id="second_company_name" type="text" class="mt-1 block w-full" bind:value={$form.second_company_name} error={errors.second_company_name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="second_price_quote_file" value="Soporte" />
+                    <Label required class="mb-4" id="second_price_quote_file" value="Soporte" />
                     <File id="second_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.second_price_quote_file} error={errors.second_price_quote_file} />
                     <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[1].id])}>Descargar soporte</a>
                 </div>
@@ -189,12 +189,12 @@
                 {#if $form.requires_third_market_research}
                     <h1 class="text-center mt-20 mb-20">Tercer estudio de mercado</h1>
                     <div class="mt-4">
-                        <Label required id="third_price_quote" value="Valor (incluido IVA)" />
+                        <Label required class="mb-4" id="third_price_quote" value="Valor (incluido IVA)" />
                         <Input id="third_price_quote" type="number" min="0" class="mt-1 block w-full" bind:value={$form.third_price_quote} error={errors.third_price_quote} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="third_company_name" value="Nombre de la empresa" />
+                        <Label required class="mb-4" id="third_company_name" value="Nombre de la empresa" />
                         <Input id="third_company_name" type="text" class="mt-1 block w-full" bind:value={$form.third_company_name} error={errors.third_company_name} required />
                     </div>
 

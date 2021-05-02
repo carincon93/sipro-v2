@@ -94,7 +94,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="academic_centre_id" value="Centro de formación" />
+                    <Label required class="mb-4" id="academic_centre_id" value="Centro de formación" />
                     <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
                 </div>
                 <div>
@@ -104,7 +104,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="research_line_id" value="Línea de investigación" />
+                    <Label required class="mb-4" id="research_line_id" value="Línea de investigación" />
                 </div>
                 <div>
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
@@ -112,7 +112,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="project_type_id" value="Tipo de proyecto" />
+                    <Label required class="mb-4" id="project_type_id" value="Tipo de proyecto" />
                 </div>
                 <div>
                     <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
@@ -120,7 +120,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="knowledge_network_id" value="Red de conocimiento sectorial" />
+                    <Label required class="mb-4" id="knowledge_network_id" value="Red de conocimiento sectorial" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
@@ -128,7 +128,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
+                    <Label required class="mb-4" id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
@@ -136,7 +136,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
+                    <Label required class="mb-4" id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
                 </div>
                 <div>
                     <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" message={errors.ciiu_code_id} required />
@@ -144,7 +144,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="strategic_thematic_id" value="Temática estratégica SENA" />
+                    <Label required class="mb-4" id="strategic_thematic_id" value="Temática estratégica SENA" />
                 </div>
                 <div>
                     <DynamicList id="strategic_thematic_id" bind:value={$form.strategic_thematic_id} routeWebApi={route('web-api.strategic-thematics')} placeholder="Busque por el nombre de la temática estrategica SENA" message={errors.strategic_thematic_id} required />

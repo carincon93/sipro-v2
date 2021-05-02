@@ -61,13 +61,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="research_line_id" value="Línea de investigación" />
+                    <Label required class="mb-4" id="research_line_id" value="Línea de investigación" />
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
                     <InputError message={errors.research_line} />
                 </div>

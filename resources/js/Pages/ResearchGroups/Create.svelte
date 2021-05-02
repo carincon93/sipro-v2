@@ -68,43 +68,43 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="acronym" value="Acrónimo" />
+                    <Label required class="mb-4" id="acronym" value="Acrónimo" />
                     <Input id="acronym" type="text" class="mt-1 block w-full" bind:value={$form.acronym} required autofocus />
                     <InputError message={errors.acronym} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="email" value="Correo electrónico" />
+                    <Label required class="mb-4" id="email" value="Correo electrónico" />
                     <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required autofocus />
                     <InputError message={errors.email} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="gruplac_link" value="Enlace GrupLac" />
+                    <Label required class="mb-4" id="gruplac_link" value="Enlace GrupLac" />
                     <Input id="gruplac_link" type="url" class="mt-1 block w-full" bind:value={$form.gruplac_link} required autofocus />
                     <InputError message={errors.gruplac_link} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="minciencias_code" value="Código Minciencias" />
+                    <Label required class="mb-4" id="minciencias_code" value="Código Minciencias" />
                     <Input id="minciencias_code" type="text" class="mt-1 block w-full" bind:value={$form.minciencias_code} required autofocus />
                     <InputError message={errors.minciencias_code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="minciencias_category" value="Categoría Minciencias" />
+                    <Label required class="mb-4" id="minciencias_category" value="Categoría Minciencias" />
                     <Select items={mincienciasCategories} bind:selectedValue={$form.minciencias_category} autocomplete="off" placeholder="Seleccione una categoría Minciencias"/>
                     <InputError message={errors.minciencias_category} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="academic_centre" value="Centro de formación" />
+                    <Label required class="mb-4" id="academic_centre" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
                 </div>
 

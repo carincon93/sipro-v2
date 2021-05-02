@@ -127,30 +127,30 @@
             <form on:submit|preventDefault={submit}>
                 <div class="p-8">
                     <div class="mt-4">
-                        <Label required id="partner_organization_type" value="Tipo de entidad aliada" />
+                        <Label required class="mb-4" id="partner_organization_type" value="Tipo de entidad aliada" />
                         <FilterSelect items={partnerOrganizationTypes} selectedValue={partnerOrganization.partner_organization_type} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" id="partner_organization_type" />
                         <InputError message={errors.partner_organization_type} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="name" value="Nombre de la entidad aliada/Centro de formación" />
+                        <Label required class="mb-4" id="name" value="Nombre de la entidad aliada/Centro de formación" />
                         <Textarea id="name" error={errors.name} bind:value={$form.name} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="legal_status" value="Naturaleza de la entidad" />
+                        <Label required class="mb-4" id="legal_status" value="Naturaleza de la entidad" />
                         <FilterSelect items={legalStatus} selectedValue={partnerOrganization.legal_status} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" id="legal_status" />
                         <InputError message={errors.legal_status} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="company_type" value="Tipo de empresa" />
+                        <Label required class="mb-4" id="company_type" value="Tipo de empresa" />
                         <FilterSelect items={companyTypes} selectedValue={partnerOrganization.company_type} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" id="company_type" />
                         <InputError message={errors.company_type} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="nit" value="NIT" />
+                        <Label required class="mb-4" id="nit" value="NIT" />
                         <Input id="nit" type="text" class="mt-1 block w-full" bind:value={$form.nit} error={errors.nit} required />
                     </div>
 
@@ -161,7 +161,7 @@
                     </div>
                     {#if agreement}
                         <div class="mt-4">
-                            <Label required id="agreement_description" value="Descipción del convenio" />
+                            <Label required class="mb-4" id="agreement_description" value="Descipción del convenio" />
                             <Textarea id="agreement_description" error={errors.agreement_description} bind:value={$form.agreement_description} required />
                         </div>
                     {/if}
@@ -173,53 +173,53 @@
                     </div>
                     {#if researchGroup}
                         <div class="mt-4">
-                            <Label required id="research_group" value="Grupo de investigación" />
+                            <Label required class="mb-4" id="research_group" value="Grupo de investigación" />
                             <Textarea id="research_group" error={errors.research_group} bind:value={$form.research_group} required />
                         </div>
 
                         <div class="mt-4">
-                            <Label required id="gruplac_code" value="Código del GrupLAC" />
+                            <Label required class="mb-4" id="gruplac_code" value="Código del GrupLAC" />
                             <Input id="gruplac_code" type="text" class="mt-1 block w-full" error={errors.gruplac_code} placeholder="Ejemplo: COL0000000" bind:value={$form.gruplac_code} required={!researchGroup ? undefined : 'required'} />
                         </div>
 
                         <div class="mt-4">
-                            <Label required id="gruplac_link" value="Enlace del GrupLAC" />
+                            <Label required class="mb-4" id="gruplac_link" value="Enlace del GrupLAC" />
                             <Input id="gruplac_link" type="url" class="mt-1 block w-full" error={errors.gruplac_link} placeholder="Ejemplo: https://scienti.minciencias.gov.co/gruplac/jsp/Medicion/graficas/verPerfiles.jsp?id_convocatoria=0nroIdGrupo=0000000" bind:value={$form.gruplac_link} required={!researchGroup ? undefined : 'required'} />
                         </div>
                     {/if}
 
                     <div class="mt-4">
-                        <Label required id="in_kind" value="Recursos en especie entidad aliada ($COP)" />
+                        <Label required class="mb-4" id="in_kind" value="Recursos en especie entidad aliada ($COP)" />
                         <Input id="in_kind" type="number" min="0" class="mt-1 block w-full" error={errors.in_kind} placeholder="COP" bind:value={$form.in_kind} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="in_kind_description" value="Descripción de los recursos en especie aportados" />
+                        <Label required class="mb-4" id="in_kind_description" value="Descripción de los recursos en especie aportados" />
                         <Textarea id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="funds" value="Recursos en especie entidad aliada ($COP)" />
+                        <Label required class="mb-4" id="funds" value="Recursos en especie entidad aliada ($COP)" />
                         <Input id="funds" type="number" min="0" class="mt-1 block w-full" error={errors.funds} placeholder="COP" bind:value={$form.funds} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="funds_description" value="Descripción de la destinación del dinero aportado" />
+                        <Label required class="mb-4" id="funds_description" value="Descripción de la destinación del dinero aportado" />
                         <Textarea id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
+                        <Label required class="mb-4" id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
                         <Textarea id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
+                        <Label required class="mb-4" id="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
                         <File id="letter_of_intent" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.letter_of_intent} error={errors.letter_of_intent} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
+                        <Label required class="mb-4" id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
                         <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
                     </div>
 

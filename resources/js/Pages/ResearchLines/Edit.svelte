@@ -71,13 +71,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="research_group_id" value="Grupo de investigación" />
+                    <Label required class="mb-4" id="research_group_id" value="Grupo de investigación" />
                     <DropdownResearchGroup id="research_group_id" bind:formResearchGroup={$form.research_group_id} message={errors.research_group_id} />
                     <InputError message={errors.research_group_id} />
                 </div>

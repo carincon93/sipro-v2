@@ -61,19 +61,19 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="maximum_value" value="Valor máximo" />
+                    <Label required class="mb-4" id="maximum_value" value="Valor máximo" />
                     <Input id="maximum_value" type="number" min="0" class="mt-1 block w-full" bind:value={$form.maximum_value} required autofocus />
                     <InputError message={errors.maximum_value} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="programmatic_line" value="Línea programática" />
+                    <Label required class="mb-4" id="programmatic_line" value="Línea programática" />
                     <Select items={programmaticLines} bind:selectedValue={$form.programmatic_line} autocomplete="off" placeholder="Seleccione una línea programática"/>
                     <InputError message={errors.programmatic_line} />
                 </div>

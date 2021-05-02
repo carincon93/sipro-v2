@@ -64,19 +64,19 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="productive_sector" value="Sector productivo" />
+                    <Label required class="mb-4" id="productive_sector" value="Sector productivo" />
                     <Select items={productiveSectors} bind:selectedValue={$form.productive_sector} autocomplete="off" placeholder="Seleccione un sector productivo"/>
                     <InputError message={errors.productive_sector} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="technical_committee" value="Mesa técnica de servicios tecnológicos" />
+                    <Label required class="mb-4" id="technical_committee" value="Mesa técnica de servicios tecnológicos" />
                     <Select items={technicalCommittees} bind:selectedValue={$form.technical_committee} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos"/>
                     <InputError message={errors.technical_committee} />
                 </div>

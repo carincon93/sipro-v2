@@ -60,13 +60,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="code" value="Código" />
+                    <Label required class="mb-4" id="code" value="Código" />
                     <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>

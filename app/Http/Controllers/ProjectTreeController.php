@@ -153,7 +153,7 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function updateDirectCause(Project $project, DirectCause $directCause, Request $request)
+    public function updateDirectCause(Request $request, Project $project, DirectCause $directCause)
     {
         $request->validate([
             'description' => 'required|string|max:1200',
@@ -161,7 +161,7 @@ class ProjectTreeController extends Controller
 
         $directCause->description = $request->description;
 
-        $direct_cause->save();
+        $directCause->save();
 
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }

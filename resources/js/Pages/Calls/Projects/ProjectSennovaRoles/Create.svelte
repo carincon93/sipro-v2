@@ -70,12 +70,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="call_sennova_role_id" value="Rol SENNOVA" />
+                    <Label required class="mb-4" id="call_sennova_role_id" value="Rol SENNOVA" />
                     <DropdownProjectSennovaRole id="call_sennova_role_id" bind:qtyMonthsByDefault={qtyMonthsByDefault} bind:qtyRolesByDefault={qtyRolesByDefault} bind:qtyMonths={$form.qty_months} bind:qtyRoles={$form.qty_roles} {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} message={errors.call_sennova_role_id} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="description" value="Descripción" />
+                    <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
@@ -89,7 +89,7 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label required id="qty_months" value="Número de meses que requiere el apoyo" />
+                        <Label required class="mb-4" id="qty_months" value="Número de meses que requiere el apoyo" />
                         <Input id="qty_months" type="number" min="1" class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
                     </div>
                 {/if}
@@ -104,7 +104,7 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label required id="qty_roles" value="Número de personas requeridas" />
+                        <Label required class="mb-4" id="qty_roles" value="Número de personas requeridas" />
                         <Input id="qty_roles" type="number" min="1" class="mt-1 block w-full" error={errors.qty_roles} bind:value={$form.qty_roles} required />
                     </div>
                 {/if}

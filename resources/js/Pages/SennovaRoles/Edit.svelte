@@ -73,18 +73,18 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="description" value="Descripción" />
+                    <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="programmatic_line_id" value={$_('Programmatic lines.singular')} />
+                    <Label required class="mb-4" id="programmatic_line_id" value={$_('Programmatic lines.singular')} />
                     <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} />
                 </div>
             </div>

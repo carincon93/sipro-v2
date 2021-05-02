@@ -62,12 +62,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre del anexo" />
+                    <Label required class="mb-4" id="name" value="Nombre del anexo" />
                     <Textarea id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="description" value="Descripción" />
+                    <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 

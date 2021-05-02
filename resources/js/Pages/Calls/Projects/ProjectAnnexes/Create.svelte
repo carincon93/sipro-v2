@@ -69,12 +69,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="annexes" value={$_('Annexes.singular')} />
+                    <Label required class="mb-4" id="annexes" value={$_('Annexes.singular')} />
                     <Select items={annexes} bind:selectedValue={$form.annexe_id} autocomplete="off" placeholder="Seleccione el anexo"/>
                     <InputError message={errors.annexes} />
                 </div>
                 <div class="mt-4">
-                    <Label required id="file" value="Anexo" />
+                    <Label required class="mb-4" id="file" value="Anexo" />
                     <File id="file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.file} error={errors.file} required />
                 </div>
             </div>

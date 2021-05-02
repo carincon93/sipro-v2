@@ -11,7 +11,7 @@
     import Dropdown from '@/Components/Dropdown'
     import Icon from '@/Components/Icon'
     import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
-    import Toast from '@/Components/Toast.svelte'
+    import FlashMessages from '@/Components/FlashMessages'
 
     let showingNavigationDropdown = false
     let authUser        = $page.props.auth.user
@@ -146,8 +146,7 @@
 
         <!-- Page Content -->
         <main class="lg:px-8 max-w-7xl md:p-12 mx-auto px-4 py-8 sm:px-6">
-            <!-- <FlashMessages /> -->
-            <Toast />
+            <FlashMessages />
             <slot />
         </main>
     </div>

@@ -68,31 +68,31 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre completo" />
+                    <Label required class="mb-4" id="name" value="Nombre completo" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="email" value="Correo electrónico" />
+                    <Label required class="mb-4" id="email" value="Correo electrónico" />
                     <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
                     <InputError message={errors.email} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="document_type" value="Tipo de documento" />
+                    <Label required class="mb-4" id="document_type" value="Tipo de documento" />
                     <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
                     <InputError message={errors.document_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="document_number" value="Número de documento" />
+                    <Label required class="mb-4" id="document_number" value="Número de documento" />
                     <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
                     <InputError message={errors.document_number} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="cellphone_number" value="Número de celular" />
+                    <Label required class="mb-4" id="cellphone_number" value="Número de celular" />
                     <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
                     <InputError message={errors.cellphone_number} />
                 </div>

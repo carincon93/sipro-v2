@@ -84,7 +84,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="description" value="Descripción" />
+                    <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 

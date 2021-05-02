@@ -161,7 +161,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="academic_centre_id" value="Centro de formación" />
+                    <Label required class="mb-4" id="academic_centre_id" value="Centro de formación" />
                     <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
                 </div>
                 <div>
@@ -171,7 +171,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="research_line_id" value="Línea de investigación" />
+                    <Label required class="mb-4" id="research_line_id" value="Línea de investigación" />
                 </div>
                 <div>
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} classes="min-h" placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
@@ -179,7 +179,7 @@ import { onMount } from 'svelte';
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="project_type_id" value="Tipo de proyecto" />
+                    <Label required class="mb-4" id="project_type_id" value="Tipo de proyecto" />
                 </div>
                 <div>
                     <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} classes="min-h" placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
@@ -187,7 +187,7 @@ import { onMount } from 'svelte';
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="knowledge_network_id" value="Red de conocimiento sectorial" />
+                    <Label required class="mb-4" id="knowledge_network_id" value="Red de conocimiento sectorial" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} classes="min-h" placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
@@ -195,7 +195,7 @@ import { onMount } from 'svelte';
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
+                    <Label required class="mb-4" id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} classes="min-h" placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
@@ -203,7 +203,7 @@ import { onMount } from 'svelte';
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
+                    <Label required class="mb-4" id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
                 </div>
                 <div>
                     <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" classes="min-h" message={errors.ciiu_code_id} required />
@@ -211,7 +211,7 @@ import { onMount } from 'svelte';
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="strategic_thematic_id" value="Temática estratégica SENA" />
+                    <Label required class="mb-4" id="strategic_thematic_id" value="Temática estratégica SENA" />
                 </div>
                 <div>
                     <DynamicList id="strategic_thematic_id" bind:value={$form.strategic_thematic_id} routeWebApi={route('web-api.strategic-thematics')} placeholder="Busque por el nombre de la temática estrategica SENA" message={errors.strategic_thematic_id} required />
@@ -294,7 +294,7 @@ import { onMount } from 'svelte';
                     <div class="flex mb-20">
                         <div class="bg-gray-200 flex-1 p-8">
                             <div class="flex items-center">
-                                <Label required id="1.1" value="¿Qué actividad pretende realizar con la especie nativa?"/>
+                                <Label required class="mb-4" id="1.1" value="¿Qué actividad pretende realizar con la especie nativa?"/>
                             </div>
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
@@ -318,7 +318,7 @@ import { onMount } from 'svelte';
 
                         <div class="bg-gray-300 flex-1 p-8">
                             <div class="flex items-center">
-                                <Label required id="1.2" value="¿Cuál es la finalidad de las actividades a realizar con la especie nativa?"/>
+                                <Label required class="mb-4" id="1.2" value="¿Cuál es la finalidad de las actividades a realizar con la especie nativa?"/>
                             </div>
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
@@ -362,7 +362,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
+                    <Label required class="mb-4" id="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
                 </div>
                 <div>
                     <Select items={listOptions} inputAttributes={{'id': 'related_with_technological_plan'}} bind:selectedValue={$form.related_with_technological_plan} autocomplete="off" placeholder="Seleccione una opción"/>
@@ -372,7 +372,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
+                    <Label required class="mb-4" id="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
                 </div>
                 <div>
                     <Select items={listOptions} inputAttributes={{'id': 'related_with_competitiveness_innovation'}} bind:selectedValue={$form.related_with_competitiveness_innovation} autocomplete="off" placeholder="Seleccione una opción"/>
@@ -382,7 +382,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
+                    <Label required class="mb-4" id="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
                 </div>
                 <div>
                     <Select items={listOptions} inputAttributes={{'id': 'related_with_sector_based_committee'}} bind:selectedValue={$form.related_with_sector_based_committee} autocomplete="off" placeholder="Seleccione una opción"/>
@@ -413,7 +413,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-40 grid grid-cols-2">
                 <div>
-                    <Label required id="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
+                    <Label required class="mb-4" id="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
                 </div>
                 <div>
                     <Select items={listOptions} inputAttributes={{'id': 'related_with_techno_academy'}} bind:selectedValue={$form.related_with_techno_academy} autocomplete="off" placeholder="Seleccione una opción"/>
@@ -449,7 +449,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-40 grid grid-cols-2">
                 <div>
-                    <Label required id="abstract" value="Resumen del proyecto" />
+                    <Label required class="mb-4" id="abstract" value="Resumen del proyecto" />
                 </div>
                 <div>
                     <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
@@ -459,7 +459,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="project_background" value="Antecedentes" />
+                    <Label required class="mb-4" id="project_background" value="Antecedentes" />
                 </div>
                 <div>
                     <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
@@ -469,7 +469,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="conceptual_framework" value="Marco conceptual" />
+                    <Label required class="mb-4" id="conceptual_framework" value="Marco conceptual" />
                 </div>
                 <div>
                     <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
@@ -479,7 +479,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="project_methodology" value="Metodología" />
+                    <Label required class="mb-4" id="project_methodology" value="Metodología" />
                 </div>
                 <div>
                     <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
@@ -489,7 +489,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="sustainability_proposal" value="Propuesta de sostenibilidad" />
+                    <Label required class="mb-4" id="sustainability_proposal" value="Propuesta de sostenibilidad" />
                 </div>
                 <div>
                     <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
@@ -499,7 +499,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="bibliography" value="Bibliografía" />
+                    <Label required class="mb-4" id="bibliography" value="Bibliografía" />
                 </div>
                 <div>
                     <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
@@ -509,7 +509,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
+                    <Label required class="mb-4" id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
                 </div>
                 <div>
                     <Input id="students" type="number" min="0" max="9999" class="mt-1 block w-full" error={errors.students} placeholder="Escriba el número de aprendices que se beneficiarán en la ejecución del proyecto" bind:value={$form.students} required />
@@ -518,7 +518,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="states" value="Nombre de los municipios beneficiados" />
+                    <Label required class="mb-4" id="states" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
                     <Textarea id="states" error={errors.states} bind:value={$form.states} required />
@@ -527,7 +527,7 @@ import { onMount } from 'svelte';
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required id="states_impact" value="Descripción del beneficio en los municipios" />
+                    <Label required class="mb-4" id="states_impact" value="Descripción del beneficio en los municipios" />
                 </div>
                 <div>
                     <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />

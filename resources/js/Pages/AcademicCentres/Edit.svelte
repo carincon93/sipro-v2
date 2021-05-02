@@ -73,19 +73,19 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="code" value="Código" />
+                    <Label required class="mb-4" id="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="regional" value="Regional" />
+                    <Label required class="mb-4" id="regional" value="Regional" />
                     <Select items={regional} bind:selectedValue={$form.regional} autocomplete="off" placeholder="Seleccione la regional"/>
                     <InputError message={errors.regional} />
                 </div>

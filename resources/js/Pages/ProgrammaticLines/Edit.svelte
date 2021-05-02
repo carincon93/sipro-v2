@@ -74,25 +74,25 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required id="name" value="Nombre" />
+                    <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="code" value="Código" />
+                    <Label required class="mb-4" id="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="project_category" value="Categoría" />
+                    <Label required class="mb-4" id="project_category" value="Categoría" />
                     <Select items={projectCategories} bind:selectedValue={$form.project_category} autocomplete="off" placeholder="Seleccione una categoría"/>
                     <InputError message={errors.project_category} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="description" value="Descripción" />
+                    <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
                     <InputError message={errors.description} />
                 </div>

@@ -1,39 +1,35 @@
 <script>
     import { page } from '@inertiajs/inertia-svelte'
     import { _ } from 'svelte-i18n'
-    import { SvelteToast, toast } from "@zerodevx/svelte-toast"
-    import { afterUpdate } from 'svelte';
+    import Snackbar, { Actions, Label } from '@smui/snackbar';
+    import IconButton from '@smui/icon-button'
 
-    let flashMessage
+    let snackbar
+    let text = ''
 
-    afterUpdate(() => {
+    let errorsLength = Object.keys($page.props.errors).length
 
-        let errorsLength = Object.keys($page.props.errors).length
+    if ($page.props.flash.success) {
+        text = $_($page.props.flash.success)
+    } else if ($page.props.flash.error) {
+        text = $page.props.flash.error
+    } else if (errorsLength === 1) {
+        text = $_("There is one form error.")
+    } else if(errorsLength > 0) {
+        text = $_('There are form errors.', { values: { count: errorsLength }})
+    }
 
-        if ($page.props.flash.success) {
-            flashMessage = $_($page.props.flash.success)
-        } else if ($page.props.flash.error) {
-            flashMessage = $page.props.flash.error
-        } else if (errorsLength === 1) {
-            flashMessage = $_("There is one form error.")
-        } else if(errorsLength > 0) {
-            flashMessage = $_('There are form errors.', { values: { count: errorsLength }})
-        }
-        if (flashMessage) {
-            toast.pop()
-            toast.push(flashMessage, {
-                duration: 10000,
-                theme: {
-                '--toastBackground': 'rgba(31, 41, 55, var(--tw-bg-opacity))',
-                '--toastColor': 'white',
-                '--toastWidth': '100%',
-                }
-            })
-        }
+    if (text && !snackbar.isOpen()) {
+        snackbar.open()
+    }
 
-        console.log($page.props.errors)
-    })
+    $: console.log($page.props.errors)
 
 </script>
 
-<SvelteToast />
+<Snackbar bind:this={snackbar} labelText={text} timeoutMs={4000}>
+    <Label />
+    <Actions>
+      <IconButton class="material-icons" title="Dismiss">close</IconButton>
+    </Actions>
+</Snackbar>
