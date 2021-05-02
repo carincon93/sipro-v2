@@ -48,7 +48,7 @@ class RDI extends Model
         'states',
         'states_impact',
         'primary_objective',
-        'research_problem',
+        'problem_statement',
         'related_with_technological_plan',
         'related_with_competitiveness_innovation',
         'related_with_sector_based_committee',

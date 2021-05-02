@@ -21,15 +21,15 @@ class OutputController extends Controller
     {
         $this->authorize('viewAny', [Output::class]);
 
-        $researchResult = $project->directEffects()->with('researchResult')->get()->pluck('researchResult')->flatten()->filter();
+        $projectResult = $project->directEffects()->with('projectResult')->get()->pluck('projectResult')->flatten()->filter();
 
         return Inertia::render('Calls/Projects/Outputs/Index', [
             'call'          => $call,
             'project'       => $project,
             'filters'       => request()->all('search'),
             'outputs'       => Output::whereIn('research_result_id',
-                                $researchResult->map(function ($researchResult) {
-                                    return $researchResult->id;
+                                $projectResult->map(function ($projectResult) {
+                                    return $projectResult->id;
                                 }))->filterOutput(request()->only('search'))->paginate(200),
             ]);
     }
@@ -48,7 +48,7 @@ class OutputController extends Controller
         return Inertia::render('Calls/Projects/Outputs/Create', [
             'call' => $call,
             'project'  => $project,
-            'researchResults' => $project->directEffects()->with('researchResult:id as value,description as label,direct_effect_id')->get()->pluck('researchResult')
+            'projectResults' => $project->directEffects()->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult')
         ]);
     }
 
@@ -66,7 +66,7 @@ class OutputController extends Controller
         $output->name       = $request->name;
         $output->start_date = $request->start_date;
         $output->end_date   = $request->end_date;
-        $output->researchResult()->associate($request->research_result_id);
+        $output->projectResult()->associate($request->research_result_id);
         $output->save();
 
         // Valida si es un producto de I+D+i
@@ -109,14 +109,14 @@ class OutputController extends Controller
 
         $project->rdi;
         $output->rdiOutput;
-        $selectedResearchResult = ['value' => optional($output->researchResult)->id, 'label' => optional($output->researchResult)->description];
+        $selectedprojectResult = ['value' => optional($output->projectResult)->id, 'label' => optional($output->projectResult)->description];
 
         return Inertia::render('Calls/Projects/Outputs/Edit', [
             'call' => $call,
             'project'  => $project,
             'output' => $output,
-            'researchResults' => $project->directEffects()->with('researchResult:id as value,description as label,direct_effect_id')->get()->pluck('researchResult'),
-            'selectedResearchResult' => $selectedResearchResult
+            'projectResults' => $project->directEffects()->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult'),
+            'selectedprojectResult' => $selectedprojectResult
         ]);
     }
 
@@ -134,7 +134,7 @@ class OutputController extends Controller
         $output->name = $request->name;
         $output->start_date = $request->start_date;
         $output->end_date = $request->end_date;
-        $output->researchResult()->associate($request->research_result_id);
+        $output->projectResult()->associate($request->research_result_id);
 
         if ($request->minciencias_subtypology_id) {
             $output->rdiOutput()->update(['minciencias_subtypology_id' => $request->minciencias_subtypology_id]);

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use App\Http\Requests\ResearchResultRequest;
+use App\Http\Requests\ProjectResultRequest;
 use App\Http\Requests\ActivityRequest;
 use App\Models\Call;
 use App\Models\Project;
@@ -12,64 +12,58 @@ use App\Models\DirectEffect;
 use App\Models\IndirectEffect;
 use App\Models\DirectCause;
 use App\Models\IndirectCause;
-use App\Models\ResearchResult;
+use App\Models\projectResult;
 use App\Models\Impact;
 use App\Models\SpecificObjective;
 use App\Models\Activity;
 
 class ProjectTreeController extends Controller
 {
-
     private function generateTree(Project $project)
     {
-        if($project->directEffects()->count()<4){
-            for ($i=0; $i < (4-$project->directEffects()->count()); $i++) {
-                $result = $project->directEffects()->create([
+        $specificObjectives = [];
+        if ($project->directCauses()->count() < 4) {
+            for ($i=0; $i < 4; $i++) {
+                $directCause = $project->directCauses()->create([
                     ['description' => null],
                 ]);
 
-                $result2 = $result->researchResult()->create([
-                    ['description' => null],
-                ]);
-            }
-        }
-        if($project->directCauses()->count()<4){
-            for ($i=0; $i < (5-$project->directCauses()->count()); $i++) {
-                $result = $project->directCauses()->create([
-                    ['description' => null],
+                $specificObjective = $directCause->specificObjective()->create([
+                    'description'   => null,
+                    'number'        => $i + 1,
                 ]);
 
-                $result2 = $result->SpecificObjective()->create([
-                    ['description' => null],
-                ]);
+                array_push($specificObjectives, $specificObjective);
             }
         }
 
-        foreach($project->directEffects()->get() as $directEffect){
-            if(empty($directEffect->researchResult)){
-                $result = $directEffect->researchResult()->create([
+        if ($project->directEffects()->count() < 4) {
+            for ($i=0; $i < 4; $i++) {
+                $directEffect = $project->directEffects()->create([
                     ['description' => null],
                 ]);
+
+                $projectResult = $directEffect->projectResult()->create([
+                    'description'           => null,
+                    'specific_objective_id' => $specificObjectives[$i]->id
+                ]);
             }
-            foreach($directEffect->indirectEffects as $indEffect){
-                if(empty($indEffect->impact)){
-                    $rest = $indEffect->impact()->create([
+        }
+
+        foreach ($project->directEffects()->get() as $key => $directEffect) {
+            foreach ($directEffect->indirectEffects as $indirectEffect) {
+                if (empty($indirectEffect->impact)) {
+                    $impact = $indirectEffect->impact()->create([
                         ['description' => null],
                     ]);
                 }
             }
         }
 
-        foreach($project->directCauses()->get() as $directCause){
-            if(empty($directCause->SpecificObjective)){
-                $result = $directCause->SpecificObjective()->create([
-                    ['description' => null],
-                ]);
-            }
-
-            foreach($directCause->indirectCauses as $indCause){
-                if(empty($indCause->activity)){
-                    $rest = $indCause->activity()->create([
+        foreach ($project->directCauses()->get() as $directCause) {
+            foreach ($directCause->indirectCauses as $indirectCause) {
+                if (empty($indirectCause->activity)) {
+                    $activity = $indirectCause->activity()->create([
                         ['description' => null],
                     ]);
                 }
@@ -89,23 +83,16 @@ class ProjectTreeController extends Controller
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
-                $directEffects = $project->directEffects()->with('indirectEffects')->get();
-                $directCauses = $project->directCauses()->with('indirectCauses')->get();
-                $rdi = $project->rdi()->first();
-                break;
-            case 'value':
-                # code...
-                break;
-            case 'value':
-                # code...
+                $directEffects  = $project->directEffects()->with('indirectEffects')->get();
+                $directCauses   = $project->directCauses()->with('indirectCauses')->get();
+                $rdi            = $project->rdi()->first();
                 break;
             default:
-                # code...
                 break;
         }
         return Inertia::render('Calls/Projects/ProjectTree/ProblemTree', [
-            'call'      => $call,
-            'project'   => $rdi,
+            'call'          => $call,
+            'project'       => $rdi,
             'directEffects' => $directEffects,
             'directCauses'  => $directCauses
         ]);
@@ -113,11 +100,11 @@ class ProjectTreeController extends Controller
 
     public function updateProblem(Project $project, Request $request)
     {
-        $validated = $request->validate([
-            'research_problem' => 'required|string|max:1200',
+        $request->validate([
+            'problem_statement' => 'required|string|max:1200',
         ]);
         $rdi = $project->rdi;
-        $rdi->research_problem = $request->research_problem;
+        $rdi->problem_statement = $request->problem_statement;
 
         $rdi->save();
 
@@ -126,9 +113,10 @@ class ProjectTreeController extends Controller
 
     public function updateDirectEffect(Project $project, DirectEffect $direct_effect, Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'description' => 'required|string|max:1200',
         ]);
+
         $direct_effect->description = $request->description;
 
         $direct_effect->save();
@@ -138,25 +126,26 @@ class ProjectTreeController extends Controller
 
     public function createOrUpdateIndirectEffect(Project $project, DirectEffect $direct_effect, Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'description' => 'required|string|max:1200',
         ]);
-        if(empty($request->id) && $direct_effect->indirectEffects()->count() < 3){
-            $indEffect = new IndirectEffect();
-            $indEffect->fill($request->all());
-            $indEffect->save();
 
-        }elseif(!empty($request->id)){
-            $indEffect = IndirectEffect::find($request->id);
-            $indEffect->description = $request->description;
-            $indEffect->save();
+        if (empty($request->id) && $direct_effect->indirectEffects()->count() < 3) {
+            $indirectEffect = new IndirectEffect();
+            $indirectEffect->fill($request->all());
+            $indirectEffect->save();
 
-        }else{
-            return redirect()->back()->with('errors', 'Cannot add more indirect effects.');
+        } elseif (!empty($request->id)) {
+            $indirectEffect = IndirectEffect::find($request->id);
+            $indirectEffect->description = $request->description;
+            $indirectEffect->save();
+
+        } else {
+            return redirect()->back()->with('error', 'Cannot add more indirect effects.');
         }
 
-        if(empty($indEffect->impact)){
-            $rest = $indEffect->impact()->create([
+        if (empty($indirectEffect->impact)) {
+            $indirectEffect->impact()->create([
                 ['description' => null],
             ]);
         }
@@ -164,44 +153,44 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function updateDirectCause(Project $project, DirectCause $direct_cause, Request $request)
+    public function updateDirectCause(Project $project, DirectCause $directCause, Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'description' => 'required|string|max:1200',
         ]);
-        $direct_cause->description = $request->description;
+
+        $directCause->description = $request->description;
 
         $direct_cause->save();
 
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function createOrUpdateIndirectCause(Project $project, DirectCause $direct_cause, Request $request)
+    public function createOrUpdateIndirectCause(Request $request, Project $project, DirectCause $directCause)
     {
-        $validated = $request->validate([
+        $request->validate([
             'description' => 'required|string|max:1200',
         ]);
-        if(empty($request->id) && $direct_cause->indirectCauses()->count() < 3){
-            $indCause = new IndirectCause();
-            $indCause->fill($request->all());
-            $indCause->save();
 
-        }elseif(!empty($request->id)){
-            $indCause = IndirectCause::find($request->id);
-            $indCause->description = $request->description;
-            $indCause->save();
-
-        }else{
-            return redirect()->back()->with('errors', 'Cannot add more indirect causes.');
+        if (empty($request->id) && $directCause->indirectCauses()->count() < 3) {
+            $indirectCause = new IndirectCause();
+            $indirectCause->fill($request->all());
+            $indirectCause->save();
+        } elseif (!empty($request->id)) {
+            $indirectCause = IndirectCause::find($request->id);
+            $indirectCause->description = $request->description;
+            $indirectCause->save();
+        } else {
+            return redirect()->back()->with('error', 'Cannot add more indirect causes.');
         }
 
-        if(empty($indCause->activity)){
-            $rest = $indCause->activity()->create([
+        if (empty($indirectCause->activity)) {
+            $indirectCause->activity()->create([
                 ['description' => null],
             ]);
         }
-        return redirect()->back()->with('success', 'The resource has been saved successfully.');
 
+        return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
     /**
@@ -216,28 +205,29 @@ class ProjectTreeController extends Controller
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
-                $directEffects = $project->directEffects()->with(['indirectEffects.impact', 'researchResult'])->get();
-                $directCauses = $project->directCauses()->with('indirectCauses.activity', 'specificObjective')->get();
-                $rdi = $project->rdi()->first();
+                $directEffects  = $project->directEffects()->with(['indirectEffects.impact', 'projectResult'])->get();
+                $directCauses   = $project->directCauses()->with('indirectCauses.activity', 'specificObjective')->get();
+                $rdi            = $project->rdi()->first();
                 break;
             default:
                 break;
         }
 
         return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
-            'call'      => $call,
-            'project'   => $rdi,
+            'call'          => $call->only('id'),
+            'project'       => $rdi,
             'directEffects' => $directEffects,
             'directCauses'  => $directCauses
         ]);
     }
 
-    public function updateObjective(Project $project, Request $request)
+    public function updateObjective(Request $request, Project $project)
     {
-        $validated = $request->validate([
+        $request->validate([
             'primary_objective' => 'required|string|max:1200',
         ]);
-        $rdi = $project->rdi;
+
+        $rdi                    = $project->rdi;
         $rdi->primary_objective = $request->primary_objective;
 
         $rdi->save();
@@ -245,55 +235,57 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function updateImpact(Project $project, Impact $impact, Request $request)
+    public function updateImpact(Request $request, Project $project, Impact $impact)
     {
-        $validated = $request->validate([
+        $request->validate([
             'description' => 'required|string|max:1200',
         ]);
 
-        $impact->description=$request->description;
+        $impact->description = $request->description;
 
-        if($impact->save()){
+        if ($impact->save()) {
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
-        return redirect()->back()->with('errors', 'Error updating impact.');
+
+        return redirect()->back()->with('error', 'Error updating impact.');
     }
 
-    public function updateResearchResult(Project $project, ResearchResult $research_result, ResearchResultRequest $request)
+    public function updateProjectResult(ProjectResultRequest $request, Project $project, ProjectResult $projectResult)
     {
-        $research_result->fill($request->all());
+        $projectResult->fill($request->all());
 
-        if($research_result->save()){
+        if ($projectResult->save()) {
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
-        return redirect()->back()->with('errors', 'Error updating result.');
+
+        return redirect()->back()->with('error', 'Error updating result.');
     }
 
-    public function updateSpecificObjective(Project $project, SpecificObjective $specific_objective, Request $request)
+    public function updateSpecificObjective(Request $request, Project $project, SpecificObjective $specificObjective)
     {
-        $validated = $request->validate([
-            'description' => 'required|string|max:1200',
-            'number' => 'required|integer',
+        $request->validate([
+            'description'   => 'required|string|max:1200',
+            'number'        => 'required|integer',
         ]);
 
-        $specific_objective->description=$request->description;
-        $specific_objective->number=$request->number;
+        $specificObjective->description = $request->description;
+        $specificObjective->number      = $request->number;
 
-        if($specific_objective->save()){
+        if ($specificObjective->save()) {
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
-        return redirect()->back()->with('errors', 'Error updating specific objective.');
+
+        return redirect()->back()->with('error', 'Error updating specific objective.');
     }
 
-    public function updateActivity(Call $call, Project $project, Activity $activity, ActivityRequest $request)
+    public function updateActivity(ActivityRequest $request, Call $call, Project $project, Activity $activity)
     {
         $activity->fill($request->all());
 
-        if($activity->save()){
+        if ($activity->save()) {
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
         }
-        return redirect()->back()->with('errors', 'Error updating activity.');
+
+        return redirect()->back()->with('error', 'Error updating activity.');
     }
-
-
 }

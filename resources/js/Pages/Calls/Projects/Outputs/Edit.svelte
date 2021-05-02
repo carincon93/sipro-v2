@@ -35,7 +35,7 @@
     let sending = false
     let form = remember({
         name: output.name,
-        research_result_id: selectedResearchResult,
+        project_result_id: selectedResearchResult,
         minciencias_subtypology_id: output.rdi_output?.minciencias_subtypology_id,
         start_date: output.start_date,
         end_date: output.end_date
@@ -84,9 +84,9 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="research_result_id" value={$_('Research results.singular')} />
-                    <Select items={researchResults} bind:selectedValue={$form.research_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
-                    <InputError message={errors.research_result_id} />
+                    <Label required id="project_result_id" value={$_('Research results.singular')} />
+                    <Select items={researchResults} bind:selectedValue={$form.project_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
+                    <InputError message={errors.project_result_id} />
                 </div>
 
                 {#if output.rdi_output}

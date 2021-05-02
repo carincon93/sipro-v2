@@ -98,7 +98,7 @@ class ActivityController extends Controller
             'activity' => $activity,
             'call' => $call,
             'project' => $project,
-            'outputs' => $project->directEffects()->with('researchResult.outputs')->get()->pluck('researchResult.outputs')->flatten(),
+            'outputs' => $project->directEffects()->with('projectResult.outputs')->get()->pluck('projectResult.outputs')->flatten(),
             'activity_outputs' => $activity->outputs()->pluck('id'),
         ]);
     }

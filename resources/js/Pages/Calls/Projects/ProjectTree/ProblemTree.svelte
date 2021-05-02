@@ -1,18 +1,16 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { useForm } from '@inertiajs/inertia-svelte'
     import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import { Modal, Card } from 'svelte-chota'
+    import Dialog, { Title, Content } from '@smui/dialog'
+    import Button, { Label as LabelMUI } from '@smui/button'
 
-    import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
-    import fitTextarea from 'fit-textarea'
     import Stepper from '@/Components/Stepper'
 
     import { createPopper } from '@popperjs/core'
@@ -23,129 +21,214 @@
     export let directEffects
     export let directCauses
 
-    $: $title = project ? project.title : null
-    let sending     = false;
+    let formID
+    let sending = false
+    let open    = false
+    let dialogTitle
+    let code
 
-    let formEI = remember({
-        id:0,
-        direct_effect_id:0,
-        description:''
+    $: $title = $_('Problem tree')
+
+    /**
+     * Efectos indirectos
+     */
+    let formIndirectEffect = useForm({
+        id: 0,
+        direct_effect_id: 0,
+        description: ''
     })
-    let modal_openEI  = false
-    function modal_showEI(EI, direct_effect_id){
-        if(EI!=null){
-            formEI.description=EI.description;formEI.id=EI.id;formEI.direct_effect_id=EI.direct_effect_id;
-        }else{
-            formEI.id=null;formEI.direct_effect_id=direct_effect_id;
+
+    let showIndirectEffectForm = false
+    function showIndirectEffectDialog(indirectEffect, directEffectID) {
+        reset()
+        code                    = indirectEffect?.id != null ? 'EFE-' + indirectEffect.direct_effect_id + '-IND-' + indirectEffect.id: ''
+        dialogTitle             = 'Efecto indirecto'
+        formID                  = 'indirect-effect'
+        showIndirectEffectForm  = true
+        open                    = true
+
+        if(indirectEffect != null) {
+            $formIndirectEffect.description      = indirectEffect.description
+            $formIndirectEffect.id               = indirectEffect.id
+            $formIndirectEffect.direct_effect_id = indirectEffect.direct_effect_id
+        } else {
+            $formIndirectEffect.id               = null
+            $formIndirectEffect.direct_effect_id = directEffectID
         }
-        modal_openEI = true;
-    };
-    function modal_hideEI() {formEI.description='';formEI.id=0;formEI.direct_effect_id=0;modal_openEI = false};
+    }
 
     function submitIndirectEffect() {
-        Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect:formEI.direct_effect_id}), formEI, {
-            onStart: ()     =>  { sending = true;},
-            onSuccess: ()   =>  modal_hideEI(),
-            onFinish: ()    =>  {sending = false;},
+        console.log('rest');
+        Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), $formIndirectEffect, {
+            onStart: ()     =>  { sending = true },
+            onSuccess: ()   =>  { closeDialog() },
+            onFinish: ()    =>  { sending = false },
+            preserveScroll: true
         })
     }
 
-    let formED = remember({
-        id:0,
-        description:''
+    /**
+     * Efectos directos
+     */
+    let formDirectEffect = useForm({
+        id: 0,
+        description: ''
     })
-    let modal_openED  = false;
-    function modal_showED(ED){formED.description=ED.description;formED.id=ED.id;modal_openED = true;};
-    function modal_hideED() {formED.description='';formED.id=0;modal_openED = false};
+
+    let showDirectEffectForm = false;
+    function showDirectEffectDialog(directEffect) {
+        reset()
+        code                            = 'EFE-' + directEffect.id
+        dialogTitle                     = 'Efecto directo'
+        formID                          = 'direct-effect'
+        showDirectEffectForm            = true
+        open                            = true
+        $formDirectEffect.description   = directEffect.description
+        $formDirectEffect.id            = directEffect.id
+    }
 
     function submitDirectEffect() {
-        Inertia.post(route('projects.direct_effect', {project:project.id, direct_effect:formED.id}), formED, {
-            onStart: ()     =>  { sending = true;},
-            onSuccess: ()   =>  modal_hideED(),
-            onFinish: ()    =>  {sending = false;},
+        Inertia.post(route('projects.direct_effect', {project:project.id, direct_effect: $formDirectEffect.id}), $formDirectEffect, {
+            onStart: ()     => { sending = true },
+            onSuccess: ()   => { closeDialog() },
+            onFinish: ()    => { sending = false },
+            preserveScroll: true
         })
     }
 
-    let formRP = remember({
-        research_problem:   project.research_problem
+    /**
+     * Planteamiento del problema
+     */
+    let formStatementProblem = useForm({
+        problem_statement:   project.problem_statement
     })
-    let modal_openRP  = false
-    const modal_showRP = event => {formRP.research_problem=project.research_problem;modal_openRP = true;};
-    const modal_hideRP = event => modal_openRP = false;
 
-    function submitGeneralProblem() {
-        Inertia.post(route('projects.research_problem', project.id), formRP, {
-            onStart: ()     =>{ sending = true;},
-            onSuccess: ()   =>  modal_openRP = false,
-            onFinish: ()    => {sending = false;},
+    let showStatementProblemForm = false
+    function showStatementProblemDialog() {
+        reset()
+        dialogTitle                             = 'Planteamiento del problema'
+        formID                                  = 'statement-problem'
+        showStatementProblemForm                = true
+        open                                    = true
+        $formStatementProblem.problem_statement = project.problem_statement
+    }
+
+    function submitStatementProblem() {
+        Inertia.post(route('projects.problem_statement', project.id), $formStatementProblem, {
+            onStart: ()     => { sending = true },
+            onSuccess: ()   => { closeDialog() },
+            onFinish: ()    => { sending = false },
+            preserveScroll: true
         })
     }
 
-    let formCD = remember({
-        id:0,
-        description:''
+    /**
+     * Causas directas
+     */
+    let formDirectCause = useForm({
+        id: 0,
+        description: ''
     })
-    let modal_openCD  = false;
-    function modal_showCD(CD){formCD.description=CD.description;formCD.id=CD.id;modal_openCD = true;};
-    function modal_hideCD() {formCD.description='';formCD.id=0;modal_openCD = false};
+
+    let showDirectCauseForm = false;
+    function showDirectCauseDialog(directCause) {
+        reset()
+        code                            = 'CAU-' + directCause.id
+        dialogTitle                     = 'Causa directa'
+        formID                          = 'direct-cause'
+        showDirectCauseForm             = true
+        open                            = true
+        $formDirectCause.id             = directCause.id
+        $formDirectCause.description    = directCause.description
+    }
 
     function submitDirectCause() {
-        Inertia.post(route('projects.direct_cause', {project:project.id, direct_cause:formCD.id}), formCD, {
-            onStart: ()     =>  { sending = true;},
-            onSuccess: ()   =>  modal_hideCD(),
-            onFinish: ()    =>  {sending = false;},
+        Inertia.post(route('projects.direct_cause', {project:project.id, direct_cause: $formDirectCause.id}), $formDirectCause, {
+            onStart: ()     => { sending = true },
+            onSuccess: ()   => { closeDialog() },
+            onFinish: ()    => { sending = false },
+            preserveScroll: true
         })
     }
 
-    let formCI = remember({
-        id:0,
-        direct_cause_id:0,
-        description:''
+    /**
+     * Causas indirectas
+     */
+    let formIndirectCause = useForm({
+        id: 0,
+        direct_cause_id: 0,
+        description: ''
     })
-    let modal_openCI  = false
-    function modal_showCI(CI, direct_cause_id){
-        if(CI!=null){
-            formCI.description=CI.description;formCI.id=CI.id;formCI.direct_cause_id=CI.direct_cause_id;
-        }else{
-            formCI.id=null;formCI.direct_cause_id=direct_cause_id;
+
+    let showIndirectCauseForm = false
+    function showIndirectCauseDialog(indirectCause, directCauseID) {
+        reset()
+        code                                    = indirectCause?.id != null ? 'CAU-' + indirectCause.direct_cause_id + '-IND-' + indirectCause.id : ''
+        dialogTitle                             = 'Causa indirecta'
+        formID                                  = 'indirect-cause'
+        showIndirectCauseForm                   = true
+        open                                    = true
+        if(indirectCause != null) {
+            $formIndirectCause.id               = indirectCause.id
+            $formIndirectCause.description      = indirectCause.description
+            $formIndirectCause.direct_cause_id  = indirectCause.direct_cause_id
+        } else {
+            $formIndirectCause.id               = null
+            $formIndirectCause.direct_cause_id  = directCauseID
         }
-        modal_openCI = true;
-    };
-    function modal_hideCI() {formCI.description='';formCI.id=0;formCI.direct_cause_id=0;modal_openCI = false};
+    }
 
     function submitIndirectCause() {
-        Inertia.post(route('projects.indirect_cause', {project:project.id, direct_cause:formCI.direct_cause_id}), formCI, {
-            onStart: ()     =>  { sending = true;},
-            onSuccess: ()   =>  modal_hideCI(),
-            onFinish: ()    =>  {sending = false;},
+        Inertia.post(route('projects.indirect_cause', {project:project.id, direct_cause: $formIndirectCause.direct_cause_id}), $formIndirectCause, {
+            onStart: ()     => { sending = true },
+            onSuccess: ()   => { closeDialog() },
+            onFinish: ()    => { sending = false },
+            preserveScroll: true
         })
+    }
+
+    function reset() {
+        showIndirectEffectForm      = false
+        showDirectEffectForm        = false
+        showStatementProblemForm    = false
+        showDirectCauseForm         = false
+        showIndirectCauseForm       = false
+        dialogTitle                 = ''
+        $formIndirectCause.reset()
+        $formDirectCause.reset()
+        $formStatementProblem.reset()
+        $formDirectEffect.reset()
+        $formIndirectEffect.reset()
+        formID = ''
+    }
+
+    function closeDialog() {
+        reset()
+        open = false
     }
 
     onMount(() => {
-		const textareas = document.querySelectorAll('textarea')
-        fitTextarea.watch(textareas)
+        const indirectEffect            = document.querySelector('#indirect-effect-tooltip-placement')
+        const indirectEffectTooltip     = document.querySelector('#indirect-effect-tooltip')
+        const arrowIndirectEffect       = document.querySelector('#arrow-indirect-effect')
 
-        const efectoIndirecto           = document.querySelector('#efecto-indirecto')
-        const efectoIndirectoTooltip    = document.querySelector('#efecto-indirecto-tooltip')
-        const arrowEfectoIndirecto      = document.querySelector('#arrow-efecto-indirecto')
+        const directEffect              = document.querySelector('#direct-effect-tooltip-placement')
+        const directEffectTooltip       = document.querySelector('#direct-effect-tooltip')
+        const arrowDirectEffect         = document.querySelector('#arrow-direct-effect')
 
-        const efectoDirecto           = document.querySelector('#efecto-directo')
-        const efectoDirectoTooltip    = document.querySelector('#efecto-directo-tooltip')
-        const arrowEfectoDirecto      = document.querySelector('#arrow-efecto-directo')
+        const statementProblem          = document.querySelector('#statement-problem-tooltip-placement')
+        const statementProblemTooltip   = document.querySelector('#statement-problem-tooltip')
+        const arrowStatementProblem     = document.querySelector('#arrow-statement-problem')
 
-        const problemaCentral           = document.querySelector('#problema-central')
-        const problemaCentralTooltip    = document.querySelector('#problema-central-tooltip')
-        const arrowProblemaCentral      = document.querySelector('#arrow-problema-central')
+        const directCause               = document.querySelector('#direct-cause-tooltip-placement')
+        const directCauseTooltip        = document.querySelector('#direct-cause-tooltip')
+        const arrowDirectCause          = document.querySelector('#arrow-direct-cause')
 
-        const causaDirecta           = document.querySelector('#causa-directa')
-        const causaDirectaTooltip    = document.querySelector('#causa-directa-tooltip')
-        const arrowCausaDirecta      = document.querySelector('#arrow-causa-directa')
+        const indrectCause              = document.querySelector('#indirect-cause-tooltip-placement')
+        const indrectCauseTooltip       = document.querySelector('#indirect-cause-tooltip')
+        const arrowIndirectCause        = document.querySelector('#arrow-indirect-cause')
 
-        const causaIndirecta           = document.querySelector('#causa-indirecta')
-        const causaIndirectaTooltip    = document.querySelector('#causa-indirecta-tooltip')
-        const arrowCausaIndirecta      = document.querySelector('#arrow-causa-indirecta')
-
-        let tooltips = [{'element': {'target': efectoIndirecto, 'tooltip': efectoIndirectoTooltip, 'arrow': arrowEfectoIndirecto}}, {'element': {'target': efectoDirecto, 'tooltip': efectoDirectoTooltip, 'arrow': arrowEfectoDirecto}}, {'element': {'target': problemaCentral, 'tooltip': problemaCentralTooltip, 'arrow': arrowProblemaCentral}}, {'element': {'target': causaDirecta, 'tooltip': causaDirectaTooltip, 'arrow': arrowCausaDirecta}}, {'element': {'target': causaIndirecta, 'tooltip': causaIndirectaTooltip, 'arrow': arrowCausaIndirecta}}]
+        let tooltips = [{'element': {'target': indirectEffect, 'tooltip': indirectEffectTooltip, 'arrow': arrowIndirectEffect}}, {'element': {'target': directEffect, 'tooltip': directEffectTooltip, 'arrow': arrowDirectEffect}}, {'element': {'target': statementProblem, 'tooltip': statementProblemTooltip, 'arrow': arrowStatementProblem}}, {'element': {'target': directCause, 'tooltip': directCauseTooltip, 'arrow': arrowDirectCause}}, {'element': {'target': indrectCause, 'tooltip': indrectCauseTooltip, 'arrow': arrowIndirectCause}}]
 
         tooltips.map(function(tooltip) {
             createPopper(tooltip.element.target, tooltip.element.tooltip, {
@@ -164,7 +247,7 @@
 </script>
 
 <style>
-    .efectos-directos.relative.flex-1:before {
+    .direct-effects.relative.flex-1:before {
         content: "";
         bottom: -40%;
         position: absolute;
@@ -174,7 +257,7 @@
         background: #d2d6ff;
     }
 
-    .causas-directas.relative.flex-1:before {
+    .direct-causes.relative.flex-1:before {
         content: "";
         top: -38%;
         position: absolute;
@@ -221,6 +304,21 @@
     .tooltip[data-popper-placement^='left'] > .arrow {
         right: -4px;
     }
+
+    :global(.mdc-dialog__surface) {
+        width: 750px;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    :global(.mdc-dialog__content) {
+        padding-top: 40px !important;
+    }
+
+    :global(.mdc-dialog__title) {
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        margin-bottom: 0;
+    }
+
 </style>
 
 <AuthenticatedLayout>
@@ -229,74 +327,75 @@
 
     <div class="py-12">
         <h1 class="text-4xl text-center">Árbol de problemas</h1>
-        <p class="text-center">Debe generar el árbol de problemas desde la problemática central, relacionando sus causas y efectos.</p>
+        <p class="text-center">Debe generar el árbol de problemas iniciando con el planteamiento del problema, relacionando sus causas y efectos.</p>
 
         <div class="mt-16">
             <!-- Efectos -->
             <div class="flex mb-14">
-                {#each directEffects as efect, i}
-                <div class="flex-1">
-                    {#if i==0}
-                    <!-- Efectos indirectos -->
-                    <div id="efecto-indirecto-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                        <small>Efectos indirectos</small>
-                        <div id="arrow-efecto-indirecto" class="arrow" data-popper-arrow></div>
-                    </div>
-                    {/if}
-                    <div class="flex mb-14" id="{i==0?'efecto-indirecto':''}" aria-describedby="{i==0?'tooltip':''}">
-                        {#each efect.indirect_effects as indirect_efect}
-                        <div class="flex-1 efectos-directos relative">
-                            <div on:click={modal_showEI(indirect_efect, efect.id)} class="{indirect_efect.description!=null?'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
-                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                    <small class="title">Cod: EFE-{efect.id}-IND-{indirect_efect.id}</small><br><br>
-                                    {#if indirect_efect.description != null && indirect_efect.description.length>0}
-                                    {indirect_efect.description}
+                {#each directEffects as directEffect, i}
+                    <div class="flex-1">
+                        {#if i == 0}
+                            <!-- Efectos indirectos -->
+                            <div id="indirect-effect-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                                <small>Efectos indirectos</small>
+                                <div id="arrow-indirect-effect" class="arrow" data-popper-arrow></div>
+                            </div>
+                        {/if}
+                        <div class="flex mb-14" id="{i == 0 ? 'indirect-effect-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
+                            {#each directEffect.indirect_effects as indirectEffect}
+                                <div class="flex-1 direct-effects relative">
+                                    <div on:click={showIndirectEffectDialog(indirectEffect, directEffect.id)} class="{indirectEffect.description != null ? 'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                        <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                            <small class="title block font-bold mb-2">EFE-{directEffect.id}-IND-{indirectEffect.id}</small>
+                                            {#if indirectEffect.description != null && indirectEffect.description.length > 0}
+                                                {indirectEffect.description}
+                                            {/if}
+                                        </p>
+                                    </div>
+                                </div>
+                            {/each}
+                            {#each {length: (3-directEffect.indirect_effects.length)} as _empty}
+                                <div class="flex-1 direct-effects relative" on:click={showIndirectEffectDialog(null, directEffect.id)}>
+                                    <div class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
+                                        <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                        </p>
+                                    </div>
+                                </div>
+                            {/each}
+                        </div>
+
+                        {#if i == 0}
+                            <!-- Efecto directo -->
+                            <div id="direct-effect-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                                <small>Efectos directos</small>
+                                <div id="arrow-direct-effect" class="arrow" data-popper-arrow></div>
+                            </div>
+                        {/if}
+                        <!-- Efecto directo -->
+                        <div class="direct-effects relative flex-1"  id="{i == 0 ? 'direct-effect-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
+                            <div on:click={showDirectEffectDialog(directEffect)} class="{directEffect.description != null ? 'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                    <small class="title block font-bold mb-2">EFE-{directEffect.id}</small>
+                                    {#if directEffect.description != null && directEffect.description.length > 0}
+                                        {directEffect.description}
                                     {/if}
                                 </p>
                             </div>
                         </div>
-                        {/each}
-                        {#each {length: (3-efect.indirect_effects.length)} as _empty}
-                        <div class="flex-1 efectos-directos relative" on:click={modal_showEI(null, efect.id)}>
-                            <div class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
-                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                </p>
-                            </div>
-                        </div>
-                        {/each}
                     </div>
-                    {#if i==0}
-                    <!-- Efecto directo -->
-                    <div id="efecto-directo-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                        <small>Efectos directos</small>
-                        <div id="arrow-efecto-directo" class="arrow" data-popper-arrow></div>
-                    </div>
-                    {/if}
-                    <!-- Efecto directo -->
-                    <div class="efectos-directos relative flex-1"  id="{i==0?'efecto-directo':''}" aria-describedby="{i==0?'tooltip':''}">
-                        <div on:click={modal_showED(efect)} class="{efect.description!=null?'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
-                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                                <small class="title">Cod: EFE-{efect.id}</small><br><br>
-                                {#if efect.description != null && efect.description.length>0}
-                                {efect.description}
-                                {/if}
-                            </p>
-                        </div>
-                    </div>
-                </div>
                 {/each}
             </div>
 
-            <!-- Problema central -->
-            <div id="problema-central-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                <small>Problema central</small>
-                <div id="arrow-problema-central" class="arrow" data-popper-arrow></div>
+            <!-- Planteamiento del problema -->
+            <div id="statement-problem-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                <small>Planteamiento <br> del problema</small>
+                <div id="arrow-statement-problem" class="arrow" data-popper-arrow></div>
             </div>
-            <div class="problema-central relative" id="problema-central" aria-describedby="tooltip">
-                <div on:click={modal_showRP} class="h-36 {project.research_problem!=null?'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} rounded shadow-lg cursor-pointer mr-1.5">
-                    {#if project.research_problem != null && project.research_problem.length>0}
+            <div class="statement-problem relative" id="statement-problem-tooltip-placement" aria-describedby="tooltip">
+                <div on:click={showStatementProblemDialog} class="h-36 {project.problem_statement != null ? 'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} rounded shadow-lg cursor-pointer mr-1.5">
+                    {#if project.problem_statement != null && project.problem_statement.length > 0}
                         <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                            {project.research_problem}
+                            {project.problem_statement}
                         </p>
                     {/if}
                 </div>
@@ -304,163 +403,127 @@
 
             <!-- Causas -->
             <div class="flex mt-14">
-                {#each directCauses as cause, i}
-                <div class="flex-1">
-                    <!-- Causa directa -->
-                    {#if i==0}
-                    <div id="causa-directa-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                        <small>Causas directas</small>
-                        <div id="arrow-causa-directa" class="arrow" data-popper-arrow></div>
-                    </div>
-                    {/if}
-                    <div class="causas-directas relative flex-1"  id="{i==0?'causa-directa':''}" aria-describedby="{i==0?'tooltip':''}">
-                        <div on:click={modal_showCD(cause)} class="{cause.description!=null?'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
-                            <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
-                                <small class="title">Cod: CAU-{cause.id}</small><br><br>
-                                {#if cause.description != null && cause.description.length>0}
-                                {cause.description}
-                                {/if}
-                            </p>
-                        </div>
-                    </div>
-                    
-                    {#if i==0}
-                    <div id="causa-indirecta-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
-                        <small>Causas indirectas</small>
-                        <div id="arrow-causa-indirecta" class="arrow" data-popper-arrow></div>
-                    </div>
-                    {/if}
-                    <!-- Causas indirectas -->
-                    <div class="flex mt-14" id="{i==0?'causa-indirecta':''}" aria-describedby="{i==0?'tooltip':''}">
-                        {#each cause.indirect_causes as indirect_cause}
-                        <div class="causas-directas relative flex-1">
-                            <div on:click={modal_showCI(indirect_cause, cause.id)} class="{indirect_cause.description!=null?'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
-                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                    <small class="title">Cod: CAU-{cause.id}-IND-{indirect_cause.id}</small><br><br>
-                                    {#if indirect_cause.description != null && indirect_cause.description.length>0}
-                                    {indirect_cause.description}
+                {#each directCauses as directCause, i}
+                    <div class="flex-1">
+                        <!-- Causa directa -->
+                        {#if i == 0}
+                            <div id="direct-cause-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                                <small>Causas directas</small>
+                                <div id="arrow-direct-cause" class="arrow" data-popper-arrow></div>
+                            </div>
+                        {/if}
+                        <div class="direct-causes relative flex-1"  id="{i == 0 ? 'direct-cause-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
+                            <div on:click={showDirectCauseDialog(directCause)} class="{directCause.description != null ? 'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                <p class="h-5/6 overflow-hidden text-white p-2.5 text-sm line-height-1">
+                                    <small class="title block font-bold mb-2">CAU-{directCause.id}</small>
+                                    {#if directCause.description != null && directCause.description.length > 0}
+                                        {directCause.description}
                                     {/if}
                                 </p>
                             </div>
                         </div>
-                        {/each}
-                        {#each {length: (3-cause.indirect_causes.length)} as _empty}
-                        <div class="causas-directas relative flex-1">
-                            <div on:click={modal_showCI(null, cause.id)} class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
-                                <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
-                                </p>
+
+                        {#if i == 0}
+                            <div id="indirect-cause-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                                <small>Causas indirectas</small>
+                                <div id="arrow-indirect-cause" class="arrow" data-popper-arrow></div>
                             </div>
+                        {/if}
+                        <!-- Causas indirectas -->
+                        <div class="flex mt-14" id="{i == 0 ? 'indirect-cause-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
+                            {#each directCause.indirect_causes as indirectCause}
+                                <div class="direct-causes relative flex-1">
+                                    <div on:click={showIndirectCauseDialog(indirectCause, directCause.id)} class="{indirectCause.description != null ? 'bg-indigo-500 hover:bg-indigo-600':'bg-indigo-300 hover:bg-indigo-400'} h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                        <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                            <small class="title block font-bold mb-2">CAU-{directCause.id}-IND-{indirectCause.id}</small>
+                                            {#if indirectCause.description != null && indirectCause.description.length > 0}
+                                            {indirectCause.description}
+                                            {/if}
+                                        </p>
+                                    </div>
+                                </div>
+                            {/each}
+                            {#each {length: (3-directCause.indirect_causes.length)} as _empty}
+                                <div class="direct-causes relative flex-1">
+                                    <div on:click={showIndirectCauseDialog(null, directCause.id)} class="h-36 bg-gray-300 rounded shadow-lg hover:bg-gray-400 cursor-pointer mr-1.5">
+                                        <p class="h-5/6 line-height-1 overflow-y-hidden p-2.5 text-sm text-white">
+                                        </p>
+                                    </div>
+                                </div>
+                            {/each}
                         </div>
-                        {/each}
                     </div>
-                </div>
                 {/each}
             </div>
         </div>
     </div>
-    <!-- Modal editar problema central -->
-    <Modal bind:open={modal_openRP}>
-        <Card>
-            <form on:submit|preventDefault={submitGeneralProblem} class="p-4">
-                <h2>
-                    Describa el problema central del proyecto:
-                </h2>
-                <div class="mt-4">
-                    <Label id="research_problem" value="Problema central" />
-                    <Textarea id="research_problem" error={errors.research_problem} bind:value={formRP.research_problem} required />
+
+    <!-- Dialog -->
+    <Dialog
+        bind:open
+        scrimClickAction=""
+        escapeKeyAction=""
+        aria-labelledby="mandatory-title"
+        aria-describedby="mandatory-content"
+    >
+        <Title id="mandatory-title">
+            <div class="mb-10 text-center">
+                <div class="text-primary">
+                    {dialogTitle}
                 </div>
-                <div class="is-right">
-                    
-                    <button  on:click={modal_hideRP} type="button">{$_('Cancel')}</button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Confirm')}
+                <small class="block text-primary-light">
+                    Código: {code}
+                </small>
+            </div>
+            <div class="flex justify-end">
+                <div>
+                    <Button on:click={closeDialog} type="button">
+                        <LabelMUI>{$_('Cancel')}</LabelMUI>
+                    </Button>
+                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
+                        {$_('Save')}
                     </LoadingButton>
                 </div>
-            </form>
-        </Card>
-    </Modal>
-    <!-- Modal editar Efecto directo -->
-    <Modal bind:open={modal_openED}>
-        <Card>
-            <form on:submit|preventDefault={submitDirectEffect} class="p-4">
-                <h2>
-                    Describa el efecto directo Cod. <b>EFE-{formED.id}</b>:
-                </h2>
-                <div class="mt-4">
-                    <Label id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={formED.description} required />
-                </div>
-                <div class="is-right">
-                    
-                    <button  on:click={()=>modal_hideED()} type="button">{$_('Cancel')}</button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Confirm')}
-                    </LoadingButton>
-                </div>
-            </form>
-        </Card>
-    </Modal>
-    <!-- Modal editar Efecto indirecto -->
-    <Modal bind:open={modal_openEI}>
-        <Card>
-            <form on:submit|preventDefault={submitIndirectEffect} class="p-4">
-                <h2>
-                    Describa el efecto indirecto Cod. <b>{formEI.id!=null?'EFE-'+formEI.direct_effect_id+'-IND-'+formEI.id:''}</b>:
-                </h2>
-                <div class="mt-4">
-                    <Label id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={formEI.description} required />
-                </div>
-                <div class="is-right">
-                    
-                    <button  on:click={()=>modal_hideEI()} type="button">{$_('Cancel')}</button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Confirm')}
-                    </LoadingButton>
-                </div>
-            </form>
-        </Card>
-    </Modal>
-    <!-- Modal editar Causa directa -->
-    <Modal bind:open={modal_openCD}>
-        <Card>
-            <form on:submit|preventDefault={submitDirectCause} class="p-4">
-                <h2>
-                    Describa la causa directa Cod. <b>CAU-{formCD.id}</b>:
-                </h2>
-                <div class="mt-4">
-                    <Label id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={formCD.description} required />
-                </div>
-                <div class="is-right">
-                    
-                    <button  on:click={()=>modal_hideCD()} type="button">{$_('Cancel')}</button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Confirm')}
-                    </LoadingButton>
-                </div>
-            </form>
-        </Card>
-    </Modal>
-    <!-- Modal editar causa indirecta -->
-    <Modal bind:open={modal_openCI}>
-        <Card>
-            <form on:submit|preventDefault={submitIndirectCause} class="p-4">
-                <h2>
-                    Describa la causa indirecta Cod. <b>{formCI.id!=null?'CAU-'+formCI.direct_cause_id+'-IND-'+formCI.id:''}</b>:
-                </h2>
-                <div class="mt-4">
-                    <Label id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={formCI.description} required />
-                </div>
-                <div class="is-right">
-                    
-                    <button  on:click={()=>modal_hideCI()} type="button">{$_('Cancel')}</button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Confirm')}
-                    </LoadingButton>
-                </div>
-            </form>
-        </Card>
-    </Modal>
+            </div>
+        </Title>
+        <Content id="mandatory-content">
+            {#if showIndirectCauseForm}
+                <form on:submit|preventDefault={submitIndirectCause} id="indirect-cause">
+                    <div class="mt-4">
+                        <Label id="description" value="Descripción" />
+                        <Textarea id="description" error={errors.description} bind:value={$formIndirectCause.description} required />
+                    </div>
+                </form>
+            {:else if showDirectCauseForm}
+                <form on:submit|preventDefault={submitDirectCause} id="direct-cause">
+                    <div class="mt-4">
+                        <Label id="description" value="Descripción" />
+                        <Textarea id="description" error={errors.description} bind:value={$formDirectCause.description} required />
+                    </div>
+                </form>
+            {:else if showIndirectEffectForm}
+                <form on:submit|preventDefault={submitIndirectEffect} id="indirect-effect">
+                    <div class="mt-4">
+                        <Label id="description" value="Descripción" />
+                        <Textarea id="description" error={errors.description} bind:value={$formIndirectEffect.description} required />
+                    </div>
+                </form>
+            {:else if showStatementProblemForm}
+                <form on:submit|preventDefault={submitStatementProblem} id="statement-problem">
+                    <div class="mt-4">
+                        <Label id="problem_statement" value="Planteamiento del problema" />
+                        <Textarea id="problem_statement" error={errors.problem_statement} bind:value={$formStatementProblem.problem_statement} required />
+                    </div>
+                </form>
+            {:else if showDirectEffectForm}
+                <form on:submit|preventDefault={submitDirectEffect} id="direct-effect">
+                    <div class="mt-4">
+                        <Label id="description" value="Descripción" />
+                        <Textarea id="description" error={errors.description} bind:value={$formDirectEffect.description} required />
+                    </div>
+                    <button>Test</button>
+                </form>
+            {/if}
+        </Content>
+    </Dialog>
 </AuthenticatedLayout>

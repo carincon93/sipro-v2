@@ -57,13 +57,13 @@ class DirectEffect extends Model
     }
 
     /**
-     * Relationship with ResearchResult
+     * Relationship with ProjectResult
      *
      * @return void
      */
-    public function researchResult()
+    public function projectResult()
     {
-        return $this->hasOne(ResearchResult::class);
+        return $this->hasOne(ProjectResult::class);
     }
 
     /**

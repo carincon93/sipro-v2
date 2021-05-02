@@ -22,7 +22,7 @@ class Output extends Model
      * @var array
      */
     protected $fillable = [
-        'research_result_id',
+        'project_result_id',
         'name',
         'start_date',
         'end_date'
@@ -47,13 +47,13 @@ class Output extends Model
     ];
 
     /**
-     * Relationship with ResearchResult
+     * Relationship with ProjectResult
      *
      * @return void
      */
-    public function researchResult()
+    public function projectResult()
     {
-        return $this->belongsTo(ResearchResult::class);
+        return $this->belongsTo(ProjectResult::class);
     }
 
     /**

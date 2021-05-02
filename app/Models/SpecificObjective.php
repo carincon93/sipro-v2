@@ -15,7 +15,9 @@ class SpecificObjective extends Model
      * @var array
      */
     protected $fillable = [
-        'direct_cause_id'
+        'direct_cause_id',
+        'description',
+        'number'
     ];
 
     /**
@@ -47,13 +49,13 @@ class SpecificObjective extends Model
     }
 
     /**
-     * Relationship with ResearchResult
+     * Relationship with ProjectResult
      *
      * @return void
      */
-    public function researchResult()
+    public function projectResult()
     {
-        return $this->hasOne(ResearchResult::class);
+        return $this->hasOne(ProjectResult::class);
     }
 
      /**
@@ -78,5 +80,27 @@ class SpecificObjective extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('name', 'ilike', '%'.$search.'%');
         });
+    }
+
+    public function getNumberAttribute($value)
+    {
+        switch ($value) {
+            case 1:
+                $value = 'Primer objetivo específico';
+                break;
+            case 2:
+                $value = 'Segundo objetivo específico';
+                break;
+            case 3:
+                $value = 'Tercer objetivo específico';
+                break;
+            case 4:
+                $value = 'Cuarto objetivo específico';
+                break;
+            default:
+                break;
+        }
+
+        return $value;
     }
 }

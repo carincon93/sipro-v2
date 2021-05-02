@@ -31,7 +31,7 @@
             })
         }
 
-        // console.log($page.props.errors)
+        console.log($page.props.errors)
     })
 
 </script>

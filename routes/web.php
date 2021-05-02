@@ -102,7 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Muestra el árbol de problemas
     Route::get('calls/{call}/projects/{project}/problem-tree', [ProjectTreeController::class, 'showProblemTree'])->name('calls.projects.problem-tree');
     // Actualiza el problema general del proyecto en el arbol de problemas
-    Route::post('projects/{project}/research-problem', [ProjectTreeController::class, 'updateProblem'])->name('projects.research_problem');
+    Route::post('projects/{project}/research-problem', [ProjectTreeController::class, 'updateProblem'])->name('projects.problem_statement');
     // Actualiza efecto directo en el arbol de problemas
     Route::post('projects/{project}/direct-effect/{direct_effect}', [ProjectTreeController::class, 'updateDirectEffect'])->name('projects.direct_effect');
     // Crea o Actualiza efecto indirecto en el arbol de problemas
@@ -117,7 +117,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Actualiza el impacto en el arbol de objetivos
     Route::post('projects/{project}/impact/{impact}', [ProjectTreeController::class, 'updateImpact'])->name('projects.impact');
     // Actualiza el impacto en el arbol de objetivos
-    Route::post('projects/{project}/research_result/{research_result}', [ProjectTreeController::class, 'updateResearchResult'])->name('projects.research_result');
+    Route::post('projects/{project}/project_result/{project_result}', [ProjectTreeController::class, 'updateProjectResult'])->name('projects.project_result');
     // Actualiza el problema general del proyecto en el arbol de problemas
     Route::post('projects/{project}/primary-objective', [ProjectTreeController::class, 'updateObjective'])->name('projects.primary_objective');
     // Actualiza el objetivo especifico en el arbol de objetivos
