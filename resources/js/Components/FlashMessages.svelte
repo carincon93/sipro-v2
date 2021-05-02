@@ -38,6 +38,8 @@
         }, 10000)
     }
 
+    $: console.log($page.props.errors)
+
 </script>
 
 <style>

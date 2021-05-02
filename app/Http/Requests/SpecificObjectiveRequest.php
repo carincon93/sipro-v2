@@ -24,7 +24,8 @@ class SpecificObjectiveRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'description'   => ['required', 'string', 'max:1200'],
+            'number'        => ['required', 'integer', 'digits_between:1,4'],
         ];
     }
 }

@@ -24,7 +24,7 @@ class DirectCauseRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'description' => ['required', 'string', 'max:1200'],
         ];
     }
 }

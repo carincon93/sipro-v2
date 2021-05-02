@@ -128,7 +128,7 @@
         dialogTitle                         = 'Resultado'
         open                                = true
         showResultForm                      = true
-        formID                              = 'directEffect.project_result-form'
+        formID                              = 'project-result-form'
         $formResult.id                      = directEffect.project_result.id
         $formResult.description             = directEffect.project_result.description
         $formResult.type                    = directEffect.project_result.type
@@ -608,7 +608,7 @@
                     </div>
                 </form>
             {:else if showResultForm}
-                <form on:submit|preventDefault={submitResult} id="result-form">
+                <form on:submit|preventDefault={submitResult} id="project-result-form">
                     <p class="mt-4 whitespace-pre-line">
                         <strong>Efecto directo</strong>
                         <br>

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DirectEffectRequest extends FormRequest
+class ImpactRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class DirectEffectRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => ['required', 'string', 'max:1200'],
+            'description'   => ['required', 'string', 'max:1200'],
+            'type'          => ['required', 'string', 'max:191'],
         ];
     }
 }
