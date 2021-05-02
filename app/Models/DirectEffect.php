@@ -15,7 +15,8 @@ class DirectEffect extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id', 'description',
+        'project_id',
+        'description'
     ];
 
     /**
@@ -43,7 +44,7 @@ class DirectEffect extends Model
      */
     public function indirectEffects()
     {
-        return $this->hasMany(IndirectEffect::class, 'direct_effect_id');
+        return $this->hasMany(IndirectEffect::class)->orderBy('id', 'ASC');
     }
 
     /**

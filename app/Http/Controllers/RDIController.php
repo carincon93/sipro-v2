@@ -79,6 +79,7 @@ class RDIController extends Controller
         $rdi->students                          = 0;
         $rdi->states                            = 'Escriba el nombre de los municipios beneficiados los municipios';
         $rdi->states_impact                     = 'Describa el beneficio en los municipios';
+        $rdi->academic_impact                   = 'Describa el beneficio en los municipios';
 
         $rdi->sampling                          = null;
         $rdi->sampling_activity                 = $request->sampling == 1 ? $request->sampling_activity : null;
@@ -163,6 +164,7 @@ class RDIController extends Controller
         $rdi->students                          = $request->students;
         $rdi->states                            = $request->states;
         $rdi->states_impact                     = $request->states_impact;
+        $rdi->academic_impact                   = $request->academic_impact;
 
         $rdi->sampling                          = $request->sampling;
         $rdi->sampling_activity                 = $request->sampling == 1 ? $request->sampling_activity : null;

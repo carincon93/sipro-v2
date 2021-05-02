@@ -15,7 +15,8 @@ class DirectCause extends Model
      * @var array
      */
     protected $fillable = [
-        'project_id', 'description',
+        'project_id',
+        'description'
     ];
 
     /**
@@ -43,7 +44,7 @@ class DirectCause extends Model
      */
     public function indirectCauses()
     {
-        return $this->hasMany(IndirectCause::class, 'direct_cause_id');
+        return $this->hasMany(IndirectCause::class)->orderBy('id', 'ASC');
     }
 
     /**

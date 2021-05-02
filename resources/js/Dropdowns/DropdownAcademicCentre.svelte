@@ -63,5 +63,5 @@
     }
 </style>
 
-<Select selectedValue={academmicCentreFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre del centro de formación" containerClasses="academic-centres {classes}" items={academicCentres} on:select={handleAcademicCentre} />
+<Select selectedValue={academmicCentreFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre del centro de formación" containerClasses="academic-centres {classes}" items={academicCentres} on:select={handleAcademicCentre} on:clear={() => formAcademicCentre = null} />
 <InputError {message} />

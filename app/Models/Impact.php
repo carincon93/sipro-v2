@@ -15,7 +15,9 @@ class Impact extends Model
      * @var array
      */
     protected $fillable = [
-        'indirect_effect_id', 'description',
+        'indirect_effect_id',
+        'description',
+        'type'
     ];
 
     /**
@@ -56,7 +58,7 @@ class Impact extends Model
     public function scopeFilterImpact($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('description', 'ilike', '%'.$search.'%');
+            $query->where('type', 'ilike', '%'.$search.'%');
         });
     }
 }

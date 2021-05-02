@@ -15,16 +15,22 @@ module.exports = {
             },
             colors: {
                 orangered: {
-                    light: "#ff906e",
+                    100: "#ffccba",
+                    400: "#fd9774",
+                    500: "#fb7b50",
+                    600: "#ff6f3e",
+                    900: "#ff5019",
                     DEFAULT: "orangered",
-                    dark: "#ff5019",
                 },
             },
             textColor: {
                 primary: {
-                    light: "#ff906e",
+                    100: "#ffccba",
+                    400: "#fd9774",
+                    500: "#fb7b50",
+                    600: "#ff6f3e",
+                    900: "#ff5019",
                     DEFAULT: "orangered",
-                    dark: "#ff5019",
                 },
                 secondary: "#ffed4a",
                 danger: "#e3342f",

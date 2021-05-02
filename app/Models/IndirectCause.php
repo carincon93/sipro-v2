@@ -15,7 +15,8 @@ class IndirectCause extends Model
      * @var array
      */
     protected $fillable = [
-        'direct_cause_id', 'description',
+        'direct_cause_id',
+        'description'
     ];
 
     /**
@@ -43,7 +44,7 @@ class IndirectCause extends Model
      */
     public function causeDirect()
     {
-        return $this->belongsTo(CauseDirect::class);
+        return $this->belongsTo(CauseDirect::class)->orderBy('id', 'ASC');
     }
 
     /**

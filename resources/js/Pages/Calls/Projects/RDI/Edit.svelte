@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
+    import { useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
@@ -18,8 +18,8 @@
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Select from 'svelte-select'
     import Checkbox from '@/Components/Checkbox'
-    import axios from 'axios';
-import { onMount } from 'svelte';
+    import axios from 'axios'
+    import { onMount } from 'svelte'
 
     export let errors
     export let call
@@ -76,6 +76,7 @@ import { onMount } from 'svelte';
         students:                           rdi.students,
         states:                             rdi.states,
         states_impact:                      rdi.states_impact,
+        academic_impact:                    rdi.academic_impact,
         sampling:                           rdi.sampling,
         sampling_activity:                  rdi.sampling_activity,
         sampling_objective:                 rdi.sampling_objective,
@@ -531,6 +532,15 @@ import { onMount } from 'svelte';
                 </div>
                 <div>
                     <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
+                </div>
+            </div>
+
+            <div class="mt-44 grid grid-cols-2">
+                <div>
+                    <Label required class="mb-4" id="academic_impact" value="Impacto en el centro de formación" />
+                </div>
+                <div>
+                    <Textarea id="academic_impact" error={errors.academic_impact} bind:value={$form.academic_impact} required />
                 </div>
             </div>
         </fieldset>

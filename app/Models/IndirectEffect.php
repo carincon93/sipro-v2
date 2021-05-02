@@ -15,7 +15,8 @@ class IndirectEffect extends Model
      * @var array
      */
     protected $fillable = [
-        'direct_effect_id', 'description',
+        'direct_effect_id',
+        'description'
     ];
 
     /**
@@ -43,7 +44,7 @@ class IndirectEffect extends Model
      */
     public function effectDirect()
     {
-        return $this->belongsTo(EfectDirect::class);
+        return $this->belongsTo(EfectDirect::class)->orderBy('id', 'ASC');
     }
 
     /**

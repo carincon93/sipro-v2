@@ -37,6 +37,13 @@
         {value: 'Formación de recurso humano (FRH)', label: 'Formación de recurso humano (FRH)'},
     ]
 
+    const impactTypes = [
+        {value: 'Impacto social', label: 'Impacto social'},
+        {value: 'Impacto tecnológico', label: 'Impacto tecnológico'},
+        {value: 'Impacto económico', label: 'Impacto económico'},
+        {value: 'Impacto ambiental', label: 'Impacto ambiental'},
+    ]
+
     $: $title = $_('Objectives tree')
 
     /**
@@ -45,13 +52,9 @@
     let generalInfoType = 0
     let showGeneralInfo = false
     function showGeneralInfoDialog(type) {
-        dialogTitle                 = 'Información general'
-        showPrimaryObjectiveForm    = false
-        showSpecificObjectiveForm   = false
-        showActivityForm            = false
-        showResultForm              = false
-        showImpactForm              = false
-        open                        = true
+        reset()
+        dialogTitle     = 'Información general'
+        open            = true
 
         generalInfoType = type
         showGeneralInfo = true
@@ -64,26 +67,26 @@
         id: 0,
         indirect_effect_id: 0,
         description: '',
+        type: '',
         result_id: ''
     })
 
     let showImpactForm  = false
-    function showImpactDialog(impact, indirectEffectID, resultID) {
-        code                                = impact.id != null ? 'RES-' + resultID + '-IMP-' + impact.id: ''
+    let impactIndirectEffect
+    function showImpactDialog(indirectEffect, indirectEffectID, resultID) {
+        reset()
+        code                                = indirectEffect.impact.id != null ? 'RES-' + resultID + '-IMP-' + indirectEffect.impact.id: ''
         dialogTitle                         = 'Impacto'
-        showPrimaryObjectiveForm            = false
-        showSpecificObjectiveForm           = false
-        showActivityForm                    = false
-        showResultForm                      = false
-        showGeneralInfo                     = false
         open                                = true
         showImpactForm                      = true
         formID                              = 'impact-form'
+        impactIndirectEffect                = indirectEffect.description
 
-        if(impact != null){
-            $formImpact.id                  = impact.id
-            $formImpact.description         = impact.description
-            $formImpact.indirect_effect_id  = impact.indirectEffectID
+        if(indirectEffect.impact != null){
+            $formImpact.id                  = indirectEffect.impact.id
+            $formImpact.description         = indirectEffect.impact.description
+            $formImpact.type                = indirectEffect.impact.type
+            $formImpact.indirect_effect_id  = indirectEffect.impact.indirectEffectID
             $formImpact.result_id           = resultID
         } else {
             $formImpact.id                  = null
@@ -115,26 +118,24 @@
 
     let showResultForm  = false
     let specificObjectiveDescription = []
+    let resultDirectEffect
     $: directCauses
-    function showResultDialog(result) {
-        let specificObjective               = directCauses.find(directCause => directCause.specific_objective.id == result.specific_objective_id)
+    function showResultDialog(directEffect) {
+        reset()
+        let specificObjective               = directCauses.find(directCause => directCause.specific_objective.id == directEffect.project_result.specific_objective_id)
         specificObjectiveDescription        = {description: specificObjective.specific_objective?.description ? specificObjective.specific_objective?.description : $_('No data recorded'), number: specificObjective.specific_objective?.number }
-        code                                = 'RES-' + result.id
+        code                                = 'RES-' + directEffect.project_result.id
         dialogTitle                         = 'Resultado'
-        showPrimaryObjectiveForm            = false
-        showSpecificObjectiveForm           = false
-        showActivityForm                    = false
-        showImpactForm                      = false
-        showGeneralInfo                     = false
         open                                = true
         showResultForm                      = true
-        formID                              = 'result-form'
-        $formResult.id                      = result.id
-        $formResult.description             = result.description
-        $formResult.type                    = result.type
-        $formResult.trl                     = result.trl
-        $formResult.indicator               = result.indicator
-        $formResult.means_of_verification   = result.means_of_verification
+        formID                              = 'directEffect.project_result-form'
+        $formResult.id                      = directEffect.project_result.id
+        $formResult.description             = directEffect.project_result.description
+        $formResult.type                    = directEffect.project_result.type
+        $formResult.trl                     = directEffect.project_result.trl
+        $formResult.indicator               = directEffect.project_result.indicator
+        $formResult.means_of_verification   = directEffect.project_result.means_of_verification
+        resultDirectEffect                  = directEffect.description
     }
 
     function submitResult() {
@@ -154,16 +155,14 @@
     })
 
     let showPrimaryObjectiveForm = false
+    let problemStatement
     function showPrimaryObjectiveDialog() {
+        reset()
         dialogTitle                             = 'Objetivo general'
-        showSpecificObjectiveForm               = false
-        showActivityForm                        = false
-        showResultForm                          = false
-        showImpactForm                          = false
-        showGeneralInfo                         = false
         open                                    = true
         showPrimaryObjectiveForm                = true
         formID                                  = 'primary-objective-form'
+        problemStatement                        = project.problem_statement
         $formPrimaryObjective.primary_objective = project.primary_objective
     };
 
@@ -186,21 +185,19 @@
     })
 
     let showSpecificObjectiveForm  = false
-    function showSpecificObjectiveDialog(specificObjective, number) {
-        code                                = 'OBJ-ESP-' + specificObjective.id
-        dialogTitle                         = specificObjective.number
-        showPrimaryObjectiveForm            = false
-        showActivityForm                    = false
-        showResultForm                      = false
-        showImpactForm                      = false
-        showGeneralInfo                     = false
+    let SpecificObjectiveDirectCause
+    function showSpecificObjectiveDialog(directCause, number) {
+        reset()
+        code                                = 'OBJ-ESP-' + directCause.specific_objective.id
+        dialogTitle                         = directCause.specific_objective.number
         open                                = true
         showSpecificObjectiveForm           = true
         formID                              = 'specific-objective-form'
-        $formSpecificObjective.id           = specificObjective.id;
-        $formSpecificObjective.description  = specificObjective.description;
+        $formSpecificObjective.id           = directCause.specific_objective.id
+        $formSpecificObjective.description  = directCause.specific_objective.description
         $formSpecificObjective.number       = number
-    };
+        SpecificObjectiveDirectCause        = directCause.description ? directCause.description : $_('No data recorded')
+    }
 
     function submitSpecificObjective() {
         Inertia.post(route('projects.specific_objective', {project: project.id, specific_objective: $formSpecificObjective.id}), $formSpecificObjective, {
@@ -224,23 +221,21 @@
     })
 
     let showActivityForm = false
-    function showActivityDialog(activity, specificObjective) {
-        code                                    = activity.id != null ? 'OBJ-ESP-' + specificObjective + '-ACT-' + activity.id : ''
+    let activityIndirectCause
+    function showActivityDialog(indirectCause, specificObjective) {
+        reset()
+        code                                    = indirectCause.activity.id != null ? 'OBJ-ESP-' + specificObjective + '-ACT-' + indirectCause.activity.id : ''
         dialogTitle                             = 'Actividad'
-        showPrimaryObjectiveForm                = false
-        showSpecificObjectiveForm               = false
-        showResultForm                          = false
-        showImpactForm                          = false
-        showGeneralInfo                         = false
         open                                    = true
         showActivityForm                        = true
         formID                                  = 'form-activity'
-        $formActivity.id                        = activity.id;
-        $formActivity.indirect_cause_id         = activity.indirect_cause_id;
-        $formActivity.specific_objective_id     = specificObjective;
-        $formActivity.description               = activity.description;
-        $formActivity.start_date                = activity.start_date;
-        $formActivity.end_date                  = activity.end_date;
+        $formActivity.id                        = indirectCause.activity.id
+        $formActivity.indirect_cause_id         = indirectCause.activity.indirect_cause_i
+        $formActivity.specific_objective_id     = specificObjective
+        $formActivity.description               = indirectCause.activity.description
+        $formActivity.start_date                = indirectCause.activity.start_date
+        $formActivity.end_date                  = indirectCause.activity.end_date
+        activityIndirectCause                   = indirectCause.description
     }
 
     function submitActivity() {
@@ -252,15 +247,27 @@
         })
     }
 
-    function closeDialog() {
-        dialogTitle = ''
-        $formPrimaryObjective.reset()
-        $formActivity.reset()
-        $formSpecificObjective.reset()
-        $formResult.reset()
+    function reset() {
+        showPrimaryObjectiveForm    = false
+        showActivityForm            = false
+        showResultForm              = false
+        showImpactForm              = false
+        showGeneralInfo             = false
+        showSpecificObjectiveForm   = false
+        dialogTitle                 = ''
+        code                        = ''
+        formID                      = ''
+
         $formImpact.reset()
+        $formResult.reset()
+        $formPrimaryObjective.reset()
+        $formSpecificObjective.reset()
+        $formActivity.reset()
+    }
+
+    function closeDialog() {
+        reset()
         open = false
-        formID = ''
     }
 
     onMount(() => {
@@ -330,7 +337,6 @@
     }
 
     .tooltip {
-        background-color: #2196f3;
         color: white;
         padding: 5px 10px;
         border-radius: 4px;
@@ -342,7 +348,6 @@
     .arrow,
     .arrow::before {
         position: absolute;
-        background-color: #2196f3;
         width: 8px;
         height: 8px;
         background: inherit;
@@ -392,7 +397,7 @@
                     <div class="flex-1">
                         <!-- Impactos -->
                         {#if i == 0}
-                            <div id="impact-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="impact-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Impactos</small>
                                 <div id="arrow-impact" class="arrow" data-popper-arrow></div>
                             </div>
@@ -400,7 +405,7 @@
                         <div class="flex mb-14" id="{i==0?'impact-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
                             {#each directEffect.indirect_effects as indirectEffect}
                                 <div class="flex-1 results relative">
-                                    <div on:click={showImpactDialog(indirectEffect.impact, indirectEffect.id, directEffect.project_result.id)} class="bg-orangered-light hover:bg-orangered-dark tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                    <div on:click={showImpactDialog(indirectEffect, indirectEffect.id, directEffect.project_result.id)} class="{indirectEffect.impact && indirectEffect.impact.description != null ? 'bg-orangered-500 hover:bg-orangered-600' : 'bg-orangered-400 hover:bg-orangered-500'} tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
                                         <p class="h-32 overflow-y-hidden p-2.5 text-sm text-white">
                                             {#if indirectEffect.impact}
                                                 <small class="title block font-bold mb-2 line-height-1">RES-{directEffect.project_result.id}-IMP-{indirectEffect.impact.id}</small>
@@ -423,13 +428,13 @@
                         </div>
                         <!-- Resultado -->
                         {#if i==0}
-                            <div id="result-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="result-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Resultados</small>
                                 <div id="arrow-result" class="arrow" data-popper-arrow></div>
                             </div>
                         {/if}
                         <div class="results relative flex-1" id="{i == 0 ? 'result-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
-                            <div on:click={showResultDialog(directEffect.project_result)} class="bg-orangered-light hover:bg-orangered-dark tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                            <div on:click={showResultDialog(directEffect)} class="{directEffect.project_result.description != null ? 'bg-orangered-500 hover:bg-orangered-600':'bg-orangered-400 hover:bg-orangered-500'} tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
                                 <p class="h-32 overflow-hidden text-white p-2.5 text-sm line-height-1">
                                     <small class="title block font-bold mb-2 line-height-1">RES-{directEffect.project_result.id}</small>
                                     {#if directEffect.project_result.description != null && directEffect.project_result.description.length > 0}
@@ -443,12 +448,12 @@
             </div>
 
             <!-- Objetivo general -->
-            <div id="primary-objective-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+            <div id="primary-objective-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                 <small>Objetivo general</small>
                 <div id="arrow-primary-objective" class="arrow" data-popper-arrow></div>
             </div>
             <div class="primary-objective relative" id="primary-objective-tooltip-placement" aria-describedby="tooltip">
-                <div on:click={showPrimaryObjectiveDialog} class="bg-orangered-light hover:bg-orangered-dark tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                <div on:click={showPrimaryObjectiveDialog} class="{project.primary_objective != null ? 'bg-orangered-500 hover:bg-orangered-600' : 'bg-orangered-400 hover:bg-orangered-500'} tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
                     {#if project.primary_objective != null && project.primary_objective.length>0}
                         <p class="h-32 overflow-hidden text-white p-2.5 text-sm line-height-1">
                             {project.primary_objective}
@@ -462,13 +467,13 @@
                     <div class="flex-1">
                         <!-- Objetivo específico -->
                         {#if i == 0}
-                            <div id="specific-objective-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="specific-objective-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small class="block line-height-1">Objetivos <br> específicos</small>
                                 <div id="arrow-specific-objective" class="arrow" data-popper-arrow></div>
                             </div>
                         {/if}
                         <div class="specific-objectives relative flex-1" id="{i == 0 ? 'specific-objective-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
-                            <div on:click={showSpecificObjectiveDialog(directCause.specific_objective, (i + 1))} class="bg-orangered-light hover:bg-orangered-dark tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                            <div on:click={showSpecificObjectiveDialog(directCause, (i + 1))} class="{directCause.specific_objective.description != null ? 'bg-orangered-500 hover:bg-orangered-600' : 'bg-orangered-400 hover:bg-orangered-500'} tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
                                 <p class="h-32 overflow-hidden text-white p-2.5 text-sm line-height-1">
                                     <small class="title block font-bold mb-2 line-height-1">OBJ-ESP-{directCause.specific_objective.id}</small>
                                     {#if directCause.specific_objective.description != null && directCause.specific_objective.description.length > 0}
@@ -479,7 +484,7 @@
                         </div>
                         <!-- Actividades -->
                         {#if i == 0}
-                            <div id="activity-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="activity-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Actividades</small>
                                 <div id="arrow-activity" class="arrow" data-popper-arrow></div>
                             </div>
@@ -487,7 +492,7 @@
                         <div class="flex mt-14" id="{i == 0 ? 'activity-tooltip-placement' : ''}" aria-describedby="{i == 0 ? 'tooltip' : ''}">
                             {#each directCause.indirect_causes as indirectCause}
                                 <div class="specific-objectives relative flex-1">
-                                    <div on:click={showActivityDialog(indirectCause.activity, directCause.specific_objective.id)} class="bg-orangered-light hover:bg-orangered-dark tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
+                                    <div on:click={showActivityDialog(indirectCause, directCause.specific_objective.id)} class="{indirectCause.activity && indirectCause.activity.description != null ? 'bg-orangered-500 hover:bg-orangered-600' : 'bg-orangered-400 hover:bg-orangered-500'} tree-label h-36 rounded shadow-lg cursor-pointer mr-1.5">
                                         <p class="h-32 overflow-y-hidden p-2.5 text-sm text-white">
                                             {#if indirectCause.activity}
                                                 <small class="title block font-bold mb-2 line-height-1">OBJ-ESP-{directCause.specific_objective.id}-ACT-{indirectCause.activity.id}</small>
@@ -549,6 +554,11 @@
         <Content id="mandatory-content">
             {#if showActivityForm}
                 <form on:submit|preventDefault={submitActivity} id="form-activity">
+                    <p class="mt-4 whitespace-pre-line">
+                        <strong>Causa indirecta</strong>
+                        <br>
+                        {activityIndirectCause}
+                    </p>
                     <p class="mt-1 text-center">Fecha de ejecución</p>
                     <div class="mt-1 flex items-start justify-around">
                         <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
@@ -569,19 +579,29 @@
                         <InputError classes="text-center" message={errors.end_date} />
                     </div>
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formActivity.description} required />
                     </div>
                 </form>
             {:else if showSpecificObjectiveForm}
                 <form on:submit|preventDefault={submitSpecificObjective} id="specific-objective-form">
+                    <p class="mt-4 whitespace-pre-line">
+                        <strong>Causa directa</strong>
+                        <br>
+                        {SpecificObjectiveDirectCause}
+                    </p>
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
                     </div>
                 </form>
             {:else if showPrimaryObjectiveForm}
                 <form on:submit|preventDefault={submitGeneralObjetive} id="primary-objective-form">
+                    <p class="mt-4 whitespace-pre-line">
+                        <strong>Planteamiento del problema</strong>
+                        <br>
+                        {problemStatement}
+                    </p>
                     <div class="mt-4">
                         <Label for="primary_objective" value="Objetivo general" />
                         <Textarea id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
@@ -589,7 +609,12 @@
                 </form>
             {:else if showResultForm}
                 <form on:submit|preventDefault={submitResult} id="result-form">
-                    <p class="mt-4">
+                    <p class="mt-4 whitespace-pre-line">
+                        <strong>Efecto directo</strong>
+                        <br>
+                        {resultDirectEffect}
+                    </p>
+                    <p class="mt-4 whitespace-pre-line">
                         <strong>{specificObjectiveDescription.number}</strong>
                         <br>
                         {specificObjectiveDescription.description}
@@ -618,8 +643,17 @@
                 </form>
             {:else if showImpactForm}
                 <form on:submit|preventDefault={submitImpact} id="impact-form">
+                    <p class="mt-4 whitespace-pre-line">
+                        <strong>Efecto indirecto</strong>
+                        <br>
+                        {impactIndirectEffect}
+                    </p>
                     <div class="mt-4">
-                        <Label id="description" value="Descripción" />
+                        <Label for="type" value="Tipo" />
+                        <Select id="type" items={impactTypes} bind:value={$formImpact.type} selectedValue={$formImpact.type} autocomplete="off" error={errors.type} placeholder="Seleccione un tipo" required />
+                    </div>
+                    <div class="mt-4">
+                        <Label class="mb-4" id="description" value="Descripción" />
                         <Textarea id="description" error={errors.description} bind:value={$formImpact.description} required />
                     </div>
                 </form>

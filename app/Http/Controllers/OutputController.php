@@ -27,7 +27,7 @@ class OutputController extends Controller
             'call'          => $call,
             'project'       => $project,
             'filters'       => request()->all('search'),
-            'outputs'       => Output::whereIn('research_result_id',
+            'outputs'       => Output::whereIn('project_result_id',
                                 $projectResult->map(function ($projectResult) {
                                     return $projectResult->id;
                                 }))->filterOutput(request()->only('search'))->paginate(200),
@@ -66,7 +66,7 @@ class OutputController extends Controller
         $output->name       = $request->name;
         $output->start_date = $request->start_date;
         $output->end_date   = $request->end_date;
-        $output->projectResult()->associate($request->research_result_id);
+        $output->projectResult()->associate($request->project_result_id);
         $output->save();
 
         // Valida si es un producto de I+D+i
@@ -134,7 +134,7 @@ class OutputController extends Controller
         $output->name = $request->name;
         $output->start_date = $request->start_date;
         $output->end_date = $request->end_date;
-        $output->projectResult()->associate($request->research_result_id);
+        $output->projectResult()->associate($request->project_result_id);
 
         if ($request->minciencias_subtypology_id) {
             $output->rdiOutput()->update(['minciencias_subtypology_id' => $request->minciencias_subtypology_id]);

@@ -19,6 +19,12 @@ use App\Models\Activity;
 
 class ProjectTreeController extends Controller
 {
+    /**
+     * generateTree
+     *
+     * @param  mixed $project
+     * @return void
+     */
     private function generateTree(Project $project)
     {
         $specificObjectives = [];
@@ -83,7 +89,7 @@ class ProjectTreeController extends Controller
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
-                $directEffects  = $project->directEffects()->with('indirectEffects')->get();
+                $directEffects  = $project->directEffects()->with('indirectEffects:id,direct_effect_id,description')->get();
                 $directCauses   = $project->directCauses()->with('indirectCauses')->get();
                 $rdi            = $project->rdi()->first();
                 break;
@@ -98,39 +104,64 @@ class ProjectTreeController extends Controller
         ]);
     }
 
-    public function updateProblem(Project $project, Request $request)
+    /**
+     * updateProblem
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @return void
+     */
+    public function updateProblem(Request $request, Project $project)
     {
         $request->validate([
             'problem_statement' => 'required|string|max:1200',
         ]);
+
         $rdi = $project->rdi;
-        $rdi->problem_statement = $request->problem_statement;
+        $rdi->problem_statement     = $request->problem_statement;
+        $rdi->problem_justification = $request->problem_justification;
 
         $rdi->save();
 
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function updateDirectEffect(Project $project, DirectEffect $direct_effect, Request $request)
+    /**
+     * updateDirectEffect
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $directEffect
+     * @return void
+     */
+    public function updateDirectEffect(Request $request, Project $project, DirectEffect $directEffect)
     {
         $request->validate([
             'description' => 'required|string|max:1200',
         ]);
 
-        $direct_effect->description = $request->description;
+        $directEffect->description = $request->description;
 
-        $direct_effect->save();
+        $directEffect->save();
 
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
-    public function createOrUpdateIndirectEffect(Project $project, DirectEffect $direct_effect, Request $request)
+    /**
+     * createOrUpdateIndirectEffect
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $directEffect
+     * @return void
+     */
+    public function createOrUpdateIndirectEffect(Request $request, Project $project, DirectEffect $directEffect)
     {
         $request->validate([
             'description' => 'required|string|max:1200',
         ]);
 
-        if (empty($request->id) && $direct_effect->indirectEffects()->count() < 3) {
+        if (empty($request->id) && $directEffect->indirectEffects()->count() < 3) {
             $indirectEffect = new IndirectEffect();
             $indirectEffect->fill($request->all());
             $indirectEffect->save();
@@ -153,6 +184,14 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
+    /**
+     * updateDirectCause
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $directCause
+     * @return void
+     */
     public function updateDirectCause(Request $request, Project $project, DirectCause $directCause)
     {
         $request->validate([
@@ -166,6 +205,14 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
+    /**
+     * createOrUpdateIndirectCause
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $directCause
+     * @return void
+     */
     public function createOrUpdateIndirectCause(Request $request, Project $project, DirectCause $directCause)
     {
         $request->validate([
@@ -205,9 +252,10 @@ class ProjectTreeController extends Controller
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
-                $directEffects  = $project->directEffects()->with(['indirectEffects.impact', 'projectResult'])->get();
+
+                $directEffects  = $project->directEffects()->with('indirectEffects.impact', 'projectResult')->get();
                 $directCauses   = $project->directCauses()->with('indirectCauses.activity', 'specificObjective')->get();
-                $rdi            = $project->rdi()->first();
+                $project        = $project->rdi()->first();
                 break;
             default:
                 break;
@@ -215,12 +263,19 @@ class ProjectTreeController extends Controller
 
         return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
             'call'          => $call->only('id'),
-            'project'       => $rdi,
+            'project'       => $project,
             'directEffects' => $directEffects,
             'directCauses'  => $directCauses
         ]);
     }
 
+    /**
+     * updateObjective
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @return void
+     */
     public function updateObjective(Request $request, Project $project)
     {
         $request->validate([
@@ -235,13 +290,22 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('success', 'The resource has been saved successfully.');
     }
 
+    /**
+     * updateImpact
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $impact
+     * @return void
+     */
     public function updateImpact(Request $request, Project $project, Impact $impact)
     {
         $request->validate([
             'description' => 'required|string|max:1200',
         ]);
 
-        $impact->description = $request->description;
+        $impact->description    = $request->description;
+        $impact->type           = $request->type;
 
         if ($impact->save()) {
             return redirect()->back()->with('success', 'The resource has been saved successfully.');
@@ -250,6 +314,14 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('error', 'Error updating impact.');
     }
 
+    /**
+     * updateProjectResult
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $projectResult
+     * @return void
+     */
     public function updateProjectResult(ProjectResultRequest $request, Project $project, ProjectResult $projectResult)
     {
         $projectResult->fill($request->all());
@@ -261,6 +333,14 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('error', 'Error updating result.');
     }
 
+    /**
+     * updateSpecificObjective
+     *
+     * @param  mixed $request
+     * @param  mixed $project
+     * @param  mixed $specificObjective
+     * @return void
+     */
     public function updateSpecificObjective(Request $request, Project $project, SpecificObjective $specificObjective)
     {
         $request->validate([
@@ -278,6 +358,15 @@ class ProjectTreeController extends Controller
         return redirect()->back()->with('error', 'Error updating specific objective.');
     }
 
+    /**
+     * updateActivity
+     *
+     * @param  mixed $request
+     * @param  mixed $call
+     * @param  mixed $project
+     * @param  mixed $activity
+     * @return void
+     */
     public function updateActivity(ActivityRequest $request, Call $call, Project $project, Activity $activity)
     {
         $activity->fill($request->all());

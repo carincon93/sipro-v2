@@ -2,7 +2,7 @@
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
     import { useForm } from '@inertiajs/inertia-svelte'
-    import { onDestroy, onMount } from 'svelte'
+    import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Dialog, { Title, Content } from '@smui/dialog'
@@ -99,17 +99,19 @@
      * Planteamiento del problema
      */
     let formStatementProblem = useForm({
-        problem_statement:   project.problem_statement
+        problem_statement:      project.problem_statement,
+        problem_justification:  project.problem_justification
     })
 
     let showStatementProblemForm = false
     function showStatementProblemDialog() {
         reset()
-        dialogTitle                             = 'Planteamiento del problema'
-        formID                                  = 'statement-problem'
-        showStatementProblemForm                = true
-        open                                    = true
-        $formStatementProblem.problem_statement = project.problem_statement
+        dialogTitle                                 = 'Planteamiento del problema'
+        formID                                      = 'statement-problem'
+        showStatementProblemForm                    = true
+        open                                        = true
+        $formStatementProblem.problem_statement     = project.problem_statement
+        $formStatementProblem.problem_justification = project.problem_justification
     }
 
     function submitStatementProblem() {
@@ -193,12 +195,14 @@
         showDirectCauseForm         = false
         showIndirectCauseForm       = false
         dialogTitle                 = ''
+        code                        = ''
+        formID                      = ''
+
         $formIndirectCause.reset()
         $formDirectCause.reset()
         $formStatementProblem.reset()
         $formDirectEffect.reset()
         $formIndirectEffect.reset()
-        formID = ''
     }
 
     function closeDialog() {
@@ -272,7 +276,6 @@
     }
 
     .tooltip {
-        background-color: #ff46b2;
         color: white;
         padding: 5px 10px;
         border-radius: 4px;
@@ -284,7 +287,6 @@
     .arrow,
     .arrow::before {
         position: absolute;
-        background-color: #ff46b2;
         width: 8px;
         height: 8px;
         background: inherit;
@@ -335,7 +337,7 @@
                     <div class="flex-1">
                         {#if i == 0}
                             <!-- Efectos indirectos -->
-                            <div id="indirect-effect-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="indirect-effect-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Efectos indirectos</small>
                                 <div id="arrow-indirect-effect" class="arrow" data-popper-arrow></div>
                             </div>
@@ -365,7 +367,7 @@
 
                         {#if i == 0}
                             <!-- Efecto directo -->
-                            <div id="direct-effect-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="direct-effect-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Efectos directos</small>
                                 <div id="arrow-direct-effect" class="arrow" data-popper-arrow></div>
                             </div>
@@ -386,7 +388,7 @@
             </div>
 
             <!-- Planteamiento del problema -->
-            <div id="statement-problem-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+            <div id="statement-problem-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                 <small class="block line-height-1">Planteamiento <br> del problema</small>
                 <div id="arrow-statement-problem" class="arrow" data-popper-arrow></div>
             </div>
@@ -406,7 +408,7 @@
                     <div class="flex-1">
                         <!-- Causa directa -->
                         {#if i == 0}
-                            <div id="direct-cause-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="direct-cause-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Causas directas</small>
                                 <div id="arrow-direct-cause" class="arrow" data-popper-arrow></div>
                             </div>
@@ -423,7 +425,7 @@
                         </div>
 
                         {#if i == 0}
-                            <div id="indirect-cause-tooltip" class="tooltip" role="tooltip" data-popper-placement="left">
+                            <div id="indirect-cause-tooltip" class="tooltip bg-black" role="tooltip" data-popper-placement="left">
                                 <small>Causas indirectas</small>
                                 <div id="arrow-indirect-cause" class="arrow" data-popper-arrow></div>
                             </div>
@@ -513,7 +515,20 @@
                 <form on:submit|preventDefault={submitStatementProblem} id="statement-problem">
                     <div class="mt-4">
                         <Label required class="mb-4" id="problem_statement" value="Planteamiento del problema" />
+                        <p class="mb-4">
+                            1. Descripción de la necesidad, problema u oportunidad identificada del plan tecnologógico y/o agendas departamentales de innovación y competitividad.
+                            <br>
+                            2. Descripción del problema que se atiende con el proyecto, sustentado en el contexto, la caracterización, los datos, las estadísticas, de la regional, entre otros, citar toda la información consignada utilizando normas APA sexta edición. La información debe ser de fuentes primarias de información, ejemplo: Secretarías, DANE, Artículos científicos, entre otros.
+                        </p>
                         <Textarea id="problem_statement" error={errors.problem_statement} bind:value={$formStatementProblem.problem_statement} required />
+                    </div>
+
+                    <div class="mt-4">
+                        <Label required class="mb-4" id="problem_justification" value="Justificación" />
+                        <p class="mb-4">
+                            Descripción de la solución al problema (descrito anteriormente) que se presenta en la regional, así como las consideraciones que justifican la elección del proyecto. De igual forma, describir la pertinencia y viabilidad del proyecto en el marco del impacto regional identificado en el instrumento de planeación.
+                        </p>
+                        <Textarea id="problem_justification" error={errors.problem_justification} bind:value={$formStatementProblem.problem_justification} required />
                     </div>
                 </form>
             {:else if showDirectEffectForm}
