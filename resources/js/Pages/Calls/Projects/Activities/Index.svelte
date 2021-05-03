@@ -1,10 +1,10 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
-    import { route } from '@/Utils'
+    import { page } from '@inertiajs/inertia-svelte'
     import { _ } from 'svelte-i18n'
     import Stepper from '@/Components/Stepper'
-    import Gantt from '@/Components/Gantt';
+    import Gantt from '@/Components/Gantt'
+    import InfoMessage from '@/Components/InfoMessage'
 
     export let call
     export let project
@@ -12,7 +12,9 @@
 
     $title = $_('Activities.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexActivities      = authUser.can.find(element => element == 'activities.index') == 'activities.index'
@@ -29,8 +31,9 @@
     <Stepper {call} {project} />
 
     <h1 class="font-bold text-3xl m-24 text-center">{$_('Activities.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center"></div>
 
-    <Gantt items={activities.data} request={canEditActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
+    <InfoMessage message="Si desea crear más actividades, por favor diríjase al 'Arbol de objetivos'" />
+
+    <Gantt items={activities.data} request={canShowActivities || canEditActivities ||canDeleteActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
 </AuthenticatedLayout>
 

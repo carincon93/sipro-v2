@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Call;
 use App\Models\Project;
 use App\Models\DirectEffect;
 use App\Models\IndirectEffect;
 use App\Models\DirectCause;
 use App\Models\IndirectCause;
-use App\Models\projectResult;
+use App\Models\ProjectResult;
 use App\Models\Impact;
 use App\Models\SpecificObjective;
 use App\Models\Activity;
@@ -58,7 +57,7 @@ class ProjectTreeController extends Controller
                     ['description' => null],
                 ]);
 
-                $projectResult = $directEffect->projectResult()->create([
+                $P = $directEffect->P()->create([
                     'description'           => null,
                     'specific_objective_id' => $specificObjectives[$i]->id
                 ]);
@@ -95,6 +94,8 @@ class ProjectTreeController extends Controller
      */
     public function showProblemTree(Call $call, Project $project)
     {
+        $this->authorize('showProblemTree', [Project::class, $project]);
+
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
@@ -123,6 +124,8 @@ class ProjectTreeController extends Controller
      */
     public function updateProblem(Request $request, Project $project)
     {
+        $this->authorize('createOrUpdateProblemTree', [Project::class, $project]);
+
         $request->validate([
             'problem_statement' => 'required|string|max:1200',
         ]);
@@ -152,6 +155,8 @@ class ProjectTreeController extends Controller
      */
     public function updateDirectEffect(DirectEffectRequest $request, Project $project, DirectEffect $directEffect)
     {
+        $this->authorize('createOrUpdateProblemTree', [Project::class, $project]);
+
         $directEffect->description = $request->description;
 
         $directEffect->save();
@@ -169,6 +174,8 @@ class ProjectTreeController extends Controller
      */
     public function createOrUpdateIndirectEffect(IndirectEffectRequest $request, Project $project, DirectEffect $directEffect)
     {
+        $this->authorize('createOrUpdateProblemTree', [Project::class, $project]);
+
         if (empty($request->id) && $directEffect->indirectEffects()->count() < 3) {
             $indirectEffect = new IndirectEffect();
             $indirectEffect->fill($request->all());
@@ -202,6 +209,8 @@ class ProjectTreeController extends Controller
      */
     public function updateDirectCause(DirectCauseRequest $request, Project $project, DirectCause $directCause)
     {
+        $this->authorize('createOrUpdateProblemTree', [Project::class, $project]);
+
         $directCause->description = $request->description;
 
         $directCause->save();
@@ -219,6 +228,8 @@ class ProjectTreeController extends Controller
      */
     public function createOrUpdateIndirectCause(IndirectCauseRequest $request, Project $project, DirectCause $directCause)
     {
+        $this->authorize('createOrUpdateProblemTree', [Project::class, $project]);
+
         if (empty($request->id) && $directCause->indirectCauses()->count() < 3) {
             $indirectCause = new IndirectCause();
             $indirectCause->fill($request->all());
@@ -249,6 +260,8 @@ class ProjectTreeController extends Controller
      */
     public function showObjectivesTree(Call $call, Project $project)
     {
+        $this->authorize('showObjectivesTree', [Project::class, $project]);
+
         switch ($project) {
             case $project->rdi()->exists():
                 $this->generateTree($project);
@@ -280,6 +293,8 @@ class ProjectTreeController extends Controller
      */
     public function updateObjective(Request $request, Project $project)
     {
+        $this->authorize('createOrUpdateObjectivesTree', [Project::class, $project]);
+
         $request->validate([
             'primary_objective' => 'required|string|max:1200',
         ]);
@@ -308,6 +323,8 @@ class ProjectTreeController extends Controller
      */
     public function updateImpact(ImpactRequest $request, Project $project, Impact $impact)
     {
+        $this->authorize('createOrUpdateObjectivesTree', [Project::class, $project]);
+
         $impact->description    = $request->description;
         $impact->type           = $request->type;
 
@@ -323,11 +340,13 @@ class ProjectTreeController extends Controller
      *
      * @param  mixed $request
      * @param  mixed $project
-     * @param  mixed $projectResult
+     * @param  mixed $P
      * @return void
      */
     public function updateProjectResult(ProjectResultRequest $request, Project $project, ProjectResult $projectResult)
     {
+        $this->authorize('createOrUpdateObjectivesTree', [Project::class, $project]);
+
         $projectResult->fill($request->all());
 
         if ($projectResult->save()) {
@@ -347,6 +366,8 @@ class ProjectTreeController extends Controller
      */
     public function updateSpecificObjective(SpecificObjectiveRequest $request, Project $project, SpecificObjective $specificObjective)
     {
+        $this->authorize('createOrUpdateObjectivesTree', [Project::class, $project]);
+
         $specificObjective->description = $request->description;
         $specificObjective->number      = $request->number;
 
@@ -368,6 +389,8 @@ class ProjectTreeController extends Controller
      */
     public function updateActivity(ActivityRequest $request, Call $call, Project $project, Activity $activity)
     {
+        $this->authorize('createOrUpdateObjectivesTree', [Project::class, $project]);
+
         $activity->fill($request->all());
 
         if ($activity->save()) {

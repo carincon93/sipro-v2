@@ -1,8 +1,8 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { useForm } from '@inertiajs/inertia-svelte'
-    import { afterUpdate, onMount } from 'svelte'
+    import { useForm, page } from '@inertiajs/inertia-svelte'
+    import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Dialog, { Title, Content } from '@smui/dialog'
@@ -33,6 +33,16 @@
     let code
 
     $: $title = $_('Objectives tree')
+
+    /**
+     * Permisos
+     */
+     let authUser        = $page.props.auth.user
+    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
+    let canCreateRDI    = authUser.can.find(element => element == 'rdi.create') == 'rdi.create'
+    let canEditRDI      = authUser.can.find(element => element == 'rdi.edit') == 'rdi.edit'
+
+    let canCreateOrUpdate = isSuperAdmin ? undefined : canCreateRDI ? undefined : canEditRDI ? undefined : true
 
     /**
      * Mensaje para ítems bloqueados
@@ -84,12 +94,14 @@
     }
 
     function submitImpact() {
-        Inertia.post(route('projects.impact', {project:project.id, impact: $formImpact.id}), $formImpact, {
-            onStart: ()     =>  { sending = true},
-            onSuccess: ()   =>  { closeDialog() },
-            onFinish: ()    =>  { sending = false},
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.impact', {project:project.id, impact: $formImpact.id}), $formImpact, {
+                onStart: ()     =>  { sending = true},
+                onSuccess: ()   =>  { closeDialog() },
+                onFinish: ()    =>  { sending = false},
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -127,12 +139,14 @@
     }
 
     function submitResult() {
-        Inertia.post(route('projects.project_result', {project:project.id, project_result: $formResult.id}), $formResult, {
-            onStart: ()     =>  { sending = true},
-            onSuccess: ()   =>  { closeDialog() },
-            onFinish: ()    =>  { sending = false},
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.project_result', {project:project.id, project_result: $formResult.id}), $formResult, {
+                onStart: ()     =>  { sending = true},
+                onSuccess: ()   =>  { closeDialog() },
+                onFinish: ()    =>  { sending = false},
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -155,12 +169,14 @@
     }
 
     function submitGeneralObjetive() {
-        Inertia.post(route('projects.primary_objective', project.id), $formPrimaryObjective, {
-            onStart: ()     =>  { sending = true },
-            onSuccess: ()   =>  { closeDialog() },
-            onFinish: ()    =>  { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.primary_objective', project.id), $formPrimaryObjective, {
+                onStart: ()     =>  { sending = true },
+                onSuccess: ()   =>  { closeDialog() },
+                onFinish: ()    =>  { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -188,12 +204,14 @@
     }
 
     function submitSpecificObjective() {
-        Inertia.post(route('projects.specific_objective', {project: project.id, specific_objective: $formSpecificObjective.id}), $formSpecificObjective, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.specific_objective', {project: project.id, specific_objective: $formSpecificObjective.id}), $formSpecificObjective, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -227,12 +245,14 @@
     }
 
     function submitActivity() {
-        Inertia.post(route('projects.activity', {call: call.id, project: project.id, activity: $formActivity.id}), $formActivity, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.activity', {call: call.id, project: project.id, activity: $formActivity.id}), $formActivity, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     function reset() {
@@ -531,10 +551,11 @@
                         <Button on:click={closeDialog} type="button">
                             <LabelMUI>{$_('Cancel')}</LabelMUI>
                         </Button>
-
-                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
-                            {$_('Save')}
-                        </LoadingButton>
+                        {#if !canCreateOrUpdate}
+                            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
+                                {$_('Save')}
+                            </LoadingButton>
+                        {/if}
                     </div>
                 </div>
             {/if}
@@ -542,109 +563,118 @@
         <Content id="mandatory-content">
             {#if showActivityForm}
                 <form on:submit|preventDefault={submitActivity} id="form-activity">
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>Causa indirecta</strong>
-                        <br>
-                        {activityIndirectCause}
-                    </p>
-                    <p class="mt-1 text-center">Fecha de ejecución</p>
-                    <div class="mt-1 flex items-start justify-around">
-                        <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
-                            <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.start_date} required />
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>Causa indirecta</strong>
+                            <br>
+                            {activityIndirectCause}
+                        </p>
+                        <p class="mt-1 text-center">Fecha de ejecución</p>
+                        <div class="mt-1 flex items-start justify-around">
+                            <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
+                                <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                                <div class="ml-4">
+                                    <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.start_date} required />
+                                </div>
+                            </div>
+                            <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
+                                <Label id="end_date" class="ml-4 {errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                                <div class="ml-4">
+                                    <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.end_date} required />
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label id="end_date" class="ml-4 {errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
-                            <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.end_date} required />
-                            </div>
+                        <div>
+                            <InputError classes="text-center" message={errors.start_date} />
+                            <InputError classes="text-center" message={errors.end_date} />
                         </div>
-                    </div>
-                    <div>
-                        <InputError classes="text-center" message={errors.start_date} />
-                        <InputError classes="text-center" message={errors.end_date} />
-                    </div>
-                    <div class="mt-4">
-                        <Label class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formActivity.description} required />
-                    </div>
+                        <div class="mt-4">
+                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formActivity.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showSpecificObjectiveForm}
                 <form on:submit|preventDefault={submitSpecificObjective} id="specific-objective-form">
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>Causa directa</strong>
-                        <br>
-                        {SpecificObjectiveDirectCause}
-                    </p>
-                    <div class="mt-4">
-                        <Label class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>Causa directa</strong>
+                            <br>
+                            {SpecificObjectiveDirectCause}
+                        </p>
+                        <div class="mt-4">
+                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showPrimaryObjectiveForm}
                 <form on:submit|preventDefault={submitGeneralObjetive} id="primary-objective-form">
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>Planteamiento del problema</strong>
-                        <br>
-                        {problemStatement}
-                    </p>
-                    <div class="mt-4">
-                        <Label class="mb-4" id="primary_objective" value="Objetivo general" />
-                        <p class="mb-4"> Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué</p>
-                        <Textarea id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>Planteamiento del problema</strong>
+                            <br>
+                            {problemStatement}
+                        </p>
+                        <div class="mt-4">
+                            <Label class="mb-4" id="primary_objective" value="Objetivo general" />
+                            <p class="mb-4"> Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué</p>
+                            <Textarea id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showResultForm}
                 <form on:submit|preventDefault={submitResult} id="project-result-form">
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>Efecto directo</strong>
-                        <br>
-                        {resultDirectEffect}
-                    </p>
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>{specificObjectiveDescription.number}</strong>
-                        <br>
-                        {specificObjectiveDescription.description}
-                    </p>
-                    <div class="mt-4">
-                        <Label id="type" value="Tipo" />
-                        <Select id="type" items={resultTypes} bind:selectedValue={$formResult.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
-                    </div>
-                    <div class="mt-4">
-                        <Label id="description" value="Descripción" />
-                        <Textarea id="description" maxlength="200" rows="4" error={errors.description} bind:value={$formResult.description} required />
-                    </div>
-                    <div class="mt-4">
-                        <Label id="trl" value="TRL" />
-                        <Input id="trl" type="number" max="9" min="1" class="block w-full" error={errors.trl} bind:value={$formResult.trl} required />
-                    </div>
-                    <div class="mt-4">
-                        <Label id="indicator" value="Indicador" />
-                        <Textarea id="indicator" maxlength="200" rows="4" error={errors.indicator} bind:value={$formResult.indicator} required />
-                    </div>
-                    <div class="mt-4">
-                        <Label id="means_of_verification" value="Medio de verificación" />
-                        <Textarea id="means_of_verification" maxlength="200" rows="4" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
-                        <InputError message={errors.means_of_verification} />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>Efecto directo</strong>
+                            <br>
+                            {resultDirectEffect}
+                        </p>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>{specificObjectiveDescription.number}</strong>
+                            <br>
+                            {specificObjectiveDescription.description}
+                        </p>
+                        <div class="mt-4">
+                            <Label id="type" value="Tipo" />
+                            <Select id="type" items={resultTypes} bind:selectedValue={$formResult.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
+                        </div>
+                        <div class="mt-4">
+                            <Label id="description" value="Descripción" />
+                            <Textarea id="description" maxlength="200" rows="4" error={errors.description} bind:value={$formResult.description} required />
+                        </div>
+                        <div class="mt-4">
+                            <Label id="trl" value="TRL" />
+                            <Input id="trl" type="number" max="9" min="1" class="block w-full" error={errors.trl} bind:value={$formResult.trl} required />
+                        </div>
+                        <div class="mt-4">
+                            <Label id="indicator" value="Indicador" />
+                            <Textarea id="indicator" maxlength="200" rows="4" error={errors.indicator} bind:value={$formResult.indicator} required />
+                        </div>
+                        <div class="mt-4">
+                            <Label id="means_of_verification" value="Medio de verificación" />
+                            <Textarea id="means_of_verification" maxlength="200" rows="4" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showImpactForm}
                 <form on:submit|preventDefault={submitImpact} id="impact-form">
-                    <p class="mt-4 whitespace-pre-line">
-                        <strong>Efecto indirecto</strong>
-                        <br>
-                        {impactIndirectEffect}
-                    </p>
-                    <div class="mt-4">
-                        <Label id="type" value="Tipo" />
-                        <Select id="type" items={impactTypes} bind:selectedValue={$formImpact.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
-                    </div>
-                    <div class="mt-4">
-                        <Label class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formImpact.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <p class="mt-4 whitespace-pre-line">
+                            <strong>Efecto indirecto</strong>
+                            <br>
+                            {impactIndirectEffect}
+                        </p>
+                        <div class="mt-4">
+                            <Label id="type" value="Tipo" />
+                            <Select id="type" items={impactTypes} bind:selectedValue={$formImpact.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
+                        </div>
+                        <div class="mt-4">
+                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formImpact.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showGeneralInfo}
                 {#if generalInfoType == 1}

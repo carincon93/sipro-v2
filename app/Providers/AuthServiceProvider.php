@@ -60,6 +60,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\TechnoAcademy' => 'App\Policies\TechnoAcademyPolicy',
         'App\Models\TechnologicalLine' => 'App\Policies\TechnologicalLinePolicy',
         'App\Models\SectorBasedCommittee' => 'App\Policies\SectorBasedCommitteePolicy',
+        'App\Models\Project' => 'App\Policies\ProjectPolicy',
     ];
 
     /**
@@ -75,8 +76,8 @@ class AuthServiceProvider extends ServiceProvider
 
     public function registerSuperAdminPolicy()
     {
-        // Gate::before(function ($user, $ability) {
-        //     return $user->hasRole(1) ? true : null;
-        // });
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole(1) ? true : null;
+        });
     }
 }

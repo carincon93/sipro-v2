@@ -21,7 +21,9 @@
 
     $: $title = partnerOrganizationMember ? partnerOrganizationMember.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                           = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndextPartnerOrganizationMembers    = authUser.can.find(element => element == 'partner-organization-members.index') == 'partner-organization-members.index'

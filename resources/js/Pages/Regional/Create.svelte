@@ -14,7 +14,9 @@
 
     $: $title = $_('Create') + ' ' + $_('Regional.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexRegional    = authUser.can.find(element => element == 'regional.index') == 'regional.index'

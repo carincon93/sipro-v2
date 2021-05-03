@@ -18,12 +18,7 @@ class ActivityPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.index')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.show')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.create')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.edit')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.delete')
-        ) {
+        if ( $user->hasPermissionTo('activities.index') || $user->hasPermissionTo('activities.show') || $user->hasPermissionTo('activities.create') || $user->hasPermissionTo('activities.edit') || $user->hasPermissionTo('activities.delete') ) {
             return true;
         }
 
@@ -39,7 +34,7 @@ class ActivityPolicy
      */
     public function view(User $user, Activity $activity)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.show') ) {
+        if ( $user->hasPermissionTo('activities.show') ) {
             return true;
         }
 
@@ -54,7 +49,7 @@ class ActivityPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.create') ) {
+        if ( $user->hasPermissionTo('activities.create') ) {
             return true;
         }
 
@@ -70,7 +65,7 @@ class ActivityPolicy
      */
     public function update(User $user, Activity $activity)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.edit') ) {
+        if ( $user->hasPermissionTo('activities.show') || $user->hasPermissionTo('activities.edit') || $user->hasPermissionTo('activities.delete') ) {
             return true;
         }
 
@@ -86,7 +81,7 @@ class ActivityPolicy
      */
     public function delete(User $user, Activity $activity)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('activities.delete') ) {
+        if ( $user->hasPermissionTo('activities.delete') ) {
             return true;
         }
 

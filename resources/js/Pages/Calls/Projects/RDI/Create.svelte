@@ -17,7 +17,9 @@
 
     $: $title = $_('Create') + ' ' + $_('RDI.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexRDI  = authUser.can.find(element => element == 'rdi.index') == 'rdi.index'

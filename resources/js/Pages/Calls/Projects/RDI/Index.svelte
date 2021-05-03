@@ -4,14 +4,18 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
-
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+    import { Inertia } from '@inertiajs/inertia'
 
     export let rdi
     export let call
 
     $title = $_('RDI.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRDI     = authUser.can.find(element => element == 'rdi.index') == 'rdi.index'
@@ -40,41 +44,31 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Título</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Fecha de ejecución</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Título</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Fecha de ejecución</th>
                 </tr>
             </thead>
             <tbody>
                 {#each rdi.data as rdi (rdi.id)}
                     <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                         <td class="border-t">
-                            {#if canEditRDI || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.edit', [call.id, rdi.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {rdi.title}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {rdi.title}
-                                </p>
-                            {/if}
+                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                {rdi.title}
+                            </p>
                         </td>
                         <td class="border-t">
-                            {#if canEditRDI || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.edit', [call.id, rdi.id])}
-                                    class="px-6 py-4 flex items-center"
-                                    tabindex="-1">
-                                    {rdi.start_date}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center">
-                                    {rdi.start_date}
-                                </p>
-                            {/if}
+                            <p class="px-6 py-4 flex items-center">
+                                {rdi.execution_date}
+                            </p>
+                        </td>
+                        <td>
+                            <ResourceMenu>
+                                {#if canShowRDI || canEditRDI ||canDeleteRDI || isSuperAdmin}
+                                    <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.edit', [call.id, rdi.id])))}>
+                                        <Text>{$_('View details')}</Text>
+                                    </Item>
+                                {/if}
+                            </ResourceMenu>
                         </td>
                     </tr>
                 {/each}

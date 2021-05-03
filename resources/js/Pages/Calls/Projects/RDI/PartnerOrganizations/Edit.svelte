@@ -29,7 +29,9 @@
 
     $: $title = partnerOrganization ? partnerOrganization.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'
@@ -296,9 +298,9 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Correo electrónico</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Número de celular</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Número de celular</th>
                 </tr>
             </thead>
             <tbody>
@@ -366,7 +368,7 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Descripción</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Descripción</th>
                 </tr>
             </thead>
             <tbody>

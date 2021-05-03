@@ -21,7 +21,9 @@
 
     $: $title = prioritizedTopic ? prioritizedTopic.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexPrioritizedTopics   = authUser.can.find(element => element == 'prioritized-topics.index') == 'prioritized-topics.index'

@@ -30,8 +30,8 @@
 
     function handleProjectSennovaRole(event) {
         formProjectSennovaRole  = event.detail.value
-        qtyMonthsByDefault      = event.detail.qtyMonthsByDefault
-        qtyRolesByDefault       = event.detail.qtyRolesByDefault
+        qtyMonthsByDefault      = event.detail.qty_months_by_default
+        qtyRolesByDefault       = event.detail.qty_roles_by_default
         qtyMonths               = event.detail.qty_months
         qtyRoles                = event.detail.qty_roles
     }

@@ -187,7 +187,7 @@ return [
 		'document_type' => 'tipo de documento',
 		'document_number' => 'número de documento',
 		'project_category' => 'categoría del proyecto',
-		'totalProjectBudget' => 'presupuesto total del proyecto',
+		'total_project_budget' => 'presupuesto total del proyecto',
 		'qty_items' => 'cantidad de artículos',
 		'justification' => 'justificación',
 		'qty' => 'cantidad',

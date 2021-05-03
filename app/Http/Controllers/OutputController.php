@@ -24,13 +24,13 @@ class OutputController extends Controller
         $projectResult = $project->directEffects()->with('projectResult')->get()->pluck('projectResult')->flatten()->filter();
 
         return Inertia::render('Calls/Projects/Outputs/Index', [
-            'call'          => $call,
-            'project'       => $project,
-            'filters'       => request()->all('search'),
-            'outputs'       => Output::whereIn('project_result_id',
-                                $projectResult->map(function ($projectResult) {
-                                    return $projectResult->id;
-                                }))->filterOutput(request()->only('search'))->paginate(200),
+            'call'    => $call,
+            'project' => $project,
+            'filters' => request()->all('search'),
+            'outputs' => Output::whereIn('project_result_id',
+                        $projectResult->map(function ($projectResult) {
+                            return $projectResult->id;
+                        }))->filterOutput(request()->only('search'))->paginate(),
             ]);
     }
 
@@ -46,9 +46,11 @@ class OutputController extends Controller
         $project->rdi;
 
         return Inertia::render('Calls/Projects/Outputs/Create', [
-            'call' => $call,
-            'project'  => $project,
-            'projectResults' => $project->directEffects()->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult')
+            'call'              => $call,
+            'project'           => $project,
+            'projectResults'    => $project->directEffects()->whereHas('projectResult', function ($query) {
+                    $query->where('description', '!=', null);
+                })->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult')
         ]);
     }
 
@@ -109,14 +111,14 @@ class OutputController extends Controller
 
         $project->rdi;
         $output->rdiOutput;
-        $selectedprojectResult = ['value' => optional($output->projectResult)->id, 'label' => optional($output->projectResult)->description];
 
         return Inertia::render('Calls/Projects/Outputs/Edit', [
-            'call' => $call,
-            'project'  => $project,
-            'output' => $output,
-            'projectResults' => $project->directEffects()->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult'),
-            'selectedprojectResult' => $selectedprojectResult
+            'call'              => $call->only('id'),
+            'project'           => $project->only('id'),
+            'output'            => $output,
+            'projectResults'    => $project->directEffects()->whereHas('projectResult', function ($query) {
+                    $query->where('description', '!=', null);
+                })->with('projectResult:id as value,description as label,direct_effect_id')->get()->pluck('projectResult'),
         ]);
     }
 

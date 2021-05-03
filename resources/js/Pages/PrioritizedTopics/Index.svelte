@@ -10,7 +10,9 @@
 
     $title = $_('Prioritized topics.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexPrioritizedTopics   = authUser.can.find(element => element == 'prioritized-topics.index') == 'prioritized-topics.index'
@@ -39,9 +41,9 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Sector productivo</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Mesa técnica de servicios tecnológicos</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Sector productivo</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Mesa técnica de servicios tecnológicos</th>
                 </tr>
             </thead>
             <tbody>

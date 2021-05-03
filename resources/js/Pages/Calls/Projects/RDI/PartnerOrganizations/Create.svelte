@@ -25,7 +25,9 @@
 
     $: $title = $_('Create') + ' ' + $_('Partner organizations.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'

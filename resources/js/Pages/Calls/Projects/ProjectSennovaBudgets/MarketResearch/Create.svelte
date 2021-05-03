@@ -20,7 +20,9 @@
 
     // $: $title = $_('Create') + ' ' + $_('Market research.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexMarketResearch    = authUser.can.find(element => element == 'market-research.index') == 'market-research.index'

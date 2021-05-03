@@ -10,18 +10,18 @@ class Activity extends Model
     use HasFactory;
 
     /**
-     * table
-     *
-     * @var string
-     */
-    protected $table = 'activities';
-
-    /**
      * appends
      *
      * @var array
      */
     protected $appends = ['start_year', 'start_month', 'start_day', 'end_year', 'end_month', 'end_day'];
+
+    /**
+     * table
+     *
+     * @var string
+     */
+    protected $table = 'activities';
 
     /**
      * The attributes that are mass assignable.

@@ -20,7 +20,9 @@
 
     $: $title = programmaticLine ? programmaticLine.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser    = $page.props.auth.user
     let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexProgrammaticLines   = authUser.can.find(element => element == 'programmatic-lines.index') == 'programmatic-lines.index'

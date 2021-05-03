@@ -10,7 +10,7 @@ class Permission extends SpatiePermission
 {
     use HasFactory;
 
-    protected $appends = ['onlyName', 'method'];
+    protected $appends = ['only_name', 'method'];
 
     /**
      * The attributes that are mass assignable.

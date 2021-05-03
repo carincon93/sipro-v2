@@ -35,6 +35,7 @@
     "Cancel": "Cancelar",
     "Upload": "Cargar",
     "Continue": "Continuar",
+    "View details": "Ver detalles",
     "The password is incorrect.": "La contraseña es incorrecta",
     "Update Password": "Actualizar contraseña",
     "Current Password": "Contraseña actual",
@@ -302,8 +303,8 @@
         "plural": "Proyectos I+D+i"
     },
     "Research results": {
-        "singular": "Resultado de invesitgación",
-        "plural": "Resultados de invesitgación"
+        "singular": "Resultado de investigación",
+        "plural": "Resultados de investigación"
     },
     "Sennova roles": {
         "singular": "Rol SENNOVA",
@@ -328,6 +329,14 @@
     "Techno academies": {
         "singular": "Tecnoacademia",
         "plural": "Tecnoacademias"
+    },
+    "Technological lines": {
+        "singular": "Línea tecnológica",
+        "plural": "Líneas tecnológicas"
+    },
+    "Sector based committees": {
+        "singular": "Mesa sectorial",
+        "plural": "Mesas sectoriales"
     },
     "Problem tree": "Árbol de problemas",
     "Objectives tree": "Árbol de objetivos"

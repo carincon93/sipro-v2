@@ -75,7 +75,7 @@
                     {#if Object.keys(errors).length === 1}
                         <span>{$_('There is one form error.')}</span>
                     {:else}
-                        <span>{$_('There are')} {Object.keys(errors).length} {$_('form errors.')}</span>
+                        <span>{$_('There are form errors.', { values: { count: Object.keys(errors).length }})}</span>
                     {/if}
                 </div>
             {/if}

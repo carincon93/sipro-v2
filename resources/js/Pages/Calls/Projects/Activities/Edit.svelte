@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
@@ -9,7 +9,8 @@
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
-    import Checkbox from '@/Components/Checkbox'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
     import Textarea from '@/Components/Textarea'
 
     export let errors
@@ -21,7 +22,9 @@
 
     $: $title = activity ? activity.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexActivities   = authUser.can.find(element => element == 'activities.index') == 'activities.index'
@@ -32,8 +35,7 @@
 
     let modal_open = false
     let sending = false
-    let form = remember({
-        indirect_cause_id:  activity.indirect_cause_id,
+    let form = useForm({
         description:  activity.description,
         start_date:  activity.start_date,
         end_date:  activity.end_date,
@@ -41,7 +43,7 @@
     })
 
     function submit() {
-        if (canIndexActivities || isSuperAdmin) {
+        if (canEditActivities || isSuperAdmin) {
             Inertia.put(route('calls.projects.activities.update', [call.id, project.id, activity.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
@@ -75,7 +77,7 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditActivities || isSuperAdmin ? undefined : true}>
                 <div>
                     <Label required class="mb-4" id="description" value="Descripción" />
                     <Textarea id="description" error={errors.description} bind:value={$form.description} required />
@@ -102,15 +104,17 @@
                 <div class="bg-white rounded shadow overflow-hidden">
                     <div class="grid grid-cols-2">
                         {#each outputs as {id, name}, i}
-                            <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
-
-                            <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                                <Checkbox id={id} checked={activity_outputs.includes(id)} bind:group={$form.output_id} value={id}/>
-                            </div>
+                            <FormField>
+                                <Checkbox
+                                    bind:group={$form.output_id}
+                                    value={id}
+                                />
+                                    <span slot="label">{$_(name)}</span>
+                            </FormField>
                         {/each}
                     </div>
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteActivities || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>

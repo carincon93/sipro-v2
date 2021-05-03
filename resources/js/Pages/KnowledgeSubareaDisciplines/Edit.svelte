@@ -19,7 +19,9 @@
 
     $: $title = knowledgeSubareaDiscipline ? knowledgeSubareaDiscipline.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                         = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexKnowledgeSubareaDisciplines  = authUser.can.find(element => element == 'knowledge-subarea-disciplines.index') == 'knowledge-subarea-disciplines.index'

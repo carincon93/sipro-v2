@@ -16,7 +16,9 @@
 
     $: $title = $_('Create') + ' ' + $_('Minciencias subtypologies.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                       = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexMincienciasSubtypologies   = authUser.can.find(element => element == 'minciencias-subtypologies.index') == 'minciencias-subtypologies.index'

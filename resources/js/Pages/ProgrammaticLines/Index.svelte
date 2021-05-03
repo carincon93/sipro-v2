@@ -10,7 +10,9 @@
 
     $title = $_('Programmatic lines.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser    = $page.props.auth.user
     let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexProgrammaticLines   = authUser.can.find(element => element == 'programmatic-lines.index') == 'programmatic-lines.index'
@@ -39,9 +41,9 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Código</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Categoría</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Categoría</th>
                 </tr>
             </thead>
             <tbody>

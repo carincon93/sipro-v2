@@ -28,7 +28,7 @@ class RDIController extends Controller
         return Inertia::render('Calls/Projects/RDI/Index', [
             'filters'   => request()->all('search'),
             'call'      => $call,
-            'rdi'       => RDI::select('rdi.id', 'rdi.title', 'rdi.start_date')->join('projects', 'rdi.id', 'projects.id')->where('projects.call_id', $call->id)->orderBy('title', 'ASC')
+            'rdi'       => RDI::select('rdi.id', 'rdi.title', 'rdi.start_date', 'rdi.end_date')->join('projects', 'rdi.id', 'projects.id')->where('projects.call_id', $call->id)->orderBy('title', 'ASC')
                 ->filterRDI(request()->only('search'))->paginate(),
         ]);
     }

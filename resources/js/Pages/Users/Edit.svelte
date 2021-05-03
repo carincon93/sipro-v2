@@ -24,7 +24,9 @@
 
     $: $title = user ? user.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser        = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexUsers   = authUser.can.find(element => element == 'users.index') == 'users.index'

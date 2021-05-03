@@ -4,7 +4,7 @@
 @import 'tailwindcss/utilities';
 
 :root {
-    --mdc-theme-primary: #ff3e00;
+    --mdc-theme-primary: #4f46e5;
     --mdc-theme-secondary: rgba(99, 102, 241, 1);
 }
 
@@ -76,6 +76,38 @@ input, select, textarea {
 [type='checkbox']:not(.mdc-switch__native-control):focus {
     outline: none;
     box-shadow: none;
+}
+
+fieldset {
+    min-width: auto;
+}
+
+fieldset[disabled] input, fieldset[disabled] textarea, fieldset[disabled] select {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+}
+
+fieldset[disabled] .selectContainer {
+    background: transparent !important;
+    height: auto !important;
+    border: 0 !important;
+    padding: 0 !important;
+}
+
+fieldset[disabled] .clearSelect, fieldset[disabled] .listContainer, fieldset[disabled] .label-required {
+    display: none;
+    opacity: 0;
+}
+
+fieldset[disabled] .selection {
+    white-space: pre-line !important;
+}
+
+fieldset[disabled] .selectedItem {
+    line-height: 1.7 !important;
+    height: auto !important;
 }
 
 .mdc-switch__native-control {

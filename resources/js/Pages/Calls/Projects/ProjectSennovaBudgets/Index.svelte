@@ -14,7 +14,9 @@
 
     $title = $_('Project sennova budgets.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexProjectSennovaBudgets   = authUser.can.find(element => element == 'project-sennova-budgets.index') == 'project-sennova-budgets.index'
@@ -32,7 +34,7 @@
 
     <h1 class="font-bold text-3xl mt-24 text-center">{$_('Project sennova budgets.plural')}</h1>
     <h2 class="text-center mt-10 mb-24">
-        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(project.totalProjectBudget)} COP
+        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(project.total_project_udget)} COP
     </h2>
     <div class="px-4">
         <h1 class="mb-4 text-center">Filtros</h1>
@@ -62,8 +64,8 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Información</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Subtotal del costo de los productos o servicios requeridos</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Información</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Subtotal del costo de los productos o servicios requeridos</th>
                 </tr>
             </thead>
             <tbody>

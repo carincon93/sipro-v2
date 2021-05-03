@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { useForm } from '@inertiajs/inertia-svelte'
+    import { useForm, page } from '@inertiajs/inertia-svelte'
     import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -28,6 +28,16 @@
     let code
 
     $: $title = $_('Problem tree')
+
+    /**
+     * Permisos
+     */
+     let authUser        = $page.props.auth.user
+    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
+    let canCreateRDI    = authUser.can.find(element => element == 'rdi.create') == 'rdi.create'
+    let canEditRDI      = authUser.can.find(element => element == 'rdi.edit') == 'rdi.edit'
+
+    let canCreateOrUpdate = isSuperAdmin ? undefined : canCreateRDI ? undefined : canEditRDI ? undefined : true
 
     /**
      * Efectos indirectos
@@ -58,12 +68,14 @@
     }
 
     function submitIndirectEffect() {
-        Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), $formIndirectEffect, {
-            onStart: ()     =>  { sending = true },
-            onSuccess: ()   =>  { closeDialog() },
-            onFinish: ()    =>  { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), $formIndirectEffect, {
+                onStart: ()     =>  { sending = true },
+                onSuccess: ()   =>  { closeDialog() },
+                onFinish: ()    =>  { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -87,12 +99,14 @@
     }
 
     function submitDirectEffect() {
-        Inertia.post(route('projects.direct_effect', {project:project.id, direct_effect: $formDirectEffect.id}), $formDirectEffect, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.direct_effect', {project:project.id, direct_effect: $formDirectEffect.id}), $formDirectEffect, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -115,12 +129,14 @@
     }
 
     function submitStatementProblem() {
-        Inertia.post(route('projects.problem_statement', project.id), $formStatementProblem, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.problem_statement', project.id), $formStatementProblem, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -144,12 +160,14 @@
     }
 
     function submitDirectCause() {
-        Inertia.post(route('projects.direct_cause', {project:project.id, direct_cause: $formDirectCause.id}), $formDirectCause, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.direct_cause', {project:project.id, direct_cause: $formDirectCause.id}), $formDirectCause, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     /**
@@ -180,12 +198,14 @@
     }
 
     function submitIndirectCause() {
-        Inertia.post(route('projects.indirect_cause', {project:project.id, direct_cause: $formIndirectCause.direct_cause_id}), $formIndirectCause, {
-            onStart: ()     => { sending = true },
-            onSuccess: ()   => { closeDialog() },
-            onFinish: ()    => { sending = false },
-            preserveScroll: true
-        })
+        if (canCreateOrUpdate == undefined) {
+            Inertia.post(route('projects.indirect_cause', {project:project.id, direct_cause: $formIndirectCause.direct_cause_id}), $formIndirectCause, {
+                onStart: ()     => { sending = true },
+                onSuccess: ()   => { closeDialog() },
+                onFinish: ()    => { sending = false },
+                preserveScroll: true
+            })
+        }
     }
 
     function reset() {
@@ -483,60 +503,72 @@
                     <Button on:click={closeDialog} type="button">
                         <LabelMUI>{$_('Cancel')}</LabelMUI>
                     </Button>
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
-                        {$_('Save')}
-                    </LoadingButton>
+                    {#if !canCreateOrUpdate}
+                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
+                            {$_('Save')}
+                        </LoadingButton>
+                    {/if}
                 </div>
             </div>
         </Title>
         <Content id="mandatory-content">
             {#if showIndirectCauseForm}
                 <form on:submit|preventDefault={submitIndirectCause} id="indirect-cause">
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formIndirectCause.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formIndirectCause.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showDirectCauseForm}
                 <form on:submit|preventDefault={submitDirectCause} id="direct-cause">
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formDirectCause.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formDirectCause.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showIndirectEffectForm}
                 <form on:submit|preventDefault={submitIndirectEffect} id="indirect-effect">
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formIndirectEffect.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formIndirectEffect.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showStatementProblemForm}
                 <form on:submit|preventDefault={submitStatementProblem} id="statement-problem">
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="problem_statement" value="Planteamiento del problema" />
-                        <p class="mb-4">
-                            1. Descripción de la necesidad, problema u oportunidad identificada del plan tecnologógico y/o agendas departamentales de innovación y competitividad.
-                            <br>
-                            2. Descripción del problema que se atiende con el proyecto, sustentado en el contexto, la caracterización, los datos, las estadísticas, de la regional, entre otros, citar toda la información consignada utilizando normas APA sexta edición. La información debe ser de fuentes primarias de información, ejemplo: Secretarías, DANE, Artículos científicos, entre otros.
-                        </p>
-                        <Textarea id="problem_statement" error={errors.problem_statement} bind:value={$formStatementProblem.problem_statement} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="problem_statement" value="Planteamiento del problema" />
+                            <p class="mb-4">
+                                1. Descripción de la necesidad, problema u oportunidad identificada del plan tecnologógico y/o agendas departamentales de innovación y competitividad.
+                                <br>
+                                2. Descripción del problema que se atiende con el proyecto, sustentado en el contexto, la caracterización, los datos, las estadísticas, de la regional, entre otros, citar toda la información consignada utilizando normas APA sexta edición. La información debe ser de fuentes primarias de información, ejemplo: Secretarías, DANE, Artículos científicos, entre otros.
+                            </p>
+                            <Textarea id="problem_statement" error={errors.problem_statement} bind:value={$formStatementProblem.problem_statement} required />
+                        </div>
 
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="problem_justification" value="Justificación" />
-                        <p class="mb-4">
-                            Descripción de la solución al problema (descrito anteriormente) que se presenta en la regional, así como las consideraciones que justifican la elección del proyecto. De igual forma, describir la pertinencia y viabilidad del proyecto en el marco del impacto regional identificado en el instrumento de planeación.
-                        </p>
-                        <Textarea id="problem_justification" error={errors.problem_justification} bind:value={$formStatementProblem.problem_justification} required />
-                    </div>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="problem_justification" value="Justificación" />
+                            <p class="mb-4">
+                                Descripción de la solución al problema (descrito anteriormente) que se presenta en la regional, así como las consideraciones que justifican la elección del proyecto. De igual forma, describir la pertinencia y viabilidad del proyecto en el marco del impacto regional identificado en el instrumento de planeación.
+                            </p>
+                            <Textarea id="problem_justification" error={errors.problem_justification} bind:value={$formStatementProblem.problem_justification} required />
+                        </div>
+                    </fieldset>
                 </form>
             {:else if showDirectEffectForm}
                 <form on:submit|preventDefault={submitDirectEffect} id="direct-effect">
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="description" value="Descripción" />
-                        <Textarea id="description" error={errors.description} bind:value={$formDirectEffect.description} required />
-                    </div>
+                    <fieldset disabled={canCreateOrUpdate}>
+                        <div class="mt-4">
+                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Textarea id="description" error={errors.description} bind:value={$formDirectEffect.description} required />
+                        </div>
+                    </fieldset>
                 </form>
             {/if}
         </Content>

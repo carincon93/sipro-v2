@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
@@ -10,19 +10,20 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownMincienciasSubtypology from '@/Dropdowns/DropdownMincienciasSubtypology'
     import Select from 'svelte-select'
+    import DynamicList from '@/Dropdowns/DynamicList.svelte';
 
     export let call
     export let project
     export let errors
     export let output
-    export let researchResults
-    export let selectedResearchResult
+    export let projectResults
 
     $: $title = output ? output.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin      = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexOutputs   = authUser.can.find(element => element == 'outputs.index') == 'outputs.index'
@@ -33,16 +34,16 @@
 
     let modal_open = false
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: output.name,
-        project_result_id: selectedResearchResult,
+        project_result_id: {value: output.project_result_id, label: projectResults.find(item => item.value == output.project_result_id)?.label},
         minciencias_subtypology_id: output.rdi_output?.minciencias_subtypology_id,
         start_date: output.start_date,
         end_date: output.end_date
     })
 
     function submit() {
-        if (canIndexOutputs || isSuperAdmin) {
+        if (canEditOutputs || isSuperAdmin) {
             Inertia.put(route('calls.projects.outputs.update', [call.id, project.id, output.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
@@ -76,7 +77,7 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditOutputs || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" id="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
@@ -85,15 +86,13 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
-                    <Select items={researchResults} bind:selectedValue={$form.project_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
-                    <InputError message={errors.project_result_id} />
+                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
                 </div>
 
                 {#if output.rdi_output}
                     <div class="mt-4">
                         <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
-                        <DropdownMincienciasSubtypology id="minciencias_subtypology_id" bind:formMincienciasSubtypology={$form.minciencias_subtypology_id} message={errors.minciencias_subtypology_id} />
-                        <InputError message={errors.name} />
+                        <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
                     </div>
                 {/if}
 
@@ -114,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteOutputs || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>

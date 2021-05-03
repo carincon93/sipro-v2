@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -9,17 +9,19 @@
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownMincienciasSubtypology from '@/Dropdowns/DropdownMincienciasSubtypology'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
+    import DynamicList from '@/Dropdowns/DynamicList';
 
     export let call
     export let project
     export let errors
-    export let researchResults
+    export let projectResults
 
     $: $title = $_('Create') + ' ' + $_('Outputs.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexOutputs  = authUser.can.find(element => element == 'outputs.index') == 'outputs.index'
@@ -29,10 +31,10 @@
     let canDeleteOutputs = authUser.can.find(element => element == 'outputs.delete') == 'outputs.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         project_result_id: '',
-        // minciencias_subtypology_id: '',
+        minciencias_subtypology_id: '',
         start_date: '',
         end_date: ''
     })
@@ -75,34 +77,35 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
-                    <Select items={researchResults} bind:selectedValue={$form.project_result_id} autocomplete="off" placeholder="Seleccione un resultado"/>
-                    <InputError message={errors.project_result_id} />
+                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
                 </div>
 
                 {#if project.rdi}
                     <div class="mt-4">
                         <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
-                        <DropdownMincienciasSubtypology id="minciencias_subtypology_id" bind:formMincienciasSubtypology={$form.minciencias_subtypology_id} message={errors.minciencias_subtypology_id} />
-                        <InputError message={errors.name} />
+                        <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
                     </div>
                 {/if}
 
                 <div class="mt-8">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
-                        <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                        <div class="mt-4 flex">
+                            <Label required id="start_date" value="Del" />
                             <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
+                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                             </div>
                         </div>
-                        <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                        <div class="mt-4 flex">
+                            <Label required id="end_date" value="hasta" />
                             <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
+                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                             </div>
                         </div>
                     </div>
+                    {#if errors.start_date || errors.end_date}
+                        <InputError message={errors.start_date || errors.end_date} />
+                    {/if}
                 </div>
             </div>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

@@ -19,7 +19,9 @@
 
     $: $title = projectType ? projectType.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexProjectTypes    = authUser.can.find(element => element == 'project-types.index') == 'project-types.index'

@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
 
-    protected $appends = ['can'];
+    protected $appends = ['can', 'user_name'];
 
     /**
      * The attributes that are mass assignable.
@@ -109,5 +109,15 @@ class User extends Authenticatable
         return $this->getAllPermissions()->map(function($t) {
             return ['name' => $t['name']];
         })->pluck('name');
+    }
+
+    /**
+     * getPermissionsAttribute
+     *
+     * @return void
+     */
+    public function getUserNameAttribute()
+    {
+        return ucwords($this->name);
     }
 }

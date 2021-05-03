@@ -37,7 +37,7 @@ class ProjectBudgetBatchController extends Controller
                 ->with('marketResearch')
                 ->filterProjectBudgetBatch(request()->only('search'))->paginate(),
             'call'                          => $call->only('id'),
-            'project'                       => $project->only('id', 'percentageIndustrialMachinery'),
+            'project'                       => $project->only('id', 'percentage_industrial_machinery'),
             'projectSennovaBudget'          => $projectSennovaBudget->only('id', 'average'),
             'sennovaBudget'                 => $projectSennovaBudget->callBudget->sennovaBudget->only('id', 'message'),
             'budgetUsage'                   => $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->only('id', 'description'),
@@ -78,13 +78,13 @@ class ProjectBudgetBatchController extends Controller
         // Línea 66
         if ($project->projectType->programmaticLine->code == 66) {
             // Trae el porcentaje calculado del rubro de "MAQUINARIA INDUSTRIAL"
-            $percentageIndustrialMachinery = $project->percentageIndustrialMachinery;
-            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->totalSpecialConstructionServices, 0, $percentageIndustrialMachinery)) {
+            $percentageIndustrialMachinery = $project->percentage_industrial_machinery;
+            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->total_special_construction_services, 0, $percentageIndustrialMachinery)) {
                 return redirect()->back()->with('error', "Este estudio de mercado supera el 5% ($ {$percentageIndustrialMachinery} COP) del total del rubro 'Maquinaria industrial'. Vuelva a diligenciar.");
             }
 
-            $projectPercentage = $project->totalProjectBudget * 0.05;
-            if (BudgetValidationTrait::totalProjectBudgetValidation($project->totalProjectBudget, 0.05, $project->totalMachineryMaintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, 0)) {
+            $projectPercentage = $project->total_project_budget * 0.05;
+            if (BudgetValidationTrait::totalProjectBudgetValidation($project->total_project_budget, 0.05, $project->total_machinery_maintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, 0)) {
                 return redirect()->back()->with('error', "Este estudio de mercado supera el 5% del ($ {$projectPercentage}) COP total del proyecto. Vuelva a diligenciar.");
             }
         }
@@ -236,13 +236,13 @@ class ProjectBudgetBatchController extends Controller
         // Línea 66
         if ($project->projectType->programmaticLine->code == 66) {
             // Trae el porcentaje calculado del rubro de "MAQUINARIA INDUSTRIAL"
-            $percentageIndustrialMachinery = $project->percentageIndustrialMachinery;
-            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->totalSpecialConstructionServices, $projectSennovaBudget->average, $percentageIndustrialMachinery)) {
+            $percentageIndustrialMachinery = $project->percentage_industrial_machinery;
+            if (BudgetValidationTrait::specialConstructionServicesValidation($request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $project->total_special_construction_services, $projectSennovaBudget->average, $percentageIndustrialMachinery)) {
                 return redirect()->back()->with('error', "Este estudio de mercado supera el 5% ($ {$percentageIndustrialMachinery} COP) del total del rubro 'Maquinaria industrial'. Vuelva a diligenciar.");
             }
 
-            $projectPercentage = $project->totalProjectBudget * 0.05;
-            if (BudgetValidationTrait::totalProjectBudgetValidation($project->totalProjectBudget, 0.05, $project->totalMachineryMaintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $projectSennovaBudget->average)) {
+            $projectPercentage = $project->total_project_budget * 0.05;
+            if (BudgetValidationTrait::totalProjectBudgetValidation($project->total_project_budget, 0.05, $project->total_machinery_maintenance, $request->first_price_quote, $request->second_price_quote, $request->third_price_quote, $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code, $projectSennovaBudget->average)) {
                 return redirect()->back()->with('error', "Este estudio de mercado supera el 5% del ($ {$projectPercentage}) COP total del proyecto. Vuelva a diligenciar.");
             }
         }

@@ -12,7 +12,9 @@
 
     $title = $_('Partner organization members.plural')
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexPartnerOrganizationMembers  = authUser.can.find(element => element == 'partner-organization-members.index') == 'partner-organization-members.index'
@@ -62,9 +64,9 @@
         <table class="w-full whitespace-no-wrap">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Correo electrónico</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl">Número de celular</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Número de celular</th>
                 </tr>
             </thead>
             <tbody>

@@ -23,7 +23,9 @@
 
     let modal_open = false
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin             = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexMarketResearch   = authUser.can.find(element => element == 'market-research.index') == 'market-research.index'
@@ -75,7 +77,7 @@
             {/if}
             {#if sennovaBudget.message}
                 <p class="mb-4">
-                    <strong>Importante: </strong>{sennovaBudget.message} No debe superar los ${project.percentageIndustrialMachinery} COP
+                    <strong>Importante: </strong>{sennovaBudget.message} No debe superar los ${project.percentage_industrial_machinery} COP
                 </p>
             {/if}
             {#if !requiresMarketResearchBatch && projectBudgetBatches.data.length < 1 || requiresMarketResearchBatch}
@@ -94,7 +96,7 @@
         <table class="w-full whitespace-no-wrap bg-white mt-4 mb-4">
             <thead>
                 <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 bg-white shadow-xl" colspan="2">Estudio(s) de mercado</th>
+                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Estudio(s) de mercado</th>
                 </tr>
             </thead>
             <tbody>

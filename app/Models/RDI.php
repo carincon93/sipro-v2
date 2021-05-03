@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class RDI extends Model
 {
@@ -15,6 +16,13 @@ class RDI extends Model
      * @var string
      */
     protected $table = 'rdi';
+
+    /**
+     * appends
+     *
+     * @var array
+     */
+    protected $appends = ['execution_date'];
 
     /**
      * The attributes that are mass assignable.
@@ -187,5 +195,12 @@ class RDI extends Model
         $query->when($filters['search'] ?? null, function ($query, $search) {
             $query->where('title', 'ilike', '%'.$search.'%');
         });
+    }
+
+    public function getExecutionDateAttribute()
+    {
+        $start_date = Carbon::parse($this->start_date, 'UTC')->locale('es')->isoFormat('DD [de] MMMM [de] YYYY');
+        $end_date   = Carbon::parse($this->end_date, 'UTC')->locale('es')->isoFormat('DD [de] MMMM [de] YYYY');
+        return "$start_date al $end_date";
     }
 }

@@ -1,6 +1,7 @@
 export const route = window.route;
 
 export const links = [
+    { name: "Calls", route: "calls" },
     { name: "Users", route: "users" },
     { name: "Regional", route: "regional" },
     { name: "Academic centres", route: "academic-centres" },

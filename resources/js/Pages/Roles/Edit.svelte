@@ -1,16 +1,16 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Checkbox from '@/Components/Checkbox'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
     import Textarea from '@/Components/Textarea'
 
     export let errors
@@ -20,7 +20,9 @@
 
     $: $title = role ? role.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexRoles   = authUser.can.find(element => element == 'roles.index') == 'roles.index'
@@ -31,7 +33,7 @@
 
     let modal_open  = false
     let sending     = false
-    let form = remember({
+    let form = useForm({
         name:           role.name,
         description:    role.description,
         permissions:    role_permissions
@@ -42,6 +44,7 @@
             Inertia.put(route('roles.update', role.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -74,26 +77,29 @@
         <div class="bg-white rounded shadow max-w-3xl p-8">
             <div class="mt-4">
                 <Label required class="mb-4" id="name" value="Nombre" />
-                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                <InputError message={errors.name} />
+                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required autofocus />
             </div>
 
             <div class="mt-4">
                 <Label required class="mb-4" id="description" value="Descripción" />
                 <Textarea id="description" error={errors.description} bind:value={$form.description} required />
-                <InputError message={errors.description} />
             </div>
         </div>
 
         <div class="bg-white rounded shadow overflow-hidden mt-20">
             <div class="grid grid-cols-6">
-                {#each all_permissions as {id, onlyName, method}, i}
+                {#each all_permissions as {id, only_name, method}, i}
                     {#if i % 5 === 0}
-                        <div class="p-3 border-t border-b flex items-center text-sm">{$_(onlyName+'.plural')}</div>
+                        <div class="p-3 border-t border-b flex items-center text-sm">{$_(only_name+'.plural')}</div>
                     {/if}
                     <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <Label required class="text-center mt-6" id={id} value={$_(method)} />
-                        <Checkbox id={id} checked={role_permissions.includes(id)} bind:group={$form.permissions} value={id}/>
+                        <FormField>
+                            <Checkbox
+                                bind:group={$form.permissions}
+                                value={id}
+                            />
+                                <span slot="label">{$_(method)}</span>
+                        </FormField>
                     </div>
                 {/each}
             </div>

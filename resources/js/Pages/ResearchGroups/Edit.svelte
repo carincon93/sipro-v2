@@ -20,7 +20,9 @@
 
     $: $title = researchGroup ? researchGroup.name : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexResearchGroups  = authUser.can.find(element => element == 'research-groups.index') == 'research-groups.index'

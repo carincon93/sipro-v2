@@ -20,7 +20,7 @@ module.exports = {
                     500: "#fb7b50",
                     600: "#ff6f3e",
                     900: "#ff5019",
-                    DEFAULT: "orangered",
+                    DEFAULT: "#6200ee",
                 },
             },
             textColor: {
@@ -30,7 +30,7 @@ module.exports = {
                     500: "#fb7b50",
                     600: "#ff6f3e",
                     900: "#ff5019",
-                    DEFAULT: "orangered",
+                    DEFAULT: "#6200ee",
                 },
                 secondary: "#ffed4a",
                 danger: "#e3342f",

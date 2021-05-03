@@ -23,7 +23,9 @@
 
     $: $title = projectSennovaBudget.call_budget.sennova_budget.budget_usage ? projectSennovaBudget.call_budget.sennova_budget.budget_usage.description : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexProjectSennovaBudgets    = authUser.can.find(element => element == 'project-sennova-budgets.index') == 'project-sennova-budgets.index'

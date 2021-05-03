@@ -9,7 +9,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $appends = ['code', 'totalProjectBudget', 'percentageIndustrialMachinery', 'totalSpecialConstructionServices', 'totalViatics', 'totalMachineryMaintenance'];
+    protected $appends = ['code', 'total_project_budget', 'percentage_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'];
 
     /**
      * The attributes that are mass assignable.

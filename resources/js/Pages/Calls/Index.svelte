@@ -3,6 +3,7 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import Button from '@/Components/Button'
 
     export let calls
     export let activeCall
@@ -24,11 +25,11 @@
             <div>
                 {#if activeCall}
                     <h1 class="font-bold text-5xl">Convocatoria {activeCall.year}</h1>
-                    <p class="text-2xl mt-4">La convocatoria empezó el {activeCall.startDateForHumans} y finaliza el {activeCall.endDateForHumans}.</p>
+                    <p class="text-2xl mt-4">La convocatoria empezó el {activeCall.start_date_for_humans} y finaliza el {activeCall.end_date_for_humans}.</p>
                     {#if canIndexCalls || isSuperAdmin}
-                        <a use:inertia href={route('calls.dashboard', activeCall.id)} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+                        <Button variant="raised" href={route('calls.dashboard', activeCall.id)} class="mt-4 inline-block">
                             {$_('Calls.singular')} { activeCall.year }
-                        </a>
+                        </Button>
                     {/if}
                 {:else}
                     <h1 class="font-bold text-5xl">Aún no hay una convocatoria activa.</h1>

@@ -9,7 +9,7 @@ class CallSennovaRole extends Model
 {
     use HasFactory;
 
-    protected $appends = ['qtyMonthsByDefault', 'qtyRolesByDefault'];
+    protected $appends = ['qty_months_by_default', 'qty_roles_by_default'];
 
     /**
      * The attributes that are mass assignable.

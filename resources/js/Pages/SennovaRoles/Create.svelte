@@ -16,7 +16,9 @@
 
     $: $title = $_('Create') + ' ' + $_('Sennova roles.singular').toLowerCase()
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
     let canIndexSennovaRoles  = authUser.can.find(element => element == 'sennova-roles.index') == 'sennova-roles.index'

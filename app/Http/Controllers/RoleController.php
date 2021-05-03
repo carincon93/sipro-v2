@@ -36,7 +36,7 @@ class RoleController extends Controller
         $this->authorize('create', [Role::class]);
 
         return Inertia::render('Roles/Create', [
-            'role_permissions' => Permission::orderBy('model')->get()
+            'all_permissions'  => Permission::orderBy('id')->get(['id', 'name']),
         ]);
     }
 
@@ -54,9 +54,10 @@ class RoleController extends Controller
         $role->name        = $request->name;
         $role->description = $request->description;
         $role->guard_name  = 'web';
+
         $role->save();
 
-        // $role->syncPermissions($request->permissions);
+        $role->syncPermissions($request->permissions);
 
         return redirect()->route('roles.index')->with('success', 'The resource has been created successfully.');
     }

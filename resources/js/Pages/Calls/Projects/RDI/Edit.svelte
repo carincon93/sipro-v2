@@ -18,8 +18,8 @@
     import Select from '@/Components/Select'
     import Switch from '@smui/switch'
     import Checkbox from '@smui/checkbox'
-    import Radio from '@smui/radio'
     import FormField from '@smui/form-field'
+    import Radio from '@smui/radio'
     import axios from 'axios'
     import { onMount } from 'svelte'
 
@@ -35,7 +35,9 @@
 
     $: $title = rdi ? rdi.title : null
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRDI     = authUser.can.find(element => element == 'rdi.index') == 'rdi.index'
@@ -145,7 +147,7 @@
     <Stepper call={call} project={rdi} />
 
     <form on:submit|preventDefault={submit}>
-        <fieldset class="p-8" disabled={canEditRDI ? undefined : true}>
+        <fieldset class="p-8" disabled={canEditRDI || isSuperAdmin ? undefined : true}>
             <div class="mt-28">
                 <Label required id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
                 <Textarea id="title" rows="3" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
@@ -490,7 +492,6 @@
                 </div>
             </div>
             {#if $form.related_with_sector_based_committee?.value == 1}
-
                 <div class="bg-indigo-100 p-5 mt-10">
                     <div class="grid grid-cols-2">
                         <div>

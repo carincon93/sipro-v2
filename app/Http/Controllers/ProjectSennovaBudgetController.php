@@ -64,7 +64,7 @@ class ProjectSennovaBudgetController extends Controller
         // Validaciones
         // Línea 66
         if ($project->projectType->programmaticLine->code == 66) {
-            if (BudgetValidationTrait::viaticsValidation($project->totalViatics, $request->value, $request->qty_items, 0, 0)) {
+            if (BudgetValidationTrait::viaticsValidation($project->total_viatics, $request->value, $request->qty_items, 0, 0)) {
                 return redirect()->back()->with('error', "La sumatoria de todos los rubros de viáticos no debe superar el valor de $4.000.000");
             }
         }
@@ -133,7 +133,7 @@ class ProjectSennovaBudgetController extends Controller
         // Validaciones
         // Línea 66
         if ($project->projectType->programmaticLine->code == 66) {
-            if (BudgetValidationTrait::viaticsValidation($project->totalViatics, $request->value, $request->qty_items, $projectSennovaBudget->value, $projectSennovaBudget->qty_items)) {
+            if (BudgetValidationTrait::viaticsValidation($project->total_viatics, $request->value, $request->qty_items, $projectSennovaBudget->value, $projectSennovaBudget->qty_items)) {
                 return redirect()->back()->with('error', "La sumatoria de todos los rubros de viáticos no debe superar el valor de $4.000.000");
             }
         }

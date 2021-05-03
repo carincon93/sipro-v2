@@ -1,7 +1,10 @@
 <script>
     import Loading from './Loading.svelte'
     import { route } from '@/Utils'
-import { _ } from 'svelte-i18n';
+    import { _ } from 'svelte-i18n'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+    import { Inertia } from '@inertiajs/inertia'
 
     export let items
     export let request = null
@@ -103,12 +106,17 @@ import { _ } from 'svelte-i18n';
     {#if items.length === 0}
         <p>{$_('No data recorded')}</p>
     {:else}
-        <aside class="labels" style="overflow: auto; {items.length > 0 ? 'flex: 0.5' : ''}">
+        <aside class="labels" style="{items.length > 0 ? 'flex: 0.5' : ''}">
             <ul class="list-unstyled">
                 {#each items as item, i}
                     <li style="height: 120px; padding: 7px;line-height: 1.2;display: flex;justify-content: space-between;width: 100%;">
                         {#if request}
-                            <a href={route(request.uri, arrayPush(item.id, i))} style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</a>
+                            <p style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</p>
+                            <ResourceMenu>
+                                <Item on:SMUI:action={() => (Inertia.visit(route(request.uri, arrayPush(item.id, i))))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            </ResourceMenu>
                         {:else}
                             <span style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</span>
                         {/if}

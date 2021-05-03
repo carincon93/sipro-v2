@@ -4,8 +4,11 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route, links } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import Button from '@/Components/Button'
 
-    // Permisos
+    /**
+     * Permisos
+     */
     let authUser        = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
 </script>
@@ -16,10 +19,11 @@
             <div>
                 <h1 class="font-bold text-5xl">SENNOVA</h1>
                 <p class="text-2xl mt-4">Revisa las convocatorias y formula proyectos.</p>
+
                 {#if authUser.can.find(element => element == 'calls.index') == 'calls.index' || authUser.can.find(element => element == 'calls.show') == 'calls.show' || authUser.can.find(element => element == 'calls.create') == 'calls.create' || authUser.can.find(element => element == 'calls.edit') == 'calls.edit' || authUser.can.find(element => element == 'calls.delete') == 'calls.delete' || isSuperAdmin}
-                    <a use:inertia href={route('calls.index')} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+                    <Button variant="raised" href={route('calls.index')} class="mt-4 inline-block">
                         {$_('Calls.plural')}
-                    </a>
+                    </Button>
                 {/if}
             </div>
             <div>

@@ -1,6 +1,7 @@
 <script context="module">
     import { writable } from 'svelte/store'
     export const title = writable(null)
+    export const permissions = writable(null)
 </script>
 
 <script>
@@ -12,6 +13,10 @@
     import Icon from '@/Components/Icon'
     import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
     import FlashMessages from '@/Components/FlashMessages'
+    import Dialog, { Title, Content, Actions } from '@smui/dialog'
+    import Button, { Label } from '@smui/button'
+
+    let open
 
     let showingNavigationDropdown = false
     let authUser        = $page.props.auth.user
@@ -25,6 +30,23 @@
 <svelte:head>
     <title>{$title ? `${$title} - SIPRO-SPA` : 'SIPRO-SPA'}</title>
 </svelte:head>
+
+<style>
+    :global(#main-menu .mdc-dialog__surface) {
+        width: 750px;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    :global(#main-menu .mdc-dialog__content) {
+        padding-top: 40px !important;
+    }
+
+    :global(#main-menu .mdc-dialog__title) {
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        margin-bottom: 0;
+    }
+
+</style>
 
 <div>
     <div class="min-h-screen bg-gray-100">
@@ -41,36 +63,40 @@
                         </div>
 
                         <!-- Navigation Links -->
-                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <Dropdown class="mt-1" classes="w-9/12" placement="bottom-end">
-                                <div class="flex items-center cursor-pointer select-none group">
-                                    <div class="text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 mr-1 whitespace-no-wrap">
-                                        <span>Panel de control</span>
-                                    </div>
-                                    <Icon
-                                        name="cheveron-down"
-                                        class="w-5 h-5 group-hover:fill-indigo-600 fill-gray-700 focus:fill-indigo-600" />
-                                </div>
-                                <div slot="dropdown" class="mt-2 py-2 shadow-xl bg-white rounded text-sm" style="max-height: 750px; overflow-y: auto;">
-                                    <h1 class="bg-white p-8 sticky text-4xl shadow text-center top-0">Menú de navegación</h1>
-                                    <div class="grid grid-cols-3 gap-5 p-8">
-                                        {#each links as link}
-                                            {#if authUser.can.find(element => element == link.route+'.index') == link.route+'.index' || authUser.can.find(element => element == link.route+'.show') == link.route+'.show' || authUser.can.find(element => element == link.route+'.create') == link.route+'.create' || authUser.can.find(element => element == link.route+'.edit') == link.route+'.edit' || authUser.can.find(element => element == link.route+'.delete') == link.route+'.delete' || isSuperAdmin}
-                                                <a use:inertia href={route(link.route+'.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/'+link.route+'/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                    {$_(link.name+'.plural')}
-                                                </a>
-                                            {/if}
-                                        {/each}
-                                    </div>
-                                    <div class="mt-8 p-4 flex justify-between">
-                                        <a use:inertia href={route('dashboard')} class="block border flex hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/dashboard/*') ? ' bg-indigo-600 text-white' : ''}">
-                                            {$_("Dashboard")}
-                                        </a>
-                                        <button type="button">{$_('Cancel')}</button>
-                                    </div>
-                                </div>
-                            </Dropdown>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:items-center">
+                            <Button on:click={() => (open = true)}>
+                                <Label>{$_('Dashboard')}</Label>
+                            </Button>
                         </div>
+                        <!-- Dialog -->
+                        <Dialog
+                            bind:open
+                            scrimClickAction=""
+                            escapeKeyAction=""
+                            aria-labelledby="mandatory-title"
+                            aria-describedby="mandatory-content"
+                            id="main-menu"
+                        >
+                            <Title id="menu-mandatory-title">
+                                <h1 class="text-4xl pb-4 text-center">Menú de navegación</h1>
+                            </Title>
+                            <Content id="menu-mandatory-content">
+                                <div class="grid grid-cols-3 gap-5 p-8">
+                                    {#each links as link}
+                                        {#if authUser.can.find(element => element == link.route+'.index') != undefined || authUser.can.find(element => element == link.route+'.show') != undefined || authUser.can.find(element => element == link.route+'.create') != undefined || authUser.can.find(element => element == link.route+'.edit') != undefined || authUser.can.find(element => element == link.route+'.delete') != undefined || isSuperAdmin}
+                                            <a use:inertia href={route(link.route+'.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/'+link.route+'/*') ? ' bg-indigo-600 text-white' : ''}">
+                                                {$_(link.name+'.plural')}
+                                            </a>
+                                        {/if}
+                                    {/each}
+                                </div>
+                            </Content>
+                            <Actions>
+                                <Button>
+                                  <Label>{$_('Close')}</Label>
+                                </Button>
+                              </Actions>
+                        </Dialog>
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -79,7 +105,7 @@
                             <Dropdown class="mt-1" placement="bottom-end">
                                 <div class="flex items-center cursor-pointer select-none group">
                                     <div class="text-gray-700 group-hover:text-indigo-600 focus:text-indigo-600 mr-1 whitespace-no-wrap">
-                                        <span>{authUser.name}</span>
+                                        <span>{authUser.user_name}</span>
                                     </div>
                                     <Icon
                                         name="cheveron-down"

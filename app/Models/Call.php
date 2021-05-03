@@ -10,7 +10,7 @@ class Call extends Model
 {
     use HasFactory;
 
-    public $appends = ['year', 'startDateForHumans', 'endDateForHumans'];
+    public $appends = ['year', 'start_date_for_humans', 'end_date_for_humans'];
 
     /**
      * The attributes that are mass assignable.
