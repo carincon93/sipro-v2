@@ -23,26 +23,14 @@
     export let project
     export let directEffects
     export let directCauses
+    export let impactTypes
+    export let resultTypes
 
     let formID
     let sending = false
     let open    = false
     let dialogTitle
     let code
-
-    const types = [
-        {value: 'Generación del conocimiento (GNC)', label: 'Generación del conocimiento (GNC)'},
-        {value: 'Desarrollo tecnólogico (DT)', label: 'Desarrollo tecnólogico (DT)'},
-        {value: 'Apropiación social del conocimiento (ASC)', label: 'Apropiación social del conocimiento (ASC)'},
-        {value: 'Formación de recurso humano (FRH)', label: 'Formación de recurso humano (FRH)'},
-    ]
-
-    const impactTypes = [
-        {value: 'Impacto social', label: 'Impacto social'},
-        {value: 'Impacto tecnológico', label: 'Impacto tecnológico'},
-        {value: 'Impacto económico', label: 'Impacto económico'},
-        {value: 'Impacto ambiental', label: 'Impacto ambiental'},
-    ]
 
     $: $title = $_('Objectives tree')
 
@@ -85,7 +73,7 @@
         if(indirectEffect.impact != null){
             $formImpact.id                  = indirectEffect.impact.id
             $formImpact.description         = indirectEffect.impact.description
-            $formImpact.type                = indirectEffect.impact.type
+            $formImpact.type                = {value: indirectEffect.impact.type, label: impactTypes.find(item => item.value == indirectEffect.impact.type)?.label}
             $formImpact.indirect_effect_id  = indirectEffect.impact.indirectEffectID
             $formImpact.result_id           = resultID
         } else {
@@ -131,7 +119,7 @@
         formID                              = 'project-result-form'
         $formResult.id                      = directEffect.project_result.id
         $formResult.description             = directEffect.project_result.description
-        $formResult.type                    = directEffect.project_result.type
+        $formResult.type                    = {value: directEffect.project_result.type, label: resultTypes.find(item => item.value == directEffect.project_result.type)?.label}
         $formResult.trl                     = directEffect.project_result.trl
         $formResult.indicator               = directEffect.project_result.indicator
         $formResult.means_of_verification   = directEffect.project_result.means_of_verification
@@ -164,7 +152,7 @@
         formID                                  = 'primary-objective-form'
         problemStatement                        = project.problem_statement
         $formPrimaryObjective.primary_objective = project.primary_objective
-    };
+    }
 
     function submitGeneralObjetive() {
         Inertia.post(route('projects.primary_objective', project.id), $formPrimaryObjective, {
@@ -603,7 +591,8 @@
                         {problemStatement}
                     </p>
                     <div class="mt-4">
-                        <Label for="primary_objective" value="Objetivo general" />
+                        <Label class="mb-4" id="primary_objective" value="Objetivo general" />
+                        <p class="mb-4"> Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué</p>
                         <Textarea id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
                     </div>
                 </form>
@@ -620,23 +609,23 @@
                         {specificObjectiveDescription.description}
                     </p>
                     <div class="mt-4">
-                        <Label for="type" value="Tipo" />
-                        <Select id="type" items={types} bind:value={$formResult.type} selectedValue={$formResult.type} autocomplete="off" error={errors.type} placeholder="Seleccione un tipo" required />
+                        <Label id="type" value="Tipo" />
+                        <Select id="type" items={resultTypes} bind:selectedValue={$formResult.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
                     </div>
                     <div class="mt-4">
-                        <Label for="description" value="Descripción" />
+                        <Label id="description" value="Descripción" />
                         <Textarea id="description" maxlength="200" rows="4" error={errors.description} bind:value={$formResult.description} required />
                     </div>
                     <div class="mt-4">
-                        <Label for="trl" value="TRL" />
+                        <Label id="trl" value="TRL" />
                         <Input id="trl" type="number" max="9" min="1" class="block w-full" error={errors.trl} bind:value={$formResult.trl} required />
                     </div>
                     <div class="mt-4">
-                        <Label for="indicator" value="Indicador" />
+                        <Label id="indicator" value="Indicador" />
                         <Textarea id="indicator" maxlength="200" rows="4" error={errors.indicator} bind:value={$formResult.indicator} required />
                     </div>
                     <div class="mt-4">
-                        <Label for="means_of_verification" value="Medio de verificación" />
+                        <Label id="means_of_verification" value="Medio de verificación" />
                         <Textarea id="means_of_verification" maxlength="200" rows="4" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
                         <InputError message={errors.means_of_verification} />
                     </div>
@@ -649,8 +638,8 @@
                         {impactIndirectEffect}
                     </p>
                     <div class="mt-4">
-                        <Label for="type" value="Tipo" />
-                        <Select id="type" items={impactTypes} bind:value={$formImpact.type} selectedValue={$formImpact.type} autocomplete="off" error={errors.type} placeholder="Seleccione un tipo" required />
+                        <Label id="type" value="Tipo" />
+                        <Select id="type" items={impactTypes} bind:selectedValue={$formImpact.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
                     </div>
                     <div class="mt-4">
                         <Label class="mb-4" id="description" value="Descripción" />

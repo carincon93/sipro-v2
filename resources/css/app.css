@@ -5,6 +5,7 @@
 
 :root {
     --mdc-theme-primary: #ff3e00;
+    --mdc-theme-secondary: rgba(99, 102, 241, 1);
 }
 
 html {
@@ -44,6 +45,42 @@ text {
 
 input, select, textarea {
     width: 100%;
+}
+
+[type='checkbox']:not(.mdc-switch__native-control) {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #757575;
+    border-radius: 2px;
+}
+
+[type='checkbox']:not(.mdc-switch__native-control):hover {
+    cursor: pointer;
+}
+
+[type='checkbox']:not(.mdc-switch__native-control):hover:before {
+    content: "";
+    background: #52525214;
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    border-radius: 50%;
+    right: 0;
+    transition: all 0.4s ease-in;
+    opacity: 1;
+}
+
+[type='checkbox']:not(.mdc-switch__native-control):focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.mdc-switch__native-control {
+    width: 64px !important;
+    height: 48px !important;
 }
 
 .btn-spinner,

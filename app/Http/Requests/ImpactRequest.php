@@ -25,7 +25,21 @@ class ImpactRequest extends FormRequest
     {
         return [
             'description'   => ['required', 'string', 'max:1200'],
-            'type'          => ['required', 'string', 'max:191'],
+            'type'          => ['required', 'digits_between:1,4'],
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if( is_array($this->type) ) {
+            $this->merge([
+                'type' => $this->type['value'],
+            ]);
+        }
     }
 }

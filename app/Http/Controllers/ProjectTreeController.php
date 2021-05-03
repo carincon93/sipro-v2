@@ -23,6 +23,7 @@ use App\Http\Requests\SpecificObjectiveRequest;
 use App\Http\Requests\ProjectResultRequest;
 use App\Http\Requests\ActivityRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProjectTreeController extends Controller
@@ -264,7 +265,9 @@ class ProjectTreeController extends Controller
             'call'          => $call->only('id'),
             'project'       => $project,
             'directEffects' => $directEffects,
-            'directCauses'  => $directCauses
+            'directCauses'  => $directCauses,
+            'resultTypes'   => json_decode(Storage::get('json/result-types.json'), true),
+            'impactTypes'   => json_decode(Storage::get('json/impact-types.json'), true),
         ]);
     }
 

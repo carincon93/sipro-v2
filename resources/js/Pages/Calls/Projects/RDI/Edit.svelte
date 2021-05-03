@@ -12,12 +12,14 @@
     import LoadingButton from '@/Components/LoadingButton'
     import Stepper from '@/Components/Stepper'
     import DynamicList from '@/Dropdowns/DynamicList'
-    import Switch from '@/Components/Switch'
     import Textarea from '@/Components/Textarea'
     import InfoMessage from '@/Components/InfoMessage'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
-    import Select from 'svelte-select'
-    import Checkbox from '@/Components/Checkbox'
+    import Select from '@/Components/Select'
+    import Switch from '@smui/switch'
+    import Checkbox from '@smui/checkbox'
+    import Radio from '@smui/radio'
+    import FormField from '@smui/form-field'
     import axios from 'axios'
     import { onMount } from 'svelte'
 
@@ -29,6 +31,7 @@
     export let relatedTechnologicalLines
     export let technoAcademies
     export let technoAcademy
+    export let rdiDropdownOptions
 
     $: $title = rdi ? rdi.title : null
 
@@ -49,7 +52,6 @@
     let orange_economy_justification        = rdi.orange_economy_justification != null
     let people_disabilities_justification   = rdi.people_disabilities_justification != null
 
-    let listOptions = [{'value': 1, 'label': 'Si'}, {'value': 2, 'label': 'No'}, {'value': 3, 'label': 'No aplica'}]
     let technologicalLines = []
 
     let form = useForm({
@@ -81,12 +83,12 @@
         sampling_activity:                  rdi.sampling_activity,
         sampling_objective:                 rdi.sampling_objective,
 
-        related_with_technological_plan:           {'value': rdi.related_with_technological_plan},
-        related_with_competitiveness_innovation:   {'value': rdi.related_with_competitiveness_innovation},
-        related_with_sector_based_committee:       {'value': rdi.related_with_sector_based_committee},
-        related_with_techno_academy:               {'value': rdi.related_with_techno_academy},
+        related_with_technological_plan:           {value: rdi.related_with_technological_plan, label: rdiDropdownOptions.find(item => item.value == rdi.related_with_technological_plan)?.label },
+        related_with_competitiveness_innovation:   {value: rdi.related_with_competitiveness_innovation, label: rdiDropdownOptions.find(item => item.value == rdi.related_with_competitiveness_innovation)?.label },
+        related_with_sector_based_committee:       {value: rdi.related_with_sector_based_committee, label: rdiDropdownOptions.find(item => item.value == rdi.related_with_sector_based_committee)?.label },
+        related_with_techno_academy:               {value: rdi.related_with_techno_academy, label: rdiDropdownOptions.find(item => item.value == rdi.related_with_techno_academy)?.label },
 
-        techno_academy_id: technoAcademy?.id ? {'value': technoAcademy.id, 'label': technoAcademy.name} : null,
+        techno_academy_id: {value: technoAcademy?.id, label: technoAcademies.find(item => item.value == technoAcademy?.id)?.label },
 
         technological_line_id: relatedTechnologicalLines,
         sector_based_committee_id: relatedSectorBasedCommittees
@@ -100,6 +102,11 @@
 
     function submit() {
         if (canEditRDI || isSuperAdmin) {
+            if ($form.related_with_techno_academy?.value != 1) {
+                $form.techno_academy_id = {}
+                technologicalLines = []
+            }
+
             Inertia.put(route('calls.rdi.update', [call.id, rdi.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
@@ -121,13 +128,15 @@
         }
     }
 
-    function handleTechnoAcademy(e) {
-        getTechnologicalLines(e.detail.value)
-        $form.techno_academy_id = e.detail
+    $: selectedTechnoAcademy = $form.techno_academy_id?.value
+
+    $: if (selectedTechnoAcademy) {
+        getTechnologicalLines(selectedTechnoAcademy)
     }
 
     async function getTechnologicalLines(technoAcademy) {
         let res = await axios.get(route('web-api.techno-academies.technological-lines', [technoAcademy]))
+        res.status == '200' ? $form.technological_line_id = relatedTechnologicalLines : null
         technologicalLines = res.data
     }
 </script>
@@ -223,9 +232,11 @@
                     <Label id="video" value="¿El proyecto tiene video?" />
                 </div>
                 <div>
-                    <div class="flex items-center mb-14">
-                        <Switch bind:checked={video} />
-                        <span class="ml-2">{#if video} Si {:else} No {/if}</span>
+                    <div>
+                        <FormField>
+                          <Switch bind:checked={video} />
+                          <span slot="label">{#if video} Si {:else} No {/if}</span>
+                        </FormField>
                     </div>
                     {#if video}
                         <Input id="video" type="url" class="mt-1 block w-full" error={errors.video} placeholder="Link del video del proyecto https://www.youtube.com/watch?v=gmc4tk" bind:value={$form.video} required={!video ? undefined : 'required'} />
@@ -285,8 +296,15 @@
             <div>
                 <p class="text-center mt-36 mb-20">¿Cuál es el origen de las muestras con las que se realizarán las actividades de investigación, bioprospección y/o aprovechamiento comercial o industrial?</p>
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="1" type="radio" bind:group={$form.sampling} value="1">
-                    <Label id="1" value="Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)"/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="1"
+                        />
+                        <span slot="label">
+                            Especies Nativas. (es la especie o subespecie taxonómica o variedad de animales cuya área de disposición geográfica se extiende al territorio nacional o a aguas jurisdiccionales colombianas o forma parte de los mismos comprendidas las especies o subespecies que migran temporalmente a ellos, siempre y cuando no se encuentren en el país o migren a él como resultado voluntario o involuntario de la actividad humana. Pueden ser silvestre, domesticada o escapada de domesticación incluyendo virus, viroides y similares)
+                        </span>
+                    </FormField>
                 </div>
 
                 <!-- Si seleccionan Especies nativas -->
@@ -300,20 +318,48 @@
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.1.1" type="radio" bind:group={$form.sampling_activity} value="1.1.1">
-                                <Label id="1.1.1" value="Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza."/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_activity}
+                                    value="1.1.1"
+                                    />
+                                    <span slot="label">
+                                        Separación de las unidades funcionales y no funcionales del ADN y el ARN, en todas las formas que se encuentran en la naturaleza.
+                                    </span>
+                                </FormField>
                             </div>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.1.2" type="radio" bind:group={$form.sampling_activity} value="1.1.2">
-                                <Label id="1.1.2" value="Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo."/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_activity}
+                                    value="1.1.2"
+                                    />
+                                    <span slot="label">
+                                        Aislamiento de una o varias moléculas, entendidas estas como micro y macromoléculas, producidas por el metabolismo de un organismo.
+                                    </span>
+                                </FormField>
                             </div>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.1.3" type="radio" bind:group={$form.sampling_activity} value="1.1.3">
-                                <Label id="1.1.3" value="Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado."/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_activity}
+                                    value="1.1.3"
+                                    />
+                                    <span slot="label">
+                                        Solicitar patente sobre una función o propiedad identificada de una molécula, que se ha aislado y purificado.
+                                    </span>
+                                </FormField>
                             </div>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.1.4" type="radio" bind:group={$form.sampling_activity} value="1.1.4">
-                                <Label id="1.1.4" value="No logro identificar la actividad a desarrollar con la especie nativa"/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_activity}
+                                    value="1.1.4"
+                                    />
+                                    <span slot="label">
+                                        No logro identificar la actividad a desarrollar con la especie nativa
+                                    </span>
+                                </FormField>
                             </div>
                         </div>
 
@@ -324,40 +370,96 @@
 
                             <p class="bg-indigo-100 mt-10 p-4 text-indigo-600">Seleccione una opción</p>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.2.1" type="radio" bind:group={$form.sampling_objective} value="1.2.1">
-                                <Label id="1.2.1" value="Investigación básica sin fines comerciales"/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_objective}
+                                    value="1.2.1"
+                                    />
+                                    <span slot="label">
+                                        Investigación básica sin fines comerciales
+                                    </span>
+                                </FormField>
                             </div>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.2.2" type="radio" bind:group={$form.sampling_objective} value="1.2.2">
-                                <Label id="1.2.2" value="Bioprospección en cualquiera de sus fases"/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_objective}
+                                    value="1.2.2"
+                                    />
+                                    <span slot="label">
+                                        Bioprospección en cualquiera de sus fases
+                                    </span>
+                                </FormField>
                             </div>
                             <div class="flex mt-4 items-center">
-                                <input class="mr-4" id="1.2.3" type="radio" bind:group={$form.sampling_objective} value="1.2.3">
-                                <Label id="1.2.3" value="Comercial o Industrial"/>
+                                <FormField>
+                                    <Radio
+                                    bind:group={$form.sampling_objective}
+                                    value="1.2.3"
+                                    />
+                                    <span slot="label">
+                                        Comercial o Industrial
+                                    </span>
+                                </FormField>
                             </div>
                         </div>
                     </div>
                 {/if}
 
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="2" type="radio" bind:group={$form.sampling} value="2">
-                    <Label id="2" value="Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)"/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="2"
+                        />
+                        <span slot="label">
+                            Especies Introducidas. (son aquellas que no son nativas de Colombia y que ingresaron al país por intervención humana)
+                        </span>
+                    </FormField>
                 </div>
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="3" type="radio" bind:group={$form.sampling} value="3">
-                    <Label id="3" value="Recursos genéticos humanos y sus productos derivados."/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="3"
+                        />
+                        <span slot="label">
+                            Recursos genéticos humanos y sus productos derivados
+                        </span>
+                    </FormField>
                 </div>
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="4" type="radio" bind:group={$form.sampling} value="4">
-                    <Label id="4" value="Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)"/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="4"
+                        />
+                        <span slot="label">
+                            Intercambio de recursos genéticos y sus productos derivados, recursos biológicos que los contienen o los componentes asociados a estos. (son aquellas que realizan las comunidades indígenas, afroamericanas y locales de los Países Miembros de la Comunidad Andina entre sí y para su propio consumo, basadas en sus prácticas consuetudinarias)
+                        </span>
+                    </FormField>
                 </div>
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="5" type="radio" bind:group={$form.sampling} value="5">
-                    <Label id="5" value="Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)"/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="5"
+                        />
+                        <span slot="label">
+                            Recurso biológico que involucren actividades de sistemática molecular, ecología molecular, evolución y biogeografía molecular (siempre que el recurso biológico se haya colectado en el marco de un permiso de recolección de especímenes de especies silvestres de la diversidad biológica con fines de investigación científica no comercial o provenga de una colección registrada ante el Instituto Alexander van Humboldt)
+                        </span>
+                    </FormField>
                 </div>
                 <div class="flex mt-4 items-center">
-                    <input class="mr-4" id="6" type="radio" bind:group={$form.sampling} value="6">
-                    <Label id="6" value="No aplica"/>
+                    <FormField>
+                        <Radio
+                          bind:group={$form.sampling}
+                          value="6"
+                        />
+                        <span slot="label">
+                            No aplica
+                        </span>
+                    </FormField>
                 </div>
             </div>
 
@@ -366,8 +468,7 @@
                     <Label required class="mb-4" id="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
                 </div>
                 <div>
-                    <Select items={listOptions} inputAttributes={{'id': 'related_with_technological_plan'}} bind:selectedValue={$form.related_with_technological_plan} autocomplete="off" placeholder="Seleccione una opción"/>
-                    <InputError message={errors.related_with_technological_plan} />
+                    <Select items={rdiDropdownOptions} id="related_with_technological_plan" bind:selectedValue={$form.related_with_technological_plan} error={errors.related_with_technological_plan} autocomplete="off" placeholder="Seleccione una opción" required />
                 </div>
             </div>
 
@@ -376,8 +477,7 @@
                     <Label required class="mb-4" id="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
                 </div>
                 <div>
-                    <Select items={listOptions} inputAttributes={{'id': 'related_with_competitiveness_innovation'}} bind:selectedValue={$form.related_with_competitiveness_innovation} autocomplete="off" placeholder="Seleccione una opción"/>
-                    <InputError message={errors.related_with_competitiveness_innovation} />
+                    <Select items={rdiDropdownOptions} id="related_with_competitiveness_innovation" bind:selectedValue={$form.related_with_competitiveness_innovation} error={errors.related_with_competitiveness_innovation} autocomplete="off" placeholder="Seleccione una opción" required />
                 </div>
             </div>
 
@@ -386,8 +486,7 @@
                     <Label required class="mb-4" id="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
                 </div>
                 <div>
-                    <Select items={listOptions} inputAttributes={{'id': 'related_with_sector_based_committee'}} bind:selectedValue={$form.related_with_sector_based_committee} autocomplete="off" placeholder="Seleccione una opción"/>
-                    <InputError message={errors.related_with_sector_based_committee} />
+                    <Select items={rdiDropdownOptions} id="related_with_sector_based_committee" bind:selectedValue={$form.related_with_sector_based_committee} error={errors.related_with_sector_based_committee} autocomplete="off" placeholder="Seleccione una opción" required />
                 </div>
             </div>
             {#if $form.related_with_sector_based_committee?.value == 1}
@@ -401,11 +500,13 @@
                         </div>
                         <div class="bg-white grid grid-cols-2 max-w-xl overflow-y-scroll shadow-2xl mt-4 h-80">
                             {#each sectorBasedCommittees as {id, name}, i}
-                                <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
-
-                                <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                                    <Checkbox id={id} checked={relatedSectorBasedCommittees.includes(id)} bind:group={$form.sector_based_committee_id} value={id}/>
-                                </div>
+                                <FormField>
+                                    <Checkbox
+                                        bind:group={$form.sector_based_committee_id}
+                                        value={id}
+                                    />
+                                        <span slot="label">{name}</span>
+                                </FormField>
                             {/each}
                         </div>
                     </div>
@@ -417,8 +518,7 @@
                     <Label required class="mb-4" id="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
                 </div>
                 <div>
-                    <Select items={listOptions} inputAttributes={{'id': 'related_with_techno_academy'}} bind:selectedValue={$form.related_with_techno_academy} autocomplete="off" placeholder="Seleccione una opción"/>
-                    <InputError message={errors.related_with_techno_academy} />
+                    <Select items={rdiDropdownOptions} id="related_with_techno_academy" bind:selectedValue={$form.related_with_techno_academy} error={errors.related_with_techno_academy} autocomplete="off" placeholder="Seleccione una opción" required/>
                 </div>
             </div>
 
@@ -431,14 +531,14 @@
                             <InputError message={errors.technological_line_id} />
                         </div>
                         <div>
-                            <Select items={technoAcademies} inputAttributes={{'id': 'techno_academy_id'}} selectedValue={$form.techno_academy_id} on:select={handleTechnoAcademy} autocomplete="off" placeholder="Seleccione una opción"/>
+                            <Select items={technoAcademies} id="techno_academy_id" bind:selectedValue={$form.techno_academy_id} error={errors.techno_academy_id} autocomplete="off" placeholder="Seleccione una opción" required />
                             {#if technologicalLines.length > 0}
                                 <div class="bg-white grid grid-cols-2 max-w-xl overflow-y-scroll shadow-2xl mt-4 h-80">
                                     {#each technologicalLines as {id, name}, i}
-                                        <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
+                                        <Label class="p-3 border-t border-b flex items-center text-sm" id={id} value={name} />
 
                                         <div class="border-b border-t flex items-center justify-center">
-                                            <Checkbox id={id} checked={relatedTechnologicalLines.includes(id)} bind:group={$form.technological_line_id} value={id}/>
+                                            <input type="checkbox" bind:group={$form.technological_line_id} id={id} value={id} class="rounded text-indigo-500" />
                                         </div>
                                     {/each}
                                 </div>

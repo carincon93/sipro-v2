@@ -11,6 +11,7 @@ use App\Models\TechnoAcademy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class RDIController extends Controller
@@ -133,7 +134,8 @@ class RDIController extends Controller
             'relatedTechnologicalLines'     => $rdi->technologicalLines()->pluck('id'),
             'technoAcademy'                 => $rdi->technologicalLines->first() ? $rdi->technologicalLines->first()->technoAcademy->only('id', 'name') : null,
             'sectorBasedCommittees'         => SectorBasedCommittee::select('id', 'name')->get('id'),
-            'technoAcademies'               => TechnoAcademy::select('id as value', 'name as label')->get()
+            'technoAcademies'               => TechnoAcademy::select('id as value', 'name as label')->get(),
+            'rdiDropdownOptions'            => json_decode(Storage::get('json/rdi-dropdown-options.json'), true),
         ]);
     }
 
@@ -186,8 +188,9 @@ class RDIController extends Controller
 
         $rdi->save();
 
-        $rdi->sectorBasedCommittees()->sync($request->sector_based_committee_id);
-        $rdi->technologicalLines()->sync($request->technological_line_id);
+        $request->related_with_sector_based_committee == 1 ? $rdi->sectorBasedCommittees()->sync($request->sector_based_committee_id) : $rdi->sectorBasedCommittees()->detach();
+        $request->related_with_techno_academy == 1 ? $rdi->technologicalLines()->sync($request->technological_line_id) : $rdi->technologicalLines()->detach();
+
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

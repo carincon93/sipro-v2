@@ -10,7 +10,6 @@
     export let required
     export let placeholder
     export let autocomplete
-    export let value
     export let items           = []
     export let selectedValue
 
@@ -22,13 +21,12 @@
 
     afterUpdate(() => {
         if (required && select != null) {
-            selectedValue != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+            selectedValue?.value != undefined ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
         }
     })
 
     function handleSelect(event) {
-        selectedValue   = event.detail
-        value           = event.detail.value
+        selectedValue = event.detail
     }
 
 </script>
@@ -54,12 +52,12 @@
 </style>
 
 <Select
-    selectedValue={selectedValue}
+    selectedValue={selectedValue?.value ? selectedValue : null}
     inputAttributes={{'id': id}} placeholder={placeholder}
     containerClasses="items {classes}"
     items={items}
     autocomplete={autocomplete}
     on:select={(e) => handleSelect(e)}
-    on:clear={() => value = null}
+    on:clear={() => selectedValue = null}
 />
 <InputError message={error} />

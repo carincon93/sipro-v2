@@ -25,10 +25,24 @@ class ProjectResultRequest extends FormRequest
     {
         return [
             'description'           => ['required', 'string'],
-            'type'                  => ['required', 'max:191', 'string'],
+            'type'                  => ['required', 'digits_between:1,4'],
             'trl'                   => ['required', 'digits_between:1,9'],
             'indicator'             => ['required', 'string'],
             'means_of_verification' => ['required', 'string'],
         ];
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if( is_array($this->type) ) {
+            $this->merge([
+                'type' => $this->type['value'],
+            ]);
+        }
     }
 }
