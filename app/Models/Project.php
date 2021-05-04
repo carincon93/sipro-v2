@@ -10,7 +10,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $appends = ['code', 'diff_months', 'total_project_budget', 'percentage_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'];
+    protected $appends = ['code', 'diff_months', 'total_project_budget', 'total_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'];
 
     /**
      * The attributes that are mass assignable.
@@ -191,7 +191,7 @@ class Project extends Model
 
     // Validación de la línea 66
     // Porcentaje total del rubro 'Maquinaria Industrial'
-    public function getPercentageIndustrialMachineryAttribute()
+    public function getTotalIndustrialMachineryAttribute()
     {
         $total = 0;
         $secondBudgetInfoID = null;
@@ -203,7 +203,14 @@ class Project extends Model
             }
         }
 
-        return $total * 0.05;
+        return $total;
+    }
+
+    public function getPercentageIndustrialMachineryAttribute()
+    {
+        $total = 0;
+
+        return $this->getTotalIndustrialMachineryAttribute() * 0.05;
     }
 
     // Validación de la línea 66

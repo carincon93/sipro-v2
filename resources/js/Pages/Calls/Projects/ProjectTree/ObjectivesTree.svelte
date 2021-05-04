@@ -5,8 +5,6 @@
     import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog, { Title, Content } from '@smui/dialog'
-    import Button, { Label as LabelMUI } from '@smui/button'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
@@ -16,6 +14,8 @@
     import Select from '@/Components/Select'
     import Stepper from '@/Components/Stepper'
     import InfoMessage from '@/Components/InfoMessage'
+    import Dialog, { Title, Content } from '@smui/dialog'
+    import Button, { Label as LabelMUI } from '@smui/button'
 
     import { createPopper } from '@popperjs/core'
 
@@ -235,7 +235,7 @@
         dialogTitle                             = 'Actividad'
         open                                    = true
         showActivityForm                        = true
-        formID                                  = 'form-activity'
+        formID                                  = 'activity-form'
         $formActivity.id                        = indirectCause.activity.id
         $formActivity.indirect_cause_id         = indirectCause.activity.indirect_cause_i
         $formActivity.specific_objective_id     = specificObjective
@@ -563,7 +563,7 @@
         </Title>
         <Content id="mandatory-content">
             {#if showActivityForm}
-                <form on:submit|preventDefault={submitActivity} id="form-activity">
+                <form on:submit|preventDefault={submitActivity} id="activity-form">
                     <fieldset disabled={canCreateOrUpdate}>
                         <p class="block font-medium mb-2 text-gray-700 text-sm">Causa indirecta</p>
                         <p class="mb-20 whitespace-pre-line">

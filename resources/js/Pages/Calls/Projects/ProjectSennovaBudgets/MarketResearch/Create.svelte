@@ -16,7 +16,10 @@
     export let project
     export let projectSennovaBudget
     export let callBudget
-    export let modal_open
+    export let dialogOpen
+
+    export let sending = false
+
 
     // $: $title = $_('Create') + ' ' + $_('Market research.singular').toLowerCase()
 
@@ -31,7 +34,6 @@
     let canEditMarketResearch     = authUser.can.find(element => element == 'market-research.edit') == 'market-research.edit'
     let canDeleteMarketResearch   = authUser.can.find(element => element == 'market-research.delete') == 'market-research.delete'
 
-    let sending = false
     let form = useForm({
         requires_third_market_research: false,
         call_budget_id: callBudget.id,
@@ -76,7 +78,7 @@
                 onStart: ()     => sending = true,
                 onFinish: ()    => {
                     sending     = false,
-                    modal_open  = false
+                    dialogOpen  = false
                 },
                 onError: () => {
                     $form.requires_third_market_research = errors.third_price_quote || errors.third_company_name || errors.third_price_quote_file ? true : false
@@ -108,14 +110,8 @@
     })
 </script>
 
-<style>
-    .h-90vh {
-        height: 90vh;
-    }
-</style>
-
-<form on:submit|preventDefault={submit} class="h-90vh overflow-y-scroll">
-    <div class="p-8">
+<form on:submit|preventDefault={submit} id="market-reseach-form">
+    <fieldset class="p-8">
         <div class="mt-4">
             <Label required class="mb-4" id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
             <Input id="qty_items" type="number" min="1" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
@@ -183,15 +179,15 @@
                 <File id="third_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.third_price_quote_file} error={errors.third_price_quote_file} required />
             </div>
         {/if}
-    </div>
+        </fieldset>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
         <p class="break-all w-72">
             Valor promedio: ${ average > 0 ? new Intl.NumberFormat('de-DE').format(average) : 0 } COP
         </p>
-        {#if canCreateMarketResearch || isSuperAdmin}
+        <!-- {#if canCreateMarketResearch || isSuperAdmin}
             <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                 {$_('Create')} {$_('Market research.singular')}
             </LoadingButton>
-        {/if}
+        {/if} -->
     </div>
 </form>

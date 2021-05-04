@@ -4,9 +4,13 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Button from '@/Components/Button'
+    import LoadingButton from '@/Components/LoadingButton'
     import Pagination from '@/Components/Pagination'
-    import { Modal, Card } from 'svelte-chota'
+    import Dialog, { Title, Content } from '@smui/dialog'
+    import Button, { Label as LabelMUI } from '@smui/button'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+    import { Inertia } from '@inertiajs/inertia'
 
     export let call
     export let project
@@ -19,9 +23,10 @@
     export let sennovaBudget
     export let errors
 
-    $title = $_('Market research.plural')
+    let open    = false
+    let sending = false
 
-    let modal_open = false
+    $title = $_('Market research.plural')
 
     /**
      * Permisos
@@ -38,6 +43,22 @@
 
     let filters = {}
 </script>
+
+<style>
+     :global(#market-reseach-dialog .mdc-dialog__surface) {
+        width: 750px;
+        max-width: calc(100vw - 32px) !important;
+    }
+
+    :global(#market-reseach-dialog .mdc-dialog__content) {
+        padding-top: 40px !important;
+    }
+
+    :global(#market-reseach-dialog .mdc-dialog__title) {
+        border-bottom: 1px solid rgba(0,0,0,.12);
+        margin-bottom: 0;
+    }
+</style>
 
 <AuthenticatedLayout>
 
@@ -84,10 +105,8 @@
                 <div class="mb-6 flex justify-between items-center">
                     <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
                     {#if canCreateMarketResearch || isSuperAdmin}
-                        <Button classes="inline-flex items-center bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 ml-auto" tabindex="-1" type="button">
-                            <div on:click={event => modal_open = true} class="px-4 py-2">
-                                {$_('Add')} {$_('Market research.singular').toLowerCase()}
-                            </div>
+                        <Button on:click={() => open = true} variant="raised">
+                            {$_('Add')} {$_('Market research.singular').toLowerCase()}
                         </Button>
                     {/if}
                 </div>
@@ -103,27 +122,31 @@
                 {#each projectBudgetBatches.data as projectBudgetBatch, i}
                     <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                         <td class="border-t px-6 pt-6 pb-4">
-                            <a
-                                use:inertia
-                                href={route('calls.projects.project-sennova-budgets.project-budget-batches.edit', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])}
-                                class="focus:text-indigo-500">
-                                    <h1>Estudio de mercado #{i + 1}</h1>
-                                    <p>Cantidad de items: {projectBudgetBatch.qty_items}</p>
-                                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])}>Descargar ficha técnica</a>
-                            </a>
+                            <h1>Estudio de mercado #{i + 1}</h1>
+                            <p>Cantidad de items: {projectBudgetBatch.qty_items}</p>
+                            <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])}>Descargar ficha técnica</a>
                         </td>
                         <td class="border-t px-6 pt-6 pb-4">
-                            <a
-                                use:inertia
-                                href={route('calls.projects.project-sennova-budgets.project-budget-batches.edit', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])}
-                                class="focus:text-indigo-500">
-                                    {#each projectBudgetBatch.market_research as {id, company_name, price_quote}}
-                                            <div><strong>Nombre de la compañía: </strong>{company_name}</div>
-                                            <div><strong>Valor: </strong>${new Intl.NumberFormat('de-DE').format(price_quote)} COP</div>
+                            {#each projectBudgetBatch.market_research as {id, company_name, price_quote}}
+                                <div><strong>Nombre de la compañía: </strong>{company_name}</div>
+                                <div><strong>Valor: </strong>${new Intl.NumberFormat('de-DE').format(price_quote)} COP</div>
 
-                                            <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id, id])}>Descargar soporte</a>
-                                    {/each}
-                            </a>
+                                <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id, id])}>Descargar soporte</a>
+                            {/each}
+                        </td>
+
+                        <td class="border-t px-6 pt-6 pb-4">
+                            <ResourceMenu>
+                                {#if canShowMarketResearch || canEditMarketResearch ||canDeleteMarketResearch || isSuperAdmin}
+                                    <Item on:SMUI:action={() => (Inertia.visit('calls.projects.project-sennova-budgets.project-budget-batches.edit', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]))}>
+                                        <Text>{$_('View details')}</Text>
+                                    </Item>
+                                {:else}
+                                    <Item>
+                                        <Text>{$_('You don\'t have permissions')}</Text>
+                                    </Item>
+                                {/if}
+                            </ResourceMenu>
                         </td>
                     </tr>
                 {/each}
@@ -144,11 +167,39 @@
         </table>
     </div>
 
-    <Modal bind:open={modal_open}>
-        <Card>
-            <CreateMarketResearch bind:modal_open={modal_open} {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches} {callBudget} />
-        </Card>
-    </Modal>
+    <!-- Dialog -->
+    <Dialog
+        bind:open
+        scrimClickAction=""
+        escapeKeyAction=""
+        aria-labelledby="mandatory-title"
+        aria-describedby="mandatory-content"
+        id="market-reseach-dialog"
+    >
+        <Title id="market-research-mandatory-title">
+            <div class="mb-10 text-center">
+                <div class="text-primary">
+
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <div>
+                    <Button on:click={() => open = false} type="button">
+                        <LabelMUI>{$_('Cancel')}</LabelMUI>
+                    </Button>
+                    {#if canCreateMarketResearch}
+                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form="market-reseach-form">
+                            {$_('Save')}
+                        </LoadingButton>
+                    {/if}
+                </div>
+            </div>
+
+        </Title>
+        <Content id="market-research-mandatory-content">
+            <CreateMarketResearch bind:dialogOpen={open} {sending} {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches} {callBudget} />
+        </Content>
+    </Dialog>
 
     <Pagination links={projectBudgetBatches.links} />
 </AuthenticatedLayout>

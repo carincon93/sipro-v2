@@ -27,7 +27,7 @@ class ProjectSennovaBudgetController extends Controller
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Index', [
             'call'                  => $call->only('id'),
-            'project'               => $project->only('id'),
+            'project'               => $project->only('id', 'total_project_budget', 'total_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'),
             'filters'               => request()->all('search'),
             'projectSennovaBudgets' => ProjectSennovaBudget::where('project_id', $project->id)->filterProjectSennovaBudget(request()->only('search'))->with('callBudget.sennovaBudget.thirdBudgetInfo:id,name', 'callBudget.sennovaBudget.secondBudgetInfo:id,name', 'callBudget.sennovaBudget.budgetUsage:id,description')->paginate(),
             'secondBudgetInfo'      => SecondBudgetInfo::orderBy('name', 'ASC')->get('name'),
