@@ -99,12 +99,12 @@
 
                     <div class="mt-4">
                         <Label required class="mb-4" id="description" value="Describa el bien o servicio a adquirir. Sea específico"/>
-                        <Textarea id="description" error={errors.description} bind:value={$form.description} required />
+                        <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                     </div>
 
                     <div class="mt-4">
                         <Label required class="mb-4" id="justification" value="Justificación de la necesidad: ¿por qué se requiere este producto o servicio?"/>
-                        <Textarea id="justification" error={errors.justification} bind:value={$form.justification} required />
+                        <Textarea rows="4" id="justification" error={errors.justification} bind:value={$form.justification} required />
                     </div>
 
                     {#if !showQtyInput}

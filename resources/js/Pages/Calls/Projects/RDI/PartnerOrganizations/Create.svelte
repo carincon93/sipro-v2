@@ -118,7 +118,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="name" value="Nombre de la entidad aliada/Centro de formación" />
-                    <Textarea id="name" error={errors.name} bind:value={$form.name} required />
+                    <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
@@ -146,7 +146,7 @@
                 {#if agreement}
                     <div class="mt-4">
                         <Label required class="mb-4" id="agreement_description" value="Descipción del convenio" />
-                        <Textarea id="agreement_description" error={errors.agreement_description} bind:value={$form.agreement_description} required />
+                        <Textarea rows="4" id="agreement_description" error={errors.agreement_description} bind:value={$form.agreement_description} required />
                     </div>
                 {/if}
 
@@ -158,7 +158,7 @@
                 {#if researchGroup}
                     <div class="mt-4">
                         <Label required class="mb-4" id="research_group" value="Grupo de investigación" />
-                        <Textarea id="research_group" error={errors.research_group} bind:value={$form.research_group} required />
+                        <Textarea rows="4" id="research_group" error={errors.research_group} bind:value={$form.research_group} required />
                     </div>
 
                     <div class="mt-4">
@@ -179,7 +179,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="in_kind_description" value="Descripción de los recursos en especie aportados" />
-                    <Textarea id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
+                    <Textarea rows="4" id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
                 </div>
 
                 <div class="mt-4">
@@ -189,12 +189,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="funds_description" value="Descripción de la destinación del dinero aportado" />
-                    <Textarea id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
+                    <Textarea rows="4" id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
-                    <Textarea id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
+                    <Textarea rows="4" id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
                 </div>
 
                 <div class="mt-4">

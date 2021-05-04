@@ -11,7 +11,8 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from 'svelte-select'
-    import DynamicList from '@/Dropdowns/DynamicList.svelte';
+    import DynamicList from '@/Dropdowns/DynamicList'
+    import Textarea from '@/Components/Textarea'
 
     export let call
     export let project
@@ -47,6 +48,7 @@
             Inertia.put(route('calls.projects.outputs.update', [call.id, project.id, output.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -78,10 +80,30 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <fieldset class="p-8" disabled={canEditOutputs || isSuperAdmin ? undefined : true}>
+                <div class="mt-8">
+                    <p class="text-center">Fecha de ejecución</p>
+                    <div class="mt-4 flex items-start justify-around">
+                        <div class="mt-4 flex">
+                            <Label required id="start_date" value="Del" />
+                            <div class="ml-4">
+                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
+                            </div>
+                        </div>
+                        <div class="mt-4 flex">
+                            <Label required id="end_date" value="hasta" />
+                            <div class="ml-4">
+                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
+                            </div>
+                        </div>
+                    </div>
+                    {#if errors.start_date || errors.end_date}
+                        <InputError message={errors.start_date || errors.end_date} />
+                    {/if}
+                </div>
+
                 <div class="mt-4">
                     <Label required class="mb-4" id="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
@@ -95,24 +117,6 @@
                         <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
                     </div>
                 {/if}
-
-                <div class="mt-8">
-                    <p class="text-center">Fecha de ejecución</p>
-                    <div class="mt-4 flex items-start justify-around">
-                        <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
-                            <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
-                            </div>
-                        </div>
-                        <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
-                            <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteOutputs || isSuperAdmin}

@@ -12,6 +12,7 @@
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
     import Textarea from '@/Components/Textarea'
+    import InputError from '@/Components/InputError.svelte';
 
     export let errors
     export let call
@@ -47,6 +48,7 @@
             Inertia.put(route('calls.projects.activities.update', [call.id, project.id, activity.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -78,26 +80,30 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <fieldset class="p-8" disabled={canEditActivities || isSuperAdmin ? undefined : true}>
-                <div>
-                    <Label required class="mb-4" id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={$form.description} required />
-                </div>
                 <div class="mt-4">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
                             <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
+                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
                             <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
+                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                             </div>
                         </div>
                     </div>
+                    {#if errors.start_date || errors.end_date}
+                        <InputError message={errors.start_date || errors.end_date} />
+                    {/if}
+                </div>
+
+                <div class="mt-20">
+                    <Label required class="mb-4" id="description" value="Descripción" />
+                    <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <h6 class="mt-20 mb-12 text-2xl">{$_('Outputs.plural')}</h6>

@@ -150,7 +150,7 @@
         <fieldset class="p-8" disabled={canEditRDI || isSuperAdmin ? undefined : true}>
             <div class="mt-28">
                 <Label required id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
-                <Textarea id="title" rows="3" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
+                <Textarea rows="4" id="title" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
             </div>
 
             <div class="mt-44">
@@ -257,7 +257,7 @@
                         <span class="ml-2">{#if industry_4_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if industry_4_justification}
-                        <Textarea id="industry_4_justification" error={errors.industry_4_justification} bind:value={$form.industry_4_justification} required={!industry_4_justification ? undefined : 'required'} />
+                        <Textarea rows="4" id="industry_4_justification" error={errors.industry_4_justification} bind:value={$form.industry_4_justification} required={!industry_4_justification ? undefined : 'required'} />
                         <InfoMessage message="Si el proyecto está relacionado con la industria 4.0 por favor realice la justificación." />
                     {/if}
                 </div>
@@ -273,7 +273,7 @@
                         <span class="ml-2">{#if orange_economy_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if orange_economy_justification}
-                        <Textarea id="orange_economy_justification" error={errors.orange_economy_justification} bind:value={$form.orange_economy_justification} required={!orange_economy_justification ? undefined : 'required'} />
+                        <Textarea rows="4" id="orange_economy_justification" error={errors.orange_economy_justification} bind:value={$form.orange_economy_justification} required={!orange_economy_justification ? undefined : 'required'} />
                         <InfoMessage message="Si el proyecto está relacionado con la economía naranja por favor realice la justificación. (Ver documento de apoyo: Guía Rápida SENA es NARANJA.)" />
                     {/if}
                 </div>
@@ -289,7 +289,7 @@
                         <span class="ml-2">{#if people_disabilities_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if people_disabilities_justification}
-                        <Textarea id="people_disabilities_justification" error={errors.people_disabilities_justification} bind:value={$form.people_disabilities_justification} required={!people_disabilities_justification ? undefined : 'required'} />
+                        <Textarea rows="4" id="people_disabilities_justification" error={errors.people_disabilities_justification} bind:value={$form.people_disabilities_justification} required={!people_disabilities_justification ? undefined : 'required'} />
                         <InfoMessage message="Si el proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad por favor realice la justificación. RESOLUCIÓN 01726 DE 2014 - Por la cual se adopta la Política Institucional para Atención de las Personas con discapacidad." />
                     {/if}
                 </div>
@@ -554,7 +554,7 @@
                     <Label required class="mb-4" id="abstract" value="Resumen del proyecto" />
                 </div>
                 <div>
-                    <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
+                    <Textarea rows="4" id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
                     <InfoMessage message="Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto." />
                 </div>
             </div>
@@ -564,7 +564,7 @@
                     <Label required class="mb-4" id="project_background" value="Antecedentes" />
                 </div>
                 <div>
-                    <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
+                    <Textarea rows="4" id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
                     <InfoMessage message="Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición." />
                 </div>
             </div>
@@ -574,7 +574,7 @@
                     <Label required class="mb-4" id="conceptual_framework" value="Marco conceptual" />
                 </div>
                 <div>
-                    <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
+                    <Textarea rows="4" id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
                     <InfoMessage message="Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones." />
                 </div>
             </div>
@@ -584,7 +584,7 @@
                     <Label required class="mb-4" id="project_methodology" value="Metodología" />
                 </div>
                 <div>
-                    <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
+                    <Textarea rows="4" id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
                     <InfoMessage message="Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto." />
                 </div>
             </div>
@@ -594,7 +594,7 @@
                     <Label required class="mb-4" id="sustainability_proposal" value="Propuesta de sostenibilidad" />
                 </div>
                 <div>
-                    <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
+                    <Textarea rows="4" id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
                     <InfoMessage message="Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013." />
                 </div>
             </div>
@@ -604,7 +604,7 @@
                     <Label required class="mb-4" id="bibliography" value="Bibliografía" />
                 </div>
                 <div>
-                    <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
+                    <Textarea rows="4" id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
                     <InfoMessage message="Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf)." />
                 </div>
             </div>
@@ -623,7 +623,7 @@
                     <Label required class="mb-4" id="states" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
-                    <Textarea id="states" error={errors.states} bind:value={$form.states} required />
+                    <Textarea rows="4" id="states" error={errors.states} bind:value={$form.states} required />
                 </div>
             </div>
 
@@ -632,7 +632,7 @@
                     <Label required class="mb-4" id="states_impact" value="Descripción del beneficio en los municipios" />
                 </div>
                 <div>
-                    <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
+                    <Textarea rows="4" id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
                 </div>
             </div>
 
@@ -641,7 +641,7 @@
                     <Label required class="mb-4" id="academic_impact" value="Impacto en el centro de formación" />
                 </div>
                 <div>
-                    <Textarea id="academic_impact" error={errors.academic_impact} bind:value={$form.academic_impact} required />
+                    <Textarea rows="4" id="academic_impact" error={errors.academic_impact} bind:value={$form.academic_impact} required />
                 </div>
             </div>
         </fieldset>

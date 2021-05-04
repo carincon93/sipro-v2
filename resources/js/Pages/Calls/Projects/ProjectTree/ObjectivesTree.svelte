@@ -15,6 +15,7 @@
     import Textarea from '@/Components/Textarea'
     import Select from '@/Components/Select'
     import Stepper from '@/Components/Stepper'
+    import InfoMessage from '@/Components/InfoMessage'
 
     import { createPopper } from '@popperjs/core'
 
@@ -564,13 +565,12 @@
             {#if showActivityForm}
                 <form on:submit|preventDefault={submitActivity} id="form-activity">
                     <fieldset disabled={canCreateOrUpdate}>
-                        <p class="mt-4 whitespace-pre-line">
-                            <strong>Causa indirecta</strong>
-                            <br>
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">Causa indirecta</p>
+                        <p class="mb-20 whitespace-pre-line">
                             {activityIndirectCause}
                         </p>
                         <p class="mt-1 text-center">Fecha de ejecución</p>
-                        <div class="mt-1 flex items-start justify-around">
+                        <div class="mt-1 mb-20 flex items-start justify-around">
                             <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
                                 <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                                 <div class="ml-4">
@@ -584,86 +584,87 @@
                                 </div>
                             </div>
                         </div>
+                        {#if errors.start_date || errors.end_date}
+                            <div class="mb-20">
+                                <InputError classes="text-center" message={errors.start_date} />
+                                <InputError classes="text-center" message={errors.end_date} />
+                            </div>
+                        {/if}
                         <div>
-                            <InputError classes="text-center" message={errors.start_date} />
-                            <InputError classes="text-center" message={errors.end_date} />
-                        </div>
-                        <div class="mt-4">
                             <Label class="mb-4" id="description" value="Descripción" />
-                            <Textarea id="description" error={errors.description} bind:value={$formActivity.description} required />
+                            <Textarea rows="4" id="description" error={errors.description} bind:value={$formActivity.description} required />
                         </div>
                     </fieldset>
                 </form>
             {:else if showSpecificObjectiveForm}
                 <form on:submit|preventDefault={submitSpecificObjective} id="specific-objective-form">
                     <fieldset disabled={canCreateOrUpdate}>
-                        <p class="mt-4 whitespace-pre-line">
-                            <strong>Causa directa</strong>
-                            <br>
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">Causa directa</p>
+
+                        <p class="mb-20 whitespace-pre-line">
                             {SpecificObjectiveDirectCause}
                         </p>
-                        <div class="mt-4">
+                        <div>
                             <Label class="mb-4" id="description" value="Descripción" />
-                            <Textarea id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
+                            <Textarea rows="4" id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
                         </div>
                     </fieldset>
                 </form>
             {:else if showPrimaryObjectiveForm}
                 <form on:submit|preventDefault={submitGeneralObjetive} id="primary-objective-form">
                     <fieldset disabled={canCreateOrUpdate}>
-                        <p class="mt-4 whitespace-pre-line">
-                            <strong>Planteamiento del problema</strong>
-                            <br>
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">Planteamiento del problema</p>
+
+                        <p class="mb-20 whitespace-pre-line">
                             {problemStatement}
                         </p>
-                        <div class="mt-4">
+                        <div>
                             <Label class="mb-4" id="primary_objective" value="Objetivo general" />
-                            <p class="mb-4"> Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué</p>
-                            <Textarea id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
+                            <InfoMessage message="Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué" />
+                            <Textarea rows="4" id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
                         </div>
                     </fieldset>
                 </form>
             {:else if showResultForm}
                 <form on:submit|preventDefault={submitResult} id="project-result-form">
                     <fieldset disabled={canCreateOrUpdate}>
-                        <p class="mt-4 whitespace-pre-line">
-                            <strong>Efecto directo</strong>
-                            <br>
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">Efecto directo</p>
+                        <p class="mb-20 whitespace-pre-line">
                             {resultDirectEffect}
                         </p>
-                        <p class="mt-4 whitespace-pre-line">
-                            <strong>{specificObjectiveDescription.number}</strong>
-                            <br>
+
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">{specificObjectiveDescription.number}</p>
+                        <p class="mb-20 whitespace-pre-line">
                             {specificObjectiveDescription.description}
                         </p>
-                        <div class="mt-4">
+                        <div class="mb-20">
                             <Label id="type" value="Tipo" />
                             <Select id="type" items={resultTypes} bind:selectedValue={$formResult.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
                         </div>
-                        <div class="mt-4">
+                        <div class="mb-20">
                             <Label id="description" value="Descripción" />
-                            <Textarea id="description" maxlength="200" rows="4" error={errors.description} bind:value={$formResult.description} required />
+                            <Textarea rows="4" id="description" maxlength="200" error={errors.description} bind:value={$formResult.description} required />
                         </div>
-                        <div class="mt-4">
+                        <div class="mb-20">
                             <Label id="trl" value="TRL" />
                             <Input id="trl" type="number" max="9" min="1" class="block w-full" error={errors.trl} bind:value={$formResult.trl} required />
                         </div>
-                        <div class="mt-4">
+                        <div class="mb-20">
                             <Label id="indicator" value="Indicador" />
-                            <Textarea id="indicator" maxlength="200" rows="4" error={errors.indicator} bind:value={$formResult.indicator} required />
+                            <Textarea rows="4" id="indicator" maxlength="200" error={errors.indicator} bind:value={$formResult.indicator} required />
                         </div>
-                        <div class="mt-4">
+                        <div class="mb-20">
                             <Label id="means_of_verification" value="Medio de verificación" />
-                            <Textarea id="means_of_verification" maxlength="200" rows="4" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
+                            <Textarea rows="4" id="means_of_verification" maxlength="200" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
                         </div>
                     </fieldset>
                 </form>
             {:else if showImpactForm}
                 <form on:submit|preventDefault={submitImpact} id="impact-form">
                     <fieldset disabled={canCreateOrUpdate}>
+                        <p class="block font-medium mb-2 text-gray-700 text-sm">Efecto indirecto</p>
+
                         <p class="mt-4 whitespace-pre-line">
-                            <strong>Efecto indirecto</strong>
-                            <br>
                             {impactIndirectEffect}
                         </p>
                         <div class="mt-4">
@@ -672,7 +673,7 @@
                         </div>
                         <div class="mt-4">
                             <Label class="mb-4" id="description" value="Descripción" />
-                            <Textarea id="description" error={errors.description} bind:value={$formImpact.description} required />
+                            <Textarea rows="4" id="description" error={errors.description} bind:value={$formImpact.description} required />
                         </div>
                     </fieldset>
                 </form>

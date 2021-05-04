@@ -89,7 +89,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="description" value="Descripción" />
-                    <Textarea id="description" error={errors.description} bind:value={$form.description} required />
+                    <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
@@ -106,12 +106,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="effects" value="Efectos" />
-                    <Textarea id="effects" error={errors.effects} bind:value={$form.effects} required />
+                    <Textarea rows="4" id="effects" error={errors.effects} bind:value={$form.effects} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" id="mitigation_measures" value="Medidas de mitigación" />
-                    <Textarea id="mitigation_measures" error={errors.mitigation_measures} bind:value={$form.mitigation_measures} required />
+                    <Textarea rows="4" id="mitigation_measures" error={errors.mitigation_measures} bind:value={$form.mitigation_measures} required />
                 </div>
             </div>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

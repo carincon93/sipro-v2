@@ -10,7 +10,8 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from '@/Components/Select'
-    import DynamicList from '@/Dropdowns/DynamicList';
+    import DynamicList from '@/Dropdowns/DynamicList'
+    import Textarea from '@/Components/Textarea'
 
     export let call
     export let project
@@ -69,24 +70,6 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
-                <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
-                </div>
-
-                <div class="mt-4">
-                    <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
-                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
-                </div>
-
-                {#if project.rdi}
-                    <div class="mt-4">
-                        <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
-                        <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
-                    </div>
-                {/if}
-
                 <div class="mt-8">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
@@ -107,6 +90,23 @@
                         <InputError message={errors.start_date || errors.end_date} />
                     {/if}
                 </div>
+
+                <div class="mt-8">
+                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
+                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
+                </div>
+
+                {#if project.rdi}
+                    <div class="mt-4">
+                        <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
+                        <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
+                    </div>
+                {/if}
             </div>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateOutputs || isSuperAdmin}
