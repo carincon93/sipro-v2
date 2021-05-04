@@ -159,16 +159,22 @@
                     <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
                         <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                         <div class="ml-4">
-                            <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
+                            <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                         </div>
                     </div>
                     <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
                         <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                         <div class="ml-4">
-                            <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
+                            <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                         </div>
                     </div>
                 </div>
+                {#if errors.start_date || errors.end_date}
+                    <div class="mb-20">
+                        <InputError classes="text-center" message={errors.start_date} />
+                        <InputError classes="text-center" message={errors.end_date} />
+                    </div>
+                {/if}
             </div>
 
             <div class="mt-44 grid grid-cols-2">

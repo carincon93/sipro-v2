@@ -216,7 +216,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('web-api.budget-requires-market-research');
 
     Route::get('web-api/calls/{call}/{programmaticLine}/project-sennova-roles', function($call, $programmaticLine) {
-        return response(CallSennovaRole::selectRaw('call_sennova_roles.id as value, concat(sennova_roles.name, chr(10), \'∙ Asignación mensual: \', call_sennova_roles.salary) as label, call_sennova_roles.qty_months, call_sennova_roles.qty_roles')
+        return response(CallSennovaRole::selectRaw("call_sennova_roles.id as value,
+        CASE academic_degree
+				WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+                WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
+        END as label,
+        call_sennova_roles.qty_months, call_sennova_roles.qty_roles, call_sennova_roles.months_experience")
             ->join('sennova_roles', 'call_sennova_roles.sennova_role_id', 'sennova_roles.id')
             ->where('sennova_roles.programmatic_line_id', $programmaticLine)
             ->where('call_sennova_roles.call_id', $call)

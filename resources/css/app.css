@@ -110,6 +110,10 @@ fieldset[disabled] .selectedItem {
     height: auto !important;
 }
 
+.mdc-dialog {
+    z-index: 9999;
+}
+
 .mdc-switch__native-control {
     width: 64px !important;
     height: 48px !important;

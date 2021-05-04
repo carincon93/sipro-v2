@@ -197,6 +197,11 @@ class RDI extends Model
         });
     }
 
+    /**
+     * getExecutionDateAttribute
+     *
+     * @return void
+     */
     public function getExecutionDateAttribute()
     {
         $start_date = Carbon::parse($this->start_date, 'UTC')->locale('es')->isoFormat('DD [de] MMMM [de] YYYY');

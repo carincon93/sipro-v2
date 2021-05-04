@@ -1,8 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import {afterUpdate} from 'svelte'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Modal, Card } from 'svelte-chota'
@@ -20,8 +19,7 @@
     export let projectSennovaRole   = {}
     export let errors
 
-    let qty_months
-    let qty_roles
+    let projectSennovaRoleInfo
 
     $: $title = roleName.name
 
@@ -36,20 +34,29 @@
     let canEditProjectSennovaRoles      = authUser.can.find(element => element == 'project-sennova-roles.edit') == 'project-sennova-roles.edit'
     let canDeleteProjectSennovaRoles    = authUser.can.find(element => element == 'project-sennova-roles.delete') == 'project-sennova-roles.delete'
 
-    let modal_open = false
-    let sending = false
-    let form = remember({
+    let modal_open  = false
+    let sending     = false
+    let form = useForm({
         call_sennova_role_id: projectSennovaRole.call_sennova_role_id,
         qty_months: projectSennovaRole.qty_months,
         qty_roles: projectSennovaRole.qty_roles,
         description: projectSennovaRole.description,
     })
 
+    $: if (projectSennovaRoleInfo?.qty_months != null && projectSennovaRoleInfo?.qty_roles) {
+        $form.qty_months = projectSennovaRoleInfo.qty_months
+        $form.qty_roles  = projectSennovaRoleInfo.qty_roles
+    } else {
+        $form.qty_months = projectSennovaRole.qty_months
+        $form.qty_roles  = projectSennovaRole.qty_roles
+    }
+
     function submit() {
         if (canEditProjectSennovaRoles || isSuperAdmin) {
             Inertia.put(route('calls.projects.project-sennova-roles.update', [call.id, project.id, projectSennovaRole.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -80,10 +87,10 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditProjectSennovaRoles || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" id="call_sennova_role_id" value="Rol SENNOVA" />
-                    <DropdownProjectSennovaRole id="call_sennova_role_id" bind:qtyMonths={qty_months} bind:qtyRoles={qty_roles} {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} message={errors.call_sennova_role_id} />
+                    <DropdownProjectSennovaRole id="call_sennova_role_id" {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} bind:projectSennovaRoleInfo={projectSennovaRoleInfo} message={errors.call_sennova_role_id} required />
                 </div>
 
                 <div class="mt-4">
@@ -91,26 +98,36 @@
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
-                {#if qty_months}
+                {#if projectSennovaRoleInfo?.months_experience}
+                    <div class="mt-4">
+                        <p class="block font-medium text-sm text-gray-700 ">Experiencia (meses)
+                            <span class="block border-gray-300 p-4 rounded-md shadow-sm">
+                                {projectSennovaRoleInfo.months_experience}
+                            </span>
+                        </p>
+                    </div>
+                {/if}
+
+                {#if projectSennovaRoleInfo?.qty_months}
                     <div class="mt-4">
                         <p class="block font-medium text-sm text-gray-700 ">Número de meses que requiere el apoyo:
                             <span class="block border-gray-300 p-4 rounded-md shadow-sm">
-                                {qty_months}
+                                {projectSennovaRoleInfo?.qty_months}
                             </span>
                         </p>
                     </div>
                 {:else}
                     <div class="mt-4">
                         <Label required class="mb-4" id="qty_months" value="Número de meses que requiere el apoyo" />
-                        <Input id="qty_months" type="number" min="1" class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
+                        <Input id="qty_months" type="number" min="1" max={project.diff_months} class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
                     </div>
                 {/if}
 
-                {#if qty_roles}
+                {#if projectSennovaRoleInfo?.qty_roles}
                     <div class="mt-4">
                         <p class="block font-medium text-sm text-gray-700 ">Número de personas requeridas:
                             <span class="block border-gray-300 p-4 rounded-md shadow-sm">
-                                {qty_roles}
+                                {projectSennovaRoleInfo?.qty_roles}
                             </span>
                         </p>
                     </div>
@@ -120,7 +137,7 @@
                         <Input id="qty_roles" type="number" min="1" class="mt-1 block w-full" error={errors.qty_roles} bind:value={$form.qty_roles} required />
                     </div>
                 {/if}
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteProjectSennovaRoles || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>

@@ -34,7 +34,7 @@
 
     <h1 class="font-bold text-3xl mt-24 text-center">{$_('Project sennova budgets.plural')}</h1>
     <h2 class="text-center mt-10 mb-24">
-        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(project.total_project_udget)} COP
+        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_project_udget) ? project.total_project_udget : 0)} COP
     </h2>
     <div class="px-4">
         <h1 class="mb-4 text-center">Filtros</h1>
@@ -91,7 +91,7 @@
                                     </div>
                                 </a>
                             {:else}
-                                <div class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                <div class="flex flex-col-reverse focus:text-indigo-500 px-6 py-4">
                                     <div class="mt-3">
                                         <small>Concepto interno SENA</small>
                                         <p>{projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}</p>

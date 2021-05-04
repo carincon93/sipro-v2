@@ -147,8 +147,8 @@
         "plural": "Roles de proyecto"
     },
     "Project sennova budgets": {
-        "singular": "Rubro",
-        "plural": "Rubros"
+        "singular": "Rubro de proyecto",
+        "plural": "Rubros de proyecto"
     },
     "Risk analysis": {
         "singular": "Análisis de riesgos",

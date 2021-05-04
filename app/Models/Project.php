@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Project extends Model
 {
     use HasFactory;
 
-    protected $appends = ['code', 'total_project_budget', 'percentage_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'];
+    protected $appends = ['code', 'diff_months', 'total_project_budget', 'percentage_industrial_machinery', 'total_special_construction_services', 'total_viatics', 'total_machinery_maintenance'];
 
     /**
      * The attributes that are mass assignable.
@@ -166,6 +167,13 @@ class Project extends Model
     public function getCodeAttribute()
     {
         return 'SGPS-' . ($this->id + 8000) .'-' . date('Y', strtotime($this->rdi->end_date));
+    }
+
+    public function getDiffMonthsAttribute()
+    {
+        $end_month   = Carbon::parse($this->rdi->end_date, 'UTC')->floorMonth();
+        $start_month = Carbon::parse($this->rdi->start_date, 'UTC')->floorMonth();
+        return $start_month->diffInMonths($end_month);
     }
 
     public function getTotalProjectBudgetAttribute()

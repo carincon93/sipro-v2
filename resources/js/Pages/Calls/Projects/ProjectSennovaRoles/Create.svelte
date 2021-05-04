@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -16,8 +16,7 @@
     export let programmaticLine
     export let errors
 
-    let qtyMonthsByDefault = false
-    let qtyRolesByDefault = false
+    let projectSennovaRoleInfo
 
     $: $title = $_('Create') + ' ' + $_('Project sennova roles.singular').toLowerCase()
 
@@ -33,13 +32,18 @@
     let canDeleteProjectSennovaRoles = authUser.can.find(element => element == 'project-sennova-roles.delete') == 'project-sennova-roles.delete'
 
     let sending = false
-    let form = remember({
-        call_sennova_role_id: '',
+    let form = useForm({
+        call_sennova_role_id: null,
         qty_months: '',
         qty_roles: '',
         description: '',
 
     })
+
+    $: if (projectSennovaRoleInfo) {
+        $form.qty_months = projectSennovaRoleInfo.qty_months
+        $form.qty_roles  = projectSennovaRoleInfo.qty_roles
+    }
 
     function submit() {
         if (canCreateProjectSennovaRoles || isSuperAdmin) {
@@ -73,7 +77,7 @@
             <div class="p-8">
                 <div class="mt-4">
                     <Label required class="mb-4" id="call_sennova_role_id" value="Rol SENNOVA" />
-                    <DropdownProjectSennovaRole id="call_sennova_role_id" bind:qtyMonthsByDefault={qtyMonthsByDefault} bind:qtyRolesByDefault={qtyRolesByDefault} bind:qtyMonths={$form.qty_months} bind:qtyRoles={$form.qty_roles} {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} message={errors.call_sennova_role_id} />
+                    <DropdownProjectSennovaRole id="call_sennova_role_id" {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} bind:projectSennovaRoleInfo={projectSennovaRoleInfo} message={errors.call_sennova_role_id} required />
                 </div>
 
                 <div class="mt-4">
@@ -81,7 +85,17 @@
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
-                {#if qtyMonthsByDefault}
+                {#if projectSennovaRoleInfo?.months_experience}
+                    <div class="mt-4">
+                        <p class="block font-medium text-sm text-gray-700 ">Experiencia (meses)
+                            <span class="block border-gray-300 p-4 rounded-md shadow-sm">
+                                {projectSennovaRoleInfo.months_experience}
+                            </span>
+                        </p>
+                    </div>
+                {/if}
+
+                {#if projectSennovaRoleInfo?.qty_months_by_default}
                     <div class="mt-4">
                         <p class="block font-medium text-sm text-gray-700 ">Número de meses que requiere el apoyo:
                             <span class="block border-gray-300 p-4 rounded-md shadow-sm">
@@ -92,11 +106,11 @@
                 {:else}
                     <div class="mt-4">
                         <Label required class="mb-4" id="qty_months" value="Número de meses que requiere el apoyo" />
-                        <Input id="qty_months" type="number" min="1" class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
+                        <Input id="qty_months" type="number" min="1" max={project.diff_months} class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
                     </div>
                 {/if}
 
-                {#if qtyRolesByDefault}
+                {#if projectSennovaRoleInfo?.qty_roles_by_default}
                     <div class="mt-4">
                         <p class="block font-medium text-sm text-gray-700 ">Número de personas requeridas:
                             <span class="block border-gray-300 p-4 rounded-md shadow-sm">

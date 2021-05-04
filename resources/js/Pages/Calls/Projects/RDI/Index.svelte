@@ -5,6 +5,7 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
     import ResourceMenu from '@/Components/ResourceMenu'
+    import Button from '@/Components/Button'
     import { Item, Text } from '@smui/list'
     import { Inertia } from '@inertiajs/inertia'
 
@@ -29,16 +30,19 @@
 
 <AuthenticatedLayout>
     <h1 class="mb-8 font-bold text-3xl">{$_('RDI.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
+
+    <div class="mb-6 flex justify-end items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateRDI || isSuperAdmin}
-            <a use:inertia href={route('calls.rdi.create', [call.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">proyecto {$_('RDI.singular')}</span>
-                </div>
-            </a>
-        {/if}
+        <div>
+            {#if canCreateRDI || isSuperAdmin}
+                <Button href={route('calls.rdi.create', [call.id])}>
+                    <div>
+                        <span>{$_('Create')}</span>
+                        <span class="hidden md:inline">proyecto {$_('RDI.singular')}</span>
+                    </div>
+                </Button>
+            {/if}
+        </div>
     </div>
     <div class="bg-white rounded shadow">
         <table class="w-full whitespace-no-wrap">
@@ -61,11 +65,15 @@
                                 {rdi.execution_date}
                             </p>
                         </td>
-                        <td>
+                        <td class="border-t">
                             <ResourceMenu>
                                 {#if canShowRDI || canEditRDI ||canDeleteRDI || isSuperAdmin}
                                     <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.edit', [call.id, rdi.id])))}>
                                         <Text>{$_('View details')}</Text>
+                                    </Item>
+                                {:else}
+                                    <Item>
+                                        <Text>{$_('You don\'t have permissions')}</Text>
                                     </Item>
                                 {/if}
                             </ResourceMenu>

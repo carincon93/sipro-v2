@@ -17,7 +17,8 @@ class SennovaRole extends Model
     protected $fillable = [
         'programmatic_line_id',
         'name',
-        'description'
+        'description',
+        'academic_degree'
     ];
 
     /**

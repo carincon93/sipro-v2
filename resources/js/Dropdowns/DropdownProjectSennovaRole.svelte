@@ -1,8 +1,9 @@
 <script>
-    import { onMount } from 'svelte'
+    import { afterUpdate, onMount } from 'svelte'
     import axios from 'axios'
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
+    import { _ } from 'svelte-i18n'
 
     export let classes  = ''
     export let id       = ''
@@ -10,17 +11,24 @@
     export let formProjectSennovaRole
     export let call
     export let programmaticLine
-    export let qtyMonths
-    export let qtyRoles
-    export let qtyMonthsByDefault
-    export let qtyRolesByDefault
+    export let projectSennovaRoleInfo
+    export let required
 
-    let projectSennovaRoles           = []
-    let projectSennovaRoleFiltered    = null
+    let projectSennovaRoles         = []
+    let projectSennovaRoleFiltered  = null
+    let select                      = null
 
     onMount(() => {
         getProjectSennovaRoles()
+        select = document.getElementById(id)
 	})
+
+    afterUpdate(() => {
+        console.log(formProjectSennovaRole);
+        if (required && select != null) {
+            formProjectSennovaRole != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+        }
+    })
 
     async function getProjectSennovaRoles() {
         let res   = await axios.get(route('web-api.calls.project-sennova-roles', [call.id, programmaticLine]))
@@ -30,10 +38,7 @@
 
     function handleProjectSennovaRole(event) {
         formProjectSennovaRole  = event.detail.value
-        qtyMonthsByDefault      = event.detail.qty_months_by_default
-        qtyRolesByDefault       = event.detail.qty_roles_by_default
-        qtyMonths               = event.detail.qty_months
-        qtyRoles                = event.detail.qty_roles
+        projectSennovaRoleInfo  = event.detail
     }
 
     function selectProjectSennovaRole() {
@@ -63,5 +68,5 @@
     }
 </style>
 
-<Select selectedValue={projectSennovaRoleFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre del rol" containerClasses="project-sennova-roles {classes}" items={projectSennovaRoles} on:select={handleProjectSennovaRole} />
+<Select selectedValue={projectSennovaRoleFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre del rol" containerClasses="project-sennova-roles {classes}" items={projectSennovaRoles} on:select={handleProjectSennovaRole} on:clear={() => formProjectSennovaRole = null} />
 <InputError {message} />
