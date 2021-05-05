@@ -12,6 +12,9 @@
     export let autocomplete
     export let items           = []
     export let selectedValue
+    export let isMulti = false
+    export let groupBy
+    export let isSearchable = true
 
     let select = null
 
@@ -57,6 +60,9 @@
     containerClasses="items {classes}"
     items={items}
     autocomplete={autocomplete}
+    isMulti={isMulti}
+    isSearchable={isSearchable}
+    {groupBy}
     on:select={(e) => handleSelect(e)}
     on:clear={() => selectedValue = null}
 />

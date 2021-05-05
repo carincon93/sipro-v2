@@ -49,7 +49,8 @@ class RDIRequest extends FormRequest
                 'sampling_objective'                        => ['nullable', 'max:191'],
                 'bibliography'                              => ['required', 'string'],
                 'students'                                  => ['required', 'min:0', 'max:9999', 'integer'],
-                'states'                                    => ['required', 'string'],
+                'states'                                    => ['required', 'array'],
+                'states.*'                                  => ['required', 'exists:cities,id', 'integer'],
                 'states_impact'                             => ['required', 'string'],
                 'academic_impact'                           => ['required', 'string'],
                 'related_with_technological_plan'           => ['required', 'min:0', 'max:3', 'integer'],
@@ -115,6 +116,22 @@ class RDIRequest extends FormRequest
             $this->merge([
                 'related_with_techno_academy' => $this->related_with_techno_academy['value'],
             ]);
+        }
+
+        if( is_array($this->states) ) {
+            if(isset($this->states['value']) && is_numeric($this->states['value']) ) {
+                $this->merge([
+                    'states' => $this->states['value'],
+                ]);
+            }else{
+                $states = [];
+                foreach ($this->states as $index => $state) {
+                    if( is_array($state) ) {
+                        array_push($states, $state['value']);
+                    }
+                }
+                $this->merge(['states' => $states]);
+            }
         }
     }
 }

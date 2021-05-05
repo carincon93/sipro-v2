@@ -16,6 +16,7 @@
     import InfoMessage from '@/Components/InfoMessage'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Select from '@/Components/Select'
+    import SelectMulti from 'svelte-select';
     import Switch from '@smui/switch'
     import Checkbox from '@smui/checkbox'
     import Radio from '@smui/radio'
@@ -32,6 +33,9 @@
     export let technoAcademies
     export let technoAcademy
     export let rdiDropdownOptions
+    export let projectCities
+    export let cities;
+    const groupBy = (item) => item.group;
 
     $: $title = rdi ? rdi.title : null
 
@@ -76,7 +80,7 @@
         sustainability_proposal:            rdi.sustainability_proposal,
         bibliography:                       rdi.bibliography,
         students:                           rdi.students,
-        states:                             rdi.states,
+        states:                             projectCities,
         states_impact:                      rdi.states_impact,
         academic_impact:                    rdi.academic_impact,
         sampling:                           rdi.sampling,
@@ -98,6 +102,7 @@
         if (technoAcademy) {
             getTechnologicalLines(technoAcademy)
         }
+        getCities();
     })
 
     function submit() {
@@ -138,6 +143,13 @@
         let res = await axios.get(route('web-api.techno-academies.technological-lines', [technoAcademy]))
         res.status == '200' ? $form.technological_line_id = relatedTechnologicalLines : null
         technologicalLines = res.data
+    }
+
+    async function getCities() {
+        let res = await axios.get(route('web-api.cities-for-select'));
+        if(res.status == '200'){
+            cities = res.data;
+        }
     }
 </script>
 
@@ -548,61 +560,49 @@
                 </div>
             {/if}
 
-            <div class="mt-40 grid grid-cols-2">
+            <div class="mt-40 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="abstract" value="Resumen del proyecto" />
-                </div>
-                <div>
                     <Textarea id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
                     <InfoMessage message="Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto." />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="project_background" value="Antecedentes" />
-                </div>
-                <div>
                     <Textarea id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
                     <InfoMessage message="Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición." />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="conceptual_framework" value="Marco conceptual" />
-                </div>
-                <div>
                     <Textarea id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
                     <InfoMessage message="Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones." />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="project_methodology" value="Metodología" />
-                </div>
-                <div>
                     <Textarea id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
                     <InfoMessage message="Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto." />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="sustainability_proposal" value="Propuesta de sostenibilidad" />
-                </div>
-                <div>
                     <Textarea id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
                     <InfoMessage message="Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013." />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="bibliography" value="Bibliografía" />
-                </div>
-                <div>
                     <Textarea id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
                     <InfoMessage message="Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf)." />
                 </div>
@@ -619,27 +619,24 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="states" value="Nombre de los municipios beneficiados" />
+                    <Label required class="mb-4" for="states" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
-                    <Textarea id="states" error={errors.states} bind:value={$form.states} required />
+                    <SelectMulti placeholder="Buscar municipios" hasError={errors.states} items={cities} isMulti={true} {groupBy} bind:selectedValue={$form.states} ></SelectMulti>
+                    <InputError classes="text-center" message={errors.states} />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="states_impact" value="Descripción del beneficio en los municipios" />
-                </div>
-                <div>
                     <Textarea id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" id="academic_impact" value="Impacto en el centro de formación" />
-                </div>
-                <div>
                     <Textarea id="academic_impact" error={errors.academic_impact} bind:value={$form.academic_impact} required />
                 </div>
             </div>

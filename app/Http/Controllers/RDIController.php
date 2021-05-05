@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RDIRequest;
+use App\Models\Citie;
 use App\Models\Project;
 use App\Models\RDI;
 use App\Models\Call;
@@ -136,6 +137,7 @@ class RDIController extends Controller
             'sectorBasedCommittees'         => SectorBasedCommittee::select('id', 'name')->get('id'),
             'technoAcademies'               => TechnoAcademy::select('id as value', 'name as label')->get(),
             'rdiDropdownOptions'            => json_decode(Storage::get('json/rdi-dropdown-options.json'), true),
+            'projectCities'                 => $rdi->project->states()->select('cities.id as value', 'cities.name as label', 'departments.name as group')->join('departments', 'departments.id', 'cities.department_id')->get(),
         ]);
     }
 
@@ -164,7 +166,6 @@ class RDIController extends Controller
         $rdi->sustainability_proposal           = $request->sustainability_proposal;
         $rdi->bibliography                      = $request->bibliography;
         $rdi->students                          = $request->students;
-        $rdi->states                            = $request->states;
         $rdi->states_impact                     = $request->states_impact;
         $rdi->academic_impact                   = $request->academic_impact;
 
@@ -185,6 +186,7 @@ class RDIController extends Controller
 
         $rdi->project()->update(['project_type_id' => $request->project_type_id]);
         $rdi->project()->update(['academic_centre_id' => $request->academic_centre_id]);
+        $rdi->project->states()->sync($request->states);
 
         $rdi->save();
 
