@@ -52,19 +52,19 @@
 
 <form on:submit|preventDefault={handleSubmit}>
     <div>
-        <Label required class="mb-4" id="email" value={$_('Email')} />
+        <Label required class="mb-4" labelFor="email" value={$_('Email')} />
         <Input id="email" type="email" class="mt-1 block w-full" bind:value={form.email} required autofocus autocomplete="email" />
         <InputError message={errors.email} />
     </div>
 
     <div class="mt-4">
-        <Label required class="mb-4" id="password" value={$_('Password')} />
+        <Label required class="mb-4" labelFor="password" value={$_('Password')} />
         <Input id="password" type="password" class="mt-1 block w-full" bind:value={form.password} required autocomplete="current-password" />
         <InputError message={errors.password} />
     </div>
 
     <div class="block mt-4">
-        <Label required class="flex items-center" for="remember">
+        <Label required class="flex items-center" labelFor="remember">
             <Checkbox name="remember" id="remember" bind:value={form.remember} bind:group={selection} />
             <span class="ml-2 text-sm text-gray-600">{$_('Remember me')}</span>
         </Label>

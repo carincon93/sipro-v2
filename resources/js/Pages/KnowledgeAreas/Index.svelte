@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexKnowledgeAreas  = authUser.can.find(element => element == 'knowledge-areas.index') == 'knowledge-areas.index'
     let canShowKnowledgeAreas   = authUser.can.find(element => element == 'knowledge-areas.show') == 'knowledge-areas.show'
     let canCreateKnowledgeAreas = authUser.can.find(element => element == 'knowledge-areas.create') == 'knowledge-areas.create'

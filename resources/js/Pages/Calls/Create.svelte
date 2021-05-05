@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -20,7 +20,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin   = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin   = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexCalls  = authUser.can.find(element => element == 'calls.index') == 'calls.index'
     let canShowCalls   = authUser.can.find(element => element == 'calls.show') == 'calls.show'
     let canCreateCalls = authUser.can.find(element => element == 'calls.create') == 'calls.create'
@@ -28,7 +28,7 @@
     let canDeleteCalls = authUser.can.find(element => element == 'calls.delete') == 'calls.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         description: '',
         project_start_date: '',
         project_end_date: '',
@@ -71,13 +71,13 @@
                     <p class="text-center">Fecha de la conovicatoria</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                            <Label required labelFor="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
                                 <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                            <Label required labelFor="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
                                 <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
                             </div>
@@ -86,12 +86,12 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="description" value="Descripción" />
+                    <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required id="active" value="Desea activar está convocatoria?" class="inline-block mb-4" />
+                    <Label required labelFor="active" value="Desea activar está convocatoria?" class="inline-block mb-4" />
                     <br>
                     <Switch bind:checked={$form.active} />
                     <InputError message={errors.active} />
@@ -101,13 +101,13 @@
                     <p class="text-center">Fecha de ejecución de proyectos</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex {errors.project_start_date ? '' : 'items-center'}">
-                            <Label required id="project_start_date" class="{errors.project_start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                            <Label required labelFor="project_start_date" class="{errors.project_start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
                                 <Input id="project_start_date" type="date" class="mt-1 block w-full" error={errors.project_start_date} bind:value={$form.project_start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.project_end_date ? '' : 'items-center'}">
-                            <Label required id="project_end_date" class="{errors.project_end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                            <Label required labelFor="project_end_date" class="{errors.project_end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
                                 <Input id="project_end_date" type="date" class="mt-1 block w-full" error={errors.project_end_date} bind:value={$form.project_end_date} required />
                             </div>

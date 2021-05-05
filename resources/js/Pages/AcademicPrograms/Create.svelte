@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexAcademicPrograms    = authUser.can.find(element => element == 'academic-programs.index') == 'academic-programs.index'
     let canShowAcademicPrograms     = authUser.can.find(element => element == 'academic-programs.show') == 'academic-programs.show'
     let canCreateAcademicPrograms   = authUser.can.find(element => element == 'academic-programs.create') == 'academic-programs.create'
@@ -29,7 +29,7 @@
     let canDeleteAcademicPrograms   = authUser.can.find(element => element == 'academic-programs.delete') == 'academic-programs.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name:  '',
         code: '',
         study_mode: '',
@@ -67,25 +67,25 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="code" value="Código" />
+                    <Label required class="mb-4" labelFor="code" value="Código" />
                     <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="study_mode" value="Modalidad de estudio" />
+                    <Label required class="mb-4" labelFor="study_mode" value="Modalidad de estudio" />
                     <Select items={studyModes} bind:selectedValue={$form.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio"/>
                     <InputError message={errors.study_mode} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="academic_centre" value="Centro de formación" />
+                    <Label required class="mb-4" labelFor="academic_centre" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
                 </div>
             </div>

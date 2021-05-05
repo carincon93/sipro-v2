@@ -5,7 +5,6 @@
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
 
-
     export let academicCentres = []
 
     $title = $_('Academic centres.plural')
@@ -14,7 +13,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexAcademicCentres     = authUser.can.find(element => element == 'academic-centres.index') == 'academic-centres.index'
     let canShowAcademicCentres      = authUser.can.find(element => element == 'academic-centres.show') == 'academic-centres.show'
     let canCreateAcademicCentres    = authUser.can.find(element => element == 'academic-centres.create') == 'academic-centres.create'

@@ -1,10 +1,11 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
     import Button from '@/Components/Button'
+    import { Inertia } from '@inertiajs/inertia'
 
     import Stepper from '@/Components/Stepper'
     import Gantt from '@/Components/Gantt'
@@ -19,7 +20,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin     = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin     = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexOutputs  = authUser.can.find(element => element == 'outputs.index') == 'outputs.index'
     let canShowOutputs   = authUser.can.find(element => element == 'outputs.show') == 'outputs.show'
     let canCreateOutputs = authUser.can.find(element => element == 'outputs.create') == 'outputs.create'
@@ -37,7 +38,7 @@
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         <div>
             {#if canCreateOutputs || isSuperAdmin}
-                <Button href={route('calls.projects.outputs.create', [call.id, project.id])}>
+                <Button on:click={() => Inertia.visit(route('calls.projects.outputs.create', [call.id, project.id]))}>
                     <div>
                         <span>{$_('Create')}</span>
                         <span class="hidden md:inline">{$_('Outputs.singular')}</span>

@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexResearchGroups  = authUser.can.find(element => element == 'research-groups.index') == 'research-groups.index'
     let canShowResearchGroups   = authUser.can.find(element => element == 'research-groups.show') == 'research-groups.show'
     let canCreateResearchGroups = authUser.can.find(element => element == 'research-groups.create') == 'research-groups.create'

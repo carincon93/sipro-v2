@@ -32,7 +32,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin             = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin             = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexMarketResearch   = authUser.can.find(element => element == 'market-research.index') == 'market-research.index'
     let canShowMarketResearch    = authUser.can.find(element => element == 'market-research.show') == 'market-research.show'
     let canCreateMarketResearch  = authUser.can.find(element => element == 'market-research.create') == 'market-research.create'

@@ -1,18 +1,20 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import { Modal, Card } from 'svelte-chota'
+    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Switch from '@/Components/Switch'
-    import Checkbox from '@/Components/Checkbox'
-    import Select from 'svelte-select'
+    import Button from '@/Components/Button'
+    import Select from '@/Components/Select'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
@@ -35,9 +37,9 @@
     let canEditUsers    = authUser.can.find(element => element == 'users.edit') == 'users.edit'
     let canDeleteUsers  = authUser.can.find(element => element == 'users.delete') == 'users.delete'
 
-    let modal_open = false
+    let dialog_open = false
     let sending = false
-    let form = remember({
+    let form = useForm({
         name:               user.name,
         email:              user.email,
         password:           user.password,
@@ -87,49 +89,49 @@
         <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre completo" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre completo" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="email" value="Correo electrónico" />
+                    <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
                     <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
                     <InputError message={errors.email} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="document_type" value="Tipo de documento" />
+                    <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
                     <Select items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
                     <InputError message={errors.document_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="document_number" value="Número de documento" />
+                    <Label required class="mb-4" labelFor="document_number" value="Número de documento" />
                     <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
                     <InputError message={errors.document_number} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="cellphone_number" value="Número de celular" />
+                    <Label required class="mb-4" labelFor="cellphone_number" value="Número de celular" />
                     <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
                     <InputError message={errors.cellphone_number} />
                 </div>
                 <div class="mt-4">
-                    <Label required id="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
+                    <Label required labelFor="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
                     <br>
                     <Switch bind:checked={$form.is_enabled} />
                     <InputError message={errors.is_enabled} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="participation_type" value="Tipo de participación" />
+                    <Label required class="mb-4" labelFor="participation_type" value="Tipo de participación" />
                     <Select items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
                     <InputError message={errors.participation_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="academic_centre_id" value="Centro de formación" />
+                    <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
                     <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} />
                 </div>
             </div>
@@ -138,10 +140,14 @@
         <div class="bg-white rounded shadow overflow-hidden mt-20">
             <div class="grid grid-cols-2">
                 {#each roles as {id, name}, i}
-                    <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
-
-                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <Checkbox id={id} checked={user_roles.includes(id)} bind:group={$form.roles} value={id}/>
+                    <div class="pt-8 pb-8 border-t">
+                        <FormField>
+                            <Checkbox
+                                bind:group={$form.roles}
+                                value={id}
+                            />
+                                <span slot="label">{$_(name)}</span>
+                        </FormField>
                     </div>
                 {/each}
             </div>
@@ -149,7 +155,7 @@
 
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canDeleteUsers || isSuperAdmin}
-                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
                     {$_('Delete')} {$_('Users.singular').toLowerCase()}
                 </button>
             {/if}
@@ -159,16 +165,31 @@
                 </LoadingButton>
             {/if}
         </div>
-
     </form>
-    <Modal bind:open={modal_open}>
-        <Card>
+
+    <Dialog bind:open={dialog_open}>
+        <div slot="title" class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Eliminar recurso
+        </div>
+        <div slot="content">
+            <p>
+                ¿Está seguro(a) que desea eliminar este recurso?
+                <br>
+                Todos los datos se eliminarán de forma permanente.
+                <br>
+                Está acción no se puede deshacer.
+            </p>
+        </div>
+        <div slot="actions">
             <div class="p-4">
-                <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
+                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button variant="raised" on:click={destroy}>
                     {$_('Confirm')}
-                </button>
-                <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
+                </Button>
             </div>
-        </Card>
-    </Modal>
+        </div>
+    </Dialog>
 </AuthenticatedLayout>

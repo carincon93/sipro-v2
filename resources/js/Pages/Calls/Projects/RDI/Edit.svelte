@@ -4,7 +4,7 @@
     import { useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import { Modal, Card } from 'svelte-chota'
+    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import InputError from '@/Components/InputError'
@@ -16,7 +16,8 @@
     import InfoMessage from '@/Components/InfoMessage'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Select from '@/Components/Select'
-    import Switch from '@smui/switch'
+    import Switch from '@/Components/Switch'
+    import Button from '@/Components/Button'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
     import Radio from '@smui/radio'
@@ -46,7 +47,7 @@
     let canEditRDI      = authUser.can.find(element => element == 'rdi.edit') == 'rdi.edit'
     let canDeleteRDI    = authUser.can.find(element => element == 'rdi.delete') == 'rdi.delete'
 
-    let modal_open  = errors.password != undefined ? true : false
+    let dialog_open  = errors.password != undefined ? true : false
     let sending     = false
 
     let video                               = rdi.video != null
@@ -149,7 +150,7 @@
     <form on:submit|preventDefault={submit}>
         <fieldset class="p-8" disabled={canEditRDI || isSuperAdmin ? undefined : true}>
             <div class="mt-28">
-                <Label required id="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
+                <Label required labelFor="title" class="font-medium inline-block mb-10 text-center text-gray-700 text-sm w-full" value="Descripción llamativa que orienta el enfoque del proyecto, indica el cómo y el para qué." />
                 <Textarea rows="4" id="title" error={errors.title} bind:value={$form.title} classes="bg-transparent block border-0 {errors.title ? '' : 'outline-none-important'} mt-1 outline-none text-4xl text-center w-full" required />
             </div>
 
@@ -157,13 +158,13 @@
                 <p class="text-center">Fecha de ejecución</p>
                 <div class="mt-4 flex items-start justify-around">
                     <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                        <Label required id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                        <Label required labelFor="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                         <div class="ml-4">
                             <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                         </div>
                     </div>
                     <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                        <Label required id="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                        <Label required labelFor="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                         <div class="ml-4">
                             <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                         </div>
@@ -179,7 +180,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="academic_centre_id" value="Centro de formación" />
+                    <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
                     <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
                 </div>
                 <div>
@@ -189,7 +190,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="research_line_id" value="Línea de investigación" />
+                    <Label required class="mb-4" labelFor="research_line_id" value="Línea de investigación" />
                 </div>
                 <div>
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} classes="min-h" placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
@@ -197,7 +198,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="project_type_id" value="Tipo de proyecto" />
+                    <Label required class="mb-4" labelFor="project_type_id" value="Tipo de proyecto" />
                 </div>
                 <div>
                     <DynamicList id="project_type_id" bind:value={$form.project_type_id} routeWebApi={route('web-api.project-types')} classes="min-h" placeholder="Busque por el nombre del tipo de proyecto, línea programática" message={errors.project_type_id} required />
@@ -205,7 +206,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="knowledge_network_id" value="Red de conocimiento sectorial" />
+                    <Label required class="mb-4" labelFor="knowledge_network_id" value="Red de conocimiento sectorial" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_network_id" bind:value={$form.knowledge_network_id} routeWebApi={route('web-api.knowledge-networks')} classes="min-h" placeholder="Busque por el nombre de la red de conocimiento sectorial" message={errors.knowledge_network_id} required />
@@ -213,7 +214,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
+                    <Label required class="mb-4" labelFor="knowledge_subarea_discipline_id" value="Disciplina de la subárea de conocimiento" />
                 </div>
                 <div>
                     <DynamicList id="knowledge_subarea_discipline_id" bind:value={$form.knowledge_subarea_discipline_id} routeWebApi={route('web-api.knowledge-subarea-disciplines')} classes="min-h" placeholder="Busque por el nombre de la disciplina de subáreas de conocimiento" message={errors.knowledge_subarea_discipline_id} required />
@@ -221,7 +222,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
+                    <Label required class="mb-4" labelFor="ciiu_code_id" value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?" />
                 </div>
                 <div>
                     <DynamicList id="ciiu_code_id" bind:value={$form.ciiu_code_id} routeWebApi={route('web-api.ciiu-codes')} placeholder="Busque por el nombre del código CIIU" classes="min-h" message={errors.ciiu_code_id} required />
@@ -229,7 +230,7 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="strategic_thematic_id" value="Temática estratégica SENA" />
+                    <Label required class="mb-4" labelFor="strategic_thematic_id" value="Temática estratégica SENA" />
                 </div>
                 <div>
                     <DynamicList id="strategic_thematic_id" bind:value={$form.strategic_thematic_id} routeWebApi={route('web-api.strategic-thematics')} placeholder="Busque por el nombre de la temática estrategica SENA" message={errors.strategic_thematic_id} required />
@@ -237,15 +238,10 @@
             </div>
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="video" value="¿El proyecto tiene video?" />
+                    <Label labelFor="video" value="¿El proyecto tiene video?" />
                 </div>
                 <div>
-                    <div>
-                        <FormField>
-                          <Switch bind:checked={video} />
-                          <span slot="label">{#if video} Si {:else} No {/if}</span>
-                        </FormField>
-                    </div>
+                    <Switch bind:checked={video} />
                     {#if video}
                         <Input id="video" type="url" class="mt-1 block w-full" error={errors.video} placeholder="Link del video del proyecto https://www.youtube.com/watch?v=gmc4tk" bind:value={$form.video} required={!video ? undefined : 'required'} />
                         <InfoMessage message="Video de 3 minutos, en donde se presente de manera sencilla y dinámica la justificación del proyecto, la problemática, el objetivo general, los objetivos específicos, las actividades, los productos y su impacto en el marco del mecanismo de participación seleccionado como regional." />
@@ -271,7 +267,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
+                    <Label labelFor="orange_economy_justification" value="¿El proyecto está relacionado con la economía naranja?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -287,7 +283,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label id="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
+                    <Label labelFor="people_disabilities_justification" value="¿El proyecto aporta a la Política Institucional para Atención de las Personas con discapacidad?" />
                 </div>
                 <div>
                     <div class="flex items-center mb-14">
@@ -473,7 +469,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
+                    <Label required class="mb-4" labelFor="related_with_technological_plan" value="¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?" />
                 </div>
                 <div>
                     <Select items={rdiDropdownOptions} id="related_with_technological_plan" bind:selectedValue={$form.related_with_technological_plan} error={errors.related_with_technological_plan} autocomplete="off" placeholder="Seleccione una opción" required />
@@ -482,7 +478,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
+                    <Label required class="mb-4" labelFor="related_with_competitiveness_innovation" value="¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?" />
                 </div>
                 <div>
                     <Select items={rdiDropdownOptions} id="related_with_competitiveness_innovation" bind:selectedValue={$form.related_with_competitiveness_innovation} error={errors.related_with_competitiveness_innovation} autocomplete="off" placeholder="Seleccione una opción" required />
@@ -491,7 +487,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
+                    <Label required class="mb-4" labelFor="related_with_sector_based_committee" value="¿El proyecto se alinea con las Mesas Sectoriales?" />
                 </div>
                 <div>
                     <Select items={rdiDropdownOptions} id="related_with_sector_based_committee" bind:selectedValue={$form.related_with_sector_based_committee} error={errors.related_with_sector_based_committee} autocomplete="off" placeholder="Seleccione una opción" required />
@@ -522,7 +518,7 @@
 
             <div class="mt-40 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
+                    <Label required class="mb-4" labelFor="related_with_techno_academy" value="¿El proyecto se formuló en conjunto con la tecnoacademia?" />
                 </div>
                 <div>
                     <Select items={rdiDropdownOptions} id="related_with_techno_academy" bind:selectedValue={$form.related_with_techno_academy} error={errors.related_with_techno_academy} autocomplete="off" placeholder="Seleccione una opción" required/>
@@ -557,7 +553,7 @@
 
             <div class="mt-40 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="abstract" value="Resumen del proyecto" />
+                    <Label required class="mb-4" labelFor="abstract" value="Resumen del proyecto" />
                 </div>
                 <div>
                     <Textarea rows="4" id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
@@ -567,7 +563,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="project_background" value="Antecedentes" />
+                    <Label required class="mb-4" labelFor="project_background" value="Antecedentes" />
                 </div>
                 <div>
                     <Textarea rows="4" id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
@@ -577,7 +573,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="conceptual_framework" value="Marco conceptual" />
+                    <Label required class="mb-4" labelFor="conceptual_framework" value="Marco conceptual" />
                 </div>
                 <div>
                     <Textarea rows="4" id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
@@ -587,7 +583,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="project_methodology" value="Metodología" />
+                    <Label required class="mb-4" labelFor="project_methodology" value="Metodología" />
                 </div>
                 <div>
                     <Textarea rows="4" id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
@@ -597,7 +593,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="sustainability_proposal" value="Propuesta de sostenibilidad" />
+                    <Label required class="mb-4" labelFor="sustainability_proposal" value="Propuesta de sostenibilidad" />
                 </div>
                 <div>
                     <Textarea rows="4" id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
@@ -607,7 +603,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="bibliography" value="Bibliografía" />
+                    <Label required class="mb-4" labelFor="bibliography" value="Bibliografía" />
                 </div>
                 <div>
                     <Textarea rows="4" id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
@@ -617,7 +613,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
+                    <Label required class="mb-4" labelFor="students" value="Número de los aprendices que se beneficiarán en la ejecución del proyecto" />
                 </div>
                 <div>
                     <Input id="students" type="number" min="0" max="9999" class="mt-1 block w-full" error={errors.students} placeholder="Escriba el número de aprendices que se beneficiarán en la ejecución del proyecto" bind:value={$form.students} required />
@@ -626,7 +622,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="states" value="Nombre de los municipios beneficiados" />
+                    <Label required class="mb-4" labelFor="states" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
                     <Textarea rows="4" id="states" error={errors.states} bind:value={$form.states} required />
@@ -635,7 +631,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="states_impact" value="Descripción del beneficio en los municipios" />
+                    <Label required class="mb-4" labelFor="states_impact" value="Descripción del beneficio en los municipios" />
                 </div>
                 <div>
                     <Textarea rows="4" id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
@@ -644,7 +640,7 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" id="academic_impact" value="Impacto en el centro de formación" />
+                    <Label required class="mb-4" labelFor="academic_impact" value="Impacto en el centro de formación" />
                 </div>
                 <div>
                     <Textarea rows="4" id="academic_impact" error={errors.academic_impact} bind:value={$form.academic_impact} required />
@@ -653,7 +649,7 @@
         </fieldset>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canDeleteRDI || isSuperAdmin}
-                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
                     {$_('Delete')}
                 </button>
             {/if}
@@ -665,25 +661,32 @@
         </div>
     </form>
 
-    <Modal bind:open={modal_open} class="h-3/4 modal rounded-2xl">
-        <Card class="flex flex-col h-full justify-around rounded-2xl bg-mistyrose">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-1/6 m-auto text-red-300 bg-white rounded-full p-4 shadow-md">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+    <Dialog bind:open={dialog_open}>
+        <div slot="title" class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
+            Eliminar recurso
+        </div>
+        <div slot="content">
+            <p>
+                ¿Está seguro (a) que desea eliminar este proyecto?
+                <br>
+                Una vez eliminado el proyecto, todos sus recursos y datos se eliminarán de forma permanente.
+            </p>
+
+            <form on:submit|preventDefault={destroy} id="delete-rdi" class="mt-20 mb-28">
+                <Label for="password" value="Ingrese su contraseña para confirmar que desea eliminar permanentemente este proyecto." />
+                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
+            </form>
+        </div>
+        <div slot="actions">
             <div class="p-4">
-                <p class="bg-red-300 max-w-md p-4 rounded text-center text-white">
-                    {$_('Are you sure you want to delete this project? Once the project is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete this project.')}
-                </p>
-                <form on:submit|preventDefault={destroy} id="delete-rdi" class="mb-28">
-                    <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
-                </form>
-                <div class="flex mt/">
-                    <button on:click={event => modal_open = false} class="text-red-400" type="button">{$_('Cancel')}</button>
-                    <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto shadow-md" form="delete-rdi">
-                        {$_('Confirm')}
-                    </button>
-                </div>
+                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button variant="raised" form="delete-rdi">
+                    {$_('Confirm')}
+                </Button>
             </div>
-        </Card>
-    </Modal>
+        </div>
+    </Dialog>
 </AuthenticatedLayout>

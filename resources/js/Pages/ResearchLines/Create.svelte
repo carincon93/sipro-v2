@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -19,7 +19,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexResearchLines   = authUser.can.find(element => element == 'research-lines.index') == 'research-lines.index'
     let canShowResearchLines    = authUser.can.find(element => element == 'research-lines.show') == 'research-lines.show'
     let canCreateResearchLines  = authUser.can.find(element => element == 'research-lines.create') == 'research-lines.create'
@@ -27,7 +27,7 @@
     let canDeleteResearchLines  = authUser.can.find(element => element == 'research-lines.delete') == 'research-lines.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         research_group: '',
     })
@@ -63,13 +63,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="research_group_id" value="Grupo de investigación" />
+                    <Label required class="mb-4" labelFor="research_group_id" value="Grupo de investigación" />
                     <DropdownResearchGroup id="research_group_id" bind:formResearchGroup={$form.research_group_id} message={errors.research_group_id} />
                     <InputError message={errors.research_group_id} />
                 </div>

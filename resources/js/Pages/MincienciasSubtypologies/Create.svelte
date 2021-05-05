@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -20,7 +20,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                       = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                       = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexMincienciasSubtypologies   = authUser.can.find(element => element == 'minciencias-subtypologies.index') == 'minciencias-subtypologies.index'
     let canShowMincienciasSubtypologies    = authUser.can.find(element => element == 'minciencias-subtypologies.show') == 'minciencias-subtypologies.show'
     let canCreateMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.create') == 'minciencias-subtypologies.create'
@@ -28,7 +28,7 @@
     let canDeleteMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.delete') == 'minciencias-subtypologies.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         minciencias_typology_id: '',
     })
@@ -64,13 +64,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="minciencias_typology_id" value="Tipología Minciencias" />
+                    <Label required class="mb-4" labelFor="minciencias_typology_id" value="Tipología Minciencias" />
                     <Select items={mincienciasTypologies} bind:selectedValue={$form.minciencias_typology_id} autocomplete="off" placeholder="Seleccione una tipología Minciencias"/>
                     <InputError message={errors.minciencias_typology_id} />
                 </div>

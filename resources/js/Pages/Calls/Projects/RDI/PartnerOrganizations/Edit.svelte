@@ -4,11 +4,12 @@
     import { inertia, page, useForm } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import { Modal, Card } from 'svelte-chota'
+    import Dialog from '@/Components/Dialog'
 
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
+    import Button from '@/Components/Button'
     import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
@@ -33,7 +34,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'
     let canShowPartnerOrganizations     = authUser.can.find(element => element == 'partner-organizations.show') == 'partner-organizations.show'
     let canCreatePartnerOrganizations   = authUser.can.find(element => element == 'partner-organizations.create') == 'partner-organizations.create'
@@ -43,7 +44,7 @@
     let canCreatePartnerOrganizationMembers = authUser.can.find(element => element == 'partner-organization-members.create') == 'partner-organization-members.create'
     let canEditPartnerOrganizationMembers   = authUser.can.find(element => element == 'partner-organization-members.edit') == 'partner-organization-members.edit'
 
-    let modal_open = false
+    let dialog_open = false
     let sending = false
     let form = useForm({
         _method: 'put',
@@ -129,30 +130,30 @@
             <form on:submit|preventDefault={submit}>
                 <div class="p-8">
                     <div class="mt-4">
-                        <Label required class="mb-4" id="partner_organization_type" value="Tipo de entidad aliada" />
+                        <Label required class="mb-4" labelFor="partner_organization_type" value="Tipo de entidad aliada" />
                         <FilterSelect items={partnerOrganizationTypes} selectedValue={partnerOrganization.partner_organization_type} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" id="partner_organization_type" />
                         <InputError message={errors.partner_organization_type} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="name" value="Nombre de la entidad aliada/Centro de formación" />
+                        <Label required class="mb-4" labelFor="name" value="Nombre de la entidad aliada/Centro de formación" />
                         <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="legal_status" value="Naturaleza de la entidad" />
+                        <Label required class="mb-4" labelFor="legal_status" value="Naturaleza de la entidad" />
                         <FilterSelect items={legalStatus} selectedValue={partnerOrganization.legal_status} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" id="legal_status" />
                         <InputError message={errors.legal_status} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="company_type" value="Tipo de empresa" />
+                        <Label required class="mb-4" labelFor="company_type" value="Tipo de empresa" />
                         <FilterSelect items={companyTypes} selectedValue={partnerOrganization.company_type} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" id="company_type" />
                         <InputError message={errors.company_type} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="nit" value="NIT" />
+                        <Label required class="mb-4" labelFor="nit" value="NIT" />
                         <Input id="nit" type="text" class="mt-1 block w-full" bind:value={$form.nit} error={errors.nit} required />
                     </div>
 
@@ -163,7 +164,7 @@
                     </div>
                     {#if agreement}
                         <div class="mt-4">
-                            <Label required class="mb-4" id="agreement_description" value="Descipción del convenio" />
+                            <Label required class="mb-4" labelFor="agreement_description" value="Descipción del convenio" />
                             <Textarea rows="4" id="agreement_description" error={errors.agreement_description} bind:value={$form.agreement_description} required />
                         </div>
                     {/if}
@@ -175,53 +176,53 @@
                     </div>
                     {#if researchGroup}
                         <div class="mt-4">
-                            <Label required class="mb-4" id="research_group" value="Grupo de investigación" />
+                            <Label required class="mb-4" labelFor="research_group" value="Grupo de investigación" />
                             <Textarea rows="4" id="research_group" error={errors.research_group} bind:value={$form.research_group} required />
                         </div>
 
                         <div class="mt-4">
-                            <Label required class="mb-4" id="gruplac_code" value="Código del GrupLAC" />
+                            <Label required class="mb-4" labelFor="gruplac_code" value="Código del GrupLAC" />
                             <Input id="gruplac_code" type="text" class="mt-1 block w-full" error={errors.gruplac_code} placeholder="Ejemplo: COL0000000" bind:value={$form.gruplac_code} required={!researchGroup ? undefined : 'required'} />
                         </div>
 
                         <div class="mt-4">
-                            <Label required class="mb-4" id="gruplac_link" value="Enlace del GrupLAC" />
+                            <Label required class="mb-4" labelFor="gruplac_link" value="Enlace del GrupLAC" />
                             <Input id="gruplac_link" type="url" class="mt-1 block w-full" error={errors.gruplac_link} placeholder="Ejemplo: https://scienti.minciencias.gov.co/gruplac/jsp/Medicion/graficas/verPerfiles.jsp?id_convocatoria=0nroIdGrupo=0000000" bind:value={$form.gruplac_link} required={!researchGroup ? undefined : 'required'} />
                         </div>
                     {/if}
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="in_kind" value="Recursos en especie entidad aliada ($COP)" />
+                        <Label required class="mb-4" labelFor="in_kind" value="Recursos en especie entidad aliada ($COP)" />
                         <Input id="in_kind" type="number" min="0" class="mt-1 block w-full" error={errors.in_kind} placeholder="COP" bind:value={$form.in_kind} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="in_kind_description" value="Descripción de los recursos en especie aportados" />
+                        <Label required class="mb-4" labelFor="in_kind_description" value="Descripción de los recursos en especie aportados" />
                         <Textarea rows="4" id="in_kind_description" error={errors.in_kind_description} bind:value={$form.in_kind_description} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="funds" value="Recursos en especie entidad aliada ($COP)" />
+                        <Label required class="mb-4" labelFor="funds" value="Recursos en especie entidad aliada ($COP)" />
                         <Input id="funds" type="number" min="0" class="mt-1 block w-full" error={errors.funds} placeholder="COP" bind:value={$form.funds} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="funds_description" value="Descripción de la destinación del dinero aportado" />
+                        <Label required class="mb-4" labelFor="funds_description" value="Descripción de la destinación del dinero aportado" />
                         <Textarea rows="4" id="funds_description" error={errors.funds_description} bind:value={$form.funds_description} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
+                        <Label required class="mb-4" labelFor="knowledge_transfer_activities" value="Metodología o actividades de transferencia al centro de formación" />
                         <Textarea rows="4" id="knowledge_transfer_activities" error={errors.knowledge_transfer_activities} bind:value={$form.knowledge_transfer_activities} required />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
+                        <Label required class="mb-4" labelFor="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
                         <File id="letter_of_intent" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.letter_of_intent} error={errors.letter_of_intent} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" id="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
+                        <Label required class="mb-4" labelFor="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
                         <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
                     </div>
 
@@ -246,7 +247,7 @@
                 </div>
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                     {#if canDeletePartnerOrganizations || isSuperAdmin}
-                        <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => modal_open = true}>
+                        <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
                             {$_('Delete')} {$_('Partner organizations.singular').toLowerCase()}
                         </button>
                     {/if}
@@ -257,17 +258,6 @@
                     {/if}
                 </div>
             </form>
-
-            <Modal bind:open={modal_open}>
-                <Card>
-                    <div class="p-4">
-                        <button class="inline-flex items-center px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:outline-none transition ease-in-out duration-150 bg-red-500 hover:bg-red-400 ml-auto" type="button" on:click={destroy}>
-                            {$_('Confirm')}
-                        </button>
-                        <button on:click={event => modal_open = false} type="button">{$_('Cancel')}</button>
-                    </div>
-                </Card>
-            </Modal>
         </div>
         <div class="px-4">
             <h1 class="mb-4">Enlaces de interés</h1>
@@ -390,4 +380,30 @@
             </tbody>
         </table>
     </div>
+
+    <Dialog bind:open={dialog_open}>
+        <div slot="title" class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Eliminar recurso
+        </div>
+        <div slot="content">
+            <p>
+                ¿Está seguro(a) que desea eliminar este recurso?
+                <br>
+                Todos los datos se eliminarán de forma permanente.
+                <br>
+                Está acción no se puede deshacer.
+            </p>
+        </div>
+        <div slot="actions">
+            <div class="p-4">
+                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button variant="raised" on:click={destroy}>
+                    {$_('Confirm')}
+                </Button>
+            </div>
+        </div>
+    </Dialog>
 </AuthenticatedLayout>

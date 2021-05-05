@@ -22,7 +22,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin               = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin               = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.index') == 'project-annexes.index'
     let canShowProjectAnnexes      = authUser.can.find(element => element == 'project-annexes.show') == 'project-annexes.show'
     let canCreateProjectAnnexes    = authUser.can.find(element => element == 'project-annexes.create') == 'project-annexes.create'
@@ -71,12 +71,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="annexes" value={$_('Annexes.singular')} />
+                    <Label required class="mb-4" labelFor="annexes" value={$_('Annexes.singular')} />
                     <Select items={annexes} bind:selectedValue={$form.annexe_id} autocomplete="off" placeholder="Seleccione el anexo"/>
                     <InputError message={errors.annexes} />
                 </div>
                 <div class="mt-4">
-                    <Label required class="mb-4" id="file" value="Anexo" />
+                    <Label required class="mb-4" labelFor="file" value="Anexo" />
                     <File id="file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.file} error={errors.file} required />
                 </div>
             </div>

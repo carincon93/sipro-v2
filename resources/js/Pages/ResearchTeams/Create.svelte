@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page} from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page} from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -19,7 +19,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexResearchTeams   = authUser.can.find(element => element == 'research-teams.index') == 'research-teams.index'
     let canShowResearchTeams    = authUser.can.find(element => element == 'research-teams.show') == 'research-teams.show'
     let canCreateResearchTeams  = authUser.can.find(element => element == 'research-teams.create') == 'research-teams.create'
@@ -27,7 +27,7 @@
     let canDeleteResearchTeams  = authUser.can.find(element => element == 'research-teams.delete') == 'research-teams.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         research_line_id: '',
     })
@@ -63,13 +63,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="research_line_id" value="Línea de investigación" />
+                    <Label required class="mb-4" labelFor="research_line_id" value="Línea de investigación" />
                     <DynamicList id="research_line_id" bind:value={$form.research_line_id} routeWebApi={route('web-api.research-lines')} placeholder="Busque por el nombre de la línea de investigación, centro de formación, grupo de investigación o regional" message={errors.research_line_id} required/>
                     <InputError message={errors.research_line} />
                 </div>

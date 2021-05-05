@@ -24,7 +24,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexOutputs  = authUser.can.find(element => element == 'outputs.index') == 'outputs.index'
     let canShowOutputs   = authUser.can.find(element => element == 'outputs.show') == 'outputs.show'
     let canCreateOutputs = authUser.can.find(element => element == 'outputs.create') == 'outputs.create'
@@ -74,13 +74,13 @@
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex">
-                            <Label required id="start_date" value="Del" />
+                            <Label required labelFor="start_date" value="Del" />
                             <div class="ml-4">
                                 <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex">
-                            <Label required id="end_date" value="hasta" />
+                            <Label required labelFor="end_date" value="hasta" />
                             <div class="ml-4">
                                 <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                             </div>
@@ -92,18 +92,18 @@
                 </div>
 
                 <div class="mt-8">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="project_result_id" value={$_('Research results.singular')} />
+                    <Label required class="mb-4" labelFor="project_result_id" value={$_('Research results.singular')} />
                     <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
                 </div>
 
                 {#if project.rdi}
                     <div class="mt-4">
-                        <Label required class="mb-4" id="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
+                        <Label required class="mb-4" labelFor="minciencias_subtypology_id" value={$_('Minciencias subtypologies.singular')} />
                         <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
                     </div>
                 {/if}

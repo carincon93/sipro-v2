@@ -24,7 +24,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexProjectSennovaRoles  = authUser.can.find(element => element == 'project-sennova-roles.index') == 'project-sennova-roles.index'
     let canShowProjectSennovaRoles   = authUser.can.find(element => element == 'project-sennova-roles.show') == 'project-sennova-roles.show'
     let canCreateProjectSennovaRoles = authUser.can.find(element => element == 'project-sennova-roles.create') == 'project-sennova-roles.create'
@@ -76,12 +76,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="call_sennova_role_id" value="Rol SENNOVA" />
+                    <Label required class="mb-4" labelFor="call_sennova_role_id" value="Rol SENNOVA" />
                     <DropdownProjectSennovaRole id="call_sennova_role_id" {call} {programmaticLine} bind:formProjectSennovaRole={$form.call_sennova_role_id} bind:projectSennovaRoleInfo={projectSennovaRoleInfo} message={errors.call_sennova_role_id} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="description" value="Descripción" />
+                    <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
@@ -105,7 +105,7 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label required class="mb-4" id="qty_months" value="Número de meses que requiere el apoyo" />
+                        <Label required class="mb-4" labelFor="qty_months" value="Número de meses que requiere el apoyo" />
                         <Input id="qty_months" type="number" min="1" max={project.diff_months} class="mt-1 block w-full" error={errors.qty_months} bind:value={$form.qty_months} required />
                     </div>
                 {/if}
@@ -120,7 +120,7 @@
                     </div>
                 {:else}
                     <div class="mt-4">
-                        <Label required class="mb-4" id="qty_roles" value="Número de personas requeridas" />
+                        <Label required class="mb-4" labelFor="qty_roles" value="Número de personas requeridas" />
                         <Input id="qty_roles" type="number" min="1" class="mt-1 block w-full" error={errors.qty_roles} bind:value={$form.qty_roles} required />
                     </div>
                 {/if}

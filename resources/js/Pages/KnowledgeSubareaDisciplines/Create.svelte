@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -20,7 +20,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                         = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                         = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexKnowledgeSubareaDisciplines  = authUser.can.find(element => element == 'knowledge-subarea-disciplines.index') == 'knowledge-subarea-disciplines.index'
     let canShowKnowledgeSubareaDisciplines   = authUser.can.find(element => element == 'knowledge-subarea-disciplines.show') == 'knowledge-subarea-disciplines.show'
     let canCreateKnowledgeSubareaDisciplines = authUser.can.find(element => element == 'knowledge-subarea-disciplines.create') == 'knowledge-subarea-disciplines.create'
@@ -28,7 +28,7 @@
     let canDeleteKnowledgeSubareaDisciplines = authUser.can.find(element => element == 'knowledge-subarea-disciplines.delete') == 'knowledge-subarea-disciplines.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         knowledge_subarea: '',
     })
@@ -64,13 +64,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="knowledge_subarea" value="Subárea de conocimiento" />
+                    <Label required class="mb-4" labelFor="knowledge_subarea" value="Subárea de conocimiento" />
                     <Select items={knowledgeSubareas} bind:selectedValue={$form.knowledge_subarea} autocomplete="off" placeholder="Seleccione una subárea de conocimiento"/>
                     <InputError message={errors.knowledge_subarea} />
                 </div>

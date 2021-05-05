@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexProjectSennovaBudgets   = authUser.can.find(element => element == 'project-sennova-budgets.index') == 'project-sennova-budgets.index'
     let canShowProjectSennovaBudgets    = authUser.can.find(element => element == 'project-sennova-budgets.show') == 'project-sennova-budgets.show'
     let canCreateProjectSennovaBudgets  = authUser.can.find(element => element == 'project-sennova-budgets.create') == 'project-sennova-budgets.create'
@@ -101,7 +101,7 @@
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         <div>
             {#if canCreateProjectSennovaBudgets || isSuperAdmin}
-                <Button href={route('calls.projects.project-sennova-budgets.create', [call.id, project.id])}>
+                <Button on:click={() => Inertia.visit(route('calls.projects.project-sennova-budgets.create', [call.id, project.id]))}>
                     <div>
                         <span>{$_('Create')}</span>
                         <span class="hidden md:inline">{$_('Project sennova budgets.singular')}</span>

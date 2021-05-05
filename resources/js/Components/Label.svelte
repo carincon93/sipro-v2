@@ -1,5 +1,5 @@
 <script>
-    export let id
+    export let labelFor
     export let value
     export let required
 
@@ -10,5 +10,5 @@
 </script>
 
 {#if value}
-    <label {...props} for={id}>{value} {#if required}<small class="label-required text-red-400">* Campo obligatorio</small> {/if}</label>
+    <label {...props} for={labelFor}>{value} {#if required}<small class="label-required text-red-400">* Campo obligatorio</small> {/if}</label>
 {/if}

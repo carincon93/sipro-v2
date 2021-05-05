@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexMincienciasTypologies   = authUser.can.find(element => element == 'minciencias-typologies.index') == 'minciencias-typologies.index'
     let canShowMincienciasTypologies    = authUser.can.find(element => element == 'minciencias-typologies.show') == 'minciencias-typologies.show'
     let canCreateMincienciasTypologies  = authUser.can.find(element => element == 'minciencias-typologies.create') == 'minciencias-typologies.create'

@@ -19,7 +19,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexAnnexes    = authUser.can.find(element => element == 'annexes.index') == 'annexes.index'
     let canShowAnnexes     = authUser.can.find(element => element == 'annexes.show') == 'annexes.show'
     let canCreateAnnexes   = authUser.can.find(element => element == 'annexes.create') == 'annexes.create'
@@ -64,12 +64,12 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre del anexo" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre del anexo" />
                     <Textarea rows="4" id="name" error={errors.name} bind:value={$form.name} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="description" value="Descripción" />
+                    <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 

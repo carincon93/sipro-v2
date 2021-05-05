@@ -15,7 +15,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin              = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin              = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexCallSennovaRoles  = authUser.can.find(element => element == 'call-sennova-roles.index') == 'call-sennova-roles.index'
     let canShowCallSennovaRoles   = authUser.can.find(element => element == 'call-sennova-roles.show') == 'call-sennova-roles.show'
     let canCreateCallSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.create') == 'call-sennova-roles.create'

@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -20,7 +20,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexProjectTypes    = authUser.can.find(element => element == 'project-types.index') == 'project-types.index'
     let canShowProjectTypes     = authUser.can.find(element => element == 'project-types.show') == 'project-types.show'
     let canCreateProjectTypes   = authUser.can.find(element => element == 'project-types.create') == 'project-types.create'
@@ -28,7 +28,7 @@
     let canDeleteProjectTypes   = authUser.can.find(element => element == 'project-types.delete') == 'project-types.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name: '',
         maximum_value: '',
         programmatic_line: '',
@@ -63,19 +63,19 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="maximum_value" value="Valor máximo" />
+                    <Label required class="mb-4" labelFor="maximum_value" value="Valor máximo" />
                     <Input id="maximum_value" type="number" min="0" class="mt-1 block w-full" bind:value={$form.maximum_value} required autofocus />
                     <InputError message={errors.maximum_value} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="programmatic_line" value="Línea programática" />
+                    <Label required class="mb-4" labelFor="programmatic_line" value="Línea programática" />
                     <Select items={programmaticLines} bind:selectedValue={$form.programmatic_line} autocomplete="off" placeholder="Seleccione una línea programática"/>
                     <InputError message={errors.programmatic_line} />
                 </div>

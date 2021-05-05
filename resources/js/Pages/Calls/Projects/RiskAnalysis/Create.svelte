@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin           = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin           = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRiskAnalysis   = authUser.can.find(element => element == 'risk-analysis.index') == 'risk-analysis.index'
     let canShowRiskAnalysis    = authUser.can.find(element => element == 'risk-analysis.show') == 'risk-analysis.show'
     let canCreateRiskAnalysis  = authUser.can.find(element => element == 'risk-analysis.create') == 'risk-analysis.create'
@@ -29,7 +29,7 @@
     let canDeleteRiskAnalysis  = authUser.can.find(element => element == 'risk-analysis.delete') == 'risk-analysis.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         level:  '',
         type:  '',
         description:  '',
@@ -76,41 +76,41 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="level" value="Nivel de riesgo" />
+                    <Label required class="mb-4" labelFor="level" value="Nivel de riesgo" />
                     <Select items={riskLevels} bind:selectedValue={$form.level} autocomplete="off"  placeholder="Seleccione el nivel del riesgo" inputAttributes={{'id': 'level'}} />
                     <InputError message={errors.level} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="type" value="Tipo de riesgo" />
+                    <Label required class="mb-4" labelFor="type" value="Tipo de riesgo" />
                     <Select items={types} bind:selectedValue={$form.type} autocomplete="off"  placeholder="Seleccione el tipo de riesgo" inputAttributes={{'id': 'type'}} />
                     <InputError message={errors.type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="description" value="Descripción" />
+                    <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="probability" value="Probabilidad" />
+                    <Label required class="mb-4" labelFor="probability" value="Probabilidad" />
                     <Select items={probabilities} bind:selectedValue={$form.probability} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'probability'}} />
                     <InputError message={errors.probability} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="impact" value="Impactos" />
+                    <Label required class="mb-4" labelFor="impact" value="Impactos" />
                     <Select items={impacts} bind:selectedValue={$form.impact} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'impact'}} />
                     <InputError message={errors.impact} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="effects" value="Efectos" />
+                    <Label required class="mb-4" labelFor="effects" value="Efectos" />
                     <Textarea rows="4" id="effects" error={errors.effects} bind:value={$form.effects} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="mitigation_measures" value="Medidas de mitigación" />
+                    <Label required class="mb-4" labelFor="mitigation_measures" value="Medidas de mitigación" />
                     <Textarea rows="4" id="mitigation_measures" error={errors.mitigation_measures} bind:value={$form.mitigation_measures} required />
                 </div>
             </div>

@@ -1,15 +1,8 @@
 <script>
     import Button, { Label } from '@smui/button'
-    import { Inertia } from '@inertiajs/inertia'
 
     export let variant = 'raised'
     export let href
-
-    function visit() {
-        if (href) {
-            Inertia.visit(href)
-        }
-    }
 
     $: props = {
         ...$$restProps,
@@ -17,7 +10,7 @@
     }
 </script>
 
-<Button {...props} variant={variant} on:click={visit}>
+<Button {...props} {href} variant={variant} height="100px" action={null} on:click>
     <Label>
         <slot />
     </Label>

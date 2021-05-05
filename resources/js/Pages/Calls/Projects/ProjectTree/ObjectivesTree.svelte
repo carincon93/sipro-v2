@@ -14,8 +14,8 @@
     import Select from '@/Components/Select'
     import Stepper from '@/Components/Stepper'
     import InfoMessage from '@/Components/InfoMessage'
-    import Dialog, { Title, Content } from '@smui/dialog'
-    import Button, { Label as LabelMUI } from '@smui/button'
+    import Dialog from '@/Components/Dialog'
+    import Button from '@/Components/Button'
 
     import { createPopper } from '@popperjs/core'
 
@@ -28,8 +28,8 @@
     export let resultTypes
 
     let formID
-    let sending = false
-    let open    = false
+    let sending     = false
+    let dialog_open = false
     let dialogTitle
     let code
 
@@ -38,7 +38,7 @@
     /**
      * Permisos
      */
-     let authUser        = $page.props.auth.user
+     let authUser       = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canCreateRDI    = authUser.can.find(element => element == 'rdi.create') == 'rdi.create'
     let canEditRDI      = authUser.can.find(element => element == 'rdi.edit') == 'rdi.edit'
@@ -53,7 +53,7 @@
     function showGeneralInfoDialog(type) {
         reset()
         dialogTitle     = 'Información general'
-        open            = true
+        dialog_open     = true
 
         generalInfoType = type
         showGeneralInfo = true
@@ -73,10 +73,10 @@
     let showImpactForm  = false
     let impactIndirectEffect
     function showImpactDialog(indirectEffect, indirectEffectID, resultID) {
-        reset()
+        // reset()
         code                                = indirectEffect.impact.id != null ? 'RES-' + resultID + '-IMP-' + indirectEffect.impact.id: ''
         dialogTitle                         = 'Impacto'
-        open                                = true
+        dialog_open                         = true
         showImpactForm                      = true
         formID                              = 'impact-form'
         impactIndirectEffect                = indirectEffect.description
@@ -127,7 +127,7 @@
         specificObjectiveDescription        = {description: specificObjective.specific_objective?.description ? specificObjective.specific_objective?.description : $_('No data recorded'), number: specificObjective.specific_objective?.number }
         code                                = 'RES-' + directEffect.project_result.id
         dialogTitle                         = 'Resultado'
-        open                                = true
+        dialog_open                         = true
         showResultForm                      = true
         formID                              = 'project-result-form'
         $formResult.id                      = directEffect.project_result.id
@@ -162,7 +162,7 @@
     function showPrimaryObjectiveDialog() {
         reset()
         dialogTitle                             = 'Objetivo general'
-        open                                    = true
+        dialog_open                             = true
         showPrimaryObjectiveForm                = true
         formID                                  = 'primary-objective-form'
         problemStatement                        = project.problem_statement
@@ -195,7 +195,7 @@
         reset()
         code                                = 'OBJ-ESP-' + directCause.specific_objective.id
         dialogTitle                         = directCause.specific_objective.number
-        open                                = true
+        dialog_open                         = true
         showSpecificObjectiveForm           = true
         formID                              = 'specific-objective-form'
         $formSpecificObjective.id           = directCause.specific_objective.id
@@ -233,7 +233,7 @@
         reset()
         code                                    = indirectCause.activity.id != null ? 'OBJ-ESP-' + specificObjective + '-ACT-' + indirectCause.activity.id : ''
         dialogTitle                             = 'Actividad'
-        open                                    = true
+        dialog_open                             = true
         showActivityForm                        = true
         formID                                  = 'activity-form'
         $formActivity.id                        = indirectCause.activity.id
@@ -276,7 +276,7 @@
 
     function closeDialog() {
         reset()
-        open = false
+        dialog_open = false
     }
 
     onMount(() => {
@@ -528,14 +528,8 @@
     </div>
 
     <!-- Dialog -->
-    <Dialog
-        bind:open
-        scrimClickAction=""
-        escapeKeyAction=""
-        aria-labelledby="mandatory-title"
-        aria-describedby="mandatory-content"
-    >
-        <Title id="mandatory-title">
+    <Dialog bind:open={dialog_open} >
+        <div slot="title">
             <div class="mb-10 text-center">
                 <div class="text-primary">
                     {dialogTitle}
@@ -546,22 +540,8 @@
                     </small>
                 {/if}
             </div>
-            {#if formID}
-                <div class="flex justify-end">
-                    <div>
-                        <Button on:click={closeDialog} type="button">
-                            <LabelMUI>{$_('Cancel')}</LabelMUI>
-                        </Button>
-                        {#if !canCreateOrUpdate}
-                            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
-                                {$_('Save')}
-                            </LoadingButton>
-                        {/if}
-                    </div>
-                </div>
-            {/if}
-        </Title>
-        <Content id="mandatory-content">
+        </div>
+        <div slot="content">
             {#if showActivityForm}
                 <form on:submit|preventDefault={submitActivity} id="activity-form">
                     <fieldset disabled={canCreateOrUpdate}>
@@ -572,13 +552,13 @@
                         <p class="mt-1 text-center">Fecha de ejecución</p>
                         <div class="mt-1 mb-20 flex items-start justify-around">
                             <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                                <Label id="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                                <Label labelFor="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                                 <div class="ml-4">
                                     <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.start_date} required />
                                 </div>
                             </div>
                             <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                                <Label id="end_date" class="ml-4 {errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                                <Label labelFor="end_date" class="ml-4 {errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                                 <div class="ml-4">
                                     <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$formActivity.end_date} required />
                                 </div>
@@ -591,7 +571,7 @@
                             </div>
                         {/if}
                         <div>
-                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Label class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formActivity.description} required />
                         </div>
                     </fieldset>
@@ -605,7 +585,7 @@
                             {SpecificObjectiveDirectCause}
                         </p>
                         <div>
-                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Label class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formSpecificObjective.description} required />
                         </div>
                     </fieldset>
@@ -619,7 +599,7 @@
                             {problemStatement}
                         </p>
                         <div>
-                            <Label class="mb-4" id="primary_objective" value="Objetivo general" />
+                            <Label class="mb-4" labelFor="primary_objective" value="Objetivo general" />
                             <InfoMessage message="Establece que pretende alcanzar la investigación. Se inicia con un verbo en modo infinitivo, es medible y alcanzable. Responde al Qué, Cómo y el Para qué" />
                             <Textarea rows="4" id="primary_objective" error={errors.primary_objective} bind:value={$formPrimaryObjective.primary_objective} required />
                         </div>
@@ -638,23 +618,23 @@
                             {specificObjectiveDescription.description}
                         </p>
                         <div class="mb-20">
-                            <Label id="type" value="Tipo" />
+                            <Label labelFor="type" value="Tipo" />
                             <Select id="type" items={resultTypes} bind:selectedValue={$formResult.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
                         </div>
                         <div class="mb-20">
-                            <Label id="description" value="Descripción" />
+                            <Label labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" maxlength="200" error={errors.description} bind:value={$formResult.description} required />
                         </div>
                         <div class="mb-20">
-                            <Label id="trl" value="TRL" />
+                            <Label labelFor="trl" value="TRL" />
                             <Input id="trl" type="number" max="9" min="1" class="block w-full" error={errors.trl} bind:value={$formResult.trl} required />
                         </div>
                         <div class="mb-20">
-                            <Label id="indicator" value="Indicador" />
+                            <Label labelFor="indicator" value="Indicador" />
                             <Textarea rows="4" id="indicator" maxlength="200" error={errors.indicator} bind:value={$formResult.indicator} required />
                         </div>
                         <div class="mb-20">
-                            <Label id="means_of_verification" value="Medio de verificación" />
+                            <Label labelFor="means_of_verification" value="Medio de verificación" />
                             <Textarea rows="4" id="means_of_verification" maxlength="200" error={errors.means_of_verification} bind:value={$formResult.means_of_verification} required />
                         </div>
                     </fieldset>
@@ -668,11 +648,11 @@
                             {impactIndirectEffect}
                         </p>
                         <div class="mt-4">
-                            <Label id="type" value="Tipo" />
+                            <Label labelFor="type" value="Tipo" />
                             <Select id="type" items={impactTypes} bind:selectedValue={$formImpact.type} error={errors.type} autocomplete="off" placeholder="Seleccione un tipo" required />
                         </div>
                         <div class="mt-4">
-                            <Label class="mb-4" id="description" value="Descripción" />
+                            <Label class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formImpact.description} required />
                         </div>
                     </fieldset>
@@ -687,10 +667,20 @@
 
                 <div class="mt-8">
                     <Button on:click={closeDialog} type="button">
-                        <LabelMUI>{$_('Cancel')}</LabelMUI>
+                        {$_('Cancel')}
                     </Button>
                 </div>
             {/if}
-        </Content>
+        </div>
+        <div slot="actions" class="block flex w-full">
+            <Button on:click={closeDialog} type="button" variant={null}>
+                {$_('Cancel')}
+            </Button>
+            {#if !canCreateOrUpdate && formID}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
+                    {$_('Save')}
+                </LoadingButton>
+            {/if}
+        </div>
     </Dialog>
 </AuthenticatedLayout>

@@ -9,7 +9,7 @@
 
     export let errors
 
-    let form = remember({
+    let form = useForm({
         search:  '',
     })
 

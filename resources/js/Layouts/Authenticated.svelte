@@ -9,16 +9,18 @@
     import { route, links } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import ApplicationLogo from '@/Components/ApplicationLogo'
+
     import Dropdown from '@/Components/Dropdown'
     import Icon from '@/Components/Icon'
     import ResponsiveNavLink from '@/Components/ResponsiveNavLink'
     import FlashMessages from '@/Components/FlashMessages'
-    import Dialog, { Title, Content, Actions } from '@smui/dialog'
-    import Button, { Label } from '@smui/button'
+    import Dialog from '@/Components/Dialog'
+    import Button from '@/Components/Button'
+    import { Inertia } from '@inertiajs/inertia';
 
-    let open
-
+    let dialog_open = false
     let showingNavigationDropdown = false
+
     let authUser        = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
 
@@ -32,18 +34,22 @@
 </svelte:head>
 
 <style>
-    :global(#main-menu .mdc-dialog__surface) {
+    :global(#main-menu-dialog .mdc-dialog__surface) {
         width: 750px;
         max-width: calc(100vw - 32px) !important;
     }
 
-    :global(#main-menu .mdc-dialog__content) {
+    :global(#main-menu-dialog .mdc-dialog__content) {
         padding-top: 40px !important;
     }
 
-    :global(#main-menu .mdc-dialog__title) {
+    :global(#main-menu-dialog .mdc-dialog__title) {
         border-bottom: 1px solid rgba(0,0,0,.12);
         margin-bottom: 0;
+    }
+
+    :global(#main-menu-dialog .mdc-button--outlined, #main-menu-dialog .mdc-button--raised) {
+        height: auto;
     }
 
 </style>
@@ -64,39 +70,10 @@
 
                         <!-- Navigation Links -->
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex sm:items-center">
-                            <Button on:click={() => (open = true)}>
-                                <Label>{$_('Dashboard')}</Label>
+                            <Button on:click={() => (dialog_open = true)} variant={null}>
+                                {$_('Dashboard')}
                             </Button>
                         </div>
-                        <!-- Dialog -->
-                        <Dialog
-                            bind:open
-                            scrimClickAction=""
-                            escapeKeyAction=""
-                            aria-labelledby="mandatory-title"
-                            aria-describedby="mandatory-content"
-                            id="main-menu"
-                        >
-                            <Title id="menu-mandatory-title">
-                                <h1 class="text-4xl pb-4 text-center">Menú de navegación</h1>
-                            </Title>
-                            <Content id="menu-mandatory-content">
-                                <div class="grid grid-cols-3 gap-5 p-8">
-                                    {#each links as link}
-                                        {#if authUser.can.find(element => element == link.route+'.index') != undefined || authUser.can.find(element => element == link.route+'.show') != undefined || authUser.can.find(element => element == link.route+'.create') != undefined || authUser.can.find(element => element == link.route+'.edit') != undefined || authUser.can.find(element => element == link.route+'.delete') != undefined || isSuperAdmin}
-                                            <a use:inertia href={route(link.route+'.index')} class="block border flex h-16 hover:bg-indigo-500 hover:text-white items-center overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg{isUrl('/'+link.route+'/*') ? ' bg-indigo-600 text-white' : ''}">
-                                                {$_(link.name+'.plural')}
-                                            </a>
-                                        {/if}
-                                    {/each}
-                                </div>
-                            </Content>
-                            <Actions>
-                                <Button>
-                                  <Label>{$_('Close')}</Label>
-                                </Button>
-                              </Actions>
-                        </Dialog>
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -177,6 +154,31 @@
         </main>
     </div>
 </div>
+
+<!-- Dialog -->
+<Dialog bind:open={dialog_open} id="main-menu">
+    <div slot="title" class="mb-6 text-center text-primary">
+        <div class="">
+            Menú de navegación
+        </div>
+    </div>
+    <div slot="content">
+        <div class="grid grid-cols-3 gap-5 p-8">
+            {#each links as link}
+                {#if authUser.can.find(element => element == link.route+'.index') != undefined || authUser.can.find(element => element == link.route+'.show') != undefined || authUser.can.find(element => element == link.route+'.create') != undefined || authUser.can.find(element => element == link.route+'.edit') != undefined || authUser.can.find(element => element == link.route+'.delete') != undefined || isSuperAdmin}
+                    <Button on:click={()=> Inertia.visit(route(link.route+'.index'))} variant={isUrl('/'+link.route+'/*') ? 'raised' : 'outlined'} class="p-2">
+                        {$_(link.name+'.plural')}
+                    </Button>
+                {/if}
+            {/each}
+        </div>
+    </div>
+    <div slot="actions">
+        <div class="p-4">
+            <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+        </div>
+    </div>
+</Dialog>
 
 
 

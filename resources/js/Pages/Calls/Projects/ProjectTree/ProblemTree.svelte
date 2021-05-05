@@ -5,9 +5,9 @@
     import { onMount } from 'svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog, { Title, Content } from '@smui/dialog'
-    import Button, { Label as LabelMUI } from '@smui/button'
 
+    import Dialog from '@/Components/Dialog'
+    import Button from '@/Components/Button'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
@@ -23,8 +23,8 @@
     export let directCauses
 
     let formID
-    let sending = false
-    let open    = false
+    let sending     = false
+    let dialog_open = false
     let dialogTitle
     let code
 
@@ -56,7 +56,7 @@
         dialogTitle             = 'Efecto indirecto'
         formID                  = 'indirect-effect'
         showIndirectEffectForm  = true
-        open                    = true
+        dialog_open             = true
 
         if(indirectEffect != null) {
             $formIndirectEffect.description      = indirectEffect.description
@@ -94,7 +94,7 @@
         dialogTitle                     = 'Efecto directo'
         formID                          = 'direct-effect'
         showDirectEffectForm            = true
-        open                            = true
+        dialog_open                     = true
         $formDirectEffect.description   = directEffect.description
         $formDirectEffect.id            = directEffect.id
     }
@@ -124,7 +124,7 @@
         dialogTitle                                 = 'Planteamiento del problema'
         formID                                      = 'statement-problem'
         showStatementProblemForm                    = true
-        open                                        = true
+        dialog_open                                 = true
         $formStatementProblem.problem_statement     = project.problem_statement
         $formStatementProblem.problem_justification = project.problem_justification
     }
@@ -155,7 +155,7 @@
         dialogTitle                     = 'Causa directa'
         formID                          = 'direct-cause'
         showDirectCauseForm             = true
-        open                            = true
+        dialog_open                     = true
         $formDirectCause.id             = directCause.id
         $formDirectCause.description    = directCause.description
     }
@@ -187,7 +187,7 @@
         dialogTitle                             = 'Causa indirecta'
         formID                                  = 'indirect-cause'
         showIndirectCauseForm                   = true
-        open                                    = true
+        dialog_open                             = true
         if(indirectCause != null) {
             $formIndirectCause.id               = indirectCause.id
             $formIndirectCause.description      = indirectCause.description
@@ -228,7 +228,7 @@
 
     function closeDialog() {
         reset()
-        open = false
+        dialog_open = false
     }
 
     onMount(() => {
@@ -481,43 +481,23 @@
     </div>
 
     <!-- Dialog -->
-    <Dialog
-        bind:open
-        scrimClickAction=""
-        escapeKeyAction=""
-        aria-labelledby="mandatory-title"
-        aria-describedby="mandatory-content"
-    >
-        <Title id="mandatory-title">
-            <div class="mb-10 text-center">
-                <div class="text-primary">
-                    {dialogTitle}
-                </div>
-                {#if code}
-                    <small class="block text-primary-light">
-                        Código: {code}
-                    </small>
-                {/if}
+    <Dialog bind:open={dialog_open}>
+        <div slot="title" class="mb-10 text-center">
+            <div class="text-primary">
+                {dialogTitle}
             </div>
-            <div class="flex justify-end">
-                <div>
-                    <Button on:click={closeDialog} type="button">
-                        <LabelMUI>{$_('Cancel')}</LabelMUI>
-                    </Button>
-                    {#if !canCreateOrUpdate}
-                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
-                            {$_('Save')}
-                        </LoadingButton>
-                    {/if}
-                </div>
-            </div>
-        </Title>
-        <Content id="mandatory-content">
+            {#if code}
+                <small class="block text-primary-light">
+                    Código: {code}
+                </small>
+            {/if}
+        </div>
+        <div slot="content">
             {#if showIndirectCauseForm}
                 <form on:submit|preventDefault={submitIndirectCause} id="indirect-cause">
                     <fieldset disabled={canCreateOrUpdate}>
                         <div class="mt-4">
-                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Label required class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formIndirectCause.description} required />
                         </div>
                     </fieldset>
@@ -526,7 +506,7 @@
                 <form on:submit|preventDefault={submitDirectCause} id="direct-cause">
                     <fieldset disabled={canCreateOrUpdate}>
                         <div class="mt-4">
-                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Label required class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formDirectCause.description} required />
                         </div>
                     </fieldset>
@@ -535,7 +515,7 @@
                 <form on:submit|preventDefault={submitIndirectEffect} id="indirect-effect">
                     <fieldset disabled={canCreateOrUpdate}>
                         <div class="mt-4">
-                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Label required class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formIndirectEffect.description} required />
                         </div>
                     </fieldset>
@@ -544,7 +524,7 @@
                 <form on:submit|preventDefault={submitStatementProblem} id="statement-problem">
                     <fieldset disabled={canCreateOrUpdate}>
                         <div class="mt-4">
-                            <Label required class="mb-4" id="problem_statement" value="Planteamiento del problema" />
+                            <Label required class="mb-4" labelFor="problem_statement" value="Planteamiento del problema" />
 
                             <InfoMessage message="1. Descripción de la necesidad, problema u oportunidad identificada del plan tecnologógico y/o agendas departamentales de innovación y competitividad.
                             <br>
@@ -554,7 +534,7 @@
                         </div>
 
                         <div class="mt-4">
-                            <Label required class="mb-4" id="problem_justification" value="Justificación" />
+                            <Label required class="mb-4" labelFor="problem_justification" value="Justificación" />
                             <InfoMessage message="Descripción de la solución al problema (descrito anteriormente) que se presenta en la regional, así como las consideraciones que justifican la elección del proyecto. De igual forma, describir la pertinencia y viabilidad del proyecto en el marco del impacto regional identificado en el instrumento de planeación." />
                             <Textarea rows="4" id="problem_justification" error={errors.problem_justification} bind:value={$formStatementProblem.problem_justification} required />
                         </div>
@@ -564,12 +544,22 @@
                 <form on:submit|preventDefault={submitDirectEffect} id="direct-effect">
                     <fieldset disabled={canCreateOrUpdate}>
                         <div class="mt-4">
-                            <Label required class="mb-4" id="description" value="Descripción" />
+                            <Label required class="mb-4" labelFor="description" value="Descripción" />
                             <Textarea rows="4" id="description" error={errors.description} bind:value={$formDirectEffect.description} required />
                         </div>
                     </fieldset>
                 </form>
             {/if}
-        </Content>
+        </div>
+        <div slot="actions" class="block flex w-full">
+            <Button on:click={closeDialog} type="button" variant={null}>
+                {$_('Cancel')}
+            </Button>
+            {#if !canCreateOrUpdate && formID}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form={formID}>
+                    {$_('Save')}
+                </LoadingButton>
+            {/if}
+        </div>
     </Dialog>
 </AuthenticatedLayout>

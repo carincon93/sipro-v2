@@ -112,7 +112,17 @@ class User extends Authenticatable
     }
 
     /**
-     * getPermissionsAttribute
+     * getNameAttribute
+     *
+     * @return void
+     */
+    public function getNameAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    /**
+     * getUserNameAttribute
      *
      * @return void
      */

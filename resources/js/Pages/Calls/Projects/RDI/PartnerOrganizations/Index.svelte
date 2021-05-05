@@ -17,7 +17,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'
     let canShowPartnerOrganizations     = authUser.can.find(element => element == 'partner-organizations.show') == 'partner-organizations.show'
     let canCreatePartnerOrganizations   = authUser.can.find(element => element == 'partner-organizations.create') == 'partner-organizations.create'
@@ -35,12 +35,12 @@
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreatePartnerOrganizations || isSuperAdmin}
-            <a use:inertia href={route('calls.rdi.partner-organizations.create', [call.id, rdi.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
+            <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.create', [call.id, rdi.id]))} variant="raised">
                 <div>
                     <span>{$_('Create')}</span>
                     <span class="hidden md:inline">{$_('Partner organizations.singular')}</span>
                 </div>
-            </a>
+            </Button>
         {/if}
     </div>
     <div class="bg-white rounded shadow">

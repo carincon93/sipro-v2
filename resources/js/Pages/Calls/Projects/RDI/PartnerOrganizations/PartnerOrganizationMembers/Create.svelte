@@ -23,7 +23,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexPartnerOrganizationMembers  = authUser.can.find(element => element == 'partner-organization-members.index') == 'partner-organization-members.index'
     let canShowPartnerOrganizationMembers   = authUser.can.find(element => element == 'partner-organization-members.show') == 'partner-organization-members.show'
     let canCreatePartnerOrganizationMembers = authUser.can.find(element => element == 'partner-organization-members.create') == 'partner-organization-members.create'
@@ -70,31 +70,31 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre completo" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre completo" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="email" value="Correo electrónico" />
+                    <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
                     <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
                     <InputError message={errors.email} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="document_type" value="Tipo de documento" />
+                    <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
                     <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
                     <InputError message={errors.document_type} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="document_number" value="Número de documento" />
+                    <Label required class="mb-4" labelFor="document_number" value="Número de documento" />
                     <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
                     <InputError message={errors.document_number} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="cellphone_number" value="Número de celular" />
+                    <Label required class="mb-4" labelFor="cellphone_number" value="Número de celular" />
                     <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
                     <InputError message={errors.cellphone_number} />
                 </div>

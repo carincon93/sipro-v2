@@ -1,6 +1,6 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
@@ -35,7 +35,7 @@
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         <div>
             {#if canCreateRDI || isSuperAdmin}
-                <Button href={route('calls.rdi.create', [call.id])}>
+                <Button on:click={() => Inertia.visit(route('calls.rdi.create', [call.id]))}>
                     <div>
                         <span>{$_('Create')}</span>
                         <span class="hidden md:inline">proyecto {$_('RDI.singular')}</span>

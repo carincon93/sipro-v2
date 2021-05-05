@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRoles   = authUser.can.find(element => element == 'roles.index') == 'roles.index'
     let canShowRoles    = authUser.can.find(element => element == 'roles.show') == 'roles.show'
     let canCreateRoles  = authUser.can.find(element => element == 'roles.create') == 'roles.create'
@@ -66,12 +66,12 @@
     <form on:submit|preventDefault={submit}>
         <div class="bg-white rounded shadow max-w-3xl p-8">
             <div class="mt-4">
-                <Label required class="mb-4" id="name" value="Nombre" />
+                <Label required class="mb-4" labelFor="name" value="Nombre" />
                 <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required autofocus />
             </div>
 
             <div class="mt-4">
-                <Label required class="mb-4" id="description" value="Descripción" />
+                <Label required class="mb-4" labelFor="description" value="Descripción" />
                 <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
             </div>
         </div>

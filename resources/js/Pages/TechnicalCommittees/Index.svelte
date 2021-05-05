@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                 = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin                 = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexTechnicalCommittees  = authUser.can.find(element => element == 'technical-committees.index') == 'technical-committees.index'
     let canShowTechnicalCommittees   = authUser.can.find(element => element == 'technical-committees.show') == 'technical-committees.show'
     let canCreateTechnicalCommittees = authUser.can.find(element => element == 'technical-committees.create') == 'technical-committees.create'

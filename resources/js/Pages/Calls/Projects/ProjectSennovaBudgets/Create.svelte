@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin              = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin              = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexProjectSennovaBudgets    = authUser.can.find(element => element == 'project-sennova-budgets.index') == 'project-sennova-budgets.index'
     let canShowProjectSennovaBudgets     = authUser.can.find(element => element == 'project-sennova-budgets.show') == 'project-sennova-budgets.show'
     let canCreateProjectSennovaBudgets   = authUser.can.find(element => element == 'project-sennova-budgets.create') == 'project-sennova-budgets.create'
@@ -74,22 +74,22 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="description" value="Describa el bien o servicio a adquirir. Sea específico"/>
+                    <Label required class="mb-4" labelFor="description" value="Describa el bien o servicio a adquirir. Sea específico"/>
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="justification" value="Justificación de la necesidad: ¿por qué se requiere este producto o servicio?"/>
+                    <Label required class="mb-4" labelFor="justification" value="Justificación de la necesidad: ¿por qué se requiere este producto o servicio?"/>
                     <Textarea rows="4" id="justification" error={errors.justification} bind:value={$form.justification} required />
                 </div>
 
                 {#if !showQtyInput}
                     <div class="mt-4">
-                        <Label required class="mb-4" id="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
+                        <Label required class="mb-4" labelFor="qty_items" value="Indique la cantidad requerida del producto o servicio relacionado" />
                         <Input id="qty_items" type="number" min="1" class="mt-1 block w-full" bind:value={$form.qty_items} error={errors.qty_items} required />
                     </div>
                     <div class="mt-4">
-                        <Label required class="mb-4" id="value" value="Valor" />
+                        <Label required class="mb-4" labelFor="value" value="Valor" />
                         <Input id="value" type="number" min="1" class="mt-1 block w-full" bind:value={$form.value} error={errors.value} required />
                     </div>
                 {/if}

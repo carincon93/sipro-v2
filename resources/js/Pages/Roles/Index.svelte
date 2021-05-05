@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRoles   = authUser.can.find(element => element == 'roles.index') == 'roles.index'
     let canShowRoles    = authUser.can.find(element => element == 'roles.show') == 'roles.show'
     let canCreateRoles  = authUser.can.find(element => element == 'roles.create') == 'roles.create'

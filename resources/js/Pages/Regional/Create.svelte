@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -18,7 +18,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRegional    = authUser.can.find(element => element == 'regional.index') == 'regional.index'
     let canShowRegional     = authUser.can.find(element => element == 'regional.show') == 'regional.show'
     let canCreateRegional   = authUser.can.find(element => element == 'regional.create') == 'regional.create'
@@ -26,7 +26,7 @@
     let canDeleteRegional   = authUser.can.find(element => element == 'regional.delete') == 'regional.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         name:  '',
         code: '',
     })
@@ -62,13 +62,13 @@
         <form on:submit|preventDefault={submit}>
             <div class="p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" id="name" value="Nombre" />
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
                     <InputError message={errors.name} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="code" value="Código" />
+                    <Label required class="mb-4" labelFor="code" value="Código" />
                     <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} required />
                     <InputError message={errors.code} />
                 </div>

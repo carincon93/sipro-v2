@@ -3,9 +3,11 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Pagination from '@/Components/Pagination'
 
+    import Button from '@/Components/Button'
+    import Pagination from '@/Components/Pagination'
     import Stepper from '@/Components/Stepper';
+    import { Inertia } from '@inertiajs/inertia';
 
     export let call
     export let project
@@ -17,7 +19,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRiskAnalysis    = authUser.can.find(element => element == 'risk-analysis.index') == 'risk-analysis.index'
     let canShowRiskAnalysis     = authUser.can.find(element => element == 'risk-analysis.show') == 'risk-analysis.show'
     let canCreateRiskAnalysis   = authUser.can.find(element => element == 'risk-analysis.create') == 'risk-analysis.create'
@@ -38,12 +40,12 @@
     <div class="mb-6 flex justify-between items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateRiskAnalysis || isSuperAdmin}
-            <a use:inertia href={route('calls.projects.risk-analysis.create', [call.id, project.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
+            <Button on:click={() => Inertia.visit(route('calls.projects.risk-analysis.create', [call.id, project.id]))} variant="raised">
                 <div>
                     <span>{$_('Create')}</span>
                     <span class="hidden md:inline">análisis de riesgos</span>
                 </div>
-            </a>
+            </Button>
         {/if}
     </div>
     <div class="bg-white rounded shadow">

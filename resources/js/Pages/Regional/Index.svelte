@@ -14,7 +14,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRegional    = authUser.can.find(element => element == 'regional.index') == 'regional.index'
     let canShowRegional     = authUser.can.find(element => element == 'regional.show') == 'regional.show'
     let canCreateRegional   = authUser.can.find(element => element == 'regional.create') == 'regional.create'

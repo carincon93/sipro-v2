@@ -1,7 +1,7 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember, page } from '@inertiajs/inertia-svelte'
+    import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -21,7 +21,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+    let isSuperAdmin            = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexSennovaRoles  = authUser.can.find(element => element == 'call-sennova-roles.index') == 'call-sennova-roles.index'
     let canShowSennovaRoles   = authUser.can.find(element => element == 'call-sennova-roles.show') == 'call-sennova-roles.show'
     let canCreateSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.create') == 'call-sennova-roles.create'
@@ -29,7 +29,7 @@
     let canDeleteSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.delete') == 'call-sennova-roles.delete'
 
     let sending = false
-    let form = remember({
+    let form = useForm({
         salary: '',
         qty_months: '',
         qty_roles: '',
@@ -68,25 +68,25 @@
             <div class="p-8">
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="sennova_role_id" value={$_('Sennova roles.singular')} />
+                    <Label required class="mb-4" labelFor="sennova_role_id" value={$_('Sennova roles.singular')} />
                     <Select items={sennovaRoles} bind:selectedValue={$form.sennova_role_id} autocomplete="off" placeholder="Seleccione un rol SENNOVA"/>
                     <InputError message={errors.sennova_role_id} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="salary" value="Asignación mensual" />
+                    <Label required class="mb-4" labelFor="salary" value="Asignación mensual" />
                     <Input id="salary" type="number" min="0" class="mt-1 block w-full" bind:value={$form.salary} required autofocus />
                     <InputError message={errors.salary} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="qty_months" value="Número de meses que requiere el apoyo" />
+                    <Label required class="mb-4" labelFor="qty_months" value="Número de meses que requiere el apoyo" />
                     <Input id="qty_months" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_months} required autofocus />
                     <InputError message={errors.qty_months} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" id="qty_roles" value="Número de personas requeridas" />
+                    <Label required class="mb-4" labelFor="qty_roles" value="Número de personas requeridas" />
                     <Input id="qty_roles" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_roles} required autofocus />
                     <InputError message={errors.qty_roles} />
                 </div>

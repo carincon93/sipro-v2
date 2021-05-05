@@ -4,6 +4,7 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Button from '@/Components/Button'
+    import { Inertia } from '@inertiajs/inertia';
 
     export let calls
     export let activeCall
@@ -27,7 +28,7 @@
                     <h1 class="font-bold text-5xl">Convocatoria {activeCall.year}</h1>
                     <p class="text-2xl mt-4">La convocatoria empezó el {activeCall.start_date_for_humans} y finaliza el {activeCall.end_date_for_humans}.</p>
                     {#if canIndexCalls || isSuperAdmin}
-                        <Button variant="raised" href={route('calls.dashboard', activeCall.id)} class="mt-4 inline-block">
+                        <Button on:click={() => Inertia.visit(route('calls.dashboard', activeCall.id))} variant="raised" class="mt-4 inline-block">
                             {$_('Calls.singular')} { activeCall.year }
                         </Button>
                     {/if}
