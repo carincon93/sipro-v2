@@ -8,6 +8,7 @@
 
     import Textarea from '@/Components/Textarea'
     import Label from '@/Components/Label'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
     import Checkbox from '@/Components/Checkbox'
 
@@ -110,30 +111,30 @@
         </form>
 
         <Dialog bind:open={dialog_open}>
-        <div slot="title" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            Eliminar recurso
-        </div>
-        <div slot="content">
-            <p>
-                ¿Está seguro(a) que desea eliminar este recurso?
-                <br>
-                Todos los datos se eliminarán de forma permanente.
-                <br>
-                Está acción no se puede deshacer.
-            </p>
-        </div>
-        <div slot="actions">
-            <div class="p-4">
-                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
-                <Button variant="raised" on:click={destroy}>
-                    {$_('Confirm')}
-                </Button>
+            <div slot="title" class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Eliminar recurso
             </div>
-        </div>
-    </Dialog>
+            <div slot="content">
+                <p>
+                    ¿Está seguro(a) que desea eliminar este recurso?
+                    <br>
+                    Todos los datos se eliminarán de forma permanente.
+                    <br>
+                    Está acción no se puede deshacer.
+                </p>
+            </div>
+            <div slot="actions">
+                <div class="p-4">
+                    <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                    <Button variant="raised" on:click={destroy}>
+                        {$_('Confirm')}
+                    </Button>
+                </div>
+            </div>
+        </Dialog>
     </div>
 </AuthenticatedLayout>
 

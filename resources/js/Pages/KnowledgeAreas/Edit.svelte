@@ -7,6 +7,7 @@
     import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
+    import Button from '@/Components/Button'
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'

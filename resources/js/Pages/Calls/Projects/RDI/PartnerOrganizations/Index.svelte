@@ -3,9 +3,11 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Pagination from '@/Components/Pagination'
+    import { Inertia } from '@inertiajs/inertia'
 
-    import Stepper from '@/Components/Stepper';
+    import Button from '@/Components/Button'
+    import Pagination from '@/Components/Pagination'
+    import Stepper from '@/Components/Stepper'
 
     export let call
     export let rdi
@@ -32,7 +34,7 @@
     <Stepper {call} project={rdi} />
 
     <h1 class="font-bold text-3xl m-24 text-center">{$_('Partner organizations.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex justify-end items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreatePartnerOrganizations || isSuperAdmin}
             <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.create', [call.id, rdi.id]))} variant="raised">

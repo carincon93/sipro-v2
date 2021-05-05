@@ -1,10 +1,15 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Pagination from '@/Components/Pagination'
+    import { Inertia } from '@inertiajs/inertia'
 
+    import Button from '@/Components/Button'
+    import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let academicPrograms = []
 
@@ -25,85 +30,65 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Academic programs.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateAcademicPrograms || isSuperAdmin}
-            <a use:inertia href={route('academic-programs.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">{$_('Academic programs.singular')}</span>
-                </div>
-            </a>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Centro de formación</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each academicPrograms.data as academicProgram (academicProgram.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditAcademicPrograms || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('academic-programs.edit', academicProgram.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {academicProgram.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {academicProgram.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditAcademicPrograms || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('academic-programs.edit', academicProgram.id)}
-                                    class="px-6 py-4 flex items-center"
-                                    tabindex="-1">
-                                    {academicProgram.code}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center">
-                                    {academicProgram.code}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditAcademicPrograms || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('academic-programs.edit', academicProgram.id)}
-                                    class="px-6 py-4 flex items-center"
-                                    tabindex="-1">
-                                    {academicProgram.academic_centre?.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center">
-                                    {academicProgram.academic_centre?.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
+        <div slot="title">{$_('Academic programs.plural')}</div>
 
-                {#if academicPrograms.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <div slot="actions">
+            {#if canCreateAcademicPrograms || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('academic-programs.create'))} variant="raised">
+                {$_('Create')} {$_('Academic programs.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <tr class="text-left font-bold" slot="thead">
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Centro de formación</th>
+        </tr>
+
+        <tbody slot="tbody">
+            {#each academicPrograms.data as academicProgram (academicProgram.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {academicProgram.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center">
+                            {academicProgram.code}
+                        </p>
+                    </td>
+                    <td class="border-t">
+
+                            <p class="px-6 py-4 flex items-center">
+                                {academicProgram.academic_centre?.name}
+                            </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canEditAcademicPrograms || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('academic-programs.edit', academicProgram.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if academicPrograms.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={academicPrograms.links} />
 </AuthenticatedLayout>
 

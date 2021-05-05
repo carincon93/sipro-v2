@@ -3,9 +3,10 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia'
+
+    import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
-
-
     export let programmaticLines = []
 
     $title = $_('Programmatic lines.plural')
@@ -26,15 +27,12 @@
 
 <AuthenticatedLayout>
     <h1 class="mb-8 font-bold text-3xl">{$_('Programmatic lines.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex justify-end items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateProgrammaticLines || isSuperAdmin}
-            <a use:inertia href={route('programmatic-lines.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">{$_('Programmatic lines.singular')}</span>
-                </div>
-            </a>
+            <Button on:click={() => Inertia.visit(route('programmatic-lines.create'))} variant="raised">
+               {$_('Create')} {$_('Programmatic lines.singular')}
+            </Button>
         {/if}
     </div>
     <div class="bg-white rounded shadow">

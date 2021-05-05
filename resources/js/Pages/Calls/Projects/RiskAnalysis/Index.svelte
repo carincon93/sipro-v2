@@ -37,7 +37,7 @@
     <h2 class="text-center mt-10 mb-24">
         Debe ingresar mínimo un análisis de riesgo por cada nivel (A nivel de objetivo general - A nivel de actividades - A nivel de productos).
     </h2>
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex justify-end items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreateRiskAnalysis || isSuperAdmin}
             <Button on:click={() => Inertia.visit(route('calls.projects.risk-analysis.create', [call.id, project.id]))} variant="raised">

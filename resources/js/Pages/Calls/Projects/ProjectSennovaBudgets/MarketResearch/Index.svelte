@@ -102,7 +102,7 @@
                 </p>
             {/if}
             {#if !requiresMarketResearchBatch && projectBudgetBatches.data.length < 1 || requiresMarketResearchBatch}
-                <div class="mb-6 flex justify-between items-center">
+                <div class="mb-6 flex justify-end items-center">
                     <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
                     {#if canCreateMarketResearch || isSuperAdmin}
                         <Button on:click={() => open = true} variant="raised">

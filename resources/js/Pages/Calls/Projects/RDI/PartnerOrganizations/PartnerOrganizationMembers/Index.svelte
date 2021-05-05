@@ -3,6 +3,9 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia'
+
+    import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
 
     export let call
@@ -49,14 +52,11 @@
     </header>
 
     <h1 class="mb-8 font-bold text-3xl">{$_('Partner organization members.plural')}</h1>
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex justify-end items-center">
         <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
         {#if canCreatePartnerOrganizationMembers || isSuperAdmin}
             <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.create', [call.id, rdi.id, partnerOrganization.id]))} variant="raised">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">{$_('Partner organization members.singular')}</span>
-                </div>
+                {$_('Create')} {$_('Partner organization members.singular')}
             </Button>
         {/if}
     </div>
