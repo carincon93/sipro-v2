@@ -53,7 +53,6 @@ class RDI extends Model
         'sampling_objective',
         'bibliography',
         'students',
-        'states',
         'states_impact',
         'academic_impact',
         'primary_objective',

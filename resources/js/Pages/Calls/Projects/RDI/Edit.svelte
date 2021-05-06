@@ -4,8 +4,10 @@
     import { useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
+    import axios from 'axios'
+    import { onMount } from 'svelte'
 
+    import Button from '@/Components/Button'
     import Input from '@/Components/Input'
     import InputError from '@/Components/InputError'
     import Label from '@/Components/Label'
@@ -16,13 +18,12 @@
     import InfoMessage from '@/Components/InfoMessage'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Select from '@/Components/Select'
+    import SelectMulti from '@/Components/SelectMulti'
     import Switch from '@/Components/Switch'
-    import Button from '@/Components/Button'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
     import Radio from '@smui/radio'
-    import axios from 'axios'
-    import { onMount } from 'svelte'
+    import Dialog from '@/Components/Dialog'
 
     export let errors
     export let call
@@ -33,6 +34,8 @@
     export let technoAcademies
     export let technoAcademy
     export let rdiDropdownOptions
+    export let projectCities
+    export let cities
 
     $: $title = rdi ? rdi.title : null
 
@@ -79,8 +82,8 @@
         sustainability_proposal:            rdi.sustainability_proposal,
         bibliography:                       rdi.bibliography,
         students:                           rdi.students,
-        states:                             rdi.states,
-        states_impact:                      rdi.states_impact,
+        cities:                             projectCities,
+        cities_impact:                      rdi.cities_impact,
         academic_impact:                    rdi.academic_impact,
         sampling:                           rdi.sampling,
         sampling_activity:                  rdi.sampling_activity,
@@ -101,6 +104,7 @@
         if (technoAcademy) {
             getTechnologicalLines(technoAcademy)
         }
+        getCities();
     })
 
     function submit() {
@@ -141,6 +145,13 @@
         let res = await axios.get(route('web-api.techno-academies.technological-lines', [technoAcademy]))
         res.status == '200' ? $form.technological_line_id = relatedTechnologicalLines : null
         technologicalLines = res.data
+    }
+
+    async function getCities() {
+        let res = await axios.get(route('web-api.cities-for-select'));
+        if(res.status == '200'){
+            cities = res.data;
+        }
     }
 </script>
 
@@ -551,7 +562,7 @@
                 </div>
             {/if}
 
-            <div class="mt-40 grid grid-cols-2">
+            <div class="mt-40 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="abstract" value="Resumen del proyecto" />
                 </div>
@@ -561,7 +572,7 @@
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="project_background" value="Antecedentes" />
                 </div>
@@ -571,7 +582,7 @@
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="conceptual_framework" value="Marco conceptual" />
                 </div>
@@ -581,7 +592,7 @@
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="project_methodology" value="Metodología" />
                 </div>
@@ -591,7 +602,7 @@
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="sustainability_proposal" value="Propuesta de sostenibilidad" />
                 </div>
@@ -601,7 +612,7 @@
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="bibliography" value="Bibliografía" />
                 </div>
@@ -622,23 +633,23 @@
 
             <div class="mt-44 grid grid-cols-2">
                 <div>
-                    <Label required class="mb-4" labelFor="states" value="Nombre de los municipios beneficiados" />
+                    <Label required class="mb-4" for="cities" value="Nombre de los municipios beneficiados" />
                 </div>
                 <div>
-                    <Textarea rows="4" id="states" error={errors.states} bind:value={$form.states} required />
+                    <SelectMulti id="cities" bind:selectedValue={$form.cities} items={cities} isMulti={true} error={errors.cities} placeholder="Buscar municipios" required />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
-                    <Label required class="mb-4" labelFor="states_impact" value="Descripción del beneficio en los municipios" />
+                    <Label required class="mb-4" labelFor="cities_impact" value="Descripción del beneficio en los municipios" />
                 </div>
                 <div>
-                    <Textarea rows="4" id="states_impact" error={errors.states_impact} bind:value={$form.states_impact} required />
+                    <Textarea rows="4" id="cities_impact" error={errors.cities_impact} bind:value={$form.cities_impact} required />
                 </div>
             </div>
 
-            <div class="mt-44 grid grid-cols-2">
+            <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="academic_impact" value="Impacto en el centro de formación" />
                 </div>

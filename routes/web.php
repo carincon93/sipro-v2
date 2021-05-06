@@ -72,6 +72,7 @@ use App\Models\ThirdBudgetInfo;
 use App\Models\SennovaBudget;
 use App\Models\TechnoAcademy;
 use App\Models\TechnologicalLine;
+use App\Models\Citie;
 
 /*
 |--------------------------------------------------------------------------
@@ -232,6 +233,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->where('call_sennova_roles.call_id', $call)
             ->orderBy('sennova_roles.name')->get());
     })->name('web-api.calls.project-sennova-roles');
+
+    Route::get('web-api/cities-for-select', function() {
+        return response(Citie::select('cities.id as value', "cities.name as label", 'departments.name as group')
+        ->join('departments', 'departments.id', 'cities.department_id')
+        ->get());
+    })->name('web-api.cities-for-select');
 
     // Resources
     Route::resource('calls.projects.risk-analysis', RiskAnalysisController::class)->parameters(['risk-analysis' => 'risk_analysis']);
