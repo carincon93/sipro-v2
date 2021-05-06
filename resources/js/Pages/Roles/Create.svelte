@@ -67,12 +67,12 @@
         <div class="bg-white rounded shadow max-w-3xl p-8">
             <div class="mt-4">
                 <Label required class="mb-4" labelFor="name" value="Nombre" />
-                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required autofocus />
+                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
             </div>
 
             <div class="mt-4">
                 <Label required class="mb-4" labelFor="description" value="Descripción" />
-                <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
+                <Textarea rows="4" id="description" bind:value={$form.description} error={errors.description} required />
             </div>
         </div>
 

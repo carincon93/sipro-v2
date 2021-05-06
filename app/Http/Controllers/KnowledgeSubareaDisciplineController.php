@@ -54,7 +54,7 @@ class KnowledgeSubareaDisciplineController extends Controller
 
         $knowledgeSubareaDiscipline = new KnowledgeSubareaDiscipline();
         $knowledgeSubareaDiscipline->name = $request->name;
-        $knowledgeSubareaDiscipline->knowledgeSubarea()->associate($request->knowledge_subarea);
+        $knowledgeSubareaDiscipline->knowledgeSubarea()->associate($request->knowledge_subarea_id);
 
         $knowledgeSubareaDiscipline->save();
 
@@ -86,12 +86,9 @@ class KnowledgeSubareaDisciplineController extends Controller
     {
         $this->authorize('update', [KnowledgeSubareaDiscipline::class, $knowledgeSubareaDiscipline]);
 
-        $selectedKnowledgeSubarea = ['value' => optional($knowledgeSubareaDiscipline->knowledgeSubarea)->id, 'label' => optional($knowledgeSubareaDiscipline->knowledgeSubarea)->name];
-
         return Inertia::render('KnowledgeSubareaDisciplines/Edit', [
             'knowledgeSubareaDiscipline'    => $knowledgeSubareaDiscipline,
             'knowledgeSubareas'             => KnowledgeSubarea::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedKnowledgeSubarea'      => $selectedKnowledgeSubarea
         ]);
     }
 
@@ -107,7 +104,7 @@ class KnowledgeSubareaDisciplineController extends Controller
         $this->authorize('update', [KnowledgeSubareaDiscipline::class, $knowledgeSubareaDiscipline]);
 
         $knowledgeSubareaDiscipline->name = $request->name;
-        $knowledgeSubareaDiscipline->knowledgeSubarea()->associate($request->knowledge_subarea);
+        $knowledgeSubareaDiscipline->knowledgeSubarea()->associate($request->knowledge_subarea_id);
 
         $knowledgeSubareaDiscipline->save();
 

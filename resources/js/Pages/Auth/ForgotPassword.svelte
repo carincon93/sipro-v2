@@ -39,7 +39,7 @@
 <form on:submit|preventDefault={handleSubmit}>
     <div>
         <Label required class="mb-4" labelFor="email" value={$_('Email')} />
-        <Input id="email" type="email" class="mt-1 block w-full" bind:value={form.email} name="email" required autofocus autocomplete="email" />
+        <Input id="email" type="email" class="mt-1 block w-full" bind:value={form.email} name="email" required  autocomplete="email" />
         <InputError message={errors.email} />
     </div>
 

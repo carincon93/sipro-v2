@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
 
     export let errors
     export let knowledgeAreas
@@ -29,8 +28,8 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        knowledge_area: '',
+        name:               '',
+        knowledge_area_id:  '',
     })
 
     function submit() {
@@ -62,19 +61,19 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
-                <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
-                </div>
+            <fieldset class="p-8" disabled={canCreateKnowledgeSubareas || isSuperAdmin ? undefined : true}>
+                <fieldset class="p-8" disabled={canEditKnowledgeSubareas || isSuperAdmin ? undefined : true}>
+                    <div class="mt-4">
+                        <Label required class="mb-4" labelFor="name" value="Nombre" />
+                        <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    </div>
 
-                <div class="mt-4">
-                    <Label required class="mb-4" labelFor="knowledge_area" value="Área de conocimiento" />
-                    <Select items={knowledgeAreas} bind:selectedValue={$form.knowledge_area} autocomplete="off" placeholder="Seleccione una área de conocimiento"/>
-                    <InputError message={errors.knowledge_area} />
-                </div>
-            </div>
+                    <div class="mt-4">
+                        <Label required class="mb-4" labelFor="knowledge_area_id" value="Área de conocimiento" />
+                        <Select id="knowledge_area_id" items={knowledgeAreas} bind:selectedValue={$form.knowledge_area_id} error={errors.knowledge_area_id} autocomplete="off" placeholder="Seleccione una área de conocimiento" required />
+                    </div>
+                </fieldset>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateKnowledgeSubareas || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

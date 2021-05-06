@@ -7,6 +7,7 @@ use App\Models\Call;
 use App\Models\Project;
 use App\Models\RiskAnalysis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class RiskAnalysisController extends Controller
@@ -39,8 +40,12 @@ class RiskAnalysisController extends Controller
         $this->authorize('create', [RiskAnalysis::class]);
 
         return Inertia::render('Calls/Projects/RiskAnalysis/Create', [
-            'call'      => $call,
-            'project'   => $project
+            'call'              => $call,
+            'project'           => $project,
+            'riskLevels'        => json_decode(Storage::get('json/risk-levels.json'), true),
+            'riskTypes'         => json_decode(Storage::get('json/risk-types.json'), true),
+            'riskProbabilities' => json_decode(Storage::get('json/risk-probabilities.json'), true),
+            'riskImpacts'       => json_decode(Storage::get('json/risk-impacts.json'), true)
         ]);
     }
 
@@ -95,9 +100,13 @@ class RiskAnalysisController extends Controller
         $this->authorize('update', [RiskAnalysis::class, $riskAnalysis]);
 
         return Inertia::render('Calls/Projects/RiskAnalysis/Edit', [
-            'call'          => $call,
-            'project'       => $project,
-            'riskAnalysis'  => $riskAnalysis
+            'call'              => $call,
+            'project'           => $project,
+            'riskAnalysis'      => $riskAnalysis,
+            'riskLevels'        => json_decode(Storage::get('json/risk-levels.json'), true),
+            'riskTypes'         => json_decode(Storage::get('json/risk-types.json'), true),
+            'riskProbabilities' => json_decode(Storage::get('json/risk-probabilities.json'), true),
+            'riskImpacts'       => json_decode(Storage::get('json/risk-impacts.json'), true)
         ]);
     }
 

@@ -4,17 +4,16 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
+    import Dialog from '@/Components/Dialog'
 
     export let call
     export let callSennovaRole
-    export let selectedSennovaRoleValue
     export let sennovaRoles = []
     export let errors
 
@@ -25,18 +24,18 @@
      */
     let authUser = $page.props.auth.user
     let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexCallSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.index') == 'call-sennova-roles.index'
+    let canIndexCallSennovaRoles  = authUser.can.find(element => element == 'call-sennova-roles.index') == 'call-sennova-roles.index'
     let canShowCallSennovaRoles   = authUser.can.find(element => element == 'call-sennova-roles.show') == 'call-sennova-roles.show'
     let canCreateCallSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.create') == 'call-sennova-roles.create'
     let canEditCallSennovaRoles   = authUser.can.find(element => element == 'call-sennova-roles.edit') == 'call-sennova-roles.edit'
     let canDeleteCallSennovaRoles = authUser.can.find(element => element == 'call-sennova-roles.delete') == 'call-sennova-roles.delete'
 
     let dialog_open = false
-    let sending = false
+    let sending     = false
     let form = useForm({
-        salary: callSennovaRole.salary,
-        qty_months: callSennovaRole.qty_months,
-        sennova_role_id: selectedSennovaRoleValue
+        salary:             callSennovaRole.salary,
+        qty_months:         callSennovaRole.qty_months,
+        sennova_role_id:    {value: callSennovaRole.sennova_role_id, label: sennovaRoles.find(item => item.value == callSennovaRole.sennova_role_id)?.label}
     })
 
     function submit() {
@@ -44,6 +43,7 @@
             Inertia.put(route('calls.call-sennova-roles.update', [call.id, callSennovaRole.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -74,31 +74,27 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditCallSennovaRoles || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="sennova_role_id" value={$_('Call sennova roles.singular')} />
-                    <Select items={sennovaRoles} bind:selectedValue={$form.sennova_role_id} autocomplete="off" placeholder="Seleccione un rol SENNOVA"/>
-                    <InputError message={errors.sennova_role_id} />
+                    <Select id="sennova_role_id" items={sennovaRoles} bind:selectedValue={$form.sennova_role_id} error={errors.sennova_role_id} autocomplete="off" placeholder="Seleccione un rol SENNOVA" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="salary" value="Asignación mensual" />
-                    <Input id="salary" type="number" min="0" class="mt-1 block w-full" bind:value={$form.salary} required autofocus />
-                    <InputError message={errors.salary} />
+                    <Input id="salary" type="number" min="0" class="mt-1 block w-full" bind:value={$form.salary} error={errors.salary} required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="qty_months" value="Número de meses que requiere el apoyo" />
-                    <Input id="qty_months" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_months} required autofocus />
-                    <InputError message={errors.qty_months} />
+                    <Label class="mb-4" labelFor="qty_months" value="Número de meses que requiere el apoyo" />
+                    <Input id="qty_months" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_months} error={errors.qty_months} />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="qty_roles" value="Número de personas requeridas" />
-                    <Input id="qty_roles" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_roles} required autofocus />
-                    <InputError message={errors.qty_roles} />
+                    <Label class="mb-4" labelFor="qty_roles" value="Número de personas requeridas" />
+                    <Input id="qty_roles" type="number" min="0" class="mt-1 block w-full" bind:value={$form.qty_roles} error={errors.qty_roles} />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteCallSennovaRoles || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -112,8 +108,8 @@
                 {/if}
             </div>
         </form>
-
-        <Dialog bind:open={dialog_open}>
+    </div>
+    <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -138,5 +134,4 @@
             </div>
         </div>
     </Dialog>
-    </div>
 </AuthenticatedLayout>

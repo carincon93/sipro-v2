@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
@@ -30,13 +29,13 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        acronym: '',
-        email: '',
-        gruplac_link: '',
-        minciencias_code: '',
-        minciencias_category: '',
-        academic_centre: '',
+        name:                   '',
+        acronym:                '',
+        email:                  '',
+        gruplac_link:           '',
+        minciencias_code:       '',
+        minciencias_category:   '',
+        academic_centre_id:     ''
     })
 
     function submit() {
@@ -68,49 +67,42 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateResearchGroups || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="acronym" value="Acrónimo" />
-                    <Input id="acronym" type="text" class="mt-1 block w-full" bind:value={$form.acronym} required autofocus />
-                    <InputError message={errors.acronym} />
+                    <Input id="acronym" type="text" class="mt-1 block w-full" bind:value={$form.acronym} error={errors.acronym} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
-                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required autofocus />
-                    <InputError message={errors.email} />
+                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} error={errors.email} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="gruplac_link" value="Enlace GrupLac" />
-                    <Input id="gruplac_link" type="url" class="mt-1 block w-full" bind:value={$form.gruplac_link} required autofocus />
-                    <InputError message={errors.gruplac_link} />
+                    <Input id="gruplac_link" type="url" class="mt-1 block w-full" bind:value={$form.gruplac_link} error={errors.gruplac_link} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="minciencias_code" value="Código Minciencias" />
-                    <Input id="minciencias_code" type="text" class="mt-1 block w-full" bind:value={$form.minciencias_code} required autofocus />
-                    <InputError message={errors.minciencias_code} />
+                    <Input id="minciencias_code" type="text" class="mt-1 block w-full" bind:value={$form.minciencias_code} error={errors.minciencias_code} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="minciencias_category" value="Categoría Minciencias" />
-                    <Select items={mincienciasCategories} bind:selectedValue={$form.minciencias_category} autocomplete="off" placeholder="Seleccione una categoría Minciencias"/>
-                    <InputError message={errors.minciencias_category} />
+                    <Select id="minciencias_category" items={mincienciasCategories} bind:selectedValue={$form.minciencias_category} error={errors.minciencias_category} autocomplete="off" placeholder="Seleccione una categoría Minciencias" required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="academic_centre" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
+                    <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
+                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} required />
                 </div>
-
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateResearchGroups || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

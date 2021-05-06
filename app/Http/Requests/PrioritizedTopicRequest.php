@@ -24,8 +24,8 @@ class PrioritizedTopicRequest extends FormRequest
     public function rules()
     {
         return [
-            'productive_sector'      => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:productive_sectors,id'],
-            'technical_committee' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:technical_committees,id'],
+            'productive_sector_id'   => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:productive_sectors,id'],
+            'technical_committee_id' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:technical_committees,id'],
             'name'                   => ['required', 'max:191'],
         ];
     }
@@ -37,15 +37,15 @@ class PrioritizedTopicRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->productive_sector) ) {
+        if( is_array($this->productive_sector_id) ) {
             $this->merge([
-                'productive_sector' => $this->productive_sector['value'],
+                'productive_sector_id' => $this->productive_sector_id['value'],
             ]);
         }
 
-        if( is_array($this->technical_committee) ) {
+        if( is_array($this->technical_committee_id) ) {
             $this->merge([
-                'technical_committee' => $this->technical_committee['value'],
+                'technical_committee_id' => $this->technical_committee_id['value'],
             ]);
         }
     }

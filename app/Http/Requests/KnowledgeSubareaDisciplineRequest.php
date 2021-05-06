@@ -24,8 +24,8 @@ class KnowledgeSubareaDisciplineRequest extends FormRequest
     public function rules()
     {
         return [
-            'knowledge_subarea'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_subareas,id'],
-            'name'               => ['required', 'max:191'],
+            'knowledge_subarea_id'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_subareas,id'],
+            'name'                  => ['required', 'max:191'],
         ];
     }
 
@@ -36,9 +36,9 @@ class KnowledgeSubareaDisciplineRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->knowledge_subarea) ) {
+        if( is_array($this->knowledge_subarea_id) ) {
             $this->merge([
-                'knowledge_subarea' => $this->knowledge_subarea['value'],
+                'knowledge_subarea_id' => $this->knowledge_subarea_id['value'],
             ]);
         }
     }

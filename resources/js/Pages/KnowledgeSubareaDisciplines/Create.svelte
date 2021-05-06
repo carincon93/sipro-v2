@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
 
     export let errors
     export let knowledgeSubareas
@@ -29,8 +28,8 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        knowledge_subarea: '',
+        name:                   '',
+        knowledge_subarea_id:   '',
     })
 
     function submit() {
@@ -62,19 +61,17 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateKnowledgeSubareaDisciplines || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="knowledge_subarea" value="Subárea de conocimiento" />
-                    <Select items={knowledgeSubareas} bind:selectedValue={$form.knowledge_subarea} autocomplete="off" placeholder="Seleccione una subárea de conocimiento"/>
-                    <InputError message={errors.knowledge_subarea} />
+                    <Label required class="mb-4" labelFor="knowledge_subarea_id" value="Subárea de conocimiento" />
+                    <Select id="knowledge_subarea_id" items={knowledgeSubareas} bind:selectedValue={$form.knowledge_subarea_id} error={errors.knowledge_subarea_id} autocomplete="off" placeholder="Seleccione una subárea de conocimiento" required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateKnowledgeSubareaDisciplines || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

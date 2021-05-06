@@ -4,19 +4,18 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import Dialog from '@/Components/Dialog'
 
     export let errors
     export let researchGroup
     export let mincienciasCategories
-    export let selectedMincienciasCategory
 
     $: $title = researchGroup ? researchGroup.name : null
 
@@ -32,15 +31,15 @@
     let canDeleteResearchGroups = authUser.can.find(element => element == 'research-groups.delete') == 'research-groups.delete'
 
     let dialog_open = false
-    let sending = false
+    let sending     = false
     let form = useForm({
-        name:   researchGroup.name,
-        acronym: researchGroup.acronym,
-        email: researchGroup.email,
-        gruplac_link: researchGroup.gruplac_link,
-        minciencias_code: researchGroup.minciencias_code,
-        minciencias_category: selectedMincienciasCategory,
-        academic_centre: researchGroup.academic_centre_id,
+        name:                       researchGroup.name,
+        acronym:                    researchGroup.acronym,
+        email:                      researchGroup.email,
+        gruplac_link:               researchGroup.gruplac_link,
+        minciencias_code:           researchGroup.minciencias_code,
+        minciencias_category:    {value: researchGroup.minciencias_category, label: mincienciasCategories.find(item => item.value == researchGroup.minciencias_category)?.label},
+        academic_centre_id:         researchGroup.academic_centre_id,
 
     })
 
@@ -49,6 +48,7 @@
             Inertia.put(route('research-groups.update', researchGroup.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -79,48 +79,42 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditResearchGroups || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="acronym" value="Acrónimo" />
-                    <Input id="acronym" type="text" class="mt-1 block w-full" bind:value={$form.acronym} required autofocus />
-                    <InputError message={errors.acronym} />
+                    <Input id="acronym" type="text" class="mt-1 block w-full" bind:value={$form.acronym} error={errors.acronym} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
-                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required autofocus />
-                    <InputError message={errors.email} />
+                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} error={errors.email} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="gruplac_link" value="Enlace GrupLac" />
-                    <Input id="gruplac_link" type="url" class="mt-1 block w-full" bind:value={$form.gruplac_link} required autofocus />
-                    <InputError message={errors.gruplac_link} />
+                    <Input id="gruplac_link" type="url" class="mt-1 block w-full" bind:value={$form.gruplac_link} error={errors.gruplac_link} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="minciencias_code" value="Código Minciencias" />
-                    <Input id="minciencias_code" type="text" class="mt-1 block w-full" bind:value={$form.minciencias_code} required autofocus />
-                    <InputError message={errors.minciencias_code} />
+                    <Input id="minciencias_code" type="text" class="mt-1 block w-full" bind:value={$form.minciencias_code} error={errors.minciencias_code} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="minciencias_category" value="Categoría Minciencias" />
-                    <Select items={mincienciasCategories} bind:selectedValue={$form.minciencias_category} autocomplete="off" placeholder="Seleccione una categoría Minciencias"/>
-                    <InputError message={errors.minciencias_category} />
+                    <Select id="minciencias_category" items={mincienciasCategories} bind:selectedValue={$form.minciencias_category} error={errors.minciencias_category} autocomplete="off" placeholder="Seleccione una categoría Minciencias" required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="academic_centre" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
+                    <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
+                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteResearchGroups || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -134,8 +128,8 @@
                 {/if}
             </div>
         </form>
-
-        <Dialog bind:open={dialog_open}>
+    </div>
+    <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -160,6 +154,5 @@
             </div>
         </div>
     </Dialog>
-    </div>
 </AuthenticatedLayout>
 

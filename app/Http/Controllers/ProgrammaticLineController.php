@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProgrammaticLineRequest;
 use App\Models\ProgrammaticLine;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProgrammaticLineController extends Controller
@@ -34,10 +35,8 @@ class ProgrammaticLineController extends Controller
     {
         $this->authorize('create', [ProgrammaticLine::class]);
 
-        $projectCategories = [['value' => 'Tecnoacademia-Tecnoparque', 'label' => 'Tecnoacademia-Tecnoparque'], ['value' => 'I+D+i', 'label' => 'I+D+i'], ['value' => 'Servicios tecnológicos', 'label' => 'Servicios tecnológicos'], ['value' => 'Otro', 'label' => 'Otro']];
-
         return Inertia::render('ProgrammaticLines/Create', [
-            'projectCategories' => $projectCategories
+            'projectCategories' => json_decode(Storage::get('json/project-categories.json'), true),
         ]);
     }
 
@@ -87,12 +86,9 @@ class ProgrammaticLineController extends Controller
     {
         $this->authorize('update', [ProgrammaticLine::class, $programmaticLine]);
 
-        $projectCategories = [['value' => 'Tecnoacademia-Tecnoparque', 'label' => 'Tecnoacademia-Tecnoparque'], ['value' => 'I+D+i', 'label' => 'I+D+i'], ['value' => 'Servicios tecnológicos', 'label' => 'Servicios tecnológicos'], ['value' => 'Otro', 'label' => 'Otro']];
-        $selectedProjectCategory = ['value' => $programmaticLine->project_category, 'label' => $programmaticLine->project_category];
         return Inertia::render('ProgrammaticLines/Edit', [
-            'programmaticLine' => $programmaticLine,
-            'selectedProjectCategory' => $selectedProjectCategory,
-            'projectCategories' => $projectCategories
+            'programmaticLine'          => $programmaticLine->only('id', 'name', 'description', 'code', 'project_category', 'description'),
+            'projectCategories'         => json_decode(Storage::get('json/project-categories.json'), true),
         ]);
     }
 

@@ -1,12 +1,13 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { Inertia } from '@inertiajs/inertia'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Pagination from '@/Components/Pagination'
     import Button from '@/Components/Button'
     import File from '@/Components/File'
+    import DataTable from '@/Components/DataTable'
 
     import Stepper from '@/Components/Stepper';
 
@@ -48,55 +49,55 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="font-bold text-3xl m-24 text-center">{$_('Project annexes.plural')}</h1>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Archivo</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each annexes.data as annexe (annexe.id)}
-                    <tr>
-                        <td class="border-t">
-                            {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {annexe.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
-                                <form on:submit|preventDefault={(e) => submit(e)} class="mt-4 p-4">
-                                    <input type="hidden" name="annexe_id" value={annexe.id}>
-                                    {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
-                                        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
-                                    {/if}
-                                    <div class="flex">
-                                        <div class="flex-1">
-                                            <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
-                                        </div>
-                                        <div class="flex items-center">
-                                            <Button loading={sending} class="btn-indigo ml-auto" type="submit">
-                                                {$_('Upload')} {projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}
-                                            </Button>
-                                        </div>
-                                    </div>
-                                </form>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
+        <div slot="title">{$_('Academic centres.plural')}</div>
 
-                {#if annexes.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Archivo</th>
+            </tr>
+        </thead>
+
+        <tbody slot="tbody">
+            {#each annexes.data as annexe (annexe.id)}
+                <tr>
+                    <td class="border-t">
+                        {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
+                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                                {annexe.name}
+                            </p>
+                        {/if}
+                    </td>
+                    <td class="border-t">
+                        {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
+                            <form on:submit|preventDefault={(e) => submit(e)} class="mt-4 p-4">
+                                <input type="hidden" name="annexe_id" value={annexe.id}>
+                                {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
+                                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
+                                {/if}
+                                <div class="flex">
+                                    <div class="flex-1">
+                                        <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
+                                    </div>
+                                    <div class="flex items-center">
+                                        <Button loading={sending} class="btn-indigo ml-auto" type="submit">
+                                            {$_('Upload')} {projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </form>
+                        {/if}
+                    </td>
+                </tr>
+            {/each}
+
+            {#if annexes.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={annexes.links} />
 </AuthenticatedLayout>

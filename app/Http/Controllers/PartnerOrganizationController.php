@@ -44,12 +44,15 @@ class PartnerOrganizationController extends Controller
         $specificObjective = $rdi->project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
 
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Create', [
-            'call' => $call,
-            'rdi'  => $rdi,
-            'activities' => Activity::whereIn('specific_objective_id',
+            'call'          => $call,
+            'rdi'           => $rdi,
+            'activities'    => Activity::whereIn('specific_objective_id',
                 $specificObjective->map(function ($specificObjective) {
                     return $specificObjective->id;
                 }))->orderBy('start_date', 'ASC')->get(),
+            'partnerOrganizationTypes'  => json_decode(Storage::get('json/partner-organization-types.json'), true),
+            'legalStatus'               => json_decode(Storage::get('json/legal-status.json'), true),
+            'companyTypes'              => json_decode(Storage::get('json/company-types.json'), true)
         ]);
     }
 
@@ -143,8 +146,11 @@ class PartnerOrganizationController extends Controller
                 $specificObjectives->map(function ($specificObjective) {
                     return $specificObjective->id;
                 }))->orderBy('start_date', 'ASC')->get(),
-            'activityPartnerOrganizations'    => $partnerOrganization->activities()->pluck('id'),
-            'activitySpecificObjective'       => $partnerOrganization->activities()->with('specificObjective')->get()->pluck('specificObjective')
+            'activityPartnerOrganizations'  => $partnerOrganization->activities()->pluck('id'),
+            'activitySpecificObjective'     => $partnerOrganization->activities()->with('specificObjective')->get()->pluck('specificObjective'),
+            'partnerOrganizationTypes'      => json_decode(Storage::get('json/partner-organization-types.json'), true),
+            'legalStatus'                   => json_decode(Storage::get('json/legal-status.json'), true),
+            'companyTypes'                  => json_decode(Storage::get('json/company-types.json'), true)
         ]);
     }
 

@@ -11,8 +11,8 @@
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
-    import Stepper from '@/Components/Stepper'
     import InfoMessage from '@/Components/InfoMessage'
+    import Stepper from '@/Components/Stepper'
 
     import { createPopper } from '@popperjs/core'
 

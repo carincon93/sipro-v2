@@ -69,7 +69,7 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateOutputs || isSuperAdmin ? undefined : true}>
                 <div class="mt-8">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
@@ -98,7 +98,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="project_result_id" value={$_('Research results.singular')} />
-                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required/>
+                    <Select id="project_result_id" items={projectResults} bind:selectedValue={$form.project_result_id} error={errors.project_result_id} autocomplete="off" placeholder="Seleccione un resultado" required />
                 </div>
 
                 {#if project.rdi}
@@ -107,7 +107,7 @@
                         <DynamicList id="minciencias_subtypology_id" bind:value={$form.minciencias_subtypology_id} routeWebApi={route('web-api.minciencias-subtypologies')} placeholder="Busque por el nombre de la subtipología Minciencias" message={errors.minciencias_subtypology_id} required/>
                     </div>
                 {/if}
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateOutputs || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

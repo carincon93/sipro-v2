@@ -12,10 +12,10 @@
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import Select from '@/Components/Select'
-    import Stepper from '@/Components/Stepper'
     import InfoMessage from '@/Components/InfoMessage'
     import Dialog from '@/Components/Dialog'
     import Button from '@/Components/Button'
+    import Stepper from '@/Components/Stepper'
 
     import { createPopper } from '@popperjs/core'
 

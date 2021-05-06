@@ -4,18 +4,21 @@
     import { inertia, page, useForm } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Button from '@/Components/Button'
-    import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
     import Switch from '@/Components/Switch'
     import File from '@/Components/File'
-    import FilterSelect from '@/Components/FilterSelect'
+    import Select from '@/Components/Select'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
+    import { Item, Text } from '@smui/list'
+    import DataTable from '@/Components/DataTable'
+    import Dialog from '@/Components/Dialog'
+    import ResourceMenu from '@/Components/ResourceMenu'
 
     export let errors
     export let call
@@ -24,6 +27,9 @@
     export let activities
     export let activityPartnerOrganizations
     export let activitySpecificObjective
+    export let partnerOrganizationTypes
+    export let legalStatus
+    export let companyTypes
 
     let researchGroup   = partnerOrganization.research_group != null ? true : false
     let agreement       = partnerOrganization.agreement_description != null ? true : false
@@ -67,10 +73,6 @@
         activity_id: activityPartnerOrganizations
     })
 
-    let partnerOrganizationTypes = [{'value': 1, 'label': 'Empresa'}, {'value': 2, 'label': 'Universidad'}, {'value': 3, 'label': 'Entidades sin ánimo de lucro'}, {'value': 4, 'label': 'Centro de formación SENA'}, {'value': 5, 'label': 'Otra'}]
-    let legalStatus = [{'value': 1, 'label': 'Pública'}, {'value': 2, 'label': 'Privado'}, {'value': 3, 'label': 'Mixta'}, {'value': 4, 'label': 'ONG'}]
-    let companyTypes = [{'value': 1, 'label': 'Microempresa'}, {'value': 2, 'label': 'Pequeña'}, {'value': 3, 'label': 'Mediana'}, {'value': 4, 'label': 'Grande'}]
-
     function submit() {
         if (canEditPartnerOrganizations || isSuperAdmin) {
             let formData = new FormData()
@@ -96,6 +98,7 @@
             Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), formData, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -131,8 +134,7 @@
                 <div class="p-8">
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="partner_organization_type" value="Tipo de entidad aliada" />
-                        <FilterSelect items={partnerOrganizationTypes} selectedValue={partnerOrganization.partner_organization_type} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" id="partner_organization_type" />
-                        <InputError message={errors.partner_organization_type} />
+                        <Select id="partner_organization_type" items={partnerOrganizationTypes} selectedValue={partnerOrganization.partner_organization_type} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
                     </div>
 
                     <div class="mt-4">
@@ -142,14 +144,12 @@
 
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="legal_status" value="Naturaleza de la entidad" />
-                        <FilterSelect items={legalStatus} selectedValue={partnerOrganization.legal_status} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" id="legal_status" />
-                        <InputError message={errors.legal_status} />
+                        <Select id="legal_status" items={legalStatus} selectedValue={partnerOrganization.legal_status} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
                     </div>
 
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="company_type" value="Tipo de empresa" />
-                        <FilterSelect items={companyTypes} selectedValue={partnerOrganization.company_type} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" id="company_type" />
-                        <InputError message={errors.company_type} />
+                        <Select id="company_type" items={companyTypes} selectedValue={partnerOrganization.company_type} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" />
                     </div>
 
                     <div class="mt-4">
@@ -160,7 +160,6 @@
                     <div class="mt-4">
                         <p>¿Hay convenio?</p>
                         <Switch bind:checked={agreement} />
-                        <span class="ml-2">{#if agreement} Si {:else} No {/if}</span>
                     </div>
                     {#if agreement}
                         <div class="mt-4">
@@ -172,7 +171,6 @@
                     <div class="mt-4">
                         <p>¿La entidad aliada tiene grupo de investigación?</p>
                         <Switch bind:checked={researchGroup} />
-                        <span class="ml-2">{#if researchGroup} Si {:else} No {/if}</span>
                     </div>
                     {#if researchGroup}
                         <div class="mt-4">
@@ -230,11 +228,13 @@
                     <div class="bg-white rounded shadow overflow-hidden">
                         <div class="grid grid-cols-2">
                             {#each activities as {id, description}, i}
-                                <div class="p-3 border-t border-b flex items-center text-sm">{description}</div>
-
-                                <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                                    <Checkbox id={id} checked={activityPartnerOrganizations.includes(id)} bind:group={$form.activity_id} value={id}/>
-                                </div>
+                                <FormField>
+                                    <Checkbox
+                                        bind:group={$form.activity_id}
+                                        value={id}
+                                    />
+                                        <span slot="label">{description}</span>
+                                </FormField>
                             {/each}
                         </div>
                     </div>
@@ -272,114 +272,91 @@
         </div>
     </div>
 
-    <h1 class="mt-20 mb-12 text-2xl" id="partner-organization-members">{$_('Partner organization members.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreatePartnerOrganizationMembers || isSuperAdmin}
-            <a use:inertia href={route('calls.rdi.partner-organizations.partner-organization-members.create', [call.id, rdi.id, partnerOrganization.id])} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">{$_('Partner organization members.singular')}</span>
-                </div>
-            </a>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Número de celular</th>
+    <DataTable>
+        <div slot="title" id="partner-organization-members">{$_('Partner organization members.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreatePartnerOrganizationMembers || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.create', [call.id, rdi.id, partnerOrganization.id]))} variant="raised">
+                    {$_('Partner organization members.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Número de celular</th>
+            </tr>
+        </thead>
+
+        <tbody slot="tbody">
+            {#each partnerOrganization.partner_organization_members as partnerOrganizationMember (partnerOrganizationMember.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.name}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.email}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.cellphone_number}
+                        </p>
+                    </td>
+
+                    <ResourceMenu>
+                        {#if canShowPartnerOrganizations || canEditPartnerOrganizationMembers ||canDeletePartnerOrganizations || isSuperAdmin}
+                            <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])))}>
+                                <Text>{$_('View details')}</Text>
+                            </Item>
+                        {:else}
+                            <Item>
+                                <Text>{$_('You don\'t have permissions')}</Text>
+                            </Item>
+                        {/if}
+                    </ResourceMenu>
                 </tr>
-            </thead>
-            <tbody>
-                {#each partnerOrganization.partner_organization_members as partnerOrganizationMember (partnerOrganizationMember.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.name}
-                                </p>
-                            {/if}
-                        </td>
+            {/each}
+        </tbody>
+    </DataTable>
 
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.email}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.email}
-                                </p>
-                            {/if}
-                        </td>
+    <DataTable>
+        <div slot="title" id="specific-objectives">{$_('Specific objectives.plural')}</div>
 
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.cellphone_number}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.cellphone_number}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+        <p class="mb-6" slot="caption">A continuación, se listan los objetivos específicos relacionados con la entidad aliada. Si dice 'Sin información registrada' por favor diríjase a las <a href="#activities" class="text-indigo-400">actividades</a> y relacione alguna.</p>
 
-                {#if partnerOrganization.partner_organization_members.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Descripción</th>
+            </tr>
+        </thead>
 
-    <h1 class="mt-20 mb-12 text-2xl" id="specific-objectives">{$_('Specific objectives.plural')}</h1>
-    <p class="mb-6">A continuación, se listan los objetivos específicos relacionados con la entidad aliada. Si dice 'Sin información registrada' por favor diríjase a las <a href="#activities" class="text-indigo-400">actividades</a> y relacione alguna.</p>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Descripción</th>
+        <tbody slot="tbody">
+            {#each activitySpecificObjective as {id, description}}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {description}
+                        </p>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {#each activitySpecificObjective as {id, description}}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {description}
-                            </p>
-                        </td>
-                    </tr>
-                {/each}
+            {/each}
 
-                {#if activitySpecificObjective.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+            {#if activitySpecificObjective.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
 
     <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">

@@ -24,9 +24,9 @@ class ProjectTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'programmatic_line' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:programmatic_lines,id'],
-            'name'              => ['required', 'max:191'],
-            'maximum_value'     => ['required', 'min:0', 'max:9999999999', 'integer'],
+            'programmatic_line_id'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:programmatic_lines,id'],
+            'name'                  => ['required', 'max:191'],
+            'maximum_value'         => ['required', 'min:0', 'max:9999999999', 'integer'],
         ];
     }
 
@@ -37,9 +37,9 @@ class ProjectTypeRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->programmatic_line) ) {
+        if( is_array($this->programmatic_line_id) ) {
             $this->merge([
-                'programmatic_line' => $this->programmatic_line['value'],
+                'programmatic_line_id' => $this->programmatic_line_id['value'],
             ]);
         }
     }

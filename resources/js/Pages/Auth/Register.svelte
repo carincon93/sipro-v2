@@ -35,7 +35,7 @@
 <form on:submit|preventDefault={handleSubmit}>
     <div>
         <Label required class="mb-4" labelFor="name" value={$_('Name')} />
-        <Input id="name" type="text" class="mt-1 block w-full" bind:value={form.name} required autofocus autocomplete="name" />
+        <Input id="name" type="text" class="mt-1 block w-full" bind:value={form.name} required  autocomplete="name" />
         <InputError message={errors.name} />
     </div>
 

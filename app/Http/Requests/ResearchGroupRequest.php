@@ -25,7 +25,7 @@ class ResearchGroupRequest extends FormRequest
     {
         if ($this->isMethod('PUT')) {
             return [
-                'academic_centre'       => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'academic_centre_id'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
                 'name'                  => ['required', 'max:191', 'string'],
                 'acronym'               => ['required', 'max:191'],
                 'email'                 => ['required', 'max:191', 'email', 'unique:research_groups,email,'.$this->route('research_group')->id.',id'],
@@ -35,7 +35,7 @@ class ResearchGroupRequest extends FormRequest
             ];
         } else {
             return [
-                'academic_centre'       => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'academic_centre_id'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
                 'name'                  => ['required', 'max:191', 'string'],
                 'acronym'               => ['required', 'max:191'],
                 'email'                 => ['required', 'max:191', 'email', 'unique:research_groups,email'],
@@ -53,9 +53,9 @@ class ResearchGroupRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->academic_centre) ) {
+        if( is_array($this->academic_centre_id) ) {
             $this->merge([
-                'academic_centre' => $this->academic_centre['value'],
+                'academic_centre_id' => $this->academic_centre_id['value'],
             ]);
         }
 

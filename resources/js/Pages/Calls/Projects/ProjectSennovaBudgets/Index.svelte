@@ -3,11 +3,14 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Pagination from '@/Components/Pagination'
-    import ResourceMenu from '@/Components/ResourceMenu'
-    import Button from '@/Components/Button'
-    import { Item, Text } from '@smui/list'
     import { Inertia } from '@inertiajs/inertia'
+
+    import Pagination from '@/Components/Pagination'
+    import Button from '@/Components/Button'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+
     import Stepper from '@/Components/Stepper'
 
     export let call
@@ -35,19 +38,21 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="font-bold text-3xl mt-24 text-center">{$_('Project sennova budgets.plural')}</h1>
-    <h2 class="text-center mt-10 mb-24">
-        Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_project_budget) ? project.total_project_budget : 0)} COP
-    </h2>
+    <DataTable>
+        <div slot="title">{$_('Project sennova budgets.plural')}</div>
 
-    <table class="w-full whitespace-no-wrap">
-        <thead>
+        <h2 class="text-center mt-10 mb-24" slot="caption">
+            Ingrese cada uno de los rubros que requiere el proyecto. Actualmente el total del costo de los productos o servicios requeridos es: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_project_budget) ? project.total_project_budget : 0)} COP
+        </h2>
+
+        <thead slot="thead">
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Concepto SENA</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Regla</th>
             </tr>
         </thead>
-        <tbody>
+
+        <tbody slot="tbody">
             <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                 <td class="border-t">
                     Servicios especiales de construcción
@@ -75,6 +80,7 @@
                 </td>
             </tr>
         </tbody>
+
         <tfoot>
             <tr>
                 <td colspan="3">
@@ -82,7 +88,7 @@
                 </td>
             </tr>
         </tfoot>
-    </table>
+    </DataTable>
 
     <div class="px-4">
         <h1 class="mb-4 text-center">Filtros</h1>
@@ -97,9 +103,11 @@
             </li>
         </ul>
     </div>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        <div>
+
+    <DataTable>
+        <div slot="title">{$_('Academic centres.plural')}</div>
+
+        <div slot="actions">
             {#if canCreateProjectSennovaBudgets || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('calls.projects.project-sennova-budgets.create', [call.id, project.id]))}>
                     <div>
@@ -109,65 +117,63 @@
                 </Button>
             {/if}
         </div>
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Información</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Subtotal del costo de los productos o servicios requeridos</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each projectSennovaBudgets.data as projectSennovaBudget (projectSennovaBudget.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            <div class="flex flex-col focus:text-indigo-500 px-6 py-4">
-                                <div class="mt-3">
-                                    <small>Concepto interno SENA</small>
-                                    <p>{projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}</p>
-                                </div>
-                                <div class="mt-3">
-                                    <small>Rubro</small>
-                                    <p></p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
-                                </div>
-                                <div class="mt-3">
-                                    <small>Uso presupuestal</small>
-                                    <p>{projectSennovaBudget.call_budget?.sennova_budget?.budget_usage.description}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="border-t">
-                            <div class="mt-3">
-                                {#if projectSennovaBudget.average > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.average)} COP {:else if projectSennovaBudget.totalByBudgetWithoutMarketResearch > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.totalByBudgetWithoutMarketResearch)} {/if}
-                            </div>
-                            {#if !projectSennovaBudget.call_budget?.sennova_budget?.can_be_added}
-                                <span class="bg-red-200 p-2 rounded-3xl mt-4 inline-block text-xs">Este uso presupuestal NO suma al total del presupuesto</span>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            <ResourceMenu>
-                                {#if canShowProjectSennovaBudgets || canEditProjectSennovaBudgets ||canDeleteProjectSennovaBudgets || isSuperAdmin}
-                                    <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])))}>
-                                        <Text>{$_('View details')}</Text>
-                                    </Item>
-                                {:else}
-                                    <Item>
-                                        <Text>{$_('You don\'t have permissions')}</Text>
-                                    </Item>
-                                {/if}
-                            </ResourceMenu>
-                        </td>
-                    </tr>
-                {/each}
 
-                {#if projectSennovaBudgets.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Información</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Subtotal del costo de los productos o servicios requeridos</th>
+            </tr>
+        </thead>
+
+        <tbody slot="tbody">
+            {#each projectSennovaBudgets.data as projectSennovaBudget (projectSennovaBudget.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <div class="flex flex-col focus:text-indigo-500 px-6 py-4">
+                            <div class="mt-3">
+                                <small>Concepto interno SENA</small>
+                                <p>{projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}</p>
+                            </div>
+                            <div class="mt-3">
+                                <small>Rubro</small>
+                                <p></p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
+                            </div>
+                            <div class="mt-3">
+                                <small>Uso presupuestal</small>
+                                <p>{projectSennovaBudget.call_budget?.sennova_budget?.budget_usage.description}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="border-t">
+                        <div class="mt-3">
+                            {#if projectSennovaBudget.average > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.average)} COP {:else if projectSennovaBudget.totalByBudgetWithoutMarketResearch > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.totalByBudgetWithoutMarketResearch)} {/if}
+                        </div>
+                        {#if !projectSennovaBudget.call_budget?.sennova_budget?.can_be_added}
+                            <span class="bg-red-200 p-2 rounded-3xl mt-4 inline-block text-xs">Este uso presupuestal NO suma al total del presupuesto</span>
+                        {/if}
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowProjectSennovaBudgets || canEditProjectSennovaBudgets ||canDeleteProjectSennovaBudgets || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if projectSennovaBudgets.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={projectSennovaBudgets.links} />
 </AuthenticatedLayout>

@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
     import Textarea from '@/Components/Textarea'
 
     export let errors
@@ -65,31 +64,27 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateProgrammaticLines || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
-                    <InputError message={errors.code} />
+                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="project_category" value="Categoría" />
-                    <Select items={projectCategories} bind:selectedValue={$form.project_category} autocomplete="off" placeholder="Seleccione una categoría"/>
-                    <InputError message={errors.project_category} />
+                    <Select id="project_category" items={projectCategories} bind:selectedValue={$form.project_category} error={errors.project_category} autocomplete="off" placeholder="Seleccione una categoría" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
-                    <InputError message={errors.description} />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateProgrammaticLines || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

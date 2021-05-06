@@ -1,14 +1,16 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia'
+
     import Pagination from '@/Components/Pagination'
     import ResourceMenu from '@/Components/ResourceMenu'
     import { Item, Text } from '@smui/list'
-    import { Inertia } from '@inertiajs/inertia'
-    import Stepper from '@/Components/Stepper'
     import Button from '@/Components/Button'
+    import DataTable from '@/Components/DataTable'
+    import Stepper from '@/Components/Stepper'
 
     export let call
     export let project
@@ -34,65 +36,60 @@
 
     <Stepper {call} {project} />
 
-    <h1 class="font-bold text-3xl m-24 text-center">{$_('Project sennova roles.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        <div>
+    <DataTable>
+        <div slot="title">{$_('Project sennova roles.plural')}</div>
+
+        <div slot="actions">
             {#if canCreateProjectSennovaRoles || isSuperAdmin}
-                <Button on:click={() => Inertia.visit(route('calls.projects.project-sennova-roles.create', [call.id, project.id]))}>
-                    <div>
-                        <span>{$_('Create')}</span>
-                        <span class="hidden md:inline">{$_('Project sennova roles.singular')}</span>
-                    </div>
+                <Button on:click={() => Inertia.visit(route('calls.projects.project-sennova-roles.create', [call.id, project.id]))} variant="raised">
+                    {$_('Create')} {$_('Project sennova roles.singular')}
                 </Button>
             {/if}
         </div>
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Salario</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each projectSennovaRoles.data as projectSennovaRole (projectSennovaRole.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
-                            </p>
-                        </td>
-                        <td class="border-t">
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                {projectSennovaRole?.call_sennova_role?.salary}
-                            </p>
-                        </td>
-                        <td class="border-t">
-                            <ResourceMenu>
-                                {#if canShowProjectSennovaRoles || canEditProjectSennovaRoles ||canDeleteProjectSennovaRoles || isSuperAdmin}
-                                    <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])))}>
-                                        <Text>{$_('View details')}</Text>
-                                    </Item>
-                                {:else}
-                                    <Item>
-                                        <Text>{$_('You don\'t have permissions')}</Text>
-                                    </Item>
-                                {/if}
-                            </ResourceMenu>
-                        </td>
-                    </tr>
-                {/each}
 
-                {#if projectSennovaRoles.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Salario</th>
+            </tr>
+        </thead>
+
+        <tbody slot="tbody">
+            {#each projectSennovaRoles.data as projectSennovaRole (projectSennovaRole.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {projectSennovaRole?.call_sennova_role?.sennova_role?.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {projectSennovaRole?.call_sennova_role?.salary}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowProjectSennovaRoles || canEditProjectSennovaRoles ||canDeleteProjectSennovaRoles || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if projectSennovaRoles.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={projectSennovaRoles.links} />
 </AuthenticatedLayout>
 

@@ -21,10 +21,10 @@ class ProjectSennovaRoleController extends Controller
         $this->authorize('viewAny', [ProjectSennovaRole::class]);
 
         return Inertia::render('Calls/Projects/ProjectSennovaRoles/Index', [
-            'call'      => $call,
-            'project'   => $project,
-            'filters'   => request()->all('search'),
-            'projectSennovaRoles' => ProjectSennovaRole::where('project_id', $project->id)->filterProjectSennovaRole(request()->only('search'))->with('callSennovaRole.sennovaRole')->paginate(),
+            'call'                  => $call->only('id'),
+            'project'               => $project->only('id'),
+            'filters'               => request()->all('search'),
+            'projectSennovaRoles'   => ProjectSennovaRole::where('project_id', $project->id)->filterProjectSennovaRole(request()->only('search'))->with('callSennovaRole.sennovaRole')->paginate(),
         ]);
     }
 
@@ -38,9 +38,9 @@ class ProjectSennovaRoleController extends Controller
         $this->authorize('create', [ProjectSennovaRole::class]);
 
         return Inertia::render('Calls/Projects/ProjectSennovaRoles/Create', [
-            'call'      => $call,
-            'project'   => $project,
-            'programmaticLine'   => $project->projectType->programmaticLine->only('id')
+            'call'              => $call->only('id'),
+            'project'           => $project->only('id', 'diff_months'),
+            'programmaticLine'  => $project->projectType->programmaticLine->only('id')
         ]);
     }
 
@@ -93,8 +93,8 @@ class ProjectSennovaRoleController extends Controller
 
         return Inertia::render('Calls/Projects/ProjectSennovaRoles/Edit', [
             'projectSennovaRole'    => $projectSennovaRole,
-            'call'                  => $call,
-            'project'               => $project,
+            'call'                  => $call->only('id'),
+            'project'               => $project->only('id', 'diff_months'),
             'roleName'              => $projectSennovaRole->callSennovaRole->sennovaRole->only('name'),
             'programmaticLine'      => $project->projectType->programmaticLine->only('id')
         ]);

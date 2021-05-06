@@ -4,20 +4,20 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
+    import Dialog from '@/Components/Dialog'
 
     export let errors
-    export let documentTypes
     export let call
     export let rdi
     export let partnerOrganization
     export let partnerOrganizationMember
+    export let documentTypes
 
     $: $title = partnerOrganizationMember ? partnerOrganizationMember.name : null
 
@@ -37,7 +37,7 @@
     let form = useForm({
         name:               partnerOrganizationMember.name,
         email:              partnerOrganizationMember.email,
-        document_type:      partnerOrganizationMember.document_type,
+        document_type:      {value: partnerOrganizationMember.document_type, label: documentTypes.find(item => item.value == partnerOrganizationMember.document_type)?.label},
         document_number:    partnerOrganizationMember.document_number,
         cellphone_number:   partnerOrganizationMember.cellphone_number
     })
@@ -47,6 +47,7 @@
             Inertia.put(route('calls.rdi.partner-organizations.partner-organization-members.update', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -77,37 +78,32 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreatetPartnerOrganizationMembers || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre completo" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
-                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
-                    <InputError message={errors.email} />
+                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} error={errors.email} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
-                    <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
-                    <InputError message={errors.document_type} />
+                    <Select id="document_type" items={documentTypes} bind:selectedValue={$form.document_type} error={errors.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento" required/>
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_number" value="Número de documento" />
-                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
-                    <InputError message={errors.document_number} />
+                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} error={errors.document_number} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="cellphone_number" value="Número de celular" />
-                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
-                    <InputError message={errors.cellphone_number} />
+                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} error={errors.cellphone_number} required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeletetPartnerOrganizationMembers || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -123,29 +119,29 @@
         </form>
 
         <Dialog bind:open={dialog_open}>
-        <div slot="title" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-            Eliminar recurso
-        </div>
-        <div slot="content">
-            <p>
-                ¿Está seguro(a) que desea eliminar este recurso?
-                <br>
-                Todos los datos se eliminarán de forma permanente.
-                <br>
-                Está acción no se puede deshacer.
-            </p>
-        </div>
-        <div slot="actions">
-            <div class="p-4">
-                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
-                <Button variant="raised" on:click={destroy}>
-                    {$_('Confirm')}
-                </Button>
+            <div slot="title" class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                Eliminar recurso
             </div>
-        </div>
-    </Dialog>
+            <div slot="content">
+                <p>
+                    ¿Está seguro(a) que desea eliminar este recurso?
+                    <br>
+                    Todos los datos se eliminarán de forma permanente.
+                    <br>
+                    Está acción no se puede deshacer.
+                </p>
+            </div>
+            <div slot="actions">
+                <div class="p-4">
+                    <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                    <Button variant="raised" on:click={destroy}>
+                        {$_('Confirm')}
+                    </Button>
+                </div>
+            </div>
+        </Dialog>
     </div>
 </AuthenticatedLayout>

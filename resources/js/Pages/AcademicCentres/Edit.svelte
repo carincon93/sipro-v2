@@ -7,7 +7,6 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from '@/Components/Select'
@@ -15,8 +14,7 @@
 
     export let errors
     export let academicCentre   = {}
-    export let regional         = {}
-    export let selectedRegionalValue
+    export let regional
 
     $: $title = academicCentre ? academicCentre.name : null
 
@@ -36,7 +34,7 @@
     let form = useForm({
         name:        academicCentre.name,
         code:        academicCentre.code,
-        regional:    selectedRegionalValue,
+        regional:    {value: academicCentre.regional_id, label: regional.find(item => item.value == academicCentre.regional_id)?.label},
     })
 
     function submit() {
@@ -44,6 +42,7 @@
             Inertia.put(route('academic-centres.update', academicCentre.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -74,25 +73,22 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditAcademicCentres || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
-                    <InputError message={errors.code} />
+                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="regional" value="Regional" />
-                    <Select items={regional} id="regional" bind:selectedValue={$form.regional} autocomplete="off" placeholder="Seleccione la regional" required />
-                    <InputError message={errors.regional} />
+                    <Select id="regional" items={regional} bind:selectedValue={$form.regional} error={errors.regional} autocomplete="off" placeholder="Seleccione la regional" required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteAcademicCentres || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>

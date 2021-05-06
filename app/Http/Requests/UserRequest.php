@@ -25,29 +25,27 @@ class UserRequest extends FormRequest
     {
         if ($this->isMethod('PUT')) {
             return [
-                'academic_centre_id'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'academic_centre_id'    => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:academic_centres,id'],
                 'name'                  => ['required', 'max:255', 'string'],
                 'email'                 => ['required', 'max:255', 'regex:/(.*)sena\.edu\.co$/i', 'email', 'unique:users,email,'.$this->route('user')->id.',id'],
-                'document_type'         => ['required', 'max:2', 'string'],
+                'document_type'         => ['required', 'max:2'],
                 'document_number'       => ['required', 'min:0', 'max:9999999999999', 'integer', 'unique:users,document_number,'.$this->route('user')->id.',id'],
                 'cellphone_number'      => ['required', 'min:0', 'max:9999999999', 'integer'],
-                'participation_type'    => ['required', 'max:191', 'string'],
+                'participation_type'    => ['required', 'max:191'],
                 'is_enabled'            => ['required', 'boolean'],
-                // 'roles'                 => ['required'],
-                // 'roles.*'               => ['required']
+                'role_id'               => ['required', 'min:0', 'max:2147483647', 'exists:roles,id']
             ];
         } else {
             return [
-                'academic_centre_id'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'academic_centre_id'    => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:academic_centres,id'],
                 'name'                  => ['required', 'max:255', 'string'],
                 'email'                 => ['required', 'max:255', 'regex:/(.*)sena\.edu\.co$/i', 'unique:users,email', 'email'],
-                'document_type'         => ['required', 'max:2', 'string'],
+                'document_type'         => ['required', 'max:2'],
                 'document_number'       => ['required', 'min:0', 'unique:users,document_number', 'max:9999999999999', 'integer'],
                 'cellphone_number'      => ['required', 'min:0', 'max:9999999999', 'integer'],
-                'participation_type'    => ['required', 'max:191', 'string'],
+                'participation_type'    => ['required', 'max:191'],
                 'is_enabled'            => ['required', 'boolean'],
-                // 'roles'                 => ['required'],
-                // 'roles.*'               => ['required']
+                'role_id.*'             => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:roles,id']
             ];
         }
     }
@@ -59,6 +57,7 @@ class UserRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
+        // dd($this);
         if( is_array($this->document_type) ) {
             $this->merge([
                 'document_type' => $this->document_type['value'],

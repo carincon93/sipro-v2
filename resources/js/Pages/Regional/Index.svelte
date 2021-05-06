@@ -1,12 +1,15 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Inertia } from '@inertiajs/inertia'
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let regional = []
 
@@ -27,66 +30,59 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Regional.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateRegional || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('regional.create'))} variant="raised">
-               {$_('Create')} {$_('Regional.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
+    <DataTable>
+        <div slot="title">{$_('Regional.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreateRegional || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('regional.create'))} variant="raised">
+                    {$_('Create')} {$_('Regional.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Código</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each regional.data as regional (regional.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {regional.name}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center">
+                            {regional.code}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowRegional || canEditRegional ||canDeleteRegional || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('regional.edit', regional.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {#each regional.data as regional (regional.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditRegional || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('regional.edit', regional.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {regional.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {regional.name}
-                                </p>
-                            {/if}
-                        </td>
+            {/each}
 
-                        <td class="border-t">
-                            {#if canEditRegional || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('regional.edit', regional.id)}
-                                    class="px-6 py-4 flex items-center"
-                                    tabindex="-1">
-                                    {regional.code}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center">
-                                    {regional.code}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
-
-                {#if regional.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+            {#if regional.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={regional.links} />
 </AuthenticatedLayout>

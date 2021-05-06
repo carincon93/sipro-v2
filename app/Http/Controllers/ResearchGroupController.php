@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ResearchGroupRequest;
 use App\Models\ResearchGroup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ResearchGroupController extends Controller
@@ -34,17 +35,8 @@ class ResearchGroupController extends Controller
     {
         $this->authorize('create', [ResearchGroup::class]);
 
-        $mincienciasCategories = [
-            ['value' => 'A', 'label' => 'A'],
-            ['value' => 'A1', 'label' => 'A1'],
-            ['value' => 'B', 'label' => 'B'],
-            ['value' => 'C', 'label' => 'C'],
-            ['value' => 'Reconocido', 'label' => 'Reconocido'],
-            ['value' => 'No reconocido', 'label' => 'No reconocido']
-        ];
-
         return Inertia::render('ResearchGroups/Create', [
-            'mincienciasCategories'  => $mincienciasCategories
+            'mincienciasCategories' => json_decode(Storage::get('json/minciencias-categories.json'), true),
         ]);
     }
 
@@ -59,13 +51,13 @@ class ResearchGroupController extends Controller
         $this->authorize('create', [ResearchGroup::class]);
 
         $researchGroup = new ResearchGroup();
-        $researchGroup->name                  = $request->name;
-        $researchGroup->acronym               = $request->acronym;
-        $researchGroup->email                 = $request->email;
-        $researchGroup->gruplac_link          = $request->gruplac_link;
-        $researchGroup->minciencias_code      = $request->minciencias_code;
-        $researchGroup->minciencias_category  = $request->minciencias_category;
-        $researchGroup->academicCentre()->associate($request->academic_centre);
+        $researchGroup->name                    = $request->name;
+        $researchGroup->acronym                 = $request->acronym;
+        $researchGroup->email                   = $request->email;
+        $researchGroup->gruplac_link            = $request->gruplac_link;
+        $researchGroup->minciencias_code        = $request->minciencias_code;
+        $researchGroup->minciencias_category    = $request->minciencias_category;
+        $researchGroup->academicCentre()->associate($request->academic_centre_id);
 
         $researchGroup->save();
 
@@ -97,21 +89,9 @@ class ResearchGroupController extends Controller
     {
         $this->authorize('update', [ResearchGroup::class, $researchGroup]);
 
-        $mincienciasCategories = [
-            ['value' => 'A', 'label' => 'A'],
-            ['value' => 'A1', 'label' => 'A1'],
-            ['value' => 'B', 'label' => 'B'],
-            ['value' => 'C', 'label' => 'C'],
-            ['value' => 'Reconocido', 'label' => 'Reconocido'],
-            ['value' => 'No reconocido', 'label' => 'No reconocido']
-        ];
-
-        $selectedMincienciasCategory    = ['value' => $researchGroup->minciencias_category, 'label' => $researchGroup->minciencias_category];
-
         return Inertia::render('ResearchGroups/Edit', [
-            'researchGroup'                 => $researchGroup,
-            'mincienciasCategories'         => $mincienciasCategories,
-            'selectedMincienciasCategory'   => $selectedMincienciasCategory
+            'researchGroup'         => $researchGroup,
+            'mincienciasCategories' => json_decode(Storage::get('json/minciencias-categories.json'), true),
         ]);
     }
 
@@ -126,13 +106,13 @@ class ResearchGroupController extends Controller
     {
         $this->authorize('update', [ResearchGroup::class, $researchGroup]);
 
-        $researchGroup->name                  = $request->name;
-        $researchGroup->acronym               = $request->acronym;
-        $researchGroup->email                 = $request->email;
-        $researchGroup->gruplac_link          = $request->gruplac_link;
-        $researchGroup->minciencias_code      = $request->minciencias_code;
-        $researchGroup->minciencias_category  = $request->minciencias_category;
-        $researchGroup->academicCentre()->associate($request->academic_centre);
+        $researchGroup->name                    = $request->name;
+        $researchGroup->acronym                 = $request->acronym;
+        $researchGroup->email                   = $request->email;
+        $researchGroup->gruplac_link            = $request->gruplac_link;
+        $researchGroup->minciencias_code        = $request->minciencias_code;
+        $researchGroup->minciencias_category    = $request->minciencias_category;
+        $researchGroup->academicCentre()->associate($request->academic_centre_id);
 
         $researchGroup->save();
 

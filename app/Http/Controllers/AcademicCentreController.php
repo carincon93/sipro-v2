@@ -87,11 +87,8 @@ class AcademicCentreController extends Controller
     {
         $this->authorize('update', [AcademicCentre::class, $academicCentre]);
 
-        $selectedRegionalValue = ['value' => optional($academicCentre->regional)->id, 'label' => optional($academicCentre->regional)->name];
-
         return Inertia::render('AcademicCentres/Edit', [
-            'academicCentre'        => $academicCentre->only(['id', 'name', 'code']),
-            'selectedRegionalValue' => $selectedRegionalValue,
+            'academicCentre'        => $academicCentre->only(['id', 'name', 'code', 'regional_id']),
             'regional'              => Regional::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get()
         ]);
     }

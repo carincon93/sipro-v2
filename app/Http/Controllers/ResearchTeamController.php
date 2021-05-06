@@ -84,13 +84,9 @@ class ResearchTeamController extends Controller
     {
         $this->authorize('update', [ResearchTeam::class, $researchTeam]);
 
-        $selectedResearchLine = ['value' => optional($researchTeam->researchLine)->id, 'label' => optional($researchTeam->researchLine)->name];
-
         return Inertia::render('ResearchTeams/Edit', [
             'researchTeam'          => $researchTeam,
             'researchLines'         => ResearchLine::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedResearchLine'  => $selectedResearchLine
-
         ]);
     }
 

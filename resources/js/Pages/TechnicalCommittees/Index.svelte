@@ -1,10 +1,15 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Pagination from '@/Components/Pagination'
 
+    import Button from '@/Components/Button'
+    import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+    import { Inertia } from '@inertiajs/inertia';
 
     export let technicalCommittees = []
 
@@ -25,54 +30,52 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Technical committees.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateTechnicalCommittees || isSuperAdmin}
-            <a use:inertia href={route('technical-committees.create')} class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 btn-indigo ml-auto">
-                <div>
-                    <span>{$_('Create')}</span>
-                    <span class="hidden md:inline">
-                        {$_('Technical committees.singular')}
-                    </span>
-                </div>
-            </a>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each technicalCommittees.data as technicalCommittee (technicalCommittee.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditTechnicalCommittees || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('technical-committees.edit', technicalCommittee.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {technicalCommittee.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {technicalCommittee.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
+        <div slot="title">{$_('Technical committees.plural')}</div>
 
-                {#if technicalCommittees.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <div slot="actions">
+            {#if canCreateTechnicalCommittees || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('technical-committees.create'))} variant="raised">
+                    {$_('Create')} {$_('Technical committees.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Nombre</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each technicalCommittees.data as technicalCommittee (technicalCommittee.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {technicalCommittee.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowTechnicalCommittees || canEditTechnicalCommittees ||canDeleteTechnicalCommittees || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('technical-committees.edit', technicalCommittee.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if technicalCommittees.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={technicalCommittees.links} />
 </AuthenticatedLayout>

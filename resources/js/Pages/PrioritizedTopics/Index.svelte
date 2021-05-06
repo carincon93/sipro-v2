@@ -1,12 +1,15 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Inertia } from '@inertiajs/inertia'
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let prioritizedTopics = []
 
@@ -27,80 +30,64 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Prioritized topics.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreatePrioritizedTopics || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('prioritized-topics.create'))} variant="raised">
-               {$_('Create')} {$_('Prioritized topics.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Sector productivo</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Mesa técnica de servicios tecnológicos</th>
+    <DataTable>
+        <div slot="title">{$_('Prioritized topics.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreatePrioritizedTopics || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('prioritized-topics.create'))} variant="raised">
+                    {$_('Create')} {$_('Prioritized topics.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Sector productivo</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Mesa técnica de servicios tecnológicos</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each prioritizedTopics.data as prioritizedTopic (prioritizedTopic.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {prioritizedTopic.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {prioritizedTopic.productive_sector?.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {prioritizedTopic.technical_committee?.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowPrioritizedTopics || canEditPrioritizedTopics ||canDeletePrioritizedTopics || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('prioritized-topics.edit', prioritizedTopic.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
+            {/each}
 
-                {#each prioritizedTopics.data as prioritizedTopic (prioritizedTopic.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditPrioritizedTopics || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('prioritized-topics.edit', prioritizedTopic.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditPrioritizedTopics || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('prioritized-topics.edit', prioritizedTopic.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.productive_sector?.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.productive_sector?.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditPrioritizedTopics || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('prioritized-topics.edit', prioritizedTopic.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.technical_committee?.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {prioritizedTopic.technical_committee?.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
-
-                {#if prioritizedTopics.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+            {#if prioritizedTopics.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={prioritizedTopics.links} />
 </AuthenticatedLayout>

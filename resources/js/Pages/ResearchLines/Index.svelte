@@ -1,12 +1,15 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { inertia, page } from '@inertiajs/inertia-svelte'
+    import { page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import { Inertia } from '@inertiajs/inertia'
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let researchLines = []
 
@@ -27,79 +30,64 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Research lines.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateResearchLines || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('research-lines.create'))} variant="raised">
-               {$_('Create')} {$_('Research lines.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <tbody>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Centro de formación</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Regional</th>
-                </tr>
-            </tbody>
-            <thead>
-                {#each researchLines.data as researchLine (researchLine.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditResearchLines || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('research-lines.edit', researchLine.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditResearchLines || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('research-lines.edit', researchLine.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.research_group?.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.research_group?.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditResearchLines || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('research-lines.edit', researchLine.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.research_group?.academic_centre?.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {researchLine.research_group?.academic_centre?.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
+        <div slot="title">{$_('Research lines.plural')}</div>
 
-                {#if researchLines.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </thead>
-        </table>
-    </div>
+        <div slot="actions">
+            {#if canCreateResearchLines || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('research-lines.create'))} variant="raised">
+                    {$_('Create')} {$_('Research lines.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <tbody slot="tbody">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Centro de formación</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Regional</th>
+            </tr>
+        </tbody>
+        <thead slot="thead">
+            {#each researchLines.data as researchLine (researchLine.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {researchLine.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {researchLine.research_group?.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {researchLine.research_group?.academic_centre?.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowResearchLines || canEditResearchLines ||canDeleteResearchLines || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('research-lines.edit', researchLine.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if researchLines.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </thead>
+    </DataTable>
     <Pagination links={researchLines.links} />
 </AuthenticatedLayout>

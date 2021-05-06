@@ -7,6 +7,9 @@
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let strategicThematics = []
 
@@ -27,49 +30,53 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Strategic thematics.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateStrategicThematics || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('strategic-thematics.create'))} variant="raised">
-               {$_('Create')} {$_('Strategic thematics.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each strategicThematics.data as strategicThematic (strategicThematic.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditStrategicThematics || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('strategic-thematics.edit', strategicThematic.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {strategicThematic.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {strategicThematic.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
 
-                {#if strategicThematics.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <div slot="title">{$_('Strategic thematics.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreateStrategicThematics || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('strategic-thematics.create'))} variant="raised">
+                    {$_('Create')} {$_('Strategic thematics.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Nombre</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each strategicThematics.data as strategicThematic (strategicThematic.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {strategicThematic.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowStrategicThematics || canEditStrategicThematics ||canDeleteStrategicThematics || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('strategic-thematics.edit', strategicThematic.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if strategicThematics.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={strategicThematics.links} />
 </AuthenticatedLayout>

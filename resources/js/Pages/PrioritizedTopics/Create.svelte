@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
 
     export let errors
     export let productiveSectors
@@ -30,9 +29,9 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        technical_committee: '',
-        productive_sector: ''
+        name:                   '',
+        technical_committee_id: '',
+        productive_sector_id:   ''
     })
 
     function submit() {
@@ -64,25 +63,22 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreatePrioritizedTopics || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="productive_sector" value="Sector productivo" />
-                    <Select items={productiveSectors} bind:selectedValue={$form.productive_sector} autocomplete="off" placeholder="Seleccione un sector productivo"/>
-                    <InputError message={errors.productive_sector} />
+                    <Label required class="mb-4" labelFor="productive_sector_id" value="Sector productivo" />
+                    <Select id="productive_sector_id" items={productiveSectors} bind:selectedValue={$form.productive_sector_id} error={errors.productive_sector_id} autocomplete="off" placeholder="Seleccione un sector productivo" required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="technical_committee" value="Mesa técnica de servicios tecnológicos" />
-                    <Select items={technicalCommittees} bind:selectedValue={$form.technical_committee} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos"/>
-                    <InputError message={errors.technical_committee} />
+                    <Label required class="mb-4" labelFor="technical_committee_id" value="Mesa técnica de servicios tecnológicos" />
+                    <Select id="technical_committee_id" items={technicalCommittees} bind:selectedValue={$form.technical_committee_id} error={errors.technical_committee_id} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos" required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreatePrioritizedTopics || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

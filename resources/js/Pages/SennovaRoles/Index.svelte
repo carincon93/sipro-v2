@@ -7,6 +7,9 @@
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let sennovaRoles = []
 
@@ -27,49 +30,52 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Sennova roles.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateSennovaRoles || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('sennova-roles.create'))} variant="raised">
-               {$_('Create')} {$_('Sennova roles.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each sennovaRoles.data as sennovaRole (sennovaRole.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditSennovaRoles || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('sennova-roles.edit', sennovaRole.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {sennovaRole.name}
-                                </a>
-                            {:else}
-                                <p  class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {sennovaRole.name}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
+        <div slot="title">{$_('Sennova roles.plural')}</div>
 
-                {#if sennovaRoles.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <div slot="actions">
+            {#if canCreateSennovaRoles || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('sennova-roles.create'))} variant="raised">
+                    {$_('Create')} {$_('Sennova roles.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Nombre</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each sennovaRoles.data as sennovaRole (sennovaRole.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p  class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {sennovaRole.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowSennovaRoles || canEditSennovaRoles ||canDeleteSennovaRoles || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('sennova-roles.edit', sennovaRole.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if sennovaRoles.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={sennovaRoles.links} />
 </AuthenticatedLayout>

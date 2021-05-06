@@ -7,6 +7,9 @@
 
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
+    import DataTable from '@/Components/DataTable'
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
 
     export let users = []
 
@@ -27,65 +30,59 @@
 </script>
 
 <AuthenticatedLayout>
-    <h1 class="mb-8 font-bold text-3xl">{$_('Users.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreateUsers || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('users.create'))} variant="raised">
-               {$_('Create')} {$_('Users.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
-                </tr>
-            </thead>
-            <tbody>
-                {#each users.data as user (user.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditUsers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('users.edit', user.id)}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {user.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {user.name}
-                                </p>
-                            {/if}
-                        </td>
-                        <td class="border-t">
-                            {#if canEditUsers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('users.edit', user.id)}
-                                    class="px-6 py-4 flex items-center"
-                                    tabindex="-1">
-                                    {user.email}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center">
-                                    {user.email}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
+    <DataTable>
 
-                {#if users.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+        <div slot="title">{$_('Users.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreateUsers || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('users.create'))} variant="raised">
+                    {$_('Create')} {$_('Users.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Correo electrónico</th>
+            </tr>
+        </thead>
+        <tbody slot="tbody">
+            {#each users.data as user (user.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {user.name}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center">
+                            {user.email}
+                        </p>
+                    </td>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowUsers || canEditUsers ||canDeleteUsers || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('users.edit', user.id)))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
+                </tr>
+            {/each}
+
+            {#if users.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={users.links} />
 </AuthenticatedLayout>

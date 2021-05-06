@@ -4,20 +4,18 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
+    import Dialog from '@/Components/Dialog'
 
     export let errors
     export let prioritizedTopic
     export let productiveSectors
-    export let selectedProductiveSector
     export let technicalCommittees
-    export let selectedTechnicalCommittee
 
     $: $title = prioritizedTopic ? prioritizedTopic.name : null
 
@@ -33,11 +31,11 @@
     let canDeletePrioritizedTopics  = authUser.can.find(element => element == 'prioritized-topics.delete') == 'prioritized-topics.delete'
 
     let dialog_open = false
-    let sending = false
+    let sending     = false
     let form = useForm({
-        name:   prioritizedTopic.name,
-        productive_sector: selectedProductiveSector,
-        technical_committee: selectedTechnicalCommittee,
+        name:                       prioritizedTopic.name,
+        productive_sector_id:       {value: prioritizedTopic.productive_sector_id, label: productiveSectors.find(item => item.value == prioritizedTopic.productive_sector_id)?.label},
+        technical_committee_id:     {value: prioritizedTopic.technical_committee_id, label: technicalCommittees.find(item => item.value == prioritizedTopic.technical_committee_id)?.label},
     })
 
     function submit() {
@@ -45,6 +43,7 @@
             Inertia.put(route('prioritized-topics.update', prioritizedTopic.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -75,25 +74,22 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditPrioritizedTopics || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="productive_sector" value="Sector productivo" />
-                    <Select items={productiveSectors} bind:selectedValue={$form.productive_sector} autocomplete="off" placeholder="Seleccione un sector productivo"/>
-                    <InputError message={errors.productive_sector} />
+                    <Label required class="mb-4" labelFor="productive_sector_id" value="Sector productivo" />
+                    <Select id="productive_sector_id" items={productiveSectors} bind:selectedValue={$form.productive_sector_id} error={errors.productive_sector_id} autocomplete="off" placeholder="Seleccione un sector productivo" required />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="technical_committee" value="Mesa técnica de servicios tecnológicos" />
-                    <Select items={technicalCommittees} bind:selectedValue={$form.technical_committee} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos"/>
-                    <InputError message={errors.technical_committee} />
+                    <Label required class="mb-4" labelFor="technical_committee_id" value="Mesa técnica de servicios tecnológicos" />
+                    <Select id="technical_committee_id" items={technicalCommittees} bind:selectedValue={$form.technical_committee_id} error={errors.technical_committee_id} autocomplete="off" placeholder="Seleccione una mesta técnica de servicios tecnológicos" required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeletePrioritizedTopics ||isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -107,8 +103,8 @@
                 {/if}
             </div>
         </form>
-
-        <Dialog bind:open={dialog_open}>
+    </div>
+    <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -133,5 +129,4 @@
             </div>
         </div>
     </Dialog>
-    </div>
 </AuthenticatedLayout>

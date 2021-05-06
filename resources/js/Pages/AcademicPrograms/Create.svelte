@@ -7,9 +7,8 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
@@ -30,10 +29,10 @@
 
     let sending = false
     let form = useForm({
-        name:  '',
-        code: '',
-        study_mode: '',
-        academic_centre: '',
+        name:               '',
+        code:               '',
+        study_mode:         '',
+        academic_centre:    '',
     })
 
     function submit() {
@@ -65,30 +64,27 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateAcademicPrograms || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} required />
-                    <InputError message={errors.code} />
+                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="study_mode" value="Modalidad de estudio" />
-                    <Select items={studyModes} bind:selectedValue={$form.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio"/>
-                    <InputError message={errors.study_mode} />
+                    <Select id="study_mode" items={studyModes} bind:selectedValue={$form.study_mode} error={errors.study_mode} autocomplete="off" placeholder="Seleccione una modalidad de estudio" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="academic_centre" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} />
+                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateAcademicPrograms || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

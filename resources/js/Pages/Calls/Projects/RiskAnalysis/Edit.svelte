@@ -4,18 +4,22 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
     import Textarea from '@/Components/Textarea'
+    import Dialog from '@/Components/Dialog'
 
     export let call
     export let project
     export let errors
     export let riskAnalysis = {}
+    export let riskLevels
+    export let riskTypes
+    export let riskProbabilities
+    export let riskImpacts
 
     $: $title = riskAnalysis ? riskAnalysis.name : null
 
@@ -42,16 +46,13 @@
         mitigation_measures: riskAnalysis.mitigation_measures
     })
 
-    let riskLevels = [{'value': 1, 'label': 'A nivel del objetivo general'}, {'value': 2, 'label': 'A nivel de productos'}, {'value': 3, 'label': 'A nivel de actividades'}]
-    let types = [{'value': 1, 'label': 'Mercado'}, {'value': 2, 'label': 'Operacionales'}, {'value': 3, 'label': 'Legales'}, {'value': 4, 'label': 'Administrativos'}]
-    let probabilities = [{'value': 1, 'label': 'Posible'}, {'value': 2, 'label': 'Probable'}]
-    let impacts = [{'value': 1, 'label': 'Alto'}, {'value': 2, 'label': 'Moderado'}, {'value': 2, 'label': 'Leve'}]
 
     function submit() {
         if (canEditRiskAnalysis || isSuperAdmin) {
             Inertia.put(route('calls.projects.risk-analysis.update', [call.id, project.id, riskAnalysis.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -82,17 +83,15 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditRiskAnalysis || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="level" value="Nivel de riesgo" />
-                    <Select items={riskLevels} bind:selectedValue={$form.level} autocomplete="off"  placeholder="Seleccione el nivel del riesgo" inputAttributes={{'id': 'level'}} />
-                    <InputError message={errors.level} />
+                    <Select id="level" items={riskLevels} bind:selectedValue={$form.level} error={errors.level} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="type" value="Tipo de riesgo" />
-                    <Select items={types} bind:selectedValue={$form.type} autocomplete="off"  placeholder="Seleccione el tipo de riesgo" inputAttributes={{'id': 'type'}} />
-                    <InputError message={errors.type} />
+                    <Select id="type" items={riskTypes} bind:selectedValue={$form.type} error={errors.type} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
                 </div>
 
                 <div class="mt-4">
@@ -102,14 +101,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="probability" value="Probabilidad" />
-                    <Select items={probabilities} bind:selectedValue={$form.probability} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'probability'}} />
-                    <InputError message={errors.probability} />
+                    <Select id="probability" items={riskProbabilities} bind:selectedValue={$form.probability} error={errors.probability} autocomplete="off" placeholder="Seleccione la probabilidad" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="impact" value="Impactos" />
-                    <Select items={impacts} bind:selectedValue={$form.impact} autocomplete="off"  placeholder="Seleccione la probabilidad" inputAttributes={{'id': 'impact'}} />
-                    <InputError message={errors.impact} />
+                    <Select id="impact" items={riskImpacts} bind:selectedValue={$form.impact} error={errors.impact} autocomplete="off" placeholder="Seleccione la probabilidad" required />
                 </div>
 
                 <div class="mt-4">
@@ -121,7 +118,7 @@
                     <Label required class="mb-4" labelFor="mitigation_measures" value="Medidas de mitigación" />
                     <Textarea rows="4" id="mitigation_measures" error={errors.mitigation_measures} bind:value={$form.mitigation_measures} required />
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteRiskAnalysis || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -135,8 +132,8 @@
                 {/if}
             </div>
         </form>
-
-        <Dialog bind:open={dialog_open}>
+    </div>
+    <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -161,5 +158,4 @@
             </div>
         </div>
     </Dialog>
-    </div>
 </AuthenticatedLayout>

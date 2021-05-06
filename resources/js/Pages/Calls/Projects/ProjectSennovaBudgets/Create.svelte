@@ -68,7 +68,7 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateProjectSennovaBudgets || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <DropdownCallBudget bind:selectedBudgetUsage={$form.call_budget_id} bind:showQtyInput={showQtyInput} message={errors.call_budget_id} {call} programmaticLine={project.project_type.programmatic_line} required />
                 </div>
@@ -93,7 +93,7 @@
                         <Input id="value" type="number" min="1" class="mt-1 block w-full" bind:value={$form.value} error={errors.value} required />
                     </div>
                 {/if}
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateProjectSennovaBudgets && $form.call_budget_id != ''|| isSuperAdmin && $form.call_budget_id != ''}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

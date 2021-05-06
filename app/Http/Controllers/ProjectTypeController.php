@@ -55,7 +55,7 @@ class ProjectTypeController extends Controller
         $projectType = new ProjectType();
         $projectType->name          = $request->name;
         $projectType->maximum_value = $request->maximum_value;
-        $projectType->programmaticLine()->associate($request->programmatic_line);
+        $projectType->programmaticLine()->associate($request->programmatic_line_id);
 
         $projectType->save();
 
@@ -87,12 +87,9 @@ class ProjectTypeController extends Controller
     {
         $this->authorize('update', [ProjectType::class, $projectType]);
 
-        $selectedProgrammaticLine = ['value' => optional($projectType->programmaticLine)->id, 'label' => optional($projectType->programmaticLine)->name];
-
         return Inertia::render('ProjectTypes/Edit', [
-            'projectType'                   => $projectType,
-            'programmaticLines'             => ProgrammaticLine::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedProgrammaticLine'      => $selectedProgrammaticLine
+            'projectType'        => $projectType,
+            'programmaticLines'  => ProgrammaticLine::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
         ]);
     }
 
@@ -109,7 +106,7 @@ class ProjectTypeController extends Controller
 
         $projectType->name          = $request->name;
         $projectType->maximum_value = $request->maximum_value;
-        $projectType->programmaticLine()->associate($request->programmatic_line);
+        $projectType->programmaticLine()->associate($request->programmatic_line_id);
 
         $projectType->save();
 

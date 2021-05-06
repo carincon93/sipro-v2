@@ -41,7 +41,15 @@ class CallSennovaRoleController extends Controller
 
         return Inertia::render('Calls/CallSennovaRoles/Create', [
             'call' => $call,
-            'sennovaRoles' => SennovaRole::select('id as value', 'name as label')->orderBy('name', 'ASC')->get()
+            'sennovaRoles'      => SennovaRole::selectRaw("id as value, CASE academic_degree
+                WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno')
+                WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico')
+                WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo')
+                WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado')
+                WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización')
+                WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría')
+                WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado')
+            END as label")->orderBy('name', 'ASC')->get()
         ]);
     }
 
@@ -93,12 +101,19 @@ class CallSennovaRoleController extends Controller
         $this->authorize('update', [CallSennovaRole::class, $callSennovaRole]);
 
         $callSennovaRole->sennovaRole;
-        $selectedSennovaRoleValue = ['value' => optional($callSennovaRole->sennovaRole)->id, 'label' => optional($callSennovaRole->sennovaRole)->name];
 
         return Inertia::render('Calls/CallSennovaRoles/Edit', [
             'callSennovaRole'   => $callSennovaRole,
             'call'              => $call,
-            'selectedSennovaRoleValue' => $selectedSennovaRoleValue
+            'sennovaRoles'      => SennovaRole::selectRaw("id as value, CASE academic_degree
+                WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno')
+                WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico')
+                WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo')
+                WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado')
+                WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización')
+                WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría')
+                WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado')
+            END as label")->orderBy('name', 'ASC')->get()
         ]);
     }
 

@@ -4,13 +4,15 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia'
+
     import LoadingButton from '@/Components/LoadingButton'
     import Pagination from '@/Components/Pagination'
-    import Dialog, { Title, Content } from '@smui/dialog'
-    import Button, { Label as LabelMUI } from '@smui/button'
+    import Button from '@/Components/Button'
+    import DataTable from '@/Components/DataTable'
     import ResourceMenu from '@/Components/ResourceMenu'
     import { Item, Text } from '@smui/list'
-    import { Inertia } from '@inertiajs/inertia'
+    import Dialog from '@/Components/Dialog'
 
     export let call
     export let project
@@ -23,8 +25,8 @@
     export let sennovaBudget
     export let errors
 
-    let open    = false
-    let sending = false
+    let dialog_open = false
+    let sending     = false
 
     $title = $_('Market research.plural')
 
@@ -84,8 +86,6 @@
         </div>
     </header>
 
-    <h1 class="font-bold text-3xl m-24 text-center">{$_('Market research.plural')}</h1>
-
     <div class="bg-indigo-100 p-5 text-indigo-600 mb-10">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px)">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -101,24 +101,31 @@
                     <strong>Importante: </strong>{sennovaBudget.message} No debe superar los ${project.percentage_industrial_machinery} COP
                 </p>
             {/if}
-            {#if !requiresMarketResearchBatch && projectBudgetBatches.data.length < 1 || requiresMarketResearchBatch}
-                <div class="mb-6 flex justify-end items-center">
-                    <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-                    {#if canCreateMarketResearch || isSuperAdmin}
-                        <Button on:click={() => open = true} variant="raised">
-                            {$_('Add')} {$_('Market research.singular').toLowerCase()}
-                        </Button>
-                    {/if}
-                </div>
-            {/if}
         {/if}
-        <table class="w-full whitespace-no-wrap bg-white mt-4 mb-4">
-            <thead>
+
+        <DataTable>
+            <div slot="title">{$_('Market research.plural')}</div>
+
+            <div slot="actions">
+                {#if !requiresMarketResearchBatch && requiresMarketResearch && projectBudgetBatches.data.length < 1 || requiresMarketResearch && requiresMarketResearchBatch}
+                    <div class="mb-6 flex justify-end items-center">
+                        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
+                        {#if canCreateMarketResearch || isSuperAdmin}
+                            <Button on:click={() => dialog_open = true} variant="raised">
+                                {$_('Add')} {$_('Market research.singular').toLowerCase()}
+                            </Button>
+                        {/if}
+                    </div>
+                {/if}
+            </div>
+
+            <thead slot="thead">
                 <tr class="text-left font-bold">
                     <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Estudio(s) de mercado</th>
                 </tr>
             </thead>
-            <tbody>
+
+            <tbody slot="tbody">
                 {#each projectBudgetBatches.data as projectBudgetBatch, i}
                     <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                         <td class="border-t px-6 pt-6 pb-4">
@@ -156,49 +163,37 @@
                         <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
                     </tr>
                 {/if}
+
             </tbody>
-            <tfoot>
+
+            <tfoot slot="tfoot">
                 <tr>
                     <td class="border-t px-6 pt-6 pb-4" colspan="2">
                         <h1>Valor promedio del estudio de mercado: <strong>${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.average)} COP</strong></h1>
                     </td>
                 </tr>
             </tfoot>
-        </table>
+        </DataTable>
     </div>
 
     <!-- Dialog -->
     <Dialog
-        bind:open
-        scrimClickAction=""
-        escapeKeyAction=""
-        aria-labelledby="mandatory-title"
-        aria-describedby="mandatory-content"
-        id="market-reseach-dialog"
-    >
-        <Title id="market-research-mandatory-title">
-            <div class="mb-10 text-center">
-                <div class="text-primary">
+        bind:open={dialog_open} id="market-reseach">
+        <div slot="title"></div>
+        <div slot="content">
+            <CreateMarketResearch bind:dialogOpen={dialog_open} {sending} {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches} {callBudget} />
+        </div>
 
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <div>
-                    <Button on:click={() => open = false} type="button">
-                        <LabelMUI>{$_('Cancel')}</LabelMUI>
-                    </Button>
-                    {#if canCreateMarketResearch}
-                        <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form="market-reseach-form">
-                            {$_('Save')}
-                        </LoadingButton>
-                    {/if}
-                </div>
-            </div>
-
-        </Title>
-        <Content id="market-research-mandatory-content">
-            <CreateMarketResearch bind:dialogOpen={open} {sending} {errors} {call} {project} {projectSennovaBudget} {projectBudgetBatches} {callBudget} />
-        </Content>
+        <div slot="actions" class="block flex w-full">
+            <Button on:click={() => dialog_open = false} type="button" variant={null}>
+                {$_('Cancel')}
+            </Button>
+            {#if canCreateMarketResearch}
+                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit" form="market-reseach-form">
+                    {$_('Save')}
+                </LoadingButton>
+            {/if}
+        </div>
     </Dialog>
 
     <Pagination links={projectBudgetBatches.links} />

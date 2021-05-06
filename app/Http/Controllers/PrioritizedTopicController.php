@@ -54,8 +54,8 @@ class PrioritizedTopicController extends Controller
 
         $prioritizedTopic = new PrioritizedTopic();
         $prioritizedTopic->name = $request->name;
-        $prioritizedTopic->productiveSector()->associate($request->productive_sector);
-        $prioritizedTopic->technicalCommittee()->associate($request->technical_committee);
+        $prioritizedTopic->productiveSector()->associate($request->productive_sector_id);
+        $prioritizedTopic->technicalCommittee()->associate($request->technical_committee_id);
 
         $prioritizedTopic->save();
 
@@ -87,16 +87,10 @@ class PrioritizedTopicController extends Controller
     {
         $this->authorize('update', [PrioritizedTopic::class, $prioritizedTopic]);
 
-        $selectedProductiveSector   = ['value' => optional($prioritizedTopic->productiveSector)->id, 'label' => optional($prioritizedTopic->productiveSector)->name];
-        $selectedTechnicalCommittee = ['value' => optional($prioritizedTopic->technicalCommittee)->id, 'label' => optional($prioritizedTopic->technicalCommittee)->name];
-
         return Inertia::render('PrioritizedTopics/Edit', [
-            'prioritizedTopic'              => $prioritizedTopic,
-            'productiveSectors'             => ProductiveSector::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'technicalCommittees'           => TechnicalCommittee::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedProductiveSector'      => $selectedProductiveSector,
-            'selectedTechnicalCommittee'    => $selectedTechnicalCommittee
-
+            'prioritizedTopic'    => $prioritizedTopic,
+            'productiveSectors'   => ProductiveSector::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
+            'technicalCommittees' => TechnicalCommittee::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
         ]);
     }
 
@@ -112,8 +106,8 @@ class PrioritizedTopicController extends Controller
         $this->authorize('update', [PrioritizedTopic::class, $prioritizedTopic]);
 
         $prioritizedTopic->name = $request->name;
-        $prioritizedTopic->productiveSector()->associate($request->productive_sector);
-        $prioritizedTopic->technicalCommittee()->associate($request->technical_committee);
+        $prioritizedTopic->productiveSector()->associate($request->productive_sector_id);
+        $prioritizedTopic->technicalCommittee()->associate($request->technical_committee_id);
 
         $prioritizedTopic->save();
 

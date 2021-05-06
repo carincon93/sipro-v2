@@ -6,19 +6,22 @@
     import { _ } from 'svelte-i18n'
 
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
-    import Checkbox from '@/Components/Checkbox'
     import Textarea from '@/Components/Textarea'
     import Input from '@/Components/Input'
     import Switch from '@/Components/Switch'
     import File from '@/Components/File'
-    import FilterSelect from '@/Components/FilterSelect'
+    import Select from '@/Components/Select'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
 
     export let call
     export let rdi
     export let errors
     export let activities
+    export let partnerOrganizationTypes
+    export let legalStatus
+    export let companyTypes
 
     let researchGroup   = false
     let agreement       = false
@@ -56,10 +59,6 @@
         intellectual_property: '',
         activity_id: []
     })
-
-    let partnerOrganizationTypes = [{'value': 1, 'label': 'Empresa'}, {'value': 2, 'label': 'Universidad'}, {'value': 3, 'label': 'Entidades sin ánimo de lucro'}, {'value': 4, 'label': 'Centro de formación SENA'}, {'value': 5, 'label': 'Otra'}]
-    let legalStatus = [{'value': 1, 'label': 'Pública'}, {'value': 2, 'label': 'Privado'}, {'value': 3, 'label': 'Mixta'}, {'value': 4, 'label': 'ONG'}]
-    let companyTypes = [{'value': 1, 'label': 'Microempresa'}, {'value': 2, 'label': 'Pequeña'}, {'value': 3, 'label': 'Mediana'}, {'value': 4, 'label': 'Grande'}]
 
     function submit() {
         if (canCreatePartnerOrganizations || isSuperAdmin) {
@@ -109,11 +108,10 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreatePartnerOrganizations || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="partner_organization_type" value="Tipo de entidad aliada" />
-                    <FilterSelect items={partnerOrganizationTypes} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" id="partner_organization_type" />
-                    <InputError message={errors.partner_organization_type} />
+                    <Select id="partner_organization_type" items={partnerOrganizationTypes} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
                 </div>
 
                 <div class="mt-4">
@@ -123,14 +121,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="legal_status" value="Naturaleza de la entidad" />
-                    <FilterSelect items={legalStatus} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" id="legal_status" />
-                    <InputError message={errors.legal_status} />
+                    <Select id="legal_status" items={legalStatus} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="company_type" value="Tipo de empresa" />
-                    <FilterSelect items={companyTypes} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" id="company_type" />
-                    <InputError message={errors.company_type} />
+                    <Select id="company_type" items={companyTypes} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" required />
                 </div>
 
                 <div class="mt-4">
@@ -141,7 +137,6 @@
                 <div class="mt-4">
                     <p>¿Hay convenio?</p>
                     <Switch bind:checked={agreement} />
-                    <span class="ml-2">{#if agreement} Si {:else} No {/if}</span>
                 </div>
                 {#if agreement}
                     <div class="mt-4">
@@ -153,7 +148,6 @@
                 <div class="mt-4">
                     <p>¿La entidad aliada tiene grupo de investigación?</p>
                     <Switch bind:checked={researchGroup} />
-                    <span class="ml-2">{#if researchGroup} Si {:else} No {/if}</span>
                 </div>
                 {#if researchGroup}
                     <div class="mt-4">
@@ -211,11 +205,13 @@
                 <div class="bg-white rounded shadow overflow-hidden">
                     <div class="grid grid-cols-2">
                         {#each activities as {id, description}, i}
-                            <div class="p-3 border-t border-b flex items-center text-sm">{description}</div>
-
-                            <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                                <Checkbox id={id} bind:group={$form.activity_id} value={id}/>
-                            </div>
+                            <FormField>
+                                <Checkbox
+                                    bind:group={$form.activity_id}
+                                    value={id}
+                                />
+                                    <span slot="label">{description}</span>
+                            </FormField>
                         {/each}
                     </div>
                 </div>
@@ -225,7 +221,7 @@
                     {$form.progress.percentage}%
                     </progress>
                 {/if}
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreatePartnerOrganizations || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

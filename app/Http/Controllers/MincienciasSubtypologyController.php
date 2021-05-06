@@ -85,12 +85,9 @@ class MincienciasSubtypologyController extends Controller
     {
         $this->authorize('update', [MincienciasSubtypology::class, $mincienciasSubtypology]);
 
-        $selectedMincienciasTypology = ['value' => optional($mincienciasSubtypology->mincienciasTypology)->id, 'label' => optional($mincienciasSubtypology->mincienciasTypology)->name];
-
         return Inertia::render('MincienciasSubtypologies/Edit', [
-            'mincienciasSubtypology' => $mincienciasSubtypology,
-            'mincienciasTypologies' =>  MincienciasTypology::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
-            'selectedMincienciasTypology' => $selectedMincienciasTypology
+            'mincienciasSubtypology'    => $mincienciasSubtypology,
+            'mincienciasTypologies'     =>  MincienciasTypology::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get(),
         ]);
     }
 

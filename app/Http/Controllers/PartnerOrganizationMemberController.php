@@ -8,6 +8,7 @@ use App\Models\RDI;
 use App\Models\PartnerOrganization;
 use App\Models\PartnerOrganizationMember;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class PartnerOrganizationMemberController extends Controller
@@ -40,10 +41,8 @@ class PartnerOrganizationMemberController extends Controller
     {
         $this->authorize('create', [PartnerOrganizationMember::class]);
 
-        $documentTypes = [['value' => 'CC', 'label' => 'Cédula de ciudadanía'], ['value' => 'CE', 'label' => 'Cédula de extranjería'], ['value' => 'TI', 'label' => 'Tarjeta de identidad']];
-
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/PartnerOrganizationMembers/Create', [
-            'documentTypes'         => $documentTypes,
+            'documentTypes'         => json_decode(Storage::get('json/document-types.json'), true),
             'call'                  => $call->only('id'),
             'rdi'                   => $rdi->only('id'),
             'partnerOrganization'   => $partnerOrganization->only('id')
@@ -101,14 +100,12 @@ class PartnerOrganizationMemberController extends Controller
     {
         $this->authorize('update', [PartnerOrganizationMember::class, $partnerOrganizationMember]);
 
-        $documentTypes = [['value' => 'CC', 'label' => 'Cédula de ciudadanía'], ['value' => 'CE', 'label' => 'Cédula de extranjería'], ['value' => 'TI', 'label' => 'Tarjeta de identidad']];
-
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/PartnerOrganizationMembers/Edit', [
             'call'                      => $call->only('id'),
             'rdi'                       => $rdi->only('id'),
+            'documentTypes'         => json_decode(Storage::get('json/document-types.json'), true),
             'partnerOrganization'       => $partnerOrganization->only('id'),
             'partnerOrganizationMember' => $partnerOrganizationMember,
-            'documentTypes'             => $documentTypes
         ]);
     }
 

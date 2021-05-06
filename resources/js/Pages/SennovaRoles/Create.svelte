@@ -7,7 +7,6 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import DropdownProgrammaticLine from '@/Dropdowns/DropdownProgrammaticLine'
@@ -29,9 +28,9 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        description: '',
-        programmatic_line_id: '',
+        name:                   '',
+        description:            '',
+        programmatic_line_id:   '',
     })
 
     function submit() {
@@ -63,16 +62,15 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canCreateSennovaRoles || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="description" value="Descripción" />
-                    <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
+                    <Textarea rows="4" id="description" bind:value={$form.description} error={errors.description} required />
                 </div>
 
                 <div class="mt-4">
@@ -80,7 +78,7 @@
                     <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} />
                 </div>
 
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateSennovaRoles || isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

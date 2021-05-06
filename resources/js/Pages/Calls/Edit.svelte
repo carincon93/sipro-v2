@@ -9,6 +9,7 @@
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
+    import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import Switch from '@/Components/Switch'
@@ -81,13 +82,13 @@
     </header>
 
     {#if canIndexCallSenovaRoles || canShowCallSenovaRoles || canCreateCallSenovaRoles || canEditCallSenovaRoles || canDeleteCallSenovaRoles || isSuperAdmin}
-        <a use:inertia href={route('calls.call-sennova-roles.index', call.id)} class="bg-indigo-600 hover:bg-indigo-500 inline-block mt-4 overflow-hidden px-6 py-2 shadow-sm sm:rounded-lg text-white transition-colors">
+        <Button variant="raised" on:click={() => Inertia.visit(route('calls.call-sennova-roles.index', call.id))} class="mb-4">
             {$_('Call sennova roles.plural')}
-        </a>
+        </Button>
     {/if}
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditCallSenovaRoles || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <p class="text-center">Fecha de la conovicatoria</p>
                     <div class="mt-4 flex items-start justify-around">
@@ -135,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteCalls || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -149,8 +150,8 @@
                 {/if}
             </div>
         </form>
-
-        <Dialog bind:open={dialog_open}>
+    </div>
+    <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -175,5 +176,4 @@
             </div>
         </div>
     </Dialog>
-    </div>
 </AuthenticatedLayout>

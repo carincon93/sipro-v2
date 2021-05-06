@@ -4,7 +4,6 @@
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import Dialog from '@/Components/Dialog'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
@@ -15,6 +14,7 @@
     import Select from '@/Components/Select'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
+    import Dialog from '@/Components/Dialog'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
@@ -22,7 +22,7 @@
     export let documentTypes
     export let participationTypes
     export let roles
-    export let user_roles
+    export let userRoles
 
     $: $title = user ? user.name : null
 
@@ -37,19 +37,21 @@
     let canEditUsers    = authUser.can.find(element => element == 'users.edit') == 'users.edit'
     let canDeleteUsers  = authUser.can.find(element => element == 'users.delete') == 'users.delete'
 
+    console.log(userRoles);
+
     let dialog_open = false
-    let sending = false
+    let sending     = false
     let form = useForm({
         name:               user.name,
         email:              user.email,
         password:           user.password,
-        document_type:      user.document_type,
+        document_type:      {value: user.document_type, label: documentTypes.find(item => item.value == user.document_type)?.label},
         document_number:    user.document_number,
         cellphone_number:   user.cellphone_number,
         is_enabled:         user.is_enabled,
-        participation_type: user.participation_type,
+        participation_type: {value: user.participation_type, label: documentTypes.find(item => item.value == user.participation_type)?.label},
         academic_centre_id: user.academic_centre_id,
-        roles: user_roles
+        role_id:            userRoles
     })
 
     function submit() {
@@ -57,6 +59,7 @@
             Inertia.put(route('users.update', user.id), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
+                preserveScroll: true
             })
         }
     }
@@ -90,32 +93,28 @@
             <div class="p-8">
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre completo" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
-                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
-                    <InputError message={errors.email} />
+                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} error={errors.email} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
-                    <Select items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
-                    <InputError message={errors.document_type} />
+                    {$form.document_type}
+                    <Select id="document_type" items={documentTypes} bind:selectedValue={$form.document_type} error={errors.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_number" value="Número de documento" />
-                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
-                    <InputError message={errors.document_number} />
+                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} error={errors.document_number} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="cellphone_number" value="Número de celular" />
-                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
-                    <InputError message={errors.cellphone_number} />
+                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} error={errors.cellphone_number} required />
                 </div>
                 <div class="mt-4">
                     <Label required labelFor="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
@@ -126,8 +125,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="participation_type" value="Tipo de participación" />
-                    <Select items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
-                    <InputError message={errors.participation_type} />
+                    <Select id="participation_type" items={participationTypes} bind:selectedValue={$form.participation_type}  error={errors.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación" required />
                 </div>
 
                 <div class="mt-4">
@@ -143,10 +141,10 @@
                     <div class="pt-8 pb-8 border-t">
                         <FormField>
                             <Checkbox
-                                bind:group={$form.roles}
+                                bind:group={$form.role_id}
                                 value={id}
                             />
-                                <span slot="label">{$_(name)}</span>
+                                <span slot="label">{name}</span>
                         </FormField>
                     </div>
                 {/each}

@@ -6,6 +6,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -35,12 +36,9 @@ class UserController extends Controller
     {
         $this->authorize('create', [User::class]);
 
-        $documentTypes      = [['value' => 'CC', 'label' => 'Cédula de ciudadanía'], ['value' => 'CE', 'label' => 'Cédula de extranjería'], ['value' => 'TI', 'label' => 'Tarjeta de identidad']];
-        $participationTypes = [['value' => 'Planta', 'label' => 'Planta'], ['value' => 'Planta temporal', 'label' => 'Planta temporal'], ['value' => 'Contratista', 'label' => 'Contratista']];
-
         return Inertia::render('Users/Create', [
-            'documentTypes'         => $documentTypes,
-            'participationTypes'    => $participationTypes,
+            'documentTypes'         => json_decode(Storage::get('json/document-types.json'), true),
+            'participationTypes'    => json_decode(Storage::get('json/participation-types.json'), true),
             'roles'                 => Role::select('id', 'name')->get('id')
         ]);
     }
@@ -69,7 +67,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $user->assignRole($request->roles);
+        $user->assignRole($request->role_id);
 
         return redirect()->route('users.index')->with('success', 'The resource has been created successfully.');
     }
@@ -99,14 +97,11 @@ class UserController extends Controller
     {
         $this->authorize('update', [User::class, $user]);
 
-        $documentTypes      = [['value' => 'CC', 'label' => 'Cédula de ciudadanía'], ['value' => 'CE', 'label' => 'Cédula de extranjería'], ['value' => 'TI', 'label' => 'Tarjeta de identidad']];
-        $participationTypes = [['value' => 'Planta', 'label' => 'Planta'], ['value' => 'Planta temporal', 'label' => 'Planta temporal'], ['value' => 'Contratista', 'label' => 'Contratista']];
-
         return Inertia::render('Users/Edit', [
             'user'                  => $user,
-            'documentTypes'         => $documentTypes,
-            'participationTypes'    => $participationTypes,
-            'user_roles'            => $user->roles()->pluck('id'),
+            'documentTypes'         => json_decode(Storage::get('json/document-types.json'), true),
+            'participationTypes'    => json_decode(Storage::get('json/participation-types.json'), true),
+            'userRoles'             => $user->roles()->pluck('id'),
             'roles'                 => Role::select('id', 'name')->get('id')
         ]);
     }
@@ -133,7 +128,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $user->syncRoles($request->roles);
+        $user->syncRoles($request->role_id);
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

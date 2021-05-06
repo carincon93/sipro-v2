@@ -6,6 +6,7 @@ use App\Http\Requests\AcademicProgramRequest;
 use App\Models\Regional;
 use App\Models\AcademicProgram;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class AcademicProgramController extends Controller
@@ -37,10 +38,8 @@ class AcademicProgramController extends Controller
     {
         $this->authorize('create', [AcademicProgram::class]);
 
-        $studyModes = [['value' => 'presencial', 'label' => 'Presencial'], ['value' => 'virtual', 'label' => 'Virtual']];
-
         return Inertia::render('AcademicPrograms/Create', [
-            'studyModes'        => $studyModes
+            'studyModes' => json_decode(Storage::get('json/study-modes.json'), true)
         ]);
     }
 
@@ -90,13 +89,9 @@ class AcademicProgramController extends Controller
     {
         $this->authorize('update', [AcademicProgram::class, $academicProgram]);
 
-        $studyModes         = [['value' => 'presencial', 'label' => 'Presencial'], ['value' => 'virtual', 'label' => 'Virtual']];
-        $selectedStudyMode  = ['value' => $academicProgram->study_mode, 'label' => $academicProgram->study_mode];
-
         return Inertia::render('AcademicPrograms/Edit', [
-            'academicProgram'           => $academicProgram->only(['id', 'name', 'code', 'academic_centre_id']),
-            'studyModes'                => $studyModes,
-            'selectedStudyMode'         => $selectedStudyMode
+            'academicProgram'   => $academicProgram->only(['id', 'name', 'code', 'study_mode', 'academic_centre_id']),
+            'studyModes'        => json_decode(Storage::get('json/study-modes.json'), true)
         ]);
     }
 

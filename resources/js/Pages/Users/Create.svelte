@@ -10,8 +10,9 @@
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
     import Switch from '@/Components/Switch'
-    import Checkbox from '@/Components/Checkbox'
-    import Select from 'svelte-select'
+    import Select from '@/Components/Select'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
     import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
 
     export let errors
@@ -77,32 +78,27 @@
             <div class="p-8">
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre completo" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} required autofocus />
-                    <InputError message={errors.name} />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="email" value="Correo electrónico" />
-                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} required />
-                    <InputError message={errors.email} />
+                    <Input id="email" type="email" class="mt-1 block w-full" bind:value={$form.email} error={errors.email} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
-                    <Select noOptionsMessage={$_('No data recorded')} items={documentTypes} bind:selectedValue={$form.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento"/>
-                    <InputError message={errors.document_type} />
+                    <Select id="document_type" items={documentTypes} bind:selectedValue={$form.document_type} error={errors.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_number" value="Número de documento" />
-                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} required />
-                    <InputError message={errors.document_number} />
+                    <Input id="document_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.document_number} error={errors.document_number} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="cellphone_number" value="Número de celular" />
-                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} required />
-                    <InputError message={errors.cellphone_number} />
+                    <Input id="cellphone_number" type="number" min="0" class="mt-1 block w-full" bind:value={$form.cellphone_number} error={errors.cellphone_number} required />
                 </div>
                 <div class="mt-4">
                     <Label required labelFor="is_enabled" value="¿Usuario habilitado para ingresar al sistema?" class="inline-block mb-4" />
@@ -113,8 +109,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="participation_type" value="Tipo de participación" />
-                    <Select noOptionsMessage={$_('No data recorded')} items={participationTypes} bind:selectedValue={$form.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación"/>
-                    <InputError message={errors.participation_type} />
+                    <Select id="participation_type" items={participationTypes} bind:selectedValue={$form.participation_type}  error={errors.participation_type} autocomplete="off" placeholder="Seleccione el tipo de participación" required />
                 </div>
 
                 <div class="mt-4">
@@ -131,11 +126,13 @@
         <div class="bg-white rounded shadow overflow-hidden mt-20">
             <div class="grid grid-cols-2">
                 {#each roles as {id, name}, i}
-                    <div class="p-3 border-t border-b flex items-center text-sm">{name}</div>
-
-                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <Checkbox id={id} bind:group={$form.role_id} value={id}/>
-                    </div>
+                    <FormField>
+                        <Checkbox
+                            bind:group={$form.role_id}
+                            value={id}
+                        />
+                            <span slot="label">{name}</span>
+                    </FormField>
                 {/each}
             </div>
         </div>

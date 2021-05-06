@@ -24,8 +24,8 @@ class KnowledgeSubareaRequest extends FormRequest
     public function rules()
     {
         return [
-            'knowledge_area' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_areas,id'],
-            'name'           => ['required', 'max:191'],
+            'knowledge_area_id' => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_areas,id'],
+            'name'              => ['required', 'max:191'],
         ];
     }
 
@@ -36,9 +36,9 @@ class KnowledgeSubareaRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->knowledge_area) ) {
+        if( is_array($this->knowledge_area_id) ) {
             $this->merge([
-                'knowledge_area' => $this->knowledge_area['value'],
+                'knowledge_area_id' => $this->knowledge_area_id['value'],
             ]);
         }
     }

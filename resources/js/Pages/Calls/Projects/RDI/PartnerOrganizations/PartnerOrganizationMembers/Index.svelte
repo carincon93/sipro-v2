@@ -5,6 +5,9 @@
     import { _ } from 'svelte-i18n'
     import { Inertia } from '@inertiajs/inertia'
 
+    import ResourceMenu from '@/Components/ResourceMenu'
+    import { Item, Text } from '@smui/list'
+    import DataTable from '@/Components/DataTable'
     import Button from '@/Components/Button'
     import Pagination from '@/Components/Pagination'
 
@@ -51,82 +54,68 @@
         </div>
     </header>
 
-    <h1 class="mb-8 font-bold text-3xl">{$_('Partner organization members.plural')}</h1>
-    <div class="mb-6 flex justify-end items-center">
-        <!-- <SearchFilter class="w-full max-w-md mr-4" bind:filters /> -->
-        {#if canCreatePartnerOrganizationMembers || isSuperAdmin}
-            <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.create', [call.id, rdi.id, partnerOrganization.id]))} variant="raised">
-                {$_('Create')} {$_('Partner organization members.singular')}
-            </Button>
-        {/if}
-    </div>
-    <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
-            <thead>
-                <tr class="text-left font-bold">
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Número de celular</th>
+    <DataTable>
+        <div slot="title">{$_('Partner organization members.plural')}</div>
+
+        <div slot="actions">
+            {#if canCreatePartnerOrganizationMembers || isSuperAdmin}
+                <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.create', [call.id, rdi.id, partnerOrganization.id]))} variant="raised">
+                    {$_('Create')} {$_('Partner organization members.singular')}
+                </Button>
+            {/if}
+        </div>
+
+        <thead slot="thead">
+            <tr class="text-left font-bold">
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Número de celular</th>
+            </tr>
+        </thead>
+
+        <tbody slot="tbody">
+            {#each partnerOrganizationMembers.data as partnerOrganizationMember (partnerOrganizationMember.id)}
+                <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.name}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.email}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            {partnerOrganizationMember.cellphone_number}
+                        </p>
+                    </td>
+
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowPartnerOrganizationMembers || canEditPartnerOrganizationMembers ||canDeletePartnerOrganizationMembers || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
+            {/each}
 
-                {#each partnerOrganizationMembers.data as partnerOrganizationMember (partnerOrganizationMember.id)}
-                    <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.name}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.name}
-                                </p>
-                            {/if}
-                        </td>
-
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.email}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.email}
-                                </p>
-                            {/if}
-                        </td>
-
-                        <td class="border-t">
-                            {#if canEditPartnerOrganizationMembers || isSuperAdmin}
-                                <a
-                                    use:inertia
-                                    href={route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])}
-                                    class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.cellphone_number}
-                                </a>
-                            {:else}
-                                <p class="px-6 py-4 flex items-center focus:text-indigo-500">
-                                    {partnerOrganizationMember.cellphone_number}
-                                </p>
-                            {/if}
-                        </td>
-                    </tr>
-                {/each}
-
-                {#if partnerOrganizationMembers.data.length === 0}
-                    <tr>
-                        <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
-                    </tr>
-                {/if}
-            </tbody>
-        </table>
-    </div>
+            {#if partnerOrganizationMembers.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </DataTable>
     <Pagination links={partnerOrganizationMembers.links} />
 </AuthenticatedLayout>
