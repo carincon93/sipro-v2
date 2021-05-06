@@ -56,7 +56,8 @@
 
 <Select
     selectedValue={selectedValue?.value ? selectedValue : null}
-    inputAttributes={{'id': id}} placeholder={placeholder}
+    inputAttributes={{'id': id}}
+    placeholder={placeholder}
     containerClasses="items {classes}"
     items={items}
     autocomplete={autocomplete}

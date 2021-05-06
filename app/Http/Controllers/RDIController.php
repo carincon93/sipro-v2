@@ -79,8 +79,7 @@ class RDIController extends Controller
         $rdi->sustainability_proposal           = 'Por favor diligencie la propuesta de sotenibilidad del proyecto';
         $rdi->bibliography                      = 'Por favor diligencie la bibliografía';
         $rdi->students                          = 0;
-        $rdi->states                            = 'Escriba el nombre de los municipios beneficiados los municipios';
-        $rdi->states_impact                     = 'Describa el beneficio en los municipios';
+        $rdi->cities_impact                     = 'Describa el beneficio en los municipios';
         $rdi->academic_impact                   = 'Describa el beneficio en los municipios';
 
         $rdi->sampling                          = null;
@@ -137,7 +136,7 @@ class RDIController extends Controller
             'sectorBasedCommittees'         => SectorBasedCommittee::select('id', 'name')->get('id'),
             'technoAcademies'               => TechnoAcademy::select('id as value', 'name as label')->get(),
             'rdiDropdownOptions'            => json_decode(Storage::get('json/rdi-dropdown-options.json'), true),
-            'projectCities'                 => $rdi->project->states()->select('cities.id as value', 'cities.name as label', 'departments.name as group')->join('departments', 'departments.id', 'cities.department_id')->get(),
+            'projectCities'                 => $rdi->project->cities()->select('cities.id as value', 'cities.name as label', 'departments.name as group')->join('departments', 'departments.id', 'cities.department_id')->get(),
         ]);
     }
 
@@ -166,7 +165,7 @@ class RDIController extends Controller
         $rdi->sustainability_proposal           = $request->sustainability_proposal;
         $rdi->bibliography                      = $request->bibliography;
         $rdi->students                          = $request->students;
-        $rdi->states_impact                     = $request->states_impact;
+        $rdi->cities_impact                     = $request->cities_impact;
         $rdi->academic_impact                   = $request->academic_impact;
 
         $rdi->sampling                          = $request->sampling;
@@ -186,7 +185,7 @@ class RDIController extends Controller
 
         $rdi->project()->update(['project_type_id' => $request->project_type_id]);
         $rdi->project()->update(['academic_centre_id' => $request->academic_centre_id]);
-        $rdi->project->states()->sync($request->states);
+        $rdi->project->cities()->sync($request->cities);
 
         $rdi->save();
 

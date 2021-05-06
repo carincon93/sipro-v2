@@ -1,6 +1,6 @@
 <script>
     import { Inertia } from '@inertiajs/inertia'
-    import { inertia, remember } from '@inertiajs/inertia-svelte'
+    import { useForm } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 

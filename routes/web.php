@@ -72,7 +72,7 @@ use App\Models\ThirdBudgetInfo;
 use App\Models\SennovaBudget;
 use App\Models\TechnoAcademy;
 use App\Models\TechnologicalLine;
-use App\Models\Citie;
+use App\Models\City;
 
 /*
 |--------------------------------------------------------------------------
@@ -235,7 +235,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('web-api.calls.project-sennova-roles');
 
     Route::get('web-api/cities-for-select', function() {
-        return response(Citie::select('cities.id as value', "cities.name as label", 'departments.name as group')
+        return response(City::select('cities.id as value', "cities.name as label", 'departments.name as group')
         ->join('departments', 'departments.id', 'cities.department_id')
         ->get());
     })->name('web-api.cities-for-select');

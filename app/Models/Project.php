@@ -84,13 +84,13 @@ class Project extends Model
     }
 
     /**
-     * Relationship with Cities
+     * Relationship with City
      *
      * @return void
      */
-    public function states()
+    public function cities()
     {
-        return $this->belongsToMany(Citie::class)->orderBy('cities.name', 'asc');
+        return $this->belongsToMany(City::class, 'project_city', 'project_id', 'city_id')->orderBy('cities.name', 'asc');
     }
 
     /**

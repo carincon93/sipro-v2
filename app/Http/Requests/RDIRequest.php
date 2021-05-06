@@ -49,9 +49,9 @@ class RDIRequest extends FormRequest
                 'sampling_objective'                        => ['nullable', 'max:191'],
                 'bibliography'                              => ['required', 'string'],
                 'students'                                  => ['required', 'min:0', 'max:9999', 'integer'],
-                'states'                                    => ['required', 'array'],
-                'states.*'                                  => ['required', 'exists:cities,id', 'integer'],
-                'states_impact'                             => ['required', 'string'],
+                'cities'                                    => ['required', 'array'],
+                'cities.*'                                  => ['required', 'exists:cities,id', 'integer'],
+                'cities_impact'                             => ['required', 'string'],
                 'academic_impact'                           => ['required', 'string'],
                 'related_with_technological_plan'           => ['required', 'min:0', 'max:3', 'integer'],
                 'related_with_competitiveness_innovation'   => ['required', 'min:0', 'max:3', 'integer'],
@@ -118,19 +118,19 @@ class RDIRequest extends FormRequest
             ]);
         }
 
-        if( is_array($this->states) ) {
-            if(isset($this->states['value']) && is_numeric($this->states['value']) ) {
+        if( is_array($this->cities) ) {
+            if(isset($this->cities['value']) && is_numeric($this->cities['value']) ) {
                 $this->merge([
-                    'states' => $this->states['value'],
+                    'cities' => $this->cities['value'],
                 ]);
             }else{
-                $states = [];
-                foreach ($this->states as $index => $state) {
+                $cities = [];
+                foreach ($this->cities as $index => $state) {
                     if( is_array($state) ) {
-                        array_push($states, $state['value']);
+                        array_push($cities, $state['value']);
                     }
                 }
-                $this->merge(['states' => $states]);
+                $this->merge(['cities' => $cities]);
             }
         }
     }
