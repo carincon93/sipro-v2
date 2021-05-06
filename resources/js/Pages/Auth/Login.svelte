@@ -9,22 +9,23 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
     import Input from '@/Components/Input'
-    import Checkbox from '@/Components/Checkbox'
     import Label from '@/Components/Label'
     import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
 
     export let status
     export let errors
 
     let canResetPassword
-    let selection = []
-    let sending = false
+    let selection   = []
+    let sending     = false
 
     let form = {
-        email: '',
-        password: '',
-        remember: false,
+        email:      '',
+        password:   '',
+        remember:   false,
     }
 
     function handleSubmit() {
@@ -64,10 +65,13 @@
     </div>
 
     <div class="block mt-4">
-        <Label required class="flex items-center" labelFor="remember">
-            <Checkbox name="remember" id="remember" bind:value={form.remember} bind:group={selection} />
-            <span class="ml-2 text-sm text-gray-600">{$_('Remember me')}</span>
-        </Label>
+        <FormField>
+            <Checkbox
+                bind:checked={form.remember}
+                value={selection}
+            />
+                <span slot="label">{$_('Remember me')}</span>
+        </FormField>
     </div>
 
     <div class="flex items-center justify-end mt-4">

@@ -10,7 +10,8 @@
     import Label from '@/Components/Label'
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Checkbox from '@/Components/Checkbox'
+    import Checkbox from '@smui/checkbox'
+    import FormField from '@smui/form-field'
 
     export let errors
     export let annexe = {}
@@ -88,11 +89,13 @@
                 <div class="bg-white rounded shadow overflow-hidden mt-20">
                     <div class="grid grid-cols-2">
                         {#each programmaticLines as {id, name, code}, i}
-                            <div class="p-3 border-t border-b flex items-center text-sm">{name} ({code})</div>
-
-                            <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                                <Checkbox id={id} checked={annexeProgrammaticLines.includes(id)}  bind:group={$form.programmatic_line_id} value={id}/>
-                            </div>
+                            <FormField>
+                                <Checkbox
+                                    bind:group={$form.programmatic_line_id}
+                                    value={id}
+                                />
+                                    <span slot="label">{name} ({code})</span>
+                            </FormField>
                         {/each}
                     </div>
                 </div>

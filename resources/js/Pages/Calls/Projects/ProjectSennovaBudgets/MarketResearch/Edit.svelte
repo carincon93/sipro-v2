@@ -7,6 +7,7 @@
     import { afterUpdate } from 'svelte'
 
     import Input from '@/Components/Input'
+    import InputError from '@/Components/InputError'
     import Label from '@/Components/Label'
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
@@ -188,6 +189,7 @@
                     <Label labelFor="requires_third_market_research" value="¿Requiere de un tercer estudio de mercado?" class="inline-block mb-4" />
                     <br>
                     <Switch bind:checked={$form.requires_third_market_research} />
+                    <InputError message={errors.requires_third_market_research} />
                 </div>
 
                 {#if $form.requires_third_market_research}

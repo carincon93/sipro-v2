@@ -15,7 +15,6 @@
     import InputError from '@/Components/InputError'
     import Dialog from '@/Components/Dialog'
 
-
     export let errors
     export let call
     export let project
