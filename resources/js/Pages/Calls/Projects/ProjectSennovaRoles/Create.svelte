@@ -33,11 +33,10 @@
 
     let sending = false
     let form = useForm({
-        call_sennova_role_id: null,
-        qty_months: '',
-        qty_roles: '',
-        description: '',
-
+        qty_months:             '',
+        qty_roles:              '',
+        description:            '',
+        call_sennova_role_id: null
     })
 
     $: if (projectSennovaRoleInfo) {

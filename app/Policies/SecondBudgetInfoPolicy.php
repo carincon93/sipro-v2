@@ -65,7 +65,7 @@ class SecondBudgetInfoPolicy
      */
     public function update(User $user, SecondBudgetInfo $secondBudgetInfo)
     {
-        if ( $user->hasPermissionTo('second-budget-info.edit') ) {
+        if ( $user->hasPermissionTo('second-budget-info.show') || $user->hasPermissionTo('second-budget-info.edit') || $user->hasPermissionTo('second-budget-info.delete') ) {
             return true;
         }
 

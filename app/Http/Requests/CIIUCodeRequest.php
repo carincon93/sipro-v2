@@ -24,7 +24,7 @@ class CIIUCodeRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'name' => ['required', 'string']
         ];
     }
 }

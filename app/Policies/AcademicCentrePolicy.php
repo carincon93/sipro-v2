@@ -65,7 +65,7 @@ class AcademicCentrePolicy
      */
     public function update(User $user, AcademicCentre $academicCentre)
     {
-        if ( $user->hasPermissionTo('academic-centres.edit') ) {
+        if ( $user->hasPermissionTo('academic-centres.show') || $user->hasPermissionTo('academic-centres.edit') || $user->hasPermissionTo('academic-centres.delete') ) {
             return true;
         }
 

@@ -65,7 +65,7 @@ class ResearchLinePolicy
      */
     public function update(User $user, ResearchLine $researchLine)
     {
-        if ( $user->hasPermissionTo('research-lines.edit') ) {
+        if ( $user->hasPermissionTo('research-lines.show') || $user->hasPermissionTo('research-lines.edit') || $user->hasPermissionTo('research-lines.delete') ) {
             return true;
         }
 

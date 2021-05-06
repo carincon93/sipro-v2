@@ -272,4 +272,20 @@ class Project extends Model
 
         return $total;
     }
+
+    // Validación de la línea 66
+    // Total del monitores
+    public function getTotalStudentTrainees()
+    {
+        $total = 0;
+
+        foreach($this->projectSennovaBudgets as $projectSennovaBudget) {
+            // if ($projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->code == '20202008005099') {
+            //     $total++;
+            // }
+            $total = $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage()->where('code', '20202008005099')->count();
+        }
+
+        return $total;
+    }
 }

@@ -23,7 +23,16 @@ class CallSennovaRoleController extends Controller
         return Inertia::render('Calls/CallSennovaRoles/Index', [
             'filters'   => request()->all('search'),
             'callSennovaRoles' =>
-                $call->callSennovaRoles()->select('call_sennova_roles.id', 'sennova_roles.name', 'call_sennova_roles.salary', 'call_sennova_roles.qty_months')
+                $call->callSennovaRoles()
+                ->selectRaw("call_sennova_roles.id, call_sennova_roles.salary, call_sennova_roles.qty_months, CASE sennova_roles.academic_degree
+                        WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno')
+                        WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico')
+                        WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo')
+                        WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado')
+                        WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización')
+                        WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría')
+                        WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado')
+                    END as name")
                     ->join('sennova_roles', 'call_sennova_roles.sennova_role_id', 'sennova_roles.id')
                     ->filterCallSennovaRole(request()->only('search'))->paginate(),
             'call' => $call,

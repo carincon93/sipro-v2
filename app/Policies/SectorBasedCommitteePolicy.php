@@ -18,7 +18,7 @@ class SectorBasedCommitteePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('sector-based-committees.index') || $user->hasPermissionTo('sector-based-committees.show') || $user->hasPermissionTo('sector-based-committees.create') || $user->hasPermissionTo('sector-based-committees.edit') || $user->hasPermissionTo('sector-based-committees.delete')) {
+        if ( $user->hasPermissionTo('sector-based-committees.index') || $user->hasPermissionTo('sector-based-committees.show') || $user->hasPermissionTo('sector-based-committees.create') || $user->hasPermissionTo('sector-based-committees.edit') || $user->hasPermissionTo('sector-based-committees.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class SectorBasedCommitteePolicy
      */
     public function update(User $user, SectorBasedCommittee $sectorBasedCommittee)
     {
-        if ( $user->hasPermissionTo('sector-based-committees.edit') ) {
+        if ( $user->hasPermissionTo('sector-based-committees.show') || $user->hasPermissionTo('sector-based-committees.edit') || $user->hasPermissionTo('sector-based-committees.delete') ) {
             return true;
         }
 

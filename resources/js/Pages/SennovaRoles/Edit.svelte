@@ -9,12 +9,14 @@
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import Button from '@/Components/Button'
+    import Select from '@/Components/Select'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import DropdownProgrammaticLine from '@/Dropdowns/DropdownProgrammaticLine'
 
     export let errors
     export let sennovaRole = {}
+    export let academicDegrees
 
     $: $title = sennovaRole ? sennovaRole.name : null
 
@@ -34,6 +36,7 @@
     let form = useForm({
         name:                   sennovaRole.name,
         description:            sennovaRole.description,
+        academic_degree:        {value: sennovaRole.academic_degree, label: academicDegrees.find(item => item.value == sennovaRole.academic_degree)?.label},
         programmatic_line_id:   sennovaRole.programmatic_line_id,
     })
 
@@ -86,7 +89,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="programmatic_line_id" value={$_('Programmatic lines.singular')} />
-                    <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} />
+                    <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="academic_degree" value={$_('Academic degrees.singular')} />
+                    <Select id="academic_degree" items={academicDegrees} bind:selectedValue={$form.academic_degree} error={errors.academic_degree} autocomplete="off" placeholder="Seleccione un nivel académico" required />
                 </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

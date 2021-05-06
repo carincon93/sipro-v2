@@ -9,12 +9,11 @@
     import Label from '@/Components/Label'
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
-    import Select from '@/Components/Select'
+    import DynamicList from '@/Dropdowns/DynamicList'
     import Dialog from '@/Components/Dialog'
 
     export let errors
     export let academicCentre   = {}
-    export let regional
 
     $: $title = academicCentre ? academicCentre.name : null
 
@@ -34,7 +33,7 @@
     let form = useForm({
         name:        academicCentre.name,
         code:        academicCentre.code,
-        regional:    {value: academicCentre.regional_id, label: regional.find(item => item.value == academicCentre.regional_id)?.label},
+        regional_id: academicCentre.regional_id,
     })
 
     function submit() {
@@ -81,12 +80,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
+                    <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="regional" value="Regional" />
-                    <Select id="regional" items={regional} bind:selectedValue={$form.regional} error={errors.regional} autocomplete="off" placeholder="Seleccione la regional" required />
+                    <DynamicList id="regional_id" bind:value={$form.regional_id} routeWebApi={route('web-api.regional')} placeholder="Busque por el nombre del centro de formación" message={errors.regional_id} required/>
                 </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

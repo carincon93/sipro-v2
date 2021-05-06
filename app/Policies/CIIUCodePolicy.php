@@ -65,7 +65,7 @@ class CIIUCodePolicy
      */
     public function update(User $user, CIIUCode $ciiuCode)
     {
-        if ( $user->hasPermissionTo('ciiu-codes.edit') ) {
+        if ( $user->hasPermissionTo('ciiu-codes.show') || $user->hasPermissionTo('ciiu-codes.edit') || $user->hasPermissionTo('ciiu-codes.delete') ) {
             return true;
         }
 

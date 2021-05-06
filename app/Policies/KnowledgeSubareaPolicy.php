@@ -65,7 +65,7 @@ class KnowledgeSubareaPolicy
      */
     public function update(User $user, KnowledgeSubarea $knowledgeSubarea)
     {
-        if ( $user->hasPermissionTo('knowledge-subareas.edit') ) {
+        if ( $user->hasPermissionTo('knowledge-subareas.show') || $user->hasPermissionTo('knowledge-subareas.edit') || $user->hasPermissionTo('knowledge-subareas.delete') ) {
             return true;
         }
 

@@ -18,12 +18,7 @@ class CallSennovaRolePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.index')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.show')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.create')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.edit')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.delete')
-        ) {
+        if ( $user->hasPermissionTo('call-sennova-roles.index') || $user->hasPermissionTo('call-sennova-roles.show') || $user->hasPermissionTo('call-sennova-roles.create') || $user->hasPermissionTo('call-sennova-roles.edit') || $user->hasPermissionTo('call-sennova-roles.delete') ) {
             return true;
         }
 
@@ -39,7 +34,7 @@ class CallSennovaRolePolicy
      */
     public function view(User $user, CallSennovaRole $callSennovaRole)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.show') ) {
+        if ( $user->hasPermissionTo('call-sennova-roles.show') ) {
             return true;
         }
 
@@ -54,7 +49,7 @@ class CallSennovaRolePolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.create') ) {
+        if ( $user->hasPermissionTo('call-sennova-roles.create') ) {
             return true;
         }
 
@@ -70,7 +65,7 @@ class CallSennovaRolePolicy
      */
     public function update(User $user, CallSennovaRole $callSennovaRole)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.edit') ) {
+        if ( $user->hasPermissionTo('call-sennova-roles.show') || $user->hasPermissionTo('call-sennova-roles.edit') || $user->hasPermissionTo('call-sennova-roles.delete') ) {
             return true;
         }
 
@@ -86,7 +81,7 @@ class CallSennovaRolePolicy
      */
     public function delete(User $user, CallSennovaRole $callSennovaRole)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('call-sennova-roles.delete') ) {
+        if ( $user->hasPermissionTo('call-sennova-roles.delete') ) {
             return true;
         }
 

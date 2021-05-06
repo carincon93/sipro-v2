@@ -18,7 +18,7 @@ class ProjectAnnexePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('project-annexes.index') ) {
+        if ( $user->hasPermissionTo('project-annexes.index') || $user->hasPermissionTo('project-annexes.show') || $user->hasPermissionTo('project-annexes.create') || $user->hasPermissionTo('project-annexes.edit') || $user->hasPermissionTo('project-annexes.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class ProjectAnnexePolicy
      */
     public function update(User $user, ProjectAnnexe $projectAnnexe)
     {
-        if ( $user->hasPermissionTo('project-annexes.edit') ) {
+        if (  $user->hasPermissionTo('project-annexes.show') || $user->hasPermissionTo('project-annexes.edit') || $user->hasPermissionTo('project-annexes.delete') ) {
             return true;
         }
 

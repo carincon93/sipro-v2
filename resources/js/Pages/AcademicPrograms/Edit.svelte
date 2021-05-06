@@ -11,7 +11,7 @@
     import LoadingButton from '@/Components/LoadingButton'
     import Button from '@/Components/Button'
     import Select from '@/Components/Select'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
     export let academicProgram = {}
@@ -36,7 +36,7 @@
         name:               academicProgram.name,
         code:               academicProgram.code,
         study_mode:         {value: academicProgram.study_mode, label: studyModes.find(item => item.value == academicProgram.study_mode)?.label},
-        academic_centre:    academicProgram.academic_centre_id,
+        academic_centre_id: academicProgram.academic_centre_id,
     })
 
     function submit() {
@@ -92,8 +92,8 @@
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="academic_centre" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre" bind:formAcademicCentre={$form.academic_centre} message={errors.academic_centre} required />
+                    <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

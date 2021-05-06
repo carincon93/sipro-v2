@@ -24,7 +24,9 @@ class FirstBudgetInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'name'  => ['required', 'string'],
+            'cta'   => ['required', 'integer', 'min:0', 'max:99'],
+            'bpin'  => ['required', 'string', 'max:20'],
         ];
     }
 }

@@ -18,7 +18,7 @@ class TechnologicalLinePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('technological-lines.index') || $user->hasPermissionTo('technological-lines.show') || $user->hasPermissionTo('technological-lines.create') || $user->hasPermissionTo('technological-lines.edit') || $user->hasPermissionTo('technological-lines.delete')) {
+        if ( $user->hasPermissionTo('technological-lines.index') || $user->hasPermissionTo('technological-lines.show') || $user->hasPermissionTo('technological-lines.create') || $user->hasPermissionTo('technological-lines.edit') || $user->hasPermissionTo('technological-lines.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class TechnologicalLinePolicy
      */
     public function update(User $user, TechnologicalLine $technologicalLine)
     {
-        if ( $user->hasPermissionTo('technological-lines.edit') ) {
+        if ( $user->hasPermissionTo('technological-lines.show') || $user->hasPermissionTo('technological-lines.edit') || $user->hasPermissionTo('technological-lines.delete') ) {
             return true;
         }
 

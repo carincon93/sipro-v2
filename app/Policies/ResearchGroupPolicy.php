@@ -65,7 +65,7 @@ class ResearchGroupPolicy
      */
     public function update(User $user, ResearchGroup $researchGroup)
     {
-        if ( $user->hasPermissionTo('research-groups.edit') ) {
+        if ( $user->hasPermissionTo('research-groups.show') || $user->hasPermissionTo('research-groups.edit') || $user->hasPermissionTo('research-groups.delete') ) {
             return true;
         }
 

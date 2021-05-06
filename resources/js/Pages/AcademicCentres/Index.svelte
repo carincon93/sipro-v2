@@ -69,7 +69,7 @@
                     </td>
                     <td class="border-t">
                         <ResourceMenu>
-                            {#if canEditAcademicCentres || isSuperAdmin}
+                            {#if canShowAcademicCentres || canEditAcademicCentres || canDeleteAcademicCentres || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('academic-centres.edit', academicCentre.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

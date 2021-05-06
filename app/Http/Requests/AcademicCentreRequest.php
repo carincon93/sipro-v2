@@ -24,9 +24,9 @@ class AcademicCentreRequest extends FormRequest
     public function rules()
     {
         return [
-            'regional'  => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:regional,id'],
-            'name'      => ['required', 'max:255'],
-            'code'      => ['required', 'max:255']
+            'regional_id'   => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:regional,id'],
+            'name'          => ['required', 'max:255'],
+            'code'          => ['required', 'integer']
         ];
     }
 
@@ -37,9 +37,9 @@ class AcademicCentreRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->regional) ) {
+        if( is_array($this->regional_id) ) {
             $this->merge([
-                'regional' => $this->regional['value'],
+                'regional_id' => $this->regional_id['value'],
             ]);
         }
     }

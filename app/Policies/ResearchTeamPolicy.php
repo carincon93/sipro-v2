@@ -65,7 +65,7 @@ class ResearchTeamPolicy
      */
     public function update(User $user, ResearchTeam $researchTeam)
     {
-        if ( $user->hasPermissionTo('research-teams.edit') ) {
+        if ( $user->hasPermissionTo('research-teams.show') || $user->hasPermissionTo('research-teams.edit') || $user->hasPermissionTo('research-teams.delete') ) {
             return true;
         }
 

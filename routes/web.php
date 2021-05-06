@@ -26,11 +26,8 @@ use App\Http\Controllers\CallController;
 use App\Http\Controllers\RDIController;
 use App\Http\Controllers\ProjectTreeController;
 use App\Http\Controllers\OutputController;
-use App\Http\Controllers\DirectCauseController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\DirectEffectController;
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\IndirectCauseController;
 use App\Http\Controllers\CallSennovaRoleController;
 use App\Http\Controllers\SennovaRoleController;
 use App\Http\Controllers\ProjectSennovaRoleController;
@@ -281,9 +278,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'calls.rdi.partner-organizations' => PartnerOrganizationController::class,
             'calls.rdi.partner-organizations.partner-organization-members' => PartnerOrganizationMemberController::class,
             'calls.call-sennova-roles' => CallSennovaRoleController::class,
-            'projects.direct-causes' => DirectCauseController::class,
-            'projects.direct-effects' => DirectEffectController::class,
-            'direct-causes.indirect-causes' => IndirectCauseController::class,
             'first-budget-info' => FirstBudgetInfoController::class,
             'second-budget-info' => SecondBudgetInfoController::class,
             'third-budget-info' => ThirdBudgetInfoController::class,

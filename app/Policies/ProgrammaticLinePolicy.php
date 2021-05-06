@@ -65,7 +65,7 @@ class ProgrammaticLinePolicy
      */
     public function update(User $user, ProgrammaticLine $programmaticLine)
     {
-        if ( $user->hasPermissionTo('programmatic-lines.edit') ) {
+        if ( $user->hasPermissionTo('programmatic-lines.show') || $user->hasPermissionTo('programmatic-lines.edit') || $user->hasPermissionTo('programmatic-lines.delete') ) {
             return true;
         }
 

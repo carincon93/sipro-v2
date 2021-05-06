@@ -65,7 +65,7 @@ class MincienciasSubtypologyPolicy
      */
     public function update(User $user, MincienciasSubtypology $mincienciasSubtypology)
     {
-        if ( $user->hasPermissionTo('minciencias-subtypologies.edit') ) {
+        if ( $user->hasPermissionTo('minciencias-subtypologies.show') || $user->hasPermissionTo('minciencias-subtypologies.edit') || $user->hasPermissionTo('minciencias-subtypologies.delete') ) {
             return true;
         }
 

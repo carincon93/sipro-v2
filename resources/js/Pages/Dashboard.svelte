@@ -22,7 +22,7 @@
                 <p class="text-2xl mt-4">Revisa las convocatorias y formula proyectos.</p>
 
                 {#if authUser.can.find(element => element == 'calls.index') == 'calls.index' || authUser.can.find(element => element == 'calls.show') == 'calls.show' || authUser.can.find(element => element == 'calls.create') == 'calls.create' || authUser.can.find(element => element == 'calls.edit') == 'calls.edit' || authUser.can.find(element => element == 'calls.delete') == 'calls.delete' || isSuperAdmin}
-                    <Button variant="raised" on:click={Inertia.visit(route('calls.index'))} class="mt-4 inline-block">
+                    <Button variant="raised" on:click={() => Inertia.visit(route('calls.index'))} class="mt-4 inline-block">
                         {$_('Calls.plural')}
                     </Button>
                 {/if}

@@ -24,7 +24,8 @@ class ThirdBudgetInfoRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'name'  => ['required', 'string'],
+            'code'  => ['required', 'string', 'max:99'],
         ];
     }
 }

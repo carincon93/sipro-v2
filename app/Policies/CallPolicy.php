@@ -65,7 +65,7 @@ class CallPolicy
      */
     public function update(User $user, Call $call)
     {
-        if ( $user->hasPermissionTo('calls.edit') ) {
+        if ( $user->hasPermissionTo('calls.show') || $user->hasPermissionTo('calls.edit') || $user->hasPermissionTo('calls.delete') ) {
             return true;
         }
 

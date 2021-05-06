@@ -57,7 +57,7 @@ class AcademicProgramController extends Controller
         $academicProgram->name = $request->name;
         $academicProgram->code = $request->code;
         $academicProgram->study_mode = $request->study_mode;
-        $academicProgram->academicCentre()->associate($request->academic_centre);
+        $academicProgram->academicCentre()->associate($request->academic_centre_id);
 
         $academicProgram->save();
 
@@ -109,7 +109,7 @@ class AcademicProgramController extends Controller
         $academicProgram->name = $request->name;
         $academicProgram->code = $request->code;
         $academicProgram->study_mode = $request->study_mode;
-        $academicProgram->academicCentre()->associate($request->academic_centre);
+        $academicProgram->academicCentre()->associate($request->academic_centre_id);
 
         $academicProgram->save();
 

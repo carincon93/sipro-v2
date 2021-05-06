@@ -1,6 +1,8 @@
 <script>
-    import { onMount } from 'svelte'
+    import { afterUpdate, onMount } from 'svelte'
     import axios from 'axios'
+    import { _ } from 'svelte-i18n'
+
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
 
@@ -8,13 +10,22 @@
     export let id       = ''
     export let message
     export let formProgrammaticLine
+    export let required
 
     let programmaticLines           = []
     let programmaticLineFiltered    = null
+    let select                      = null
 
     onMount(() => {
         getProgrammaticLine()
+        select = document.getElementById(id)
 	})
+
+    afterUpdate(() => {
+        if (required) {
+            formProgrammaticLine != null && select != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+        }
+    })
 
     async function getProgrammaticLine() {
         let res   = await axios.get(route('web-api.programmatic-lines'))
@@ -29,7 +40,7 @@
     function selectProgrammaticLine() {
         if (formProgrammaticLine) {
             let filterItem = programmaticLines.filter(function(programmaticLine) {
-                return programmaticLine.value == formProgrammaticLine;
+                return programmaticLine.value == formProgrammaticLine
             })
             programmaticLineFiltered = filterItem[0]
         }
@@ -53,5 +64,5 @@
     }
 </style>
 
-<Select selectedValue={programmaticLineFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la línea programática" containerClasses="programmatic-lines {classes}" items={programmaticLines} on:select={handleProgrammaticLine} />
+<Select selectedValue={programmaticLineFiltered} inputAttributes={{'id': id}} placeholder="Busque por el nombre de la línea programática" containerClasses="programmatic-lines {classes}" items={programmaticLines} on:select={handleProgrammaticLine} on:clear={() => formProgrammaticLine = null} />
 <InputError {message} />

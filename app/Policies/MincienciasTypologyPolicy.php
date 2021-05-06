@@ -65,7 +65,7 @@ class MincienciasTypologyPolicy
      */
     public function update(User $user, MincienciasTypology $mincienciasTypology)
     {
-        if ( $user->hasPermissionTo('minciencias-typologies.edit') ) {
+        if ( $user->hasPermissionTo('minciencias-typologies.show') || $user->hasPermissionTo('minciencias-typologies.edit') || $user->hasPermissionTo('minciencias-typologies.delete') ) {
             return true;
         }
 

@@ -65,7 +65,7 @@ class ThirdBudgetInfoPolicy
      */
     public function update(User $user, ThirdBudgetInfo $thirdBudgetInfo)
     {
-        if ( $user->hasPermissionTo('third-budget-info.edit') ) {
+        if ( $user->hasPermissionTo('third-budget-info.show') || $user->hasPermissionTo('third-budget-info.edit') || $user->hasPermissionTo('third-budget-info.delete') ) {
             return true;
         }
 

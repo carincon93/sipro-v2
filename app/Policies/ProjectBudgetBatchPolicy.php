@@ -18,7 +18,7 @@ class ProjectBudgetBatchPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('project-budget-batches.index') ) {
+        if ( $user->hasPermissionTo('project-budget-batches.index') || $user->hasPermissionTo('project-budget-batches.show') || $user->hasPermissionTo('project-budget-batches.create') || $user->hasPermissionTo('project-budget-batches.edit') || $user->hasPermissionTo('project-budget-batches.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class ProjectBudgetBatchPolicy
      */
     public function update(User $user, ProjectBudgetBatch $projectBudgetBatch)
     {
-        if ( $user->hasPermissionTo('project-budget-batches.edit') ) {
+        if ( $user->hasPermissionTo('project-budget-batches.show') || $user->hasPermissionTo('project-budget-batches.edit') || $user->hasPermissionTo('project-budget-batches.delete') ) {
             return true;
         }
 

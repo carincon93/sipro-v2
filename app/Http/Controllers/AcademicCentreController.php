@@ -55,7 +55,7 @@ class AcademicCentreController extends Controller
         $academicCentre = new AcademicCentre();
         $academicCentre->name = $request->name;
         $academicCentre->code = $request->code;
-        $academicCentre->regional()->associate($request->regional);
+        $academicCentre->regional()->associate($request->regional_id);
 
         $academicCentre->save();
 
@@ -106,7 +106,7 @@ class AcademicCentreController extends Controller
 
         $academicCentre->name = $request->name;
         $academicCentre->code = $request->code;
-        $academicCentre->regional()->associate($request->regional);
+        $academicCentre->regional()->associate($request->regional_id);
 
         $academicCentre->save();
 

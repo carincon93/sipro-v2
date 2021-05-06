@@ -7,11 +7,13 @@
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
+    import Select from '@/Components/Select'
     import LoadingButton from '@/Components/LoadingButton'
     import Textarea from '@/Components/Textarea'
     import DropdownProgrammaticLine from '@/Dropdowns/DropdownProgrammaticLine'
 
     export let errors
+    export let academicDegrees
 
     $: $title = $_('Create') + ' ' + $_('Sennova roles.singular').toLowerCase()
 
@@ -30,7 +32,8 @@
     let form = useForm({
         name:                   '',
         description:            '',
-        programmatic_line_id:   '',
+        academic_degree:        '',
+        programmatic_line_id:   null
     })
 
     function submit() {
@@ -75,7 +78,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="programmatic_line_id" value={$_('Programmatic lines.singular')} />
-                    <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} />
+                    <DropdownProgrammaticLine id="programmatic_line_id" bind:formProgrammaticLine={$form.programmatic_line_id} message={errors.programmatic_line_id} required />
+                </div>
+
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="academic_degree" value={$_('Academic degrees.singular')} />
+                    <Select id="academic_degree" items={academicDegrees} bind:selectedValue={$form.academic_degree} error={errors.academic_degree} autocomplete="off" placeholder="Seleccione un nivel académico" required />
                 </div>
 
             </fieldset>

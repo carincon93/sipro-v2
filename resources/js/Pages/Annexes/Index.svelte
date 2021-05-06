@@ -57,7 +57,7 @@
                     </td>
                     <td class="border-t">
                         <ResourceMenu>
-                            {#if canEditAnnexes || isSuperAdmin}
+                            {#if canShowAnnexes || canEditAnnexes || canDeleteAnnexes || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('annexes.edit', annexe.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

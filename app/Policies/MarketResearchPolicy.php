@@ -21,7 +21,7 @@ class MarketResearchPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('market-research.index') ) {
+        if ( $user->hasPermissionTo('market-research.index') || $user->hasPermissionTo('market-research.show') || $user->hasPermissionTo('market-research.create') || $user->hasPermissionTo('market-research.edit') || $user->hasPermissionTo('market-research.delete') ) {
             return true;
         }
 
@@ -68,7 +68,7 @@ class MarketResearchPolicy
      */
     public function update(User $user, Call $call, Project $project, ProjectSennovaBudget $projectSennovaBudget, MarketResearch $marketResearch)
     {
-        if ( $user->hasPermissionTo('market-research.edit') ) {
+        if ( $user->hasPermissionTo('market-research.show') || $user->hasPermissionTo('market-research.edit') || $user->hasPermissionTo('market-research.delete') ) {
             return true;
         }
 

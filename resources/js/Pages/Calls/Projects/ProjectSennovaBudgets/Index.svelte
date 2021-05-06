@@ -49,34 +49,71 @@
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Concepto SENA</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Regla</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Estado</th>
             </tr>
         </thead>
 
         <tbody slot="tbody">
             <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                <td class="border-t">
+                <td class="border-t p-4">
                     Servicios especiales de construcción
                 </td>
-                <td class="border-t">
+                <td class="border-t p-4">
                     El valor no debe superar el 5% (${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_industrial_machinery) ? (project.total_industrial_machinery * 0.05) : 0)}) del rubro de "MAQUINARIA INDUSTRIAL" (${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_industrial_machinery) ? project.total_industrial_machinery : 0)}).
                 </td>
+                <td class="border-t p-4">
+                    Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_special_construction_services) ? (project.total_special_construction_services) : 0)}
+                    {#if project.total_special_construction_services < (project.total_industrial_machinery * 0.05)}
+                        <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
+                            Correcto
+                        </span>
+                    {:else}
+                        <span class="bg-red-100 text-red-400 hover:bg-red-200 px-2 py-1 rounded-3xl text-center">
+                            Incorrecto
+                        </span>
+                    {/if}
+                </td>
             </tr>
 
             <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                <td class="border-t">
+                <td class="border-t p-4">
                     Viáticos
                 </td>
-                <td class="border-t">
-                    La sumatoria de todos los rubros de viáticos (${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_viatics) ? project.total_viatics : 0)}) no debe superar el valor de $4.000.000
+                <td class="border-t p-4">
+                    La sumatoria de todos los rubros de viáticos no debe superar el valor de $4.000.000
+                </td>
+                <td class="border-t p-4">
+                    Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_viatics) ? (project.total_viatics) : 0)}
+                    {#if project.total_viatics < 4000000}
+                        <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
+                            Correcto
+                        </span>
+                    {:else}
+                        <span class="bg-red-100 text-red-400 hover:bg-red-200 px-2 py-1 rounded-3xl text-center">
+                            Incorrecto
+                        </span>
+                    {/if}
                 </td>
             </tr>
 
             <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
-                <td class="border-t">
+                <td class="border-t p-4">
                     Mantenimiento de maquinaria, equipo, transporte y sofware
                 </td>
-                <td class="border-t">
+                <td class="border-t p-4">
                     El valor no debe superar el 5% (${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_project_budget) ? (project.total_project_budget * 0.05) : 0)}) del total del proyecto ( ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_project_budget) ? project.total_project_budget : 0)}).
+                </td>
+                <td class="border-t p-4">
+                    Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_machinery_maintenance) ? (project.total_machinery_maintenance) : 0)}
+                    {#if project.total_machinery_maintenance < (project.total_project_budget * 0.05)}
+                        <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
+                            Correcto
+                        </span>
+                    {:else}
+                        <span class="bg-red-100 text-red-400 hover:bg-red-200 px-2 py-1 rounded-3xl text-center">
+                            Incorrecto
+                        </span>
+                    {/if}
                 </td>
             </tr>
         </tbody>
@@ -149,7 +186,9 @@
                             {#if projectSennovaBudget.average > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.average)} COP {:else if projectSennovaBudget.totalByBudgetWithoutMarketResearch > 0} ${new Intl.NumberFormat('de-DE').format(projectSennovaBudget.totalByBudgetWithoutMarketResearch)} {/if}
                         </div>
                         {#if !projectSennovaBudget.call_budget?.sennova_budget?.can_be_added}
-                            <span class="bg-red-200 p-2 rounded-3xl mt-4 inline-block text-xs">Este uso presupuestal NO suma al total del presupuesto</span>
+                            <span class="text-red-400 text-center text-xs">
+                                Este uso presupuestal NO suma al total del presupuesto
+                            </span>
                         {/if}
                     </td>
                     <td class="border-t">

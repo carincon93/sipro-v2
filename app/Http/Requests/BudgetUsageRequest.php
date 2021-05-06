@@ -24,7 +24,8 @@ class BudgetUsageRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'description'   => ['required', 'string'],
+            'code'          =>  ['required', 'integer', 'min:0', 'max:9223372036854775807']
         ];
     }
 }

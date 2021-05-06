@@ -1,9 +1,10 @@
 <script>
     import { afterUpdate, onMount } from 'svelte'
     import axios from 'axios'
+    import { _ } from 'svelte-i18n'
+
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
-    import { _ } from 'svelte-i18n'
 
     export let classes  = ''
     export let id       = ''
@@ -24,7 +25,6 @@
 	})
 
     afterUpdate(() => {
-        console.log(formProjectSennovaRole);
         if (required && select != null) {
             formProjectSennovaRole != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
         }

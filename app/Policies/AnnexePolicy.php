@@ -65,7 +65,7 @@ class AnnexePolicy
      */
     public function update(User $user, Annexe $annexe)
     {
-        if ( $user->hasPermissionTo('annexes.edit') ) {
+        if (  $user->hasPermissionTo('annexes.show') || $user->hasPermissionTo('annexes.edit') || $user->hasPermissionTo('annexes.delete') ) {
             return true;
         }
 

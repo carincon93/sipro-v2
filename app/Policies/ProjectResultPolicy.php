@@ -65,7 +65,7 @@ class ProjectResultPolicy
      */
     public function update(User $user, ProjectResult $projectResult)
     {
-        if ( $user->hasPermissionTo('project-results.edit') ) {
+        if ( $user->hasPermissionTo('project-results.show') || $user->hasPermissionTo('project-results.edit') || $user->hasPermissionTo('project-results.delete') ) {
             return true;
         }
 

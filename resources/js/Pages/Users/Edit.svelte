@@ -15,7 +15,7 @@
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
     import Dialog from '@/Components/Dialog'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
     export let user = {}
@@ -130,7 +130,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
             </div>
         </div>
@@ -152,6 +152,10 @@
         </div>
 
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div class="p-4">
+                <Label required class="mb-4" labelFor="role_id" value="Seleccione algún rol" />
+                <InputError message={errors.role_id} />
+            </div>
             {#if canDeleteUsers || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
                     {$_('Delete')} {$_('Users.singular').toLowerCase()}

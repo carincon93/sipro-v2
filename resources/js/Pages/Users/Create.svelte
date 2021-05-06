@@ -13,7 +13,7 @@
     import Select from '@/Components/Select'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
     export let documentTypes
@@ -73,7 +73,7 @@
         </div>
     </header>
 
-    <form on:submit|preventDefault={submit}>
+    <form on:submit|preventDefault={submit} novalidate>
         <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">
@@ -114,7 +114,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
 
                 <div>
@@ -124,6 +124,10 @@
         </div>
 
         <div class="bg-white rounded shadow overflow-hidden mt-20">
+            <div class="p-4">
+                <Label required class="mb-4" labelFor="role_id" value="Seleccione algún rol" />
+                <InputError message={errors.role_id} />
+            </div>
             <div class="grid grid-cols-2">
                 {#each roles as {id, name}, i}
                     <FormField>

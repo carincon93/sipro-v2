@@ -75,7 +75,7 @@
 
                     <td class="border-t">
                         <ResourceMenu>
-                            {#if canEditRiskAnalysis || isSuperAdmin}
+                            {#if canShowRiskAnalysis || canEditRiskAnalysis || canDeleteRiskAnalysis || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.risk-analysis.edit', [call.id, project.id, riskAnalysis.id])))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

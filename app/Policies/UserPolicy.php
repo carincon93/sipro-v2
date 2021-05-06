@@ -64,7 +64,7 @@ class UserPolicy
      */
     public function update(User $user)
     {
-        if ( $user->hasPermissionTo('users.edit') ) {
+        if ( $user->hasPermissionTo('users.show') || $user->hasPermissionTo('users.edit') || $user->hasPermissionTo('users.delete') ) {
             return true;
         }
 

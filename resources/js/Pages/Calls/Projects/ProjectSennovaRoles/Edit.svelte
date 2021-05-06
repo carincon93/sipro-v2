@@ -35,13 +35,13 @@
     let canEditProjectSennovaRoles      = authUser.can.find(element => element == 'project-sennova-roles.edit') == 'project-sennova-roles.edit'
     let canDeleteProjectSennovaRoles    = authUser.can.find(element => element == 'project-sennova-roles.delete') == 'project-sennova-roles.delete'
 
-    let dialog_open  = false
+    let dialog_open = false
     let sending     = false
     let form = useForm({
-        call_sennova_role_id: projectSennovaRole.call_sennova_role_id,
-        qty_months: projectSennovaRole.qty_months,
-        qty_roles: projectSennovaRole.qty_roles,
-        description: projectSennovaRole.description,
+        qty_months:             projectSennovaRole.qty_months,
+        qty_roles:              projectSennovaRole.qty_roles,
+        description:            projectSennovaRole.description,
+        call_sennova_role_id:   projectSennovaRole.call_sennova_role_id
     })
 
     $: if (projectSennovaRoleInfo?.qty_months != null && projectSennovaRoleInfo?.qty_roles) {

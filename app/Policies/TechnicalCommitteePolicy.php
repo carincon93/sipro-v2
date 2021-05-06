@@ -65,7 +65,7 @@ class TechnicalCommitteePolicy
      */
     public function update(User $user, TechnicalCommittee $technicalCommittee)
     {
-        if ( $user->hasPermissionTo('technical-committees.edit') ) {
+        if ( $user->hasPermissionTo('technical-committees.show') || $user->hasPermissionTo('technical-committees.edit') || $user->hasPermissionTo('technical-committees.delete') ) {
             return true;
         }
 

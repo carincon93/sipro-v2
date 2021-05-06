@@ -16,7 +16,6 @@
     import DynamicList from '@/Dropdowns/DynamicList'
     import Textarea from '@/Components/Textarea'
     import InfoMessage from '@/Components/InfoMessage'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Select from '@/Components/Select'
     import SelectMulti from '@/Components/SelectMulti'
     import Switch from '@/Components/Switch'
@@ -195,7 +194,7 @@
                     <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
                 </div>
                 <div>
-                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} required />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
             </div>
 

@@ -38,19 +38,19 @@
     let form = useForm({
         requires_third_market_research: false,
         call_budget_id: callBudget.id,
-        qty_items: '',
-        fact_sheet: '',
-        first_price_quote: '',
-        first_company_name: '',
-        first_price_quote_file: '',
+        qty_items:                  '',
+        fact_sheet:                 '',
+        first_price_quote:          '',
+        first_company_name:         '',
+        first_price_quote_file:     '',
 
-        second_price_quote: '',
-        second_company_name: '',
-        second_price_quote_file: '',
+        second_price_quote:         '',
+        second_company_name:        '',
+        second_price_quote_file:    '',
 
-        third_price_quote: '',
-        third_company_name: '',
-        third_price_quote_file: '',
+        third_price_quote:          '',
+        third_company_name:         '',
+        third_price_quote_file:     '',
     })
 
     function submit() {
@@ -96,10 +96,10 @@
                     $form.third_price_quote = '',
                     $form.third_company_name = '',
                     $form.third_price_quote_file = '',
-                    document.getElementById('fact_sheet').value = ''
-                    document.getElementById('first_price_quote_file').value = ''
-                    document.getElementById('second_price_quote_file').value = ''
-                    document.getElementById('third_price_quote_file') ? document.getElementById('third_price_quote_file').value = '' : null
+                    document.getElementById('fact_sheet').value ? document.getElementById('fact_sheet').value                       = '' : null
+                    document.getElementById('first_price_quote_file') ? document.getElementById('first_price_quote_file').value     = '' : null
+                    document.getElementById('second_price_quote_file') ? document.getElementById('second_price_quote_file').value   = '' : null
+                    document.getElementById('third_price_quote_file') ? document.getElementById('third_price_quote_file').value     = '' : null
                 },
             })
         }

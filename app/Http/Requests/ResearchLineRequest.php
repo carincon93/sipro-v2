@@ -24,7 +24,7 @@ class ResearchLineRequest extends FormRequest
     public function rules()
     {
         return [
-            'research_group'     => ['required', 'min:0', 'max:2147483647999', 'integer', 'exists:research_groups,id'],
+            'research_group_id'  => ['required', 'min:0', 'max:2147483647999', 'integer', 'exists:research_groups,id'],
             'name'               => ['required', 'max:191', 'string'],
         ];
     }
@@ -36,9 +36,9 @@ class ResearchLineRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if( is_array($this->research_group) ) {
+        if( is_array($this->research_group_id) ) {
             $this->merge([
-                'research_group' => $this->research_group['value'],
+                'research_group_id' => $this->research_group_id['value'],
             ]);
         }
     }

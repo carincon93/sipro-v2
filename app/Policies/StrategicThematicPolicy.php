@@ -65,7 +65,7 @@ class StrategicThematicPolicy
      */
     public function update(User $user, StrategicThematic $strategicThematic)
     {
-        if ( $user->hasPermissionTo('strategic-thematics.edit') ) {
+        if ($user->hasPermissionTo('strategic-thematics.show') || $user->hasPermissionTo('strategic-thematics.edit') || $user->hasPermissionTo('strategic-thematics.delete') ) {
             return true;
         }
 

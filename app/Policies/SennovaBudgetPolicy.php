@@ -65,7 +65,7 @@ class SennovaBudgetPolicy
      */
     public function update(User $user, SennovaBudget $sennovaBudget)
     {
-        if ( $user->hasPermissionTo('sennova-budgets.edit') ) {
+        if ( $user->hasPermissionTo('sennova-budgets.show') || $user->hasPermissionTo('sennova-budgets.edit') || $user->hasPermissionTo('sennova-budgets.delete') ) {
             return true;
         }
 

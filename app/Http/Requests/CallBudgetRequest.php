@@ -24,7 +24,8 @@ class CallBudgetRequest extends FormRequest
     public function rules()
     {
         return [
-            'fieldName' => ['required', 'max:255']
+            'call_id'           => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:calls,id'],
+            'sennova_budget_id' => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:sennova_budgets,id'],
         ];
     }
 }

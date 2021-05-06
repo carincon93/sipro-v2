@@ -65,7 +65,7 @@ class PartnerOrganizationMemberPolicy
      */
     public function update(User $user, PartnerOrganizationMember $partnerOrganizationMember)
     {
-        if ( $user->hasPermissionTo('partner-organization-members.edit') ) {
+        if ( $user->hasPermissionTo('partner-organization-members.show') || $user->hasPermissionTo('partner-organization-members.edit') || $user->hasPermissionTo('partner-organization-members.delete') ) {
             return true;
         }
 

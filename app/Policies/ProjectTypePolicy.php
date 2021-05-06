@@ -65,7 +65,7 @@ class ProjectTypePolicy
      */
     public function update(User $user, ProjectType $projectType)
     {
-        if ( $user->hasPermissionTo('project-types.edit') ) {
+        if ( $user->hasPermissionTo('project-types.show') || $user->hasPermissionTo('project-types.edit') || $user->hasPermissionTo('project-types.delete') ) {
             return true;
         }
 

@@ -18,7 +18,7 @@ class BudgetUsagePolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('budget-usages.index') ) {
+        if ( $user->hasPermissionTo('budget-usages.index') || $user->hasPermissionTo('budget-usages.show') || $user->hasPermissionTo('budget-usages.create') || $user->hasPermissionTo('budget-usages.edit') || $user->hasPermissionTo('budget-usages.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class BudgetUsagePolicy
      */
     public function update(User $user, BudgetUsage $budgetUsage)
     {
-        if ( $user->hasPermissionTo('budget-usages.edit') ) {
+        if (  $user->hasPermissionTo('budget-usages.show') || $user->hasPermissionTo('budget-usages.edit') || $user->hasPermissionTo('budget-usages.delete') ) {
             return true;
         }
 

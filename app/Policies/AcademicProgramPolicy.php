@@ -65,7 +65,7 @@ class AcademicProgramPolicy
      */
     public function update(User $user, AcademicProgram $academicProgram)
     {
-        if ( $user->hasPermissionTo('academic-programs.edit') ) {
+        if ( $user->hasPermissionTo('academic-programs.show') || $user->hasPermissionTo('academic-programs.edit') || $user->hasPermissionTo('academic-programs.delete') ) {
             return true;
         }
 

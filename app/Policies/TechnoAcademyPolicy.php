@@ -18,7 +18,7 @@ class TechnoAcademyPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('techno-academies.index') || $user->hasPermissionTo('techno-academies.show') || $user->hasPermissionTo('techno-academies.create') || $user->hasPermissionTo('techno-academies.edit') || $user->hasPermissionTo('techno-academies.delete')) {
+        if ( $user->hasPermissionTo('techno-academies.index') || $user->hasPermissionTo('techno-academies.show') || $user->hasPermissionTo('techno-academies.create') || $user->hasPermissionTo('techno-academies.edit') || $user->hasPermissionTo('techno-academies.delete') ) {
             return true;
         }
 
@@ -65,7 +65,7 @@ class TechnoAcademyPolicy
      */
     public function update(User $user, TechnoAcademy $technoAcademy)
     {
-        if ( $user->hasPermissionTo('techno-academies.edit') ) {
+        if ( $user->hasPermissionTo('techno-academies.show') || $user->hasPermissionTo('techno-academies.edit') || $user->hasPermissionTo('techno-academies.delete') ) {
             return true;
         }
 

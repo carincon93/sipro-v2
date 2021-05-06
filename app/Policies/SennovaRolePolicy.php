@@ -65,7 +65,7 @@ class SennovaRolePolicy
      */
     public function update(User $user, SennovaRole $sennovaRole)
     {
-        if ( $user->hasPermissionTo('sennova-roles.edit') ) {
+        if ( $user->hasPermissionTo('sennova-roles.show') || $user->hasPermissionTo('sennova-roles.edit') || $user->hasPermissionTo('sennova-roles.delete') ) {
             return true;
         }
 

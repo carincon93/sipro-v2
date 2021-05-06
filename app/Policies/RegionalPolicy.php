@@ -65,7 +65,7 @@ class RegionalPolicy
      */
     public function update(User $user, Regional $regional)
     {
-        if ( $user->hasPermissionTo('regional.edit') ) {
+        if (  $user->hasPermissionTo('regional.show') || $user->hasPermissionTo('regional.edit') || $user->hasPermissionTo('regional.delete') ) {
             return true;
         }
 

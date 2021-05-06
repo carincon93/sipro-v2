@@ -10,7 +10,7 @@
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
     import Select from '@/Components/Select'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
+    import DynamicList from '@/Dropdowns/DynamicList'
     import Dialog from '@/Components/Dialog'
 
     export let errors
@@ -112,7 +112,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
-                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} required />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

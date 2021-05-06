@@ -65,7 +65,7 @@ class KnowledgeNetworkPolicy
      */
     public function update(User $user, KnowledgeNetwork $knowledgeNetwork)
     {
-        if ( $user->hasPermissionTo('knowledge-networks.edit') ) {
+        if ( $user->hasPermissionTo('knowledge-networks.show') || $user->hasPermissionTo('knowledge-networks.edit') || $user->hasPermissionTo('knowledge-networks.delete') ) {
             return true;
         }
 

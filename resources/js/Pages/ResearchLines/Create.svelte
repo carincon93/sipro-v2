@@ -8,7 +8,7 @@
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
-    import DropdownResearchGroup from '@/Dropdowns/DropdownResearchGroup'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
 
@@ -68,7 +68,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="research_group_id" value="Grupo de investigación" />
-                    <DropdownResearchGroup id="research_group_id" bind:formResearchGroup={$form.research_group_id} message={errors.research_group_id} />
+                    <DynamicList id="research_group_id" bind:value={$form.research_group_id} routeWebApi={route('web-api.research-groups')} placeholder="Busque por el nombre del grupo de investigación" message={errors.research_group_id} required/>
                 </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">

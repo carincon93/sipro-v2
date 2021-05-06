@@ -1,5 +1,5 @@
 [
-    { "value": 0, "label": "ninguna" },
+    { "value": 0, "label": "ninguno" },
     { "value": 1, "label": "técnico" },
     { "value": 2, "label": "tecnólogo" },
     { "value": 3, "label": "pregrado" },

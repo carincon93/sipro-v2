@@ -9,7 +9,6 @@
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
     import DynamicList from '@/Dropdowns/DynamicList'
-    import DropdownAcademicCentre from '@/Dropdowns/DropdownAcademicCentre'
     import Textarea from '@/Components/Textarea'
 
     export let errors
@@ -100,7 +99,7 @@
                     <small>Nota: El Centro de Formación relacionado es el ejecutor del proyecto</small>
                 </div>
                 <div>
-                    <DropdownAcademicCentre id="academic_centre_id" bind:formAcademicCentre={$form.academic_centre_id} message={errors.academic_centre_id} />
+                    <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
             </div>
 

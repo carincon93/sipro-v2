@@ -65,7 +65,7 @@ class RiskAnalysisPolicy
      */
     public function update(User $user, RiskAnalysis $riskAnalysis)
     {
-        if ( $user->hasPermissionTo('risk-analysis.edit') ) {
+        if ( $user->hasPermissionTo('risk-analysis.show') || $user->hasPermissionTo('risk-analysis.edit') || $user->hasPermissionTo('risk-analysis.delete') ) {
             return true;
         }
 

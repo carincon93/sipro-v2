@@ -65,7 +65,7 @@ class ProductiveSectorPolicy
      */
     public function update(User $user, ProductiveSector $productiveSector)
     {
-        if ( $user->hasPermissionTo('productive-sectors.edit') ) {
+        if ( $user->hasPermissionTo('productive-sectors.show') || $user->hasPermissionTo('productive-sectors.edit') || $user->hasPermissionTo('productive-sectors.delete') ) {
             return true;
         }
 

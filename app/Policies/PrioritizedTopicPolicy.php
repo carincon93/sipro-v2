@@ -65,7 +65,7 @@ class PrioritizedTopicPolicy
      */
     public function update(User $user, PrioritizedTopic $prioritizedTopic)
     {
-        if ( $user->hasPermissionTo('prioritized-topics.edit') ) {
+        if ( $user->hasPermissionTo('prioritized-topics.show') || $user->hasPermissionTo('prioritized-topics.edit') || $user->hasPermissionTo('prioritized-topics.delete') ) {
             return true;
         }
 

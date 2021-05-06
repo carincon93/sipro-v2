@@ -65,7 +65,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role)
     {
-        if ( $user->hasPermissionTo('roles.edit') ) {
+        if ( $user->hasPermissionTo('roles.show') || $user->hasPermissionTo('roles.edit') || $user->hasPermissionTo('roles.delete') ) {
             return true;
         }
 

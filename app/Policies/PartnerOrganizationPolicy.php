@@ -18,12 +18,7 @@ class PartnerOrganizationPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.index')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.show')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.create')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.edit')
-            || $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.delete')
-        ) {
+        if ( $user->hasPermissionTo('partner-organizations.index') || $user->hasPermissionTo('partner-organizations.show') || $user->hasPermissionTo('partner-organizations.create') || $user->hasPermissionTo('partner-organizations.edit') || $user->hasPermissionTo('partner-organizations.delete') ) {
             return true;
         }
 
@@ -39,7 +34,7 @@ class PartnerOrganizationPolicy
      */
     public function view(User $user, PartnerOrganization $partnerOrganization)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.show') ) {
+        if ( $user->hasPermissionTo('partner-organizations.show') ) {
             return true;
         }
 
@@ -54,7 +49,7 @@ class PartnerOrganizationPolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.create') ) {
+        if ( $user->hasPermissionTo('partner-organizations.create') ) {
             return true;
         }
 
@@ -70,7 +65,7 @@ class PartnerOrganizationPolicy
      */
     public function update(User $user, PartnerOrganization $partnerOrganization)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.edit') ) {
+        if ( $user->hasPermissionTo('partner-organizations.show') || $user->hasPermissionTo('partner-organizations.edit') || $user->hasPermissionTo('partner-organizations.delete') ) {
             return true;
         }
 
@@ -86,7 +81,7 @@ class PartnerOrganizationPolicy
      */
     public function delete(User $user, PartnerOrganization $partnerOrganization)
     {
-        if ( $user->hasPermissionTo('calls.index') && $user->hasPermissionTo('rdi.index') && $user->hasPermissionTo('rdi.edit') && $user->hasPermissionTo('partner-organizations.delete') ) {
+        if ( $user->hasPermissionTo('partner-organizations.delete') ) {
             return true;
         }
 

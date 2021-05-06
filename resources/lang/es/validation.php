@@ -145,134 +145,193 @@ return [
 	*/
 
 	'attributes' => [
-		'name' => 'nombre',
-		'code' => 'código',
-		'modality' => 'modalidad',
-		'file' => 'archivo',
-		'type' => 'tipo',
-		'description' => 'descripción',
-		'indirect_code' => 'código indirecto',
-		'company_name' => 'nombre de la entidad',
-		'nit' => 'NIT',
-		'legal_person_name' => 'nombre de la persona jurídica',
-		'productive_sector' => 'sector productivo',
-		'project_director_name' => 'nombre del director del proyecto',
-		'cellphone_number' => 'celular',
-		'email' => 'correo electrónico',
-		'budget' => 'presupuesto',
-		'code_cta' => 'código CTA',
-		'bpin' => 'BPIN',
-		'code_item' => 'código del rubro',
-		'photo' => 'foto',
-		'measurement_unit' => 'unidad de medida',
-		'first_value' => 'primer valor',
-		'first_company_name' => 'primer nombre de la empresa',
-		'second_value' => 'segundo valor',
-		'second_company_name' => 'segundo nombre de la empresa',
-		'third_value' => 'tercer valor',
-		'third_company_name' => 'tercer nombre de la empresa',
-		'average_values' => 'valores promedio',
+        // Usuarios - Users
+        'academic_centre_id'    => 'centro de formación',
+        'name'                  => 'nombre',
+        'email'                 => 'correo electrónico',
+        'document_type'         => 'tipo de documento',
+        'document_number'       => 'número de documento',
+        'cellphone_number'      => 'número de celular',
+        'participation_type'    => 'tipo de participación',
+        'is_enabled'            => 'habilitado',
+        'role_id'               => 'rol',
+
+        // Centro de formación - Academic centre
+        'regional_id'           => 'regional',
+		'code'                  => 'código',
+
+        // Programa de formación - Academic program
+        'study_mode'            => 'modalidad',
+
+        // Actividad - Activity
+        'specific_objective_id' => 'objetivo específico',
+        'description'           => 'descripción',
+        'start_date'            => 'fecha de inicio',
+        'end_date'              => 'fecha de cierre',
+
+        // Anexos - Annexes
+        'programmatic_line_id'  => 'línea programática',
+
+        // Rubro de convocatoria - Call budget
+        'sennova_budget_id'     => 'rubro sennova',
+        'call_id'               => 'convocatoria',
+
+        // Convocatoria - Call
+        'active'                => 'activo',
+        'project_start_date'    => 'fecha límite de inicio de proyectos',
+        'project_end_date'      => 'fecha límite de cierre de proyectos',
+
+        // Rol SENNOVA de convocatoria - Call sennova role
+        'salary'                => 'asingación mensual',
+        'qty_months'            => 'cantidad de meses',
+        'qty_roles'             => 'cantidad de roles',
+
+        // Impacto - Impact
+        'type'                  => 'tipo',
+
+        // Disciplina de subárea de conocimiento - Knowledge subarea discipline
+        'knowledge_subarea_id'  => 'subárea de conocimiento',
+
+        // Subárea de conocimiento - Knowledge subarea
+        'knowledge_area_id'     => 'área de conocimiento',
+
+        // Estudio de mercado - Market research
+        'first_price_quote'         => 'valor del soporte/cotización',
+        'first_company_name'        => 'nombre de la compañía',
+        'first_price_quote_file'    => 'archivo',
+        'second_price_quote'        => 'valor del soporte/cotización',
+        'second_company_name'       => 'nombre de la compañía',
+        'second_price_quote_file'   => 'archivo',
+        'third_price_quote'         => 'valor del soporte/cotización',,
+        'third_company_name'        => 'nombre de la compañía',
+        'third_price_quote_file'    => 'archivo',
+
+        // Subtipología Minciencias - MincienciasSubtypology
+        'minciencias_typology_id'   => 'tipología Minciencias',
+
+        // Producto - Output
+        'project_result_id'         => 'resultado'
+		'trl'                       => 'TRL',
+
+        // Entidad aliada - Partner organization
 		'partner_organization_type' => 'tipo de entidad aliada',
-		'legal_status' => 'estado legal',
-		'company_type' => 'tipo de entidad',
-		'agreement_type' => 'tipo de convenio',
-		'agreement_description' => 'descripción del convenio',
-		'agreement_code' => 'código del convenio',
-		'research_group' => 'grupo de investigación',
-		'gruplac_code' => 'código GrupLac',
-		'gruplac_link' => 'enlace GrupLac',
+		'nit'                       => 'NIT',
+		'legal_status'              => 'estado legal',
+		'company_type'              => 'tipo de entidad',
+		'agreement_description'     => 'descripción del convenio',
+		'research_group'            => 'grupo de investigación',
+		'gruplac_code'              => 'código GrupLac',
+		'gruplac_link'              => 'enlace GrupLac',
 		'knowledge_transfer_activities' => 'actividades de transferencia de conocimiento',
-		'letter_of_intent' => 'carta de intención',
-		'intellectual_property' => 'propiedad intelectual',
-		'document_type' => 'tipo de documento',
-		'document_number' => 'número de documento',
-		'project_category' => 'categoría del proyecto',
-		'total_project_budget' => 'presupuesto total del proyecto',
-		'qty_items' => 'cantidad de artículos',
-		'justification' => 'justificación',
-		'qty' => 'cantidad',
-		'qty_months' => 'cantidad de meses',
-		'maximum_value' => 'valor máximo',
-		'title' => 'título',
-		'ciiu_code' => 'código CIIU',
-		'video' => 'vídeo',
-		'industry_4_justification' => 'industria 4.0',
-		'orange_economy_justification' => 'economía naranja',
-		'people_disabilities_justification' => 'Política Institucional para Atención de las Personas con discapacidad',
-		'abstract' => 'resumen ',
-		'project_background' => 'antecedentes del proyecto',
-		'problem_tree' => 'árbol de problemas',
-		'problem_statement' => 'planteamiento del problema',
-		'project_justification' => 'justificacion de proyecto',
-		'conceptual_framework' => 'marco conceptual',
-		'overall_objective' => 'objetivo general',
-		'objectives_tree' => 'árbol de objetivos',
-		'project_methodology' => 'metodología del proyecto',
-		'students' => 'número de aprendices beneficiados',
-		'cities' => 'municipios',
-		'cities_impact' => 'beneficio en los municipios',
-		'start_date' => 'fecha de inicio',
-		'end_date' => 'fecha de cierre',
-		'value_chain' => 'cadena de valor',
-		'sustainability_proposal' => 'propuesta de sostenibilidad',
-		'social_impact' => 'impacto social',
-		'technological_impact' => 'impacto tecnológico',
-		'academic_centre_impact' => 'impacto en el centro de formación',
-		'bibliography' => 'bibliografía',
-		'minciencias_typology' => 'tipología minciencias',
-		'TRL' => 'TRL',
-		'indicator' => 'indicador',
-		'deadline' => 'fecha límite',
-		'is_finished' => 'esta finalizado',
-		'dependencies' => 'dependencias',
-		'projected' => 'proyectado',
-		'enlace_gruplac' => 'enlace GrupLac',
-		'minciencias_code' => 'código minciencias',
-		'minciencias_category' => 'categoría minciencias',
-		'acronym' => 'sigla del grupo de investigación',
-		'mission' => 'misión',
-		'vision' => 'visión',
-		'objective' => 'objetivo',
-		'regional_projection' => 'proyección regional',
-		'knowledge_production_strategy' => 'estrategia de producción de conocimiento',
-		'thematic_research' => 'investigación temática',
-		'creation_date' => 'fecha de creación',
-		'risk_type' => 'tipo de riesgo',
-		'probability' => 'probabilidad',
-		'impact' => 'impacto',
-		'effects' => 'efectos',
-		'mitigation_measures' => 'medidas de mitigación',
-		'level' => 'nivel',
-		'education_level' => 'nivel educativo',
-		'salary' => 'salario',
-		'is_project_role' => 'es rol de proyecto?',
-		'number' => 'número',
-		'programmatic_line_project_title' => 'título del proyecto de la línea programática',
-		'problem_question' => 'pregunta del problema',
-		'productive_sector_impact' => 'impacto del sector productivo',
-		'appropriate_infrastructure' => 'infraestructura apropiada',
-		'area_specifications' => 'especificaciones de área',
-		'verification' => 'verficiación',
-		'password' => 'contraseña',
-		'is_enabled' => 'está habilitado?',
-		'participation_type' => 'tipo de participación',
-		'academic_centre_id' => 'centro de formación',
+		'letter_of_intent'          => 'carta de intención',
+		'intellectual_property'     => 'propiedad intelectual',
+        'in_kind'                   => 'recursos en especie',
+        'in_kind_description'       => 'descripción',
+        'funds'                     => 'recursos',
+        'funds_description'         => 'descripción',
+
+        // Tema priorizado - Prioritized topic
+        'productive_sector_id'      => 'sector productivo',
+		'technical_committee_id'    => 'mesa técnica de servicios tecnológicos',
+
+        // Línea programática - Programmatic line
+		'project_category'          => 'categoría del proyecto',
+
+        // Anexo de proyecto - Project annexe
+        'annexe_id'                 => 'anexo'
+		'file'                      => 'archivo',
+
+        // Estudio de mercado - Market research
+        'qty_items'                 => 'cantidad de ítems',
+        'fact_sheet'                => 'ficha técnica'
+
+        // Resultado - Project result
+		'indicator'                 => 'indicador',
+        'means_of_verification'     => 'medios de verificación',
+
+        // Rubro de proyecto - Project sennova budget
+        'call_budget_id'            => 'rubro de convocatoria'
+		'justification'             => 'justificación',
+        'value'                     => 'valor',
+
+        // Rol de proyecto - Project sennova role
+        'call_sennova_role_id'      => 'rol de convocatoria'
+
+        // Tipo de proyecto - Project type
+		'maximum_value'             => 'valor máximo',
+
+        // Proyecto I+D+i - RDI
+        'project_type_id'                           => 'tipo de proyecto',
+        'research_line_id'                          => 'línea de investigación',
+		'knowledge_subarea_discipline_id'           => 'disciplina de la subárea de conocimiento',
+        'strategic_thematic_id'                     => 'temáticas estratégicas SENA'
+		'knowledge_network_id'                      => 'red de conocimiento',
+        'ciiu_code_id'                              => 'código CIIU'
+		'title'                                     => 'título',
+		'abstract'                                  => 'resumen ',
+		'project_background'                        => 'antecedentes del proyecto',
+		'conceptual_framework'                      => 'marco conceptual',
+		'project_methodology'                       => 'metodología del proyecto',
+		'sustainability_proposal'                   => 'propuesta de sostenibilidad',
+		'primary_objective'                         => 'objetivo general',
+		'bibliography'                              => 'bibliografía',
+		'students'                                  => 'número de aprendices beneficiados',
+        'sampling'                                  => 'muestras',
+        'sampling_activity'                         => 'actividad que pretende con la especie nativa',
+        'sampling_objective'                        => 'finalidad de las actividades a realizar con la especie nativa',
+        'cities'                                    => 'nombre de los municipios beneficiados',
+        'cities'                                    => 'nombre de los municipios beneficiados',
+        'cities_impact'                             => 'descripción del beneficio en los municipios',
+        'academic_impact'                           => 'impacto académico',
+        'related_with_technological_plan'           => '¿El proyecto se alinea con el plan tecnológico desarrollado por el centro de formación?',
+        'related_with_competitiveness_innovation'   => '¿El proyecto se alinea con las Agendas Departamentales de Competitividad e Innovación?',
+        'related_with_sector_based_committee'       => '¿El proyecto se alinea con las Mesas Sectoriales?',
+        'related_with_techno_academy'               => '¿El proyecto se formuló en conjunto con la tecnoacademia?',
+        'sector_based_committee_id'                 => 'mesa sectorial',
+        'technological_line_id'                     => 'línea tecnológica',
+        'industry_4_justification'                  => 'industria 4.0',
+		'orange_economy_justification'              => 'economía naranja',
+		'people_disabilities_justification'         => 'Política Institucional para Atención de las Personas con discapacidad',
+		'problem_statement'                         => 'planteamiento del problema',
+		'problem_justification'                     => 'justificacion',
+
+        // Grupo de investigación - Research group
+		'acronym'               => 'acrónimo del grupo de investigación',
+		'minciencias_code'      => 'código Minciencias',
+		'minciencias_category'  => 'categoría Minciencias',
+
+        // Línea de investigación - Research line
 		'research_group_id' => 'grupo de investigación',
-		'st_technical_committee_id' => 'mesa técnica ST',
-		'productive_sector_id' => 'sector productivo',
-		'second_specific_objective' => 'segundo objetivo específico',
-		'first_specific_objective' => 'primer objetivo específico',
-		'strategic_themtic_id' => 'temática estratégica SENA',
-		'knowledge_subarea_discipline_id' => 'disciplina de la subárea de conocimiento',
-		'knowledge_network_id' => 'red de conocimiento',
-		'programmatic_line_id' => 'línea programática',
-		'prioritized_topic_id' => 'tema priorizado',
-		'first_budget_item_id' => 'primer rubro',
-		'second_budget_item_id' => 'segundo rubro',
-		'knowledge_area_id' => 'área de conocimiento',
-		'knowledge_subarea_id' => 'sub-área de conocimiento',
-		'first_price_document_id' => 'soporte',
-		'second_price_document_id' => 'soporte',
-		'third_price_document_id' => 'soporte',
+
+        // Análisis de riesgos - Risk analysis
+		'level'                 => 'nivel',
+		'impact'                => 'impacto',
+		'probability'           => 'probabilidad',
+		'effects'               => 'efectos',
+		'mitigation_measures'   => 'medidas de mitigación',
+
+
+        // Rubro SENNOVA - SENNOVA budget
+        'first_budget_info_id'              => 'nombre de cuenta',
+        'second_budget_info_id'             => 'concepto interno SENA',
+        'third_budget_info_id'              => 'rubro',
+        'budget_usage_id'                   => 'uso presupuestal',
+        'requires_market_research_batch'    => 'requiere múltiples estudios de mercados',
+        'requires_market_research'          => 'requiere de estudio de mercado',
+        'can_be_added'                      => 'puede sumar al total del proyecto',
+        'message'                           => 'mensaje',
+        'max_value'                         => 'valor máximo',
+
+        // Rol SENNOVA - SENNOVA role
+        'academic_degree'   => 'nivel educativo',
+
+        // Objetivo específico
+        'number'            => 'número',
+
+		'objectives_tree'   => 'árbol de objetivos',
+        'problem_tree'      => 'árbol de problemas',
+		'indirect_code'     => 'código indirecto',
+		'value_chain'       => 'cadena de valor',
+		'password'          => 'contraseña',
 	],
 ];

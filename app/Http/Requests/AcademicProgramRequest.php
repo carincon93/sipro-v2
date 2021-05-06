@@ -24,7 +24,7 @@ class AcademicProgramRequest extends FormRequest
     public function rules()
     {
         return [
-            'academic_centre'    => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+            'academic_centre_id' => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
             'name'               => ['required', 'max:191'],
             'code'               => ['required', 'min:0', 'max:9999999999', 'integer'],
             'study_mode'         => ['required', 'max:191'],
@@ -44,9 +44,9 @@ class AcademicProgramRequest extends FormRequest
             ]);
         }
 
-        if( is_array($this->academic_centre) ) {
+        if( is_array($this->academic_centre_id) ) {
             $this->merge([
-                'academic_centre' => $this->academic_centre['value'],
+                'academic_centre_id' => $this->academic_centre_id['value'],
             ]);
         }
     }

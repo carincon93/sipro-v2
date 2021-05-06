@@ -45,7 +45,7 @@ class UserRequest extends FormRequest
                 'cellphone_number'      => ['required', 'min:0', 'max:9999999999', 'integer'],
                 'participation_type'    => ['required', 'max:191'],
                 'is_enabled'            => ['required', 'boolean'],
-                'role_id.*'             => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:roles,id']
+                'role_id'             => ['required', 'min:0', 'max:2147483647', 'exists:roles,id']
             ];
         }
     }

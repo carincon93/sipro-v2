@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SennovaRoleRequest;
 use App\Models\SennovaRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class SennovaRoleController extends Controller
@@ -20,7 +21,15 @@ class SennovaRoleController extends Controller
 
         return Inertia::render('SennovaRoles/Index', [
             'filters'   => request()->all('search'),
-            'sennovaRoles' => SennovaRole::orderBy('name', 'ASC')
+            'sennovaRoles' => SennovaRole::selectRaw("id, CASE academic_degree
+                WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno')
+                WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico')
+                WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo')
+                WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado')
+                WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización')
+                WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría')
+                WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado')
+            END as name")->orderBy('name', 'ASC')
                 ->filterSennovaRole(request()->only('search'))->paginate(),
         ]);
     }
@@ -34,7 +43,9 @@ class SennovaRoleController extends Controller
     {
         $this->authorize('create', [SennovaRole::class]);
 
-        return Inertia::render('SennovaRoles/Create');
+        return Inertia::render('SennovaRoles/Create', [
+            'academicDegrees' => json_decode(Storage::get('json/academic-degrees.json'), true)
+        ]);
     }
 
     /**
@@ -48,8 +59,9 @@ class SennovaRoleController extends Controller
         $this->authorize('create', [SennovaRole::class]);
 
         $sennovaRole = new SennovaRole();
-        $sennovaRole->name = $request->name;
-        $sennovaRole->description = $request->description;
+        $sennovaRole->name              = $request->name;
+        $sennovaRole->description       = $request->description;
+        $sennovaRole->academic_degree   = $request->academic_degree;
         $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
 
         $sennovaRole->save();
@@ -83,7 +95,8 @@ class SennovaRoleController extends Controller
         $this->authorize('update', [SennovaRole::class, $sennovaRole]);
 
         return Inertia::render('SennovaRoles/Edit', [
-            'sennovaRole' => $sennovaRole
+            'sennovaRole'       => $sennovaRole,
+            'academicDegrees'   => json_decode(Storage::get('json/academic-degrees.json'), true)
         ]);
     }
 
@@ -98,9 +111,11 @@ class SennovaRoleController extends Controller
     {
         $this->authorize('update', [SennovaRole::class, $sennovaRole]);
 
-        $sennovaRole->name = $request->name;
-        $sennovaRole->description = $request->description;
+        $sennovaRole->name              = $request->name;
+        $sennovaRole->description       = $request->description;
+        $sennovaRole->academic_degree   = $request->academic_degree;
         $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
+
         $sennovaRole->save();
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
