@@ -39,11 +39,11 @@ class ProjectTreeController extends Controller
         if ($project->directCauses()->count() < 4) {
             for ($i=0; $i < 4; $i++) {
                 $directCause = $project->directCauses()->create([
-                    ['description' => null],
+                    ['description' => ''],
                 ]);
 
                 $specificObjective = $directCause->specificObjective()->create([
-                    'description'   => null,
+                    'description'   => '',
                     'number'        => $i + 1,
                 ]);
 
@@ -54,11 +54,11 @@ class ProjectTreeController extends Controller
         if ($project->directEffects()->count() < 4) {
             for ($i=0; $i < 4; $i++) {
                 $directEffect = $project->directEffects()->create([
-                    ['description' => null],
+                    ['description' => ''],
                 ]);
 
                 $P = $directEffect->P()->create([
-                    'description'           => null,
+                    'description'           => '',
                     'specific_objective_id' => $specificObjectives[$i]->id
                 ]);
             }
@@ -68,7 +68,7 @@ class ProjectTreeController extends Controller
             foreach ($directEffect->indirectEffects as $indirectEffect) {
                 if (empty($indirectEffect->impact)) {
                     $impact = $indirectEffect->impact()->create([
-                        ['description' => null],
+                        ['description' => ''],
                     ]);
                 }
             }
@@ -78,7 +78,7 @@ class ProjectTreeController extends Controller
             foreach ($directCause->indirectCauses as $indirectCause) {
                 if (empty($indirectCause->activity)) {
                     $activity = $indirectCause->activity()->create([
-                        ['description' => null],
+                        ['description' => ''],
                     ]);
                 }
             }
@@ -192,7 +192,7 @@ class ProjectTreeController extends Controller
 
         if (empty($indirectEffect->impact)) {
             $indirectEffect->impact()->create([
-                ['description' => null],
+                ['description' => ''],
             ]);
         }
 
@@ -244,7 +244,7 @@ class ProjectTreeController extends Controller
 
         if (empty($indirectCause->activity)) {
             $indirectCause->activity()->create([
-                ['description' => null],
+                ['description' => ''],
             ]);
         }
 
