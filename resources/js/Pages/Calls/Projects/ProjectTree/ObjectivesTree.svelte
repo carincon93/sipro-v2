@@ -63,11 +63,11 @@
      * Impactos
      */
     let formImpact = useForm({
-        id: 0,
+        id:                 0,
         indirect_effect_id: 0,
-        description: '',
-        type: '',
-        result_id: ''
+        description:        '',
+        type:               '',
+        result_id:          ''
     })
 
     let showImpactForm  = false
@@ -96,7 +96,7 @@
 
     function submitImpact() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.impact', {project:project.id, impact: $formImpact.id}), $formImpact, {
+            $formImpact.post(route('projects.impact', {project:project.id, impact: $formImpact.id}), {
                 onStart: ()     =>  { sending = true},
                 onSuccess: ()   =>  { closeDialog() },
                 onFinish: ()    =>  { sending = false},
@@ -136,12 +136,12 @@
         $formResult.trl                     = directEffect.project_result.trl
         $formResult.indicator               = directEffect.project_result.indicator
         $formResult.means_of_verification   = directEffect.project_result.means_of_verification
-        resultDirectEffect                  = directEffect.description
+        resultDirectEffect                  = directEffect.description ?? $_('No data recorded')
     }
 
     function submitResult() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.project_result', {project:project.id, project_result: $formResult.id}), $formResult, {
+            $formResult.post(route('projects.project_result', {project:project.id, project_result: $formResult.id}), {
                 onStart: ()     =>  { sending = true},
                 onSuccess: ()   =>  { closeDialog() },
                 onFinish: ()    =>  { sending = false},
@@ -171,7 +171,7 @@
 
     function submitGeneralObjetive() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.primary_objective', project.id), $formPrimaryObjective, {
+            $formPrimaryObjective.post(route('projects.primary_objective', project.id), {
                 onStart: ()     =>  { sending = true },
                 onSuccess: ()   =>  { closeDialog() },
                 onFinish: ()    =>  { sending = false },
@@ -201,12 +201,12 @@
         $formSpecificObjective.id           = directCause.specific_objective.id
         $formSpecificObjective.description  = directCause.specific_objective.description
         $formSpecificObjective.number       = number
-        SpecificObjectiveDirectCause        = directCause.description ? directCause.description : $_('No data recorded')
+        SpecificObjectiveDirectCause        = directCause.description ?? $_('No data recorded')
     }
 
     function submitSpecificObjective() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.specific_objective', {project: project.id, specific_objective: $formSpecificObjective.id}), $formSpecificObjective, {
+            $formSpecificObjective.post(route('projects.specific_objective', {project: project.id, specific_objective: $formSpecificObjective.id}), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },
@@ -242,12 +242,12 @@
         $formActivity.description               = indirectCause.activity.description
         $formActivity.start_date                = indirectCause.activity.start_date
         $formActivity.end_date                  = indirectCause.activity.end_date
-        activityIndirectCause                   = indirectCause.description
+        activityIndirectCause                   = indirectCause.description ?? $_('No data recorded')
     }
 
     function submitActivity() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.activity', {call: call.id, project: project.id, activity: $formActivity.id}), $formActivity, {
+            $formActivity.post(route('projects.activity', {call: call.id, project: project.id, activity: $formActivity.id}), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },
