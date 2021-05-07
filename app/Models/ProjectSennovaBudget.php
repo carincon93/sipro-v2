@@ -74,6 +74,16 @@ class ProjectSennovaBudget extends Model
     }
 
     /**
+     * Relationship with Activity
+     *
+     * @return void
+     */
+    public function activities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_project_sennova_budget', 'project_sennova_budget_id', 'activity_id');
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

@@ -6,6 +6,7 @@ use App\Http\Requests\ActivityRequest;
 use App\Models\Call;
 use App\Models\Project;
 use App\Models\Activity;
+use App\Models\ProjectSennovaBudget;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -95,11 +96,13 @@ class ActivityController extends Controller
         $this->authorize('update', [Activity::class, $activity]);
 
         return Inertia::render('Calls/Projects/Activities/Edit', [
-            'activity' => $activity,
-            'call' => $call,
-            'project' => $project,
-            'outputs' => $project->directEffects()->with('projectResult.outputs')->get()->pluck('projectResult.outputs')->flatten(),
-            'activity_outputs' => $activity->outputs()->pluck('id'),
+            'activity'                      => $activity,
+            'call'                          => $call,
+            'project'                       => $project,
+            'outputs'                       => $project->directEffects()->with('projectResult.outputs')->get()->pluck('projectResult.outputs')->flatten(),
+            'projectSennovaBudgets'         => ProjectSennovaBudget::where('project_id', $project->id)->with('callBudget.sennovaBudget.thirdBudgetInfo:id,name', 'callBudget.sennovaBudget.secondBudgetInfo:id,name', 'callBudget.sennovaBudget.budgetUsage:id,description')->get(),
+            'activityOutputs'               => $activity->outputs()->pluck('id'),
+            'activityProjectSennovaBudgets' => $activity->projectSennovaBudgets()->pluck('id')
         ]);
     }
 
@@ -117,9 +120,13 @@ class ActivityController extends Controller
         $activity->description  = $request->description;
         $activity->start_date   = $request->start_date;
         $activity->end_date     = $request->end_date;
-        $activity->outputs()->sync($request->output_id);
 
         $activity->save();
+
+        dd($request->all());
+
+        $activity->outputs()->sync($request->output_id);
+        $activity->projectSennovaBudgets()->sync($request->project_sennova_budget_id);
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

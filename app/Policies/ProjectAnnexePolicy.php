@@ -49,7 +49,7 @@ class ProjectAnnexePolicy
      */
     public function create(User $user)
     {
-        if ( $user->hasPermissionTo('project-annexes.create') ) {
+        if ( $user->hasPermissionTo('project-annexes.create') || $user->hasPermissionTo('project-annexes.edit') ) {
             return true;
         }
 

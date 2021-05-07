@@ -54,7 +54,6 @@
     let dialog_open = false
     let sending     = false
     let form = useForm({
-        _method: 'put',
         partner_organization_type:      {value: partnerOrganizationTypes.find(item => item.label == partnerOrganization.partner_organization_type)?.value, label: partnerOrganizationTypes.find(item => item.label == partnerOrganization.partner_organization_type)?.label},
         name:                           partnerOrganization.name,
         legal_status:                   {value: legalStatus.find(item => item.label == partnerOrganization.legal_status)?.value, label: legalStatus.find(item => item.label == partnerOrganization.legal_status)?.label},
@@ -76,8 +75,7 @@
 
     function submit() {
         if (canEditPartnerOrganizations || isSuperAdmin) {
-            Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), $form, {
-                forceFormData: true,
+            $form.put(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -209,6 +207,12 @@
                         <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
                     </div>
 
+                    {#if $form.progress}
+                        <progress value={$form.progress.percentage} max="100" class="mt-4">
+                            {$form.progress.percentage}%
+                        </progress>
+                    {/if}
+
                     <h6 class="mt-20 mb-12 text-2xl" id="activities">{$_('Activities.plural')}</h6>
 
                     <div class="bg-white rounded shadow overflow-hidden">
@@ -229,11 +233,6 @@
                         </div>
                     </div>
                 </fieldset>
-                {#if $form.progress}
-                    <progress value={$form.progress.percentage} max="100">
-                        {$form.progress.percentage}%
-                    </progress>
-                {/if}
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                     {#if canDeletePartnerOrganizations || isSuperAdmin}
                         <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -301,17 +300,19 @@
                         </p>
                     </td>
 
-                    <ResourceMenu>
-                        {#if canShowPartnerOrganizations || canEditPartnerOrganizationMembers ||canDeletePartnerOrganizations || isSuperAdmin}
-                            <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])))}>
-                                <Text>{$_('View details')}</Text>
-                            </Item>
-                        {:else}
-                            <Item>
-                                <Text>{$_('You don\'t have permissions')}</Text>
-                            </Item>
-                        {/if}
-                    </ResourceMenu>
+                    <td class="border-t">
+                        <ResourceMenu>
+                            {#if canShowPartnerOrganizations || canEditPartnerOrganizationMembers ||canDeletePartnerOrganizations || isSuperAdmin}
+                                <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])))}>
+                                    <Text>{$_('View details')}</Text>
+                                </Item>
+                            {:else}
+                                <Item>
+                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                </Item>
+                            {/if}
+                        </ResourceMenu>
+                    </td>
                 </tr>
             {/each}
         </tbody>

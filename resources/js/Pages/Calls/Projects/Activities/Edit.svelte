@@ -19,7 +19,9 @@
     export let call
     export let project
     export let activity
-    export let activity_outputs
+    export let activityOutputs
+    export let activityProjectSennovaBudgets
+    export let projectSennovaBudgets = []
     export let outputs = []
 
     $: $title = activity ? activity.name : null
@@ -38,10 +40,11 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
-        description:  activity.description,
-        start_date:  activity.start_date,
-        end_date:  activity.end_date,
-        output_id:  activity_outputs,
+        description:                activity.description,
+        start_date:                 activity.start_date,
+        end_date:                   activity.end_date,
+        output_id:                  activityOutputs,
+        project_sennova_budget_id:  activityProjectSennovaBudgets,
     })
 
     function submit() {
@@ -110,7 +113,7 @@
                 <h6 class="mt-20 mb-12 text-2xl">{$_('Outputs.plural')}</h6>
                 <div class="bg-white rounded shadow overflow-hidden">
                     <div class="p-4">
-                        <Label required class="mb-4" labelFor="role_id" value="Seleccione algún producto" />
+                        <Label required class="mb-4" labelFor="output_id" value="Relacione algún producto" />
                         <InputError message={errors.output_id} />
                     </div>
                     <div class="grid grid-cols-2">
@@ -121,6 +124,42 @@
                                     value={id}
                                 />
                                     <span slot="label">{$_(name)}</span>
+                            </FormField>
+                        {/each}
+                    </div>
+                </div>
+
+                <h6 class="mt-20 mb-12 text-2xl">{$_('Project sennova budgets.plural')}</h6>
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <div class="p-4">
+                        <Label required class="mb-4" labelFor="project_sennova_budget_id" value="Relacione algún rubro" />
+                        <InputError message={errors.project_sennova_budget_id} />
+                    </div>
+                    <div class="grid grid-cols-2">
+                        {#each projectSennovaBudgets as projectSennovaBudget, i}
+                            <FormField class="border-b border-l">
+                                <Checkbox
+                                    bind:group={$form.project_sennova_budget_id}
+                                    value={projectSennovaBudget.id}
+                                />
+                                    <span slot="label">
+                                        <div class="mb-8 mt-4">
+                                            <small class="block">Concepto interno SENA</small>
+                                            {projectSennovaBudget.call_budget?.sennova_budget?.second_budget_info.name}
+                                        </div>
+                                        <div class="mb-8">
+                                            <small class="block">Rubro</small>
+                                            {projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
+                                        </div>
+                                        <div class="mb-8">
+                                            <small class="block">Uso presupuestal</small>
+                                            {projectSennovaBudget.call_budget?.sennova_budget?.budget_usage.description}
+                                        </div>
+                                        <div class="mb-8">
+                                            <small class="block">Descripción</small>
+                                            {projectSennovaBudget.description}
+                                        </div>
+                                    </span>
                             </FormField>
                         {/each}
                     </div>

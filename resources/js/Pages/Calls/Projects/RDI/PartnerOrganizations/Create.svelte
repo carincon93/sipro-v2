@@ -63,7 +63,7 @@
 
     function submit() {
         if (canCreatePartnerOrganizations || isSuperAdmin) {
-            Inertia.post(route('calls.rdi.partner-organizations.store', [call.id, rdi.id]), $form, {
+            $form.post(route('calls.rdi.partner-organizations.store', [call.id, rdi.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })
@@ -183,6 +183,12 @@
                     <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} required />
                 </div>
 
+                {#if $form.progress}
+                    <progress value={$form.progress.percentage} max="100" class="mt-4">
+                        {$form.progress.percentage}%
+                    </progress>
+                {/if}
+
                 <h6 class="mt-20">{$_('Activities.plural')}</h6>
                 <div class="bg-white rounded shadow overflow-hidden">
                     <div class="p-4">
@@ -202,11 +208,6 @@
                     </div>
                 </div>
 
-                {#if $form.progress}
-                    <progress value={$form.progress.percentage} max="100">
-                    {$form.progress.percentage}%
-                    </progress>
-                {/if}
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreatePartnerOrganizations || isSuperAdmin}

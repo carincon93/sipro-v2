@@ -164,10 +164,12 @@ return [
         'study_mode'            => 'modalidad',
 
         // Actividad - Activity
-        'specific_objective_id' => 'objetivo específico',
-        'description'           => 'descripción',
-        'start_date'            => 'fecha de inicio',
-        'end_date'              => 'fecha de cierre',
+        'specific_objective_id'     => 'objetivo específico',
+        'description'               => 'descripción',
+        'start_date'                => 'fecha de inicio',
+        'end_date'                  => 'fecha de cierre',
+        'output_id'                 => 'productos',
+        'project_sennova_budget_id' => 'rubros de proyecto',
 
         // Anexos - Annexes
         'programmatic_line_id'  => 'línea programática',

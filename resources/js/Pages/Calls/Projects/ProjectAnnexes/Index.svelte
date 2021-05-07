@@ -6,9 +6,8 @@
     import { _ } from 'svelte-i18n'
 
     import Pagination from '@/Components/Pagination'
-    import Button from '@/Components/Button'
-    import File from '@/Components/File'
     import DataTable from '@/Components/DataTable'
+    import Create from './Create'
 
     import Stepper from '@/Components/Stepper';
 
@@ -16,6 +15,8 @@
     export let project
     export let projectAnnexes = []
     export let annexes
+
+    let sending =false
 
     $title = $_('Project annexes.plural')
 
@@ -31,20 +32,6 @@
     let canDeleteProjectAnnexes    = authUser.can.find(element => element == 'project-annexes.delete') == 'project-annexes.delete'
 
     let filters = {}
-
-    let sending = false
-    function submit(e) {
-        if (canCreateProjectAnnexes || isSuperAdmin) {
-            let formData = new FormData(e.target)
-
-            Inertia.post(route('calls.projects.project-annexes.store', [call.id, project.id]), formData, {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
-            })
-        }
-    }
-
-    console.log(annexes);
 </script>
 
 <AuthenticatedLayout>
@@ -65,30 +52,15 @@
             {#each annexes.data as annexe (annexe.id)}
                 <tr>
                     <td class="border-t">
-                        {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
+                        {#if canShowProjectAnnexes || canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
                             <p class="px-6 py-4 flex items-center focus:text-indigo-500">
                                 {annexe.name}
                             </p>
                         {/if}
                     </td>
                     <td class="border-t">
-                        {#if canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
-                            <form on:submit|preventDefault={(e) => submit(e)} class="mt-4 p-4">
-                                <input type="hidden" name="annexe_id" value={annexe.id}>
-                                {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
-                                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
-                                {/if}
-                                <div class="flex">
-                                    <div class="flex-1">
-                                        <File id="file" type="file" name="file" accept="application/pdf" class="mt-1 block w-full" required />
-                                    </div>
-                                    <div class="flex items-center">
-                                        <Button loading={sending} class="btn-indigo ml-auto" type="submit">
-                                            {$_('Upload')} {projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}
-                                        </Button>
-                                    </div>
-                                </div>
-                            </form>
+                        {#if canShowProjectAnnexes || canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
+                            <Create {call} {project} {annexe} {projectAnnexes} bind:sending={sending} />
                         {/if}
                     </td>
                 </tr>

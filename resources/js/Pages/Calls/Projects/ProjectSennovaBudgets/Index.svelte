@@ -173,7 +173,7 @@
                             </div>
                             <div class="mt-3">
                                 <small>Rubro</small>
-                                <p></p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}
+                                <p>{projectSennovaBudget.call_budget?.sennova_budget?.third_budget_info.name}</p>
                             </div>
                             <div class="mt-3">
                                 <small>Uso presupuestal</small>
