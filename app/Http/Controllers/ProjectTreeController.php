@@ -35,7 +35,7 @@ class ProjectTreeController extends Controller
      */
     private function generateTree(Project $project)
     {
-        $specificObjectives = [];
+        $specificObjectives = $project->directCauses()->with('specificObjective')->count() > 0 ? $project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten() : [];
         if ($project->directCauses()->count() < 4) {
             for ($i=0; $i < 4; $i++) {
                 $directCause = $project->directCauses()->create([
