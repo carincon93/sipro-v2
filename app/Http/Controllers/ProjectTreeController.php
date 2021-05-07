@@ -57,7 +57,7 @@ class ProjectTreeController extends Controller
                     ['description' => ' '],
                 ]);
 
-                $P = $directEffect->P()->create([
+                $projectResult = $directEffect->projectResult()->create([
                     'description'           => ' ',
                     'specific_objective_id' => $specificObjectives[$i]->id
                 ]);
@@ -340,7 +340,7 @@ class ProjectTreeController extends Controller
      *
      * @param  mixed $request
      * @param  mixed $project
-     * @param  mixed $P
+     * @param  mixed $projectResult
      * @return void
      */
     public function updateProjectResult(ProjectResultRequest $request, Project $project, ProjectResult $projectResult)
