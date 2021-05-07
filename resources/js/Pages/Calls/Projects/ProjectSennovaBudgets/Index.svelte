@@ -63,7 +63,7 @@
                 </td>
                 <td class="border-t p-4">
                     Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_special_construction_services) ? (project.total_special_construction_services) : 0)}
-                    {#if project.total_special_construction_services < (project.total_industrial_machinery * 0.05)}
+                    {#if project.total_special_construction_services <= (project.total_industrial_machinery * 0.05)}
                         <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
                             Correcto
                         </span>
@@ -84,7 +84,7 @@
                 </td>
                 <td class="border-t p-4">
                     Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_viatics) ? (project.total_viatics) : 0)}
-                    {#if project.total_viatics < 4000000}
+                    {#if project.total_viatics <= 4000000}
                         <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
                             Correcto
                         </span>
@@ -105,7 +105,7 @@
                 </td>
                 <td class="border-t p-4">
                     Valor actual: ${new Intl.NumberFormat('de-DE').format(!isNaN(project.total_machinery_maintenance) ? (project.total_machinery_maintenance) : 0)}
-                    {#if project.total_machinery_maintenance < (project.total_project_budget * 0.05)}
+                    {#if project.total_machinery_maintenance <= (project.total_project_budget * 0.05)}
                         <span class="bg-green-100 text-green-400 hover:bg-green-200 px-2 py-1 rounded-3xl text-center">
                             Correcto
                         </span>
@@ -127,7 +127,7 @@
         </tfoot>
     </DataTable>
 
-    <div class="px-4">
+    <div class="px-4 mt-20">
         <h1 class="mb-4 text-center">Filtros</h1>
         <ul class="flex flex-wrap">
             {#each secondBudgetInfo as {name}}

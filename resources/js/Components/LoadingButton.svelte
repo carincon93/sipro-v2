@@ -10,6 +10,12 @@
     }
 </script>
 
+<style>
+    :global(.mdc-button) {
+        height: auto;
+    }
+</style>
+
 <Button {...props} disabled={loading} action={null} variant={variant}>
     {#if loading}
         <div class="btn-spinner mr-2" />

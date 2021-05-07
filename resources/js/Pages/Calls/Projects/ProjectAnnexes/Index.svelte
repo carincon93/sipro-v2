@@ -24,12 +24,12 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.index') == 'project-annexes.index'
-    let canShowProjectAnnexes      = authUser.can.find(element => element == 'project-annexes.show') == 'project-annexes.show'
-    let canCreateProjectAnnexes    = authUser.can.find(element => element == 'project-annexes.create') == 'project-annexes.create'
-    let canEditProjectAnnexes      = authUser.can.find(element => element == 'project-annexes.edit') == 'project-annexes.edit'
-    let canDeleteProjectAnnexes    = authUser.can.find(element => element == 'project-annexes.delete') == 'project-annexes.delete'
+    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
+    let canIndexProjectAnnexes      = authUser.can.find(element => element == 'project-annexes.index') == 'project-annexes.index'
+    let canShowProjectAnnexes       = authUser.can.find(element => element == 'project-annexes.show') == 'project-annexes.show'
+    let canCreateProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.create') == 'project-annexes.create'
+    let canEditProjectAnnexes       = authUser.can.find(element => element == 'project-annexes.edit') == 'project-annexes.edit'
+    let canDeleteProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.delete') == 'project-annexes.delete'
 
     let filters = {}
 </script>

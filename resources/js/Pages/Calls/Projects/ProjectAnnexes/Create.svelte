@@ -37,22 +37,22 @@
             })
         }
     }
+
+    console.log(annexe);
 </script>
 
 <form on:submit|preventDefault={submit} class="mt-4 p-4">
     {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
-        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].id])}>{projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}</a>
+        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, annexe.id])}>{annexe.name}</a>
     {/if}
     <fieldset disabled={canCreateProjectAnnexes && !sending || canEditProjectAnnexes && !sending || isSuperAdmin && !sending ? undefined : true}>
-        <div class="flex">
-            <div class="flex-1">
-                <File id="file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.file} error={errors?.file} required />
-            </div>
-            <div class="flex items-center">
-                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                    {$_('Upload')} {projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id})[0].name}
-                </LoadingButton>
-            </div>
+        <div>
+            <File id="file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.file} error={errors?.file} required />
+        </div>
+        <div>
+            <LoadingButton loading={sending} class="w-full mt-4" type="submit">
+                {$_('Upload')} {annexe.name}
+            </LoadingButton>
         </div>
         {#if $form.progress}
             <progress value={$form.progress.percentage} max="100" class="mt-4">
