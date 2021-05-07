@@ -30,7 +30,7 @@
 </script>
 
 <AuthenticatedLayout>
-    <DataTable>
+    <DataTable class="mt-20">
 
         <div slot="title">{$_('Productive sectors.plural')}</div>
 

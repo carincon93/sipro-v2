@@ -36,7 +36,7 @@
 
     <Stepper {call} {project} />
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Risk analysis.plural')}</div>
 
         <h2 class="text-center mt-10 mb-24" slot="caption">

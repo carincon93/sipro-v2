@@ -36,7 +36,7 @@
 
     <Stepper {call} {project} />
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Project sennova roles.plural')}</div>
 
         <div slot="actions">

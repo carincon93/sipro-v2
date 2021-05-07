@@ -81,7 +81,7 @@
         sustainability_proposal:            rdi.sustainability_proposal,
         bibliography:                       rdi.bibliography,
         students:                           rdi.students,
-        cities:                             projectCities,
+        cities:                             projectCities.length > 0 ? projectCities : null,
         cities_impact:                      rdi.cities_impact,
         academic_impact:                    rdi.academic_impact,
         sampling:                           rdi.sampling,
@@ -266,7 +266,6 @@
                 <div>
                     <div class="flex items-center mb-14">
                         <Switch bind:checked={industry_4_justification} />
-                        <span class="ml-2">{#if industry_4_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if industry_4_justification}
                         <Textarea rows="4" id="industry_4_justification" error={errors.industry_4_justification} bind:value={$form.industry_4_justification} required={!industry_4_justification ? undefined : 'required'} />
@@ -282,7 +281,6 @@
                 <div>
                     <div class="flex items-center mb-14">
                         <Switch bind:checked={orange_economy_justification} />
-                        <span class="ml-2">{#if orange_economy_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if orange_economy_justification}
                         <Textarea rows="4" id="orange_economy_justification" error={errors.orange_economy_justification} bind:value={$form.orange_economy_justification} required={!orange_economy_justification ? undefined : 'required'} />
@@ -298,7 +296,6 @@
                 <div>
                     <div class="flex items-center mb-14">
                         <Switch bind:checked={people_disabilities_justification} />
-                        <span class="ml-2">{#if people_disabilities_justification} Si {:else} No {/if}</span>
                     </div>
                     {#if people_disabilities_justification}
                         <Textarea rows="4" id="people_disabilities_justification" error={errors.people_disabilities_justification} bind:value={$form.people_disabilities_justification} required={!people_disabilities_justification ? undefined : 'required'} />
@@ -505,11 +502,11 @@
             </div>
             {#if $form.related_with_sector_based_committee?.value == 1}
                 <div class="bg-indigo-100 p-5 mt-10">
+                    <InputError message={errors.sector_based_committee_id} />
                     <div class="grid grid-cols-2">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <p class="text-indigo-600">Por favor seleccione la o las mesas sectoriales con la cual o las cuales se alinea el proyecto</p>
-                            <InputError message={errors.sector_based_committee_id} />
                         </div>
                         <div class="bg-white grid grid-cols-2 max-w-xl overflow-y-scroll shadow-2xl mt-4 h-80">
                             {#each sectorBasedCommittees as {id, name}, i}
@@ -537,11 +534,11 @@
 
             {#if $form.related_with_techno_academy?.value == 1}
                 <div class="bg-indigo-100 p-5 mt-10">
+                    <InputError message={errors.technological_line_id} />
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5" style="transform: translateX(-50px);"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <div class="grid grid-cols-2">
                         <div>
                             <p class="text-indigo-600">Por favor seleccione la Tecnoacademia con la cual articuló el proyecto</p>
-                            <InputError message={errors.technological_line_id} />
                         </div>
                         <div>
                             <Select items={technoAcademies} id="techno_academy_id" bind:selectedValue={$form.techno_academy_id} error={errors.techno_academy_id} autocomplete="off" placeholder="Seleccione una opción" required />
@@ -564,60 +561,60 @@
             <div class="mt-40 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="abstract" value="Resumen del proyecto" />
+                    <InfoMessage message="Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto." />
                 </div>
                 <div>
                     <Textarea rows="4" id="abstract" error={errors.abstract} bind:value={$form.abstract} required />
-                    <InfoMessage message="Información necesaria para darle al lector una idea precisa de la pertinencia y calidad proyecto. Explique en qué consiste el problema o necesidad, cómo cree que lo resolverá, cuáles son las razones que justifican su ejecución y las herramientas que se utilizarán en el desarrollo del proyecto." />
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="project_background" value="Antecedentes" />
+                    <InfoMessage message="Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición." />
                 </div>
                 <div>
                     <Textarea rows="4" id="project_background" error={errors.project_background} bind:value={$form.project_background} required />
-                    <InfoMessage message="Presenta las investigaciones, innovaciones o desarrollos tecnológicos que se han realizado a nivel internacional, nacional, departamental o municipal en el marco de la temática de la propuesta del proyecto; que muestran la pertinencia del proyecto, citar toda la información consignada utilizando normas APA sexta edición." />
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="conceptual_framework" value="Marco conceptual" />
+                    <InfoMessage message="Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones." />
                 </div>
                 <div>
                     <Textarea rows="4" id="conceptual_framework" error={errors.conceptual_framework} bind:value={$form.conceptual_framework} required />
-                    <InfoMessage message="Descripción de los aspectos conceptuales y/o teóricos relacionados con el problema. Se hace la claridad que no es un listado de definiciones." />
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="project_methodology" value="Metodología" />
+                    <InfoMessage message="Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto." />
                 </div>
                 <div>
                     <Textarea rows="4" id="project_methodology" error={errors.project_methodology} bind:value={$form.project_methodology} required />
-                    <InfoMessage message="Describir la (s) metodología (s) a utilizar en el desarrollo del proyecto." />
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="sustainability_proposal" value="Propuesta de sostenibilidad" />
+                    <InfoMessage message="Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013." />
                 </div>
                 <div>
                     <Textarea rows="4" id="sustainability_proposal" error={errors.sustainability_proposal} bind:value={$form.sustainability_proposal} required />
-                    <InfoMessage message="Identificar los efectos que tiene el desarrollo del proyecto de investigación ya sea positivos o negativos. Se recomienda establecer las acciones pertinentes para mitigar los impactos negativos ambientales identificados y anexar el respectivo permiso ambiental cuando aplique. Tener en cuenta si aplica el decreto 1376 de 2013." />
                 </div>
             </div>
 
             <div class="mt-44 grid grid-cols-1">
                 <div>
                     <Label required class="mb-4" labelFor="bibliography" value="Bibliografía" />
+                    <InfoMessage message="Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf)." />
                 </div>
                 <div>
                     <Textarea rows="4" id="bibliography" error={errors.bibliography} bind:value={$form.bibliography} required />
-                    <InfoMessage message="Lista de las referencias utilizadas en cada apartado del proyecto. Utilizar normas APA- Sexta edición (http://biblioteca.sena.edu.co/images/PDF/InstructivoAPA.pdf)." />
                 </div>
             </div>
 

@@ -46,7 +46,9 @@
                         </a>
                     {/if}
                     <span class="text-indigo-400 font-medium">/</span>
-                    {partnerOrganization.name}
+                    <a use:inertia href={route('calls.rdi.partner-organizations.edit', [call.id, rdi.id, partnerOrganization.id])} class="text-indigo-400 hover:text-indigo-600">
+                        {partnerOrganization.name}
+                    </a>
                     <span class="text-indigo-400 font-medium">/</span>
                     {$_('Partner organization members.plural')}
                 </h1>
@@ -54,7 +56,7 @@
         </div>
     </header>
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Partner organization members.plural')}</div>
 
         <div slot="actions">

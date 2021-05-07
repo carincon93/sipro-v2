@@ -38,7 +38,7 @@
 
     <Stepper {call} {project} />
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Project annexes.plural')}</div>
 
         <thead slot="thead">
@@ -70,7 +70,7 @@
                 <tr>
                     <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
                 </tr>
-            {:else if !canCreateProjectAnnexes && !canEditProjectAnnexes}
+            {:else if !canCreateProjectAnnexes && !canEditProjectAnnexes && !isSuperAdmin}
                 <tr>
                     <td class="border-t px-6 py-4" colspan="4">{$_('You don\'t have permissions')}</td>
                 </tr>

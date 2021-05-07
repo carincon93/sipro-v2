@@ -41,7 +41,7 @@ class PartnerOrganizationRequest extends FormRequest
                 'in_kind_description'           => ['required'],
                 'funds'                         => ['required', 'numeric'],
                 'funds_description'             => ['required'],
-                'activity_id'                   => ['required', 'min:0', 'max:2147483647', 'exists:activities,id'],
+                'activity_id*'                  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:activities,id'],
 
             ];
         } else {
@@ -62,7 +62,7 @@ class PartnerOrganizationRequest extends FormRequest
                 'in_kind_description'           => ['required'],
                 'funds'                         => ['required', 'numeric'],
                 'funds_description'             => ['required'],
-                'activity_id'                   => ['required', 'min:0', 'max:2147483647', 'exists:activities,id'],
+                'activity_id*'                  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:activities,id'],
             ];
         }
     }

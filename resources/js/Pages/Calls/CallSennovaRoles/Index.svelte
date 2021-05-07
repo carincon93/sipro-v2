@@ -31,7 +31,7 @@
 </script>
 
 <AuthenticatedLayout>
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Call sennova roles.plural')}</div>
 
         <div slot="actions">

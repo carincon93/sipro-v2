@@ -103,7 +103,7 @@
             {/if}
         {/if}
 
-        <DataTable>
+        <DataTable class="mt-20">
             <div slot="title">{$_('Market research.plural')}</div>
 
             <div slot="actions">

@@ -38,7 +38,7 @@
 
     <Stepper {call} {project} />
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Project sennova budgets.plural')}</div>
 
         <h2 class="text-center mt-10 mb-24" slot="caption">
@@ -141,7 +141,7 @@
         </ul>
     </div>
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title">{$_('Academic centres.plural')}</div>
 
         <div slot="actions">

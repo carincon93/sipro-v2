@@ -664,12 +664,6 @@
                 {#if generalInfoType == 2}
                     <p>Para poder editar esta actividad, primero debe generar la causa indirecta en el árbol de problemas.</p>
                 {/if}
-
-                <div class="mt-8">
-                    <Button on:click={closeDialog} type="button">
-                        {$_('Cancel')}
-                    </Button>
-                </div>
             {/if}
         </div>
         <div slot="actions" class="block flex w-full">

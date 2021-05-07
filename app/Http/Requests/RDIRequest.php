@@ -60,8 +60,8 @@ class RDIRequest extends FormRequest
                 'related_with_competitiveness_innovation'   => ['required', 'min:0', 'max:3', 'integer'],
                 'related_with_sector_based_committee'       => ['required', 'min:0', 'max:3', 'integer'],
                 'related_with_techno_academy'               => ['required', 'min:0', 'max:3', 'integer'],
-                'sector_based_committee_id.*'               => ['required_if:related_with_sector_based_committee,1', 'min:0', 'max:2147483647', 'integer', 'exists:sector_based_committees,id'],
-                'technological_line_id.*'                   => ['required_if:related_with_techno_academy,1', 'min:0', 'max:2147483647', 'integer', 'exists:technological_lines,id']
+                'sector_based_committee_id*'                => ['required_if:related_with_sector_based_committee,1', 'min:0', 'max:2147483647', 'integer', 'exists:sector_based_committees,id'],
+                'technological_line_id*'                    => ['required_if:related_with_techno_academy,1', 'min:0', 'max:2147483647', 'integer', 'exists:technological_lines,id']
             ];
         } else {
             return [

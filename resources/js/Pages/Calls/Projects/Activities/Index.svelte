@@ -32,7 +32,7 @@
 
     <h1 class="font-bold text-3xl m-24 text-center">{$_('Activities.plural')}</h1>
 
-    <InfoMessage message="Si desea actividades, por favor diríjase al 'Arbol de objetivos'" />
+    <InfoMessage message="Si desea añadir actividades, por favor diríjase al 'Arbol de objetivos'" />
 
     <Gantt items={activities.data} request={canShowActivities || canEditActivities ||canDeleteActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
 </AuthenticatedLayout>
