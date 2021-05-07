@@ -65,7 +65,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexResearchGroups || canEditResearchGroups || isSuperAdmin}
+                    {#if canShowResearchGroups || canEditResearchGroups ||canDeleteResearchGroups || isSuperAdmin}
                         <a use:inertia href={route('research-groups.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Research groups.plural')}
                         </a>

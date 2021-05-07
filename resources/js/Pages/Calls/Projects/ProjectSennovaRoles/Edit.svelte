@@ -74,7 +74,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexProjectSennovaRoles || canEditProjectSennovaRoles || isSuperAdmin}
+                    {#if canIndexProjectSennovaRoles || canShowProjectSennovaRoles || canEditProjectSennovaRoles || canDeleteProjectSennovaRoles || isSuperAdmin}
                         <a use:inertia href={route('calls.projects.project-sennova-roles.index', [call.id, project.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Project sennova roles.plural')}
                         </a>

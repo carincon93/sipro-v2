@@ -68,7 +68,7 @@
                     </td>
                     <td class="border-t">
                         <ResourceMenu>
-                            {#if canShowResearchGroups || canEditResearchGroups ||canDeleteResearchGroups || isSuperAdmin}
+                            {#if canIndexResearchGroups || canShowResearchGroups || canEditResearchGroups || canDeleteResearchGroups || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('research-groups.edit', researchGroup.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

@@ -66,7 +66,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexOutputs || canEditOutputs || isSuperAdmin}
+                    {#if canIndexOutputs || canShowOutputs || canEditOutputs || canDeleteOutputs || isSuperAdmin}
                         <a use:inertia href={route('calls.projects.outputs.index', [call.id, project.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Outputs.plural')}
                         </a>
@@ -81,7 +81,7 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <fieldset class="p-8" disabled={canEditOutputs || isSuperAdmin ? undefined : true}>
-                <div class="mt-8">
+                <div class="mt-8 mb-8">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex">
@@ -101,6 +101,8 @@
                         <InputError message={errors.start_date || errors.end_date} />
                     {/if}
                 </div>
+
+                <hr>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />

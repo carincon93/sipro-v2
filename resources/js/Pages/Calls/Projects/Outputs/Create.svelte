@@ -33,11 +33,11 @@
 
     let sending = false
     let form = useForm({
-        name: '',
-        project_result_id: '',
+        name:                       '',
+        project_result_id:          '',
         minciencias_subtypology_id: '',
-        start_date: '',
-        end_date: ''
+        start_date:                 '',
+        end_date:                   ''
     })
 
     function submit() {
@@ -70,7 +70,7 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <fieldset class="p-8" disabled={canCreateOutputs || isSuperAdmin ? undefined : true}>
-                <div class="mt-8">
+                <div class="mt-8 mb-8">
                     <p class="text-center">Fecha de ejecución</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex">
@@ -90,6 +90,8 @@
                         <InputError message={errors.start_date || errors.end_date} />
                     {/if}
                 </div>
+
+                <hr>
 
                 <div class="mt-8">
                     <Label required class="mb-4" labelFor="name" value="Nombre" />

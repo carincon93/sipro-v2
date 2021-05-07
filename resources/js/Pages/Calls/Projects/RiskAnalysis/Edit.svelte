@@ -37,13 +37,13 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
-        level:  riskAnalysis.level,
-        type:  riskAnalysis.type,
-        description:  riskAnalysis.description,
-        impact:  riskAnalysis.impact,
-        probability:  riskAnalysis.probability,
-        effects:  riskAnalysis.effects,
-        mitigation_measures: riskAnalysis.mitigation_measures
+        level:                  {value: riskLevels.find(item => item.label == riskAnalysis.level)?.value, label: riskLevels.find(item => item.label == riskAnalysis.level)?.label},
+        type:                   {value: riskTypes.find(item => item.label == riskAnalysis.type)?.value, label: riskTypes.find(item => item.label == riskAnalysis.type)?.label},
+        description:            riskAnalysis.description,
+        impact:                 {value: riskImpacts.find(item => item.label == riskAnalysis.impact)?.value, label: riskImpacts.find(item => item.label == riskAnalysis.impact)?.label},
+        probability:            {value: riskProbabilities.find(item => item.label == riskAnalysis.probability)?.value, label: riskProbabilities.find(item => item.label == riskAnalysis.probability)?.label},
+        effects:                riskAnalysis.effects,
+        mitigation_measures:    riskAnalysis.mitigation_measures
     })
 
 
@@ -69,7 +69,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexRiskAnalysis || canEditRiskAnalysis || isSuperAdmin}
+                    {#if canIndexRiskAnalysis || canShowRiskAnalysis || canEditRiskAnalysis || canDeleteRiskAnalysis || isSuperAdmin}
                         <a use:inertia href={route('calls.projects.risk-analysis.index', [call.id, project.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Risk analysis.plural')}
                         </a>

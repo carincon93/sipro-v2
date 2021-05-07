@@ -64,7 +64,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndextPartnerOrganizationMembers || canEditPartnerOrganizationMembers || isSuperAdmin}
+                    {#if canIndextPartnerOrganizationMembers || canShowtPartnerOrganizationMembers|| canEditPartnerOrganizationMembers || canDeletetPartnerOrganizationMembers || isSuperAdmin}
                         <a use:inertia href={route('calls.rdi.partner-organizations.partner-organization-members.index', [call.id, rdi.id, partnerOrganization.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Partner organization members.plural')}
                         </a>

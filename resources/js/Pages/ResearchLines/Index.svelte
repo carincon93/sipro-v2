@@ -41,14 +41,14 @@
             {/if}
         </div>
 
-        <tbody slot="tbody">
+        <thead slot="thead">
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Centro de formación</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Regional</th>
             </tr>
-        </tbody>
-        <thead slot="thead">
+        </thead>
+        <tbody slot="tbody">
             {#each researchLines.data as researchLine (researchLine.id)}
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
@@ -87,7 +87,7 @@
                     <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
                 </tr>
             {/if}
-        </thead>
+        </tbody>
     </DataTable>
     <Pagination links={researchLines.links} />
 </AuthenticatedLayout>

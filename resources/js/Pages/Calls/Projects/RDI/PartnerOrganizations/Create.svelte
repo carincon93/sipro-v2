@@ -14,6 +14,7 @@
     import Select from '@/Components/Select'
     import Checkbox from '@smui/checkbox'
     import FormField from '@smui/form-field'
+    import InputError from '@/Components/InputError'
 
     export let call
     export let rdi
@@ -42,46 +43,27 @@
     let sending = false
     let form = useForm({
         partner_organization_type: '',
-        name: '',
-        legal_status: '',
-        company_type: '',
-        nit: '',
-        agreement_description: '',
-        research_group: '',
-        gruplac_code: '',
-        gruplac_link: '',
+        name:                   '',
+        legal_status:           '',
+        company_type:           '',
+        nit:                    '',
+        agreement_description:  '',
+        research_group:         '',
+        gruplac_code:           '',
+        gruplac_link:           '',
         knowledge_transfer_activities: '',
-        in_kind: '',
-        in_kind_description: '',
-        funds: '',
-        funds_description: '',
-        letter_of_intent: '',
-        intellectual_property: '',
-        activity_id: []
+        in_kind:                '',
+        in_kind_description:    '',
+        funds:                  '',
+        funds_description:      '',
+        letter_of_intent:       null,
+        intellectual_property:  null,
+        activity_id:            []
     })
 
     function submit() {
         if (canCreatePartnerOrganizations || isSuperAdmin) {
-            let formData = new FormData()
-            formData.append('partner_organization_type', $form.partner_organization_type)
-            formData.append('name', $form.name)
-            formData.append('legal_status', $form.legal_status)
-            formData.append('company_type', $form.company_type)
-            formData.append('nit', $form.nit)
-            if (agreement) formData.append('agreement_description', $form.agreement_description)
-            if (researchGroup) formData.append('research_group', $form.research_group)
-            if (researchGroup) formData.append('gruplac_code', $form.gruplac_code)
-            if (researchGroup) formData.append('gruplac_link', $form.gruplac_link)
-            formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
-            formData.append('in_kind', $form.in_kind)
-            formData.append('in_kind_description', $form.in_kind_description)
-            formData.append('funds', $form.funds)
-            formData.append('funds_description', $form.funds_description)
-            formData.append('letter_of_intent', $form.letter_of_intent)
-            formData.append('intellectual_property', $form.intellectual_property)
-            formData.append('activity_id', JSON.stringify($form.activity_id))
-
-            Inertia.post(route('calls.rdi.partner-organizations.store', [call.id, rdi.id]), formData, {
+            Inertia.post(route('calls.rdi.partner-organizations.store', [call.id, rdi.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })
@@ -111,7 +93,7 @@
             <fieldset class="p-8" disabled={canCreatePartnerOrganizations || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="partner_organization_type" value="Tipo de entidad aliada" />
-                    <Select id="partner_organization_type" items={partnerOrganizationTypes} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
+                    <Select id="partner_organization_type" items={partnerOrganizationTypes} bind:selectedValue={$form.partner_organization_type} error={errors.partner_organization_type} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
                 </div>
 
                 <div class="mt-4">
@@ -121,12 +103,12 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="legal_status" value="Naturaleza de la entidad" />
-                    <Select id="legal_status" items={legalStatus} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
+                    <Select id="legal_status" items={legalStatus} bind:selectedValue={$form.legal_status} error={errors.legal_status} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
                 </div>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="company_type" value="Tipo de empresa" />
-                    <Select id="company_type" items={companyTypes} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" required />
+                    <Select id="company_type" items={companyTypes} bind:selectedValue={$form.company_type} error={errors.company_type} autocomplete="off" placeholder="Seleccione la probabilidad" required />
                 </div>
 
                 <div class="mt-4">
@@ -203,6 +185,10 @@
 
                 <h6 class="mt-20">{$_('Activities.plural')}</h6>
                 <div class="bg-white rounded shadow overflow-hidden">
+                    <div class="p-4">
+                        <Label required class="mb-4" labelFor="activity_id" value="Relacione alguna actividad" />
+                        <InputError message={errors.activity_id} />
+                    </div>
                     <div class="grid grid-cols-2">
                         {#each activities as {id, description}, i}
                             <FormField>

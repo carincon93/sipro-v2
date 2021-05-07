@@ -115,7 +115,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexMarketResearch || canEditMarketResearch || isSuperAdmin}
+                    {#if canIndexMarketResearch || canShowMarketResearch || canEditMarketResearch || canDeleteMarketResearch || isSuperAdmin}
                         <a use:inertia href={route('calls.projects.project-sennova-budgets.index', [call.id, project.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Project sennova budgets.plural')}
                         </a>

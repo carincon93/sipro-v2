@@ -58,7 +58,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexMincienciasSubtypologies || canEditMincienciasSubtypologies || isSuperAdmin}
+                    {#if canIndexMincienciasSubtypologies || canShowMincienciasSubtypologies || canEditMincienciasSubtypologies || canDeleteMincienciasSubtypologies || isSuperAdmin}
                         <a use:inertia href={route('minciencias-subtypologies.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Minciencias subtypologies.plural')}
                         </a>

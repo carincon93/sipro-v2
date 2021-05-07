@@ -40,12 +40,12 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
-        description: call.description,
+        description:        call.description,
         project_start_date: call.project_start_date,
-        project_end_date: call.project_end_date,
-        active: call.active,
-        start_date: call.start_date,
-        end_date: call.end_date
+        project_end_date:   call.project_end_date,
+        active:             call.active,
+        start_date:         call.start_date,
+        end_date:           call.end_date
     })
 
     function submit() {
@@ -57,9 +57,16 @@
         }
     }
 
+    let values = {
+        password: ''
+    }
+
     function destroy() {
         if (canDeleteCalls || isSuperAdmin) {
-            Inertia.delete(route('calls.destroy', call.id))
+            Inertia.visit(route('calls.destroy', [call.id]), {
+                method: 'DELETE',
+                data: values,
+            })
         }
     }
 </script>
@@ -69,13 +76,15 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexCalls || canEditCalls || isSuperAdmin}
-                        <a use:inertia href={route('calls.index', call.id)} class="text-indigo-400 hover:text-indigo-600">
+                    {#if canIndexCalls || canShowCalls || canEditCalls || canDeleteCalls || isSuperAdmin}
+                        <a use:inertia href={route('calls.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Calls.plural')}
                         </a>
                     {/if}
                     <span class="text-indigo-400 font-medium">/</span>
-                    {$_('Calls.singular')} {call.year}
+                    <a use:inertia href={route('calls.dashboard', call.id)} class="text-indigo-400 hover:text-indigo-600">
+                        {$_('Calls.singular')} {call.year}
+                    </a>
                 </h1>
             </div>
         </div>
@@ -88,36 +97,43 @@
     {/if}
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canEditCallSenovaRoles || isSuperAdmin ? undefined : true}>
-                <div class="mt-4">
+            <fieldset class="p-8" disabled={canEditCalls || isSuperAdmin ? undefined : true}>
+                <div class="mt-4 mb-20">
                     <p class="text-center">Fecha de la conovicatoria</p>
                     <div class="mt-4 flex items-start justify-around">
                         <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
                             <Label required labelFor="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" error={errors.start_date} bind:value={$form.start_date} required />
+                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
                             <Label required labelFor="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" error={errors.end_date} bind:value={$form.end_date} required />
+                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
                             </div>
                         </div>
                     </div>
                 </div>
+                {#if errors.start_date || errors.end_date}
+                    <InputError message={errors.start_date || errors.end_date} />
+                {/if}
+
+                <hr>
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="description" value="Descripción" />
                     <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-4 mb-20">
                     <Label required labelFor="active" value="Desea activar está convocatoria?" class="inline-block mb-4" />
                     <br>
                     <Switch bind:checked={$form.active} />
                     <InputError message={errors.active} />
                 </div>
+
+                <hr>
 
                 <div class="mt-4">
                     <p class="text-center">Fecha de ejecución de proyectos</p>
@@ -125,17 +141,20 @@
                         <div class="mt-4 flex {errors.project_start_date ? '' : 'items-center'}">
                             <Label required labelFor="project_start_date" class="{errors.project_start_date ? 'top-3.5 relative' : ''}" value="Del" />
                             <div class="ml-4">
-                                <Input id="project_start_date" type="date" class="mt-1 block w-full" error={errors.project_start_date} bind:value={$form.project_start_date} required />
+                                <Input id="project_start_date" type="date" class="mt-1 block w-full" bind:value={$form.project_start_date} required />
                             </div>
                         </div>
                         <div class="mt-4 flex {errors.project_end_date ? '' : 'items-center'}">
                             <Label required labelFor="project_end_date" class="{errors.project_end_date ? 'top-3.5 relative' : ''}" value="hasta" />
                             <div class="ml-4">
-                                <Input id="project_end_date" type="date" class="mt-1 block w-full" error={errors.project_end_date} bind:value={$form.project_end_date} required />
+                                <Input id="project_end_date" type="date" class="mt-1 block w-full" bind:value={$form.project_end_date} required />
                             </div>
                         </div>
                     </div>
                 </div>
+                {#if errors.project_start_date || errors.project_end_date}
+                    <InputError message={errors.project_start_date || errors.project_end_date} />
+                {/if}
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteCalls || isSuperAdmin}
@@ -160,17 +179,20 @@
         </div>
         <div slot="content">
             <p>
-                ¿Está seguro(a) que desea eliminar este recurso?
+                ¿Está seguro (a) que desea eliminar esta convocatoria?
                 <br>
-                Todos los datos se eliminarán de forma permanente.
-                <br>
-                Está acción no se puede deshacer.
+                Una vez eliminada la convocatoria, todos sus los proyectos y datos asociados se eliminarán de forma permanente.
             </p>
+
+            <form on:submit|preventDefault={destroy} id="delete-rdi" class="mt-20 mb-28">
+                <Label for="password" value="Ingrese su contraseña para confirmar que desea eliminar permanentemente esta convocatoria." />
+                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
+            </form>
         </div>
         <div slot="actions">
             <div class="p-4">
                 <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
-                <Button variant="raised" on:click={destroy}>
+                <Button variant="raised" form="delete-rdi">
                     {$_('Confirm')}
                 </Button>
             </div>

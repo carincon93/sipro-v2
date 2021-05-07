@@ -59,7 +59,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexProjectTypes || canEditProjectTypes || isSuperAdmin}
+                    {#if canIndexProjectTypes || canShowProjectTypes || canEditProjectTypes || canDeleteProjectTypes || isSuperAdmin}
                         <a use:inertia href={route('project-types.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Project types.plural')}
                         </a>

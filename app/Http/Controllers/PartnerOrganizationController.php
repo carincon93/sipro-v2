@@ -89,7 +89,7 @@ class PartnerOrganizationController extends Controller
 
         $letterOfIntentFileName = "{$rdi->project->code}-carta-de-intencion-$companyName-cod$random.".$letterOfIntent->extension();
         $letterOfIntentFile = $letterOfIntent->storeAs(
-            'partner-organizations', $letterOfIntentFileName
+            'letters-of-intent', $letterOfIntentFileName
         );
         $partnerOrganization->letter_of_intent = $letterOfIntentFile;
 
@@ -104,7 +104,7 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->rdi()->associate($rdi);
         $partnerOrganization->save();
 
-        $partnerOrganization->activities()->attach(json_decode($request->activity_id));
+        $partnerOrganization->activities()->attach($request->activity_id);
 
         return redirect()->route('calls.rdi.partner-organizations.partner-organization-members.index', [$call, $rdi, $partnerOrganization])->with('success', 'The resource has been created successfully.');
     }
@@ -180,14 +180,14 @@ class PartnerOrganizationController extends Controller
         $partnerOrganization->funds                             = $request->funds;
         $partnerOrganization->funds_description                 = $request->funds_description;
 
-        $companyName   = Str::slug(substr($request->name, 0, 30), '-');
-        $random = Str::random(5);
+        $companyName    = Str::slug(substr($request->name, 0, 30), '-');
+        $random         = Str::random(5);
         if ($request->hasFile('letter_of_intent')) {
             Storage::delete($partnerOrganization->letter_of_intent);
             $letterOfIntent = $request->letter_of_intent;
             $letterOfIntentFileName = "{$rdi->project->code}-carta-de-intencion-$companyName-cod$random.".$letterOfIntent->extension();
             $letterOfIntentFile = $letterOfIntent->storeAs(
-                'partner-organizations', $letterOfIntentFileName
+                'letters-of-intent', $letterOfIntentFileName
             );
             $partnerOrganization->letter_of_intent = $letterOfIntentFile;
         }
@@ -203,7 +203,7 @@ class PartnerOrganizationController extends Controller
         }
 
         $partnerOrganization->rdi()->associate($rdi);
-        $partnerOrganization->activities()->sync(json_decode($request->activity_id));
+        $partnerOrganization->activities()->sync($request->activity_id);
 
         $partnerOrganization->save();
 

@@ -36,7 +36,7 @@ class RoleController extends Controller
         $this->authorize('create', [Role::class]);
 
         return Inertia::render('Roles/Create', [
-            'all_permissions'  => Permission::orderBy('id')->get(['id', 'name']),
+            'allPermissions'  => Permission::orderBy('id')->get(['id', 'name']),
         ]);
     }
 
@@ -57,7 +57,7 @@ class RoleController extends Controller
 
         $role->save();
 
-        $role->syncPermissions($request->permissions);
+        $role->syncPermissions($request->permission_id);
 
         return redirect()->route('roles.index')->with('success', 'The resource has been created successfully.');
     }
@@ -88,9 +88,9 @@ class RoleController extends Controller
         $this->authorize('update', [Role::class, $role]);
 
         return Inertia::render('Roles/Edit', [
-            'role'              => $role,
-            'all_permissions'   => Permission::orderBy('id')->get(['id', 'name']),
-            'role_permissions'  => $role->permissions->pluck('id')
+            'role'             => $role,
+            'allPermissions'   => Permission::orderBy('id')->get(['id', 'name']),
+            'rolePermissions'  => $role->permissions->pluck('id')
         ]);
     }
 
@@ -110,7 +110,7 @@ class RoleController extends Controller
         $role->guard_name  = 'web';
         $role->save();
 
-        $role->syncPermissions($request->permissions);
+        $role->syncPermissions($request->permission_id);
 
         return redirect()->back()->with('success', 'The resource has been updated successfully.');
     }

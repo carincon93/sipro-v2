@@ -32,7 +32,7 @@
         name:               '',
         code:               '',
         study_mode:         '',
-        academic_centre_id: '',
+        academic_centre_id: null,
     })
 
     function submit() {
@@ -72,7 +72,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
+                    <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">

@@ -212,8 +212,6 @@ class RDIController extends Controller
         }
 
         $rdi->delete();
-        $message = 'The resource has been deleted successfully.';
-        $status = 'success';
 
         return redirect()->route('calls.rdi.index', [$call])->with('success', 'The resource has been deleted successfully.');
     }

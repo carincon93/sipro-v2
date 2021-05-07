@@ -55,7 +55,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexKnowledgeAreas || canEditKnowledgeAreas || isSuperAdmin}
+                    {#if canIndexKnowledgeAreas || canShowKnowledgeAreas || canEditKnowledgeAreas ||canDeleteKnowledgeAreas || isSuperAdmin}
                         <a use:inertia href={route('knowledge-areas.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Knowledge areas.plural')}
                         </a>

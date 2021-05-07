@@ -31,7 +31,7 @@
 
 <AuthenticatedLayout>
     <DataTable>
-        <div slot="title">{$_('Academic centres.plural')}</div>
+        <div slot="title">{$_('Annexes.plural')}</div>
 
         <div slot="actions">
             {#if canCreateAnnexes || isSuperAdmin}

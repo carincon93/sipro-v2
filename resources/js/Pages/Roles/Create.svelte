@@ -5,6 +5,7 @@
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
+    import InputError from '@/Components/InputError'
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
@@ -13,7 +14,7 @@
     import Textarea from '@/Components/Textarea'
 
     export let errors
-    export let all_permissions
+    export let allPermissions
 
     $: $title = $_('Create') + ' ' + $_('System roles.singular').toLowerCase()
 
@@ -32,7 +33,7 @@
     let form = useForm({
         name: '',
         description: '',
-        permissions: []
+        permission_id: []
     })
 
     function submit() {
@@ -64,36 +65,42 @@
     </header>
 
     <form on:submit|preventDefault={submit}>
-        <div class="bg-white rounded shadow max-w-3xl p-8">
-            <div class="mt-4">
-                <Label required class="mb-4" labelFor="name" value="Nombre" />
-                <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+        <fieldset disabled={canCreateRoles || isSuperAdmin ? undefined : true}>
+            <div class="bg-white rounded shadow max-w-3xl p-8">
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                </div>
+
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="description" value="Descripción" />
+                    <Textarea rows="4" id="description" bind:value={$form.description} error={errors.description} required />
+                </div>
             </div>
 
-            <div class="mt-4">
-                <Label required class="mb-4" labelFor="description" value="Descripción" />
-                <Textarea rows="4" id="description" bind:value={$form.description} error={errors.description} required />
+            <div class="bg-white rounded shadow overflow-hidden mt-20">
+                <div class="p-4">
+                    <Label required class="mb-4" labelFor="permission_id" value="Seleccione los permisos" />
+                    <InputError message={errors.permission_id} />
+                </div>
+                <div class="grid grid-cols-6">
+                    {#each allPermissions as {id, only_name, method}, i}
+                        {#if i % 5 === 0}
+                            <div class="p-3 border-t border-b flex items-center text-sm">{$_(only_name+'.plural')}</div>
+                        {/if}
+                        <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                            <FormField>
+                                <Checkbox
+                                    bind:group={$form.permission_id}
+                                    value={id}
+                                />
+                                    <span slot="label">{$_(method)}</span>
+                            </FormField>
+                        </div>
+                    {/each}
+                </div>
             </div>
-        </div>
-
-        <div class="bg-white rounded shadow overflow-hidden mt-20">
-            <div class="grid grid-cols-6">
-                {#each all_permissions as {id, only_name, method}, i}
-                    {#if i % 5 === 0}
-                        <div class="p-3 border-t border-b flex items-center text-sm">{$_(only_name+'.plural')}</div>
-                    {/if}
-                    <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
-                        <FormField>
-                            <Checkbox
-                                bind:group={$form.permissions}
-                                value={id}
-                            />
-                                <span slot="label">{$_(method)}</span>
-                        </FormField>
-                    </div>
-                {/each}
-            </div>
-        </div>
+        </fieldset>
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
             {#if canCreateRoles || isSuperAdmin}
                 <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">

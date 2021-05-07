@@ -72,7 +72,7 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canEditRiskAnalysis || isSuperAdmin ? undefined : true}>
+            <fieldset class="p-8" disabled={canCreateRiskAnalysis || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="level" value="Nivel de riesgo" />
                     <Select id="level" items={riskLevels} bind:selectedValue={$form.level} error={errors.level} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />

@@ -54,12 +54,25 @@
         </div>
     </header>
     <div class="py-12">
+        {#if canCreateCalls || isSuperAdmin}
+            <div class="flex justify-center items-center flex-col">
+                <p>A continuación se listan todas las convocatorias, si desea crear una nueva de clic en el siguiente botón.</p>
+                <div>
+                    <Button on:click={() => Inertia.visit(route('calls.create'))} class="mt-8 mb-20" variant="raised">
+                        {$_('Create')} {$_('Calls.singular')}
+                    </Button>
+                </div>
+            </div>
+        {/if}
         <div class="grid grid-cols-3 gap-10">
             {#if canIndexCalls || isSuperAdmin}
                 {#each calls.data as call (call.id)}
                     <a use:inertia href={route('calls.dashboard', call.id)} class="bg-white overflow-hidden shadow-sm sm:rounded-lg block px-6 py-2 hover:bg-indigo-500 hover:text-white h-52 flex justify-around items-center flex-col">
                         <span>ICON</span>
                         {$_('Calls.singular')} { call.year }
+                        {#if call.active}
+                            <small>Convocatoria activa</small>
+                        {/if}
                     </a>
                 {/each}
             {/if}

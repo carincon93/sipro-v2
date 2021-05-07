@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CallRequest;
 use App\Models\Call;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CallController extends Controller
@@ -34,7 +36,7 @@ class CallController extends Controller
 
         return Inertia::render('Calls/Index', [
             'filters'   => request()->all('search'),
-            'calls' => Call::orderBy('start_date', 'ASC')
+            'calls' => Call::orderBy('start_date', 'DESC')
                 ->filterCall(request()->only('search'))->paginate(),
             'activeCall' => Call::where('active', 1)->first(),
 
@@ -69,6 +71,11 @@ class CallController extends Controller
         $call->end_date             = $request->end_date;
         $call->project_start_date   = $request->project_start_date;
         $call->project_end_date     = $request->project_end_date;
+        if ($request->active) {
+            $oldCall = Call::where('active', true)->first();
+            $oldCall->active = false;
+            $oldCall->save();
+        }
         $call->active               = $request->active;
 
         $call->save();
@@ -122,6 +129,11 @@ class CallController extends Controller
         $call->end_date             = $request->end_date;
         $call->project_start_date   = $request->project_start_date;
         $call->project_end_date     = $request->project_end_date;
+        if ($request->active) {
+            $oldCall = Call::where('active', true)->first();
+            $oldCall->active = false;
+            $oldCall->save();
+        }
         $call->active               = $request->active;
 
         $call->save();
@@ -135,9 +147,13 @@ class CallController extends Controller
      * @param  \App\Models\Call  $call
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Call $call)
+    public function destroy(Request $request, Call $call)
     {
         $this->authorize('delete', [Call::class, $call]);
+        if ( !Hash::check($request->password, Auth::user()->password) ) {
+            return redirect()->back()
+                ->withErrors(['password' => __('The password is incorrect.')]);
+        }
 
         $call->delete();
 

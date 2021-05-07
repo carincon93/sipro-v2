@@ -30,17 +30,12 @@
 
     let sending = false
     let form = useForm({
-        file: '',
-        annexe_id: '',
+        file:       '',
+        annexe_id:  '',
     })
 
     function submit() {
         if (canCreateProjectAnnexes || isSuperAdmin) {
-
-            let formData = new FormData()
-            formData.append('file', $form.file)
-            formData.append('annexe_id', $form.annexe_id)
-
             Inertia.post(route('calls.projects.project-annexes.store', [call.id, project.id]), $form, {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,

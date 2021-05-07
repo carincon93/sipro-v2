@@ -23,12 +23,21 @@ class AcademicProgramRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'academic_centre_id' => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
-            'name'               => ['required', 'max:191'],
-            'code'               => ['required', 'min:0', 'max:9999999999', 'integer'],
-            'study_mode'         => ['required', 'max:191'],
-        ];
+        if ($this->isMethod('PUT')) {
+            return [
+                'academic_centre_id' => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'name'               => ['required', 'max:191'],
+                'code'               => ['required', 'min:0', 'max:9999999999', 'integer', 'unique:academic_programs,code,'.$this->route('academic_program')->id.',id'],
+                'study_mode'         => ['required', 'max:191'],
+            ];
+        } else {
+            return [
+                'academic_centre_id' => ['required', 'min:0', 'max:9999999999', 'integer', 'exists:academic_centres,id'],
+                'name'               => ['required', 'max:191'],
+                'code'               => ['required', 'min:0', 'max:9999999999', 'integer', 'unique:academic_programs,code'],
+                'study_mode'         => ['required', 'max:191'],
+            ];
+        }
     }
 
     /**

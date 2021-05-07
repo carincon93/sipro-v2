@@ -56,7 +56,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexRegional || canEditRegional || isSuperAdmin}
+                    {#if canIndexRegional || canShowRegional || canEditRegional || canDeleteRegional || isSuperAdmin}
                         <a use:inertia href={route('regional.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Regional.plural')}
                         </a>

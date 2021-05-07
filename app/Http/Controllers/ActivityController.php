@@ -136,6 +136,6 @@ class ActivityController extends Controller
 
         $activity->delete();
 
-        return redirect()->route('projects.activities.index')->with('success', 'The resource has been deleted successfully.');
+        return redirect()->route('calls.projects.activities.index', [$call, $project])->with('success', 'The resource has been deleted successfully.');
     }
 }

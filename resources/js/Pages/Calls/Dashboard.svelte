@@ -3,18 +3,35 @@
     import { inertia, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia';
+
+    import Button from '@/Components/Button'
 
     export let call
 
     let authUser        = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexRDI     = authUser.can.find(element => element == 'rdi.index') == 'rdi.index'
+    let canIndexCalls   = authUser.can.find(element => element == 'calls.index') == 'calls.index'
+    let canShowCalls   = authUser.can.find(element => element == 'calls.show') == 'calls.show'
+    let canEditCalls   = authUser.can.find(element => element == 'calls.edit') == 'calls.edit'
+    let canDeleteCalls   = authUser.can.find(element => element == 'calls.delete') == 'calls.delete'
 
     $title = $_('Calls.plural') + ' - Dashboard'
 </script>
 
 <AuthenticatedLayout>
     <div class="py-12">
+        {#if canShowCalls || canEditCalls ||canDeleteCalls || isSuperAdmin}
+            <div class="flex justify-center items-center flex-col">
+                <p>Si desea revisar, {#if canEditCalls} editar {/if} la información de la convocatoria, de clic en el siguiente botón</p>
+                <div>
+                    <Button on:click={() => Inertia.visit(route('calls.edit', [call.id]))} class="mt-8 mb-20" variant="raised">
+                        {$_('View details')}
+                    </Button>
+                </div>
+            </div>
+        {/if}
         <h1 class="text-4xl text-center">¡Bienvenido(a) <span class="capitalize">{$page.props.auth.user.name}</span>! Formule proyectos de I+D+i, Tecnoacademia-Tecnoparque y de Servicios Tecnológicos para la vigencia {call.year}</h1>
         <div class="grid grid-cols-3 gap-10 mt-24">
             {#if canIndexRDI || isSuperAdmin}

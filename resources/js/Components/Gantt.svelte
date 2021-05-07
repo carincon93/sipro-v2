@@ -89,10 +89,7 @@
     }
 
     function arrayPush(item, i) {
-        // El último ítem agregado al array se debe eliminar para darle paso a un ítem nuevo
-        if (i > 0) {
-            request.params.pop()
-        }
+        // Agrega el id del item a request.params
         request.params.push(item)
         return request.params
     }
@@ -113,7 +110,7 @@
                         {#if request}
                             <p style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</p>
                             <ResourceMenu>
-                                <Item on:SMUI:action={() => (Inertia.visit(route(request.uri, arrayPush(item.id, i))))}>
+                                <Item on:SMUI:action={() => (Inertia.visit(route(request.uri, arrayPush(item.id))))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             </ResourceMenu>

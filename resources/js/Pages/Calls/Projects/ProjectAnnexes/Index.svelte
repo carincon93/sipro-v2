@@ -4,6 +4,7 @@
     import { Inertia } from '@inertiajs/inertia'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+
     import Pagination from '@/Components/Pagination'
     import Button from '@/Components/Button'
     import File from '@/Components/File'
@@ -14,7 +15,6 @@
     export let call
     export let project
     export let projectAnnexes = []
-
     export let annexes
 
     $title = $_('Project annexes.plural')
@@ -43,6 +43,8 @@
             })
         }
     }
+
+    console.log(annexes);
 </script>
 
 <AuthenticatedLayout>
@@ -50,7 +52,7 @@
     <Stepper {call} {project} />
 
     <DataTable>
-        <div slot="title">{$_('Academic centres.plural')}</div>
+        <div slot="title">{$_('Project annexes.plural')}</div>
 
         <thead slot="thead">
             <tr class="text-left font-bold">
@@ -95,6 +97,10 @@
             {#if annexes.data.length === 0}
                 <tr>
                     <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                </tr>
+            {:else if !canCreateProjectAnnexes && !canEditProjectAnnexes}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="4">{$_('You don\'t have permissions')}</td>
                 </tr>
             {/if}
         </tbody>

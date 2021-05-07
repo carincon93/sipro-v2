@@ -62,17 +62,15 @@
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
             <fieldset class="p-8" disabled={canCreateKnowledgeSubareas || isSuperAdmin ? undefined : true}>
-                <fieldset class="p-8" disabled={canEditKnowledgeSubareas || isSuperAdmin ? undefined : true}>
-                    <div class="mt-4">
-                        <Label required class="mb-4" labelFor="name" value="Nombre" />
-                        <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
-                    </div>
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="name" value="Nombre" />
+                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                </div>
 
-                    <div class="mt-4">
-                        <Label required class="mb-4" labelFor="knowledge_area_id" value="Área de conocimiento" />
-                        <Select id="knowledge_area_id" items={knowledgeAreas} bind:selectedValue={$form.knowledge_area_id} error={errors.knowledge_area_id} autocomplete="off" placeholder="Seleccione una área de conocimiento" required />
-                    </div>
-                </fieldset>
+                <div class="mt-4">
+                    <Label required class="mb-4" labelFor="knowledge_area_id" value="Área de conocimiento" />
+                    <Select id="knowledge_area_id" items={knowledgeAreas} bind:selectedValue={$form.knowledge_area_id} error={errors.knowledge_area_id} autocomplete="off" placeholder="Seleccione una área de conocimiento" required />
+                </div>
             </fieldset>
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canCreateKnowledgeSubareas || isSuperAdmin}

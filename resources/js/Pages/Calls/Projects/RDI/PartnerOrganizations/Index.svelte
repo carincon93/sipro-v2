@@ -42,7 +42,7 @@
         <div slot="actions">
             {#if canCreatePartnerOrganizations || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('calls.rdi.partner-organizations.create', [call.id, rdi.id]))} variant="raised">
-                    {$_('Partner organizations.singular')}
+                    {$_('Create')} {$_('Partner organizations.singular')}
                 </Button>
             {/if}
         </div>

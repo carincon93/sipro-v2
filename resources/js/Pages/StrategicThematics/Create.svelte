@@ -19,7 +19,7 @@
     let canShowStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.show') == 'strategic-thematics.show'
     let canCreateStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.create') == 'strategic-thematics.create'
     let canEditStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.edit') == 'strategic-thematics.edit'
-    let canDeleteStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.destroy') == 'strategic-thematics.destroy'
+    let canDeleteStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.delete') == 'strategic-thematics.delete'
 
     let sending = false
     let form = useForm({

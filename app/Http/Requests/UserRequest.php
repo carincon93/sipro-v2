@@ -57,7 +57,6 @@ class UserRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        // dd($this);
         if( is_array($this->document_type) ) {
             $this->merge([
                 'document_type' => $this->document_type['value'],

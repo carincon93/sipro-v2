@@ -73,7 +73,7 @@
         </div>
     </header>
 
-    <form on:submit|preventDefault={submit} novalidate>
+    <form on:submit|preventDefault={submit}>
         <div class="bg-white rounded shadow max-w-3xl">
             <div class="p-8">
                 <div class="mt-4">

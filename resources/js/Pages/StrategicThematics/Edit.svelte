@@ -22,7 +22,7 @@
     let canShowStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.show') == 'strategic-thematics.show'
     let canCreateStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.create') == 'strategic-thematics.create'
     let canEditStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.edit') == 'strategic-thematics.edit'
-    let canDeleteStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.destroy') == 'strategic-thematics.destroy'
+    let canDeleteStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.delete') == 'strategic-thematics.delete'
 
     let dialog_open = false
     let sending     = false
@@ -52,7 +52,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexStrategicThematics || canEditStrategicThematics || isSuperAdmin}
+                    {#if canIndexStrategicThematics || canShowStrategicThematics || canEditStrategicThematics || canDeleteStrategicThematics || isSuperAdmin}
                         <a use:inertia href={route('strategic-thematics.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Strategic thematics.plural')}
                         </a>

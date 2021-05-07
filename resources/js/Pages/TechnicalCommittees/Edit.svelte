@@ -52,7 +52,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexTechnicalCommittees || canEditTechnicalCommittees || isSuperAdmin}
+                    {#if canIndexTechnicalCommittees || canShowTechnicalCommittees || canEditTechnicalCommittees || canDeleteTechnicalCommittees || isSuperAdmin}
                         <a use:inertia href={route('technical-committees.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Technical committees.plural')}
                         </a>

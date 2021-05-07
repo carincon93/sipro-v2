@@ -60,7 +60,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexPrioritizedTopics || canEditPrioritizedTopics || isSuperAdmin}
+                    {#if canIndexPrioritizedTopics || canShowPrioritizedTopics || canEditPrioritizedTopics || canDeletePrioritizedTopics || isSuperAdmin}
                         <a use:inertia href={route('prioritized-topics.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Prioritized topics.plural')}
                         </a>
@@ -96,7 +96,7 @@
                         {$_('Delete')} {$_('Prioritized topics.singular').toLowerCase()}
                     </button>
                 {/if}
-                {#if canDeletePrioritizedTopics ||isSuperAdmin}
+                {#if canEditPrioritizedTopics ||isSuperAdmin}
                     <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                         {$_('Update')} {$_('Prioritized topics.singular')}
                     </LoadingButton>

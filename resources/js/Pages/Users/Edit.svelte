@@ -49,7 +49,7 @@
         document_number:    user.document_number,
         cellphone_number:   user.cellphone_number,
         is_enabled:         user.is_enabled,
-        participation_type: {value: user.participation_type, label: documentTypes.find(item => item.value == user.participation_type)?.label},
+        participation_type: {value: user.participation_type, label: participationTypes.find(item => item.value == user.participation_type)?.label},
         academic_centre_id: user.academic_centre_id,
         role_id:            userRoles
     })
@@ -76,7 +76,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexUsers || canEditUsers || isSuperAdmin}
+                    {#if canIndexUsers || canShowUsers || canEditUsers || canDeleteUsers || isSuperAdmin}
                         <a use:inertia href={route('users.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Users.plural')}
                         </a>
@@ -90,7 +90,7 @@
 
     <form on:submit|preventDefault={submit}>
         <div class="bg-white rounded shadow max-w-3xl">
-            <div class="p-8">
+            <fieldset class="p-8" disabled={canEditUsers || isSuperAdmin ? undefined : true}>
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="name" value="Nombre completo" />
                     <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
@@ -103,7 +103,6 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="document_type" value="Tipo de documento" />
-                    {$form.document_type}
                     <Select id="document_type" items={documentTypes} bind:selectedValue={$form.document_type} error={errors.document_type} autocomplete="off" placeholder="Seleccione un tipo de documento" required />
                 </div>
 
@@ -132,30 +131,32 @@
                     <Label required class="mb-4" labelFor="academic_centre_id" value="Centro de formación" />
                     <DynamicList id="academic_centre_id" bind:value={$form.academic_centre_id} routeWebApi={route('web-api.academic-centres')} placeholder="Busque por el nombre del centro de formación" message={errors.academic_centre_id} required/>
                 </div>
-            </div>
+            </fieldset>
         </div>
 
         <div class="bg-white rounded shadow overflow-hidden mt-20">
-            <div class="grid grid-cols-2">
-                {#each roles as {id, name}, i}
-                    <div class="pt-8 pb-8 border-t">
-                        <FormField>
-                            <Checkbox
-                                bind:group={$form.role_id}
-                                value={id}
-                            />
-                                <span slot="label">{name}</span>
-                        </FormField>
-                    </div>
-                {/each}
-            </div>
+            <fieldset class="p-8" disabled={canEditUsers || isSuperAdmin ? undefined : true}>
+                <div class="p-4">
+                    <Label required class="mb-4" labelFor="role_id" value="Seleccione algún rol" />
+                    <InputError message={errors.role_id} />
+                </div>
+                <div class="grid grid-cols-2">
+                    {#each roles as {id, name}, i}
+                        <div class="pt-8 pb-8 border-t">
+                            <FormField>
+                                <Checkbox
+                                    bind:group={$form.role_id}
+                                    value={id}
+                                />
+                                    <span slot="label">{name}</span>
+                            </FormField>
+                        </div>
+                    {/each}
+                </div>
+            </fieldset>
         </div>
 
         <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
-            <div class="p-4">
-                <Label required class="mb-4" labelFor="role_id" value="Seleccione algún rol" />
-                <InputError message={errors.role_id} />
-            </div>
             {#if canDeleteUsers || isSuperAdmin}
                 <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
                     {$_('Delete')} {$_('Users.singular').toLowerCase()}

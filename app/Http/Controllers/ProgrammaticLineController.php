@@ -21,7 +21,13 @@ class ProgrammaticLineController extends Controller
 
         return Inertia::render('ProgrammaticLines/Index', [
             'filters'   => request()->all('search'),
-            'programmaticLines' => ProgrammaticLine::orderBy('name', 'ASC')
+            'programmaticLines' => ProgrammaticLine::selectRaw("programmatic_lines.id, programmatic_lines.name, programmatic_lines.code, CASE programmatic_lines.project_category
+                WHEN '1' THEN	'Tecnoacademia-Tecnoparque'
+                WHEN '2' THEN	'I+D+i'
+                WHEN '3' THEN	'Servicios tecnológicos'
+                WHEN '4' THEN	'Otro'
+            END as project_category")
+            ->orderBy('name', 'ASC')
                 ->filterProgrammaticLine(request()->only('search'))->paginate(),
         ]);
     }

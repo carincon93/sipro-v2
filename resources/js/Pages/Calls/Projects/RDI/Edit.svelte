@@ -663,7 +663,7 @@
                     {$_('Delete')}
                 </button>
             {/if}
-            {#if canCreateRDI || isSuperAdmin}
+            {#if canEditRDI || isSuperAdmin}
                 <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
                     {$_('Save')}
                 </LoadingButton>

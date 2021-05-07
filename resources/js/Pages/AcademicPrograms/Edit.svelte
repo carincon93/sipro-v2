@@ -61,7 +61,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexAcademicPrograms || canEditAcademicPrograms || isSuperAdmin}
+                    {#if canIndexAcademicPrograms || canShowAcademicPrograms || canEditAcademicPrograms || canDeleteAcademicPrograms || isSuperAdmin}
                         <a use:inertia href={route('academic-programs.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Academic programs.plural')}
                         </a>
@@ -83,7 +83,7 @@
 
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="text" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
+                    <Input id="code" type="number" min="0" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
                 </div>
 
                 <div class="mt-4">

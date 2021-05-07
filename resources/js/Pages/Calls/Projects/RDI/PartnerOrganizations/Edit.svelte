@@ -19,6 +19,7 @@
     import DataTable from '@/Components/DataTable'
     import Dialog from '@/Components/Dialog'
     import ResourceMenu from '@/Components/ResourceMenu'
+    import InputError from '@/Components/InputError'
 
     export let errors
     export let call
@@ -51,51 +52,32 @@
     let canEditPartnerOrganizationMembers   = authUser.can.find(element => element == 'partner-organization-members.edit') == 'partner-organization-members.edit'
 
     let dialog_open = false
-    let sending = false
+    let sending     = false
     let form = useForm({
         _method: 'put',
-        partner_organization_type: partnerOrganization.partner_organization_type,
-        name: partnerOrganization.name,
-        legal_status: partnerOrganization.legal_status,
-        company_type: partnerOrganization.company_type,
-        nit: partnerOrganization.nit,
-        agreement_description: partnerOrganization.agreement_description || '',
-        research_group: partnerOrganization.research_group || '',
-        gruplac_code: partnerOrganization.gruplac_code || '',
-        gruplac_link: partnerOrganization.gruplac_link || '',
-        knowledge_transfer_activities: partnerOrganization.knowledge_transfer_activities,
-        in_kind: partnerOrganization.in_kind,
-        in_kind_description: partnerOrganization.in_kind_description,
-        funds: partnerOrganization.funds,
-        funds_description: partnerOrganization.funds_description,
-        letter_of_intent: '',
-        intellectual_property: '',
-        activity_id: activityPartnerOrganizations
+        partner_organization_type:      {value: partnerOrganizationTypes.find(item => item.label == partnerOrganization.partner_organization_type)?.value, label: partnerOrganizationTypes.find(item => item.label == partnerOrganization.partner_organization_type)?.label},
+        name:                           partnerOrganization.name,
+        legal_status:                   {value: legalStatus.find(item => item.label == partnerOrganization.legal_status)?.value, label: legalStatus.find(item => item.label == partnerOrganization.legal_status)?.label},
+        company_type:                   {value: companyTypes.find(item => item.label == partnerOrganization.company_type)?.value, label: companyTypes.find(item => item.label == partnerOrganization.company_type)?.label},
+        nit:                            partnerOrganization.nit,
+        agreement_description:          partnerOrganization.agreement_description,
+        research_group:                 partnerOrganization.research_group,
+        gruplac_code:                   partnerOrganization.gruplac_code,
+        gruplac_link:                   partnerOrganization.gruplac_link,
+        knowledge_transfer_activities:  partnerOrganization.knowledge_transfer_activities,
+        in_kind:                        partnerOrganization.in_kind,
+        in_kind_description:            partnerOrganization.in_kind_description,
+        funds:                          partnerOrganization.funds,
+        funds_description:              partnerOrganization.funds_description,
+        letter_of_intent:               null,
+        intellectual_property:          null,
+        activity_id:                    activityPartnerOrganizations
     })
 
     function submit() {
         if (canEditPartnerOrganizations || isSuperAdmin) {
-            let formData = new FormData()
-            formData.append('_method', 'put')
-            formData.append('partner_organization_type', $form.partner_organization_type)
-            formData.append('name', $form.name)
-            formData.append('legal_status', $form.legal_status)
-            formData.append('company_type', $form.company_type)
-            formData.append('nit', $form.nit)
-            if (agreement) formData.append('agreement_description', $form.agreement_description)
-            if (researchGroup) formData.append('research_group', $form.research_group)
-            if (researchGroup) formData.append('gruplac_code', $form.gruplac_code)
-            if (researchGroup) formData.append('gruplac_link', $form.gruplac_link)
-            formData.append('knowledge_transfer_activities', $form.knowledge_transfer_activities)
-            formData.append('in_kind', $form.in_kind)
-            formData.append('in_kind_description', $form.in_kind_description)
-            formData.append('funds', $form.funds)
-            formData.append('funds_description', $form.funds_description)
-            formData.append('letter_of_intent', $form.letter_of_intent)
-            formData.append('intellectual_property', $form.intellectual_property)
-            formData.append('activity_id', JSON.stringify($form.activity_id))
-
-            Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), formData, {
+            Inertia.post(route('calls.rdi.partner-organizations.update', [call.id, rdi.id, partnerOrganization.id]), $form, {
+                forceFormData: true,
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -108,6 +90,10 @@
             Inertia.delete(route('calls.rdi.partner-organizations.destroy', [call.id, rdi.id, partnerOrganization.id]))
         }
     }
+
+    function handleFile(e, test) {
+        $form[test] = e.target.files[0]
+    }
 </script>
 
 <AuthenticatedLayout>
@@ -115,7 +101,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexPartnerOrganizations || canEditPartnerOrganizations || isSuperAdmin}
+                    {#if canIndexPartnerOrganizations || canShowPartnerOrganizations || canEditPartnerOrganizations || canDeletePartnerOrganizations || isSuperAdmin}
                         <a use:inertia href={route('calls.rdi.partner-organizations.index', [call.id, rdi.id])} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Partner organizations.plural')}
                         </a>
@@ -128,13 +114,12 @@
     </header>
 
     <div class="flex">
-
         <div class="bg-white rounded shadow max-w-3xl">
             <form on:submit|preventDefault={submit}>
-                <div class="p-8">
+                <fieldset class="p-8" disabled={canEditPartnerOrganizations || isSuperAdmin ? undefined : true}>
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="partner_organization_type" value="Tipo de entidad aliada" />
-                        <Select id="partner_organization_type" items={partnerOrganizationTypes} selectedValue={partnerOrganization.partner_organization_type} bind:value={$form.partner_organization_type} error={errors.partner_organization_type ? true : false} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
+                        <Select id="partner_organization_type" items={partnerOrganizationTypes} bind:selectedValue={$form.partner_organization_type} error={errors.partner_organization_type} autocomplete="off" placeholder="Seleccione el nivel del riesgo" required />
                     </div>
 
                     <div class="mt-4">
@@ -144,12 +129,12 @@
 
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="legal_status" value="Naturaleza de la entidad" />
-                        <Select id="legal_status" items={legalStatus} selectedValue={partnerOrganization.legal_status} bind:value={$form.legal_status} error={errors.legal_status ? true : false} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
+                        <Select id="legal_status" items={legalStatus} bind:selectedValue={$form.legal_status} error={errors.legal_status} autocomplete="off" placeholder="Seleccione el tipo de riesgo" required />
                     </div>
 
                     <div class="mt-4">
                         <Label required class="mb-4" labelFor="company_type" value="Tipo de empresa" />
-                        <Select id="company_type" items={companyTypes} selectedValue={partnerOrganization.company_type} bind:value={$form.company_type} error={errors.company_type ? true : false} autocomplete="off" placeholder="Seleccione la probabilidad" />
+                        <Select id="company_type" items={companyTypes} bind:selectedValue={$form.company_type} error={errors.company_type} autocomplete="off" placeholder="Seleccione la probabilidad" required />
                     </div>
 
                     <div class="mt-4">
@@ -215,17 +200,22 @@
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" labelFor="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
+                        <Label class="mb-4" labelFor="letter_of_intent" value="ANEXO 7. Carta de intención o acta que soporta el trabajo articulado con entidades aliadas (diferentes al SENA)" />
                         <File id="letter_of_intent" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.letter_of_intent} error={errors.letter_of_intent} />
                     </div>
 
                     <div class="mt-4">
-                        <Label required class="mb-4" labelFor="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
+                        <Label class="mb-4" labelFor="intellectual_property" value="ANEXO 8. Propiedad intelectual" />
                         <File id="intellectual_property" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.intellectual_property} error={errors.intellectual_property} />
                     </div>
 
                     <h6 class="mt-20 mb-12 text-2xl" id="activities">{$_('Activities.plural')}</h6>
+
                     <div class="bg-white rounded shadow overflow-hidden">
+                        <div class="p-4">
+                            <Label required class="mb-4" labelFor="activity_id" value="Relacione alguna actividad" />
+                            <InputError message={errors.activity_id} />
+                        </div>
                         <div class="grid grid-cols-2">
                             {#each activities as {id, description}, i}
                                 <FormField>
@@ -238,13 +228,12 @@
                             {/each}
                         </div>
                     </div>
-
-                    {#if $form.progress}
-                        <progress value={$form.progress.percentage} max="100">
+                </fieldset>
+                {#if $form.progress}
+                    <progress value={$form.progress.percentage} max="100">
                         {$form.progress.percentage}%
-                        </progress>
-                    {/if}
-                </div>
+                    </progress>
+                {/if}
                 <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                     {#if canDeletePartnerOrganizations || isSuperAdmin}
                         <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -272,7 +261,7 @@
         </div>
     </div>
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title" id="partner-organization-members">{$_('Partner organization members.plural')}</div>
 
         <div slot="actions">
@@ -328,7 +317,7 @@
         </tbody>
     </DataTable>
 
-    <DataTable>
+    <DataTable class="mt-20">
         <div slot="title" id="specific-objectives">{$_('Specific objectives.plural')}</div>
 
         <p class="mb-6" slot="caption">A continuación, se listan los objetivos específicos relacionados con la entidad aliada. Si dice 'Sin información registrada' por favor diríjase a las <a href="#activities" class="text-indigo-400">actividades</a> y relacione alguna.</p>

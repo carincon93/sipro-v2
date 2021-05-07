@@ -29,8 +29,8 @@
     let canEditPartnerOrganizationMembers   = authUser.can.find(element => element == 'partner-organization-members.edit') == 'partner-organization-members.edit'
     let canDeletePartnerOrganizationMembers = authUser.can.find(element => element == 'partner-organization-members.delete') == 'partner-organization-members.delete'
 
-    let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organization.delete') == 'partner-organization.delete'
-    let canEditPartnerOrganizations     = authUser.can.find(element => element == 'partner-organization.delete') == 'partner-organization-members.delete'
+    let canIndexPartnerOrganizations    = authUser.can.find(element => element == 'partner-organizations.index') == 'partner-organizations.index'
+    let canEditPartnerOrganizations     = authUser.can.find(element => element == 'partner-organizations.edit') == 'partner-organizations.edit'
 
     let filters = {}
 </script>

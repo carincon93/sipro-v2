@@ -202,7 +202,7 @@ return [
         'second_price_quote'        => 'valor del soporte/cotización',
         'second_company_name'       => 'nombre de la compañía',
         'second_price_quote_file'   => 'archivo',
-        'third_price_quote'         => 'valor del soporte/cotización',,
+        'third_price_quote'         => 'valor del soporte/cotización',
         'third_company_name'        => 'nombre de la compañía',
         'third_price_quote_file'    => 'archivo',
 
@@ -210,7 +210,7 @@ return [
         'minciencias_typology_id'   => 'tipología Minciencias',
 
         // Producto - Output
-        'project_result_id'         => 'resultado'
+        'project_result_id'         => 'resultado',
 		'trl'                       => 'TRL',
 
         // Entidad aliada - Partner organization
@@ -229,6 +229,7 @@ return [
         'in_kind_description'       => 'descripción',
         'funds'                     => 'recursos',
         'funds_description'         => 'descripción',
+        'activity_id'               => 'actividades',
 
         // Tema priorizado - Prioritized topic
         'productive_sector_id'      => 'sector productivo',
@@ -238,24 +239,24 @@ return [
 		'project_category'          => 'categoría del proyecto',
 
         // Anexo de proyecto - Project annexe
-        'annexe_id'                 => 'anexo'
+        'annexe_id'                 => 'anexo',
 		'file'                      => 'archivo',
 
         // Estudio de mercado - Market research
         'qty_items'                 => 'cantidad de ítems',
-        'fact_sheet'                => 'ficha técnica'
+        'fact_sheet'                => 'ficha técnica',
 
         // Resultado - Project result
 		'indicator'                 => 'indicador',
         'means_of_verification'     => 'medios de verificación',
 
         // Rubro de proyecto - Project sennova budget
-        'call_budget_id'            => 'rubro de convocatoria'
+        'call_budget_id'            => 'rubro de convocatoria',
 		'justification'             => 'justificación',
         'value'                     => 'valor',
 
         // Rol de proyecto - Project sennova role
-        'call_sennova_role_id'      => 'rol de convocatoria'
+        'call_sennova_role_id'      => 'rol de convocatoria',
 
         // Tipo de proyecto - Project type
 		'maximum_value'             => 'valor máximo',
@@ -264,9 +265,9 @@ return [
         'project_type_id'                           => 'tipo de proyecto',
         'research_line_id'                          => 'línea de investigación',
 		'knowledge_subarea_discipline_id'           => 'disciplina de la subárea de conocimiento',
-        'strategic_thematic_id'                     => 'temáticas estratégicas SENA'
+        'strategic_thematic_id'                     => 'temáticas estratégicas SENA',
 		'knowledge_network_id'                      => 'red de conocimiento',
-        'ciiu_code_id'                              => 'código CIIU'
+        'ciiu_code_id'                              => 'código CIIU',
 		'title'                                     => 'título',
 		'abstract'                                  => 'resumen ',
 		'project_background'                        => 'antecedentes del proyecto',
@@ -325,8 +326,11 @@ return [
         // Rol SENNOVA - SENNOVA role
         'academic_degree'   => 'nivel educativo',
 
-        // Objetivo específico
+        // Objetivo específico - Specific objective
         'number'            => 'número',
+
+        // Roles - Role
+        'permission_id'     => 'permisos',
 
 		'objectives_tree'   => 'árbol de objetivos',
         'problem_tree'      => 'árbol de problemas',
