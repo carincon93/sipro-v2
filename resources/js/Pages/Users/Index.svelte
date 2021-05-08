@@ -18,42 +18,64 @@
     /**
      * Permisos
      */
-    let authUser        = $page.props.auth.user
-    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexUsers   = authUser.can.find(element => element == 'users.index') == 'users.index'
-    let canShowUsers    = authUser.can.find(element => element == 'users.show') == 'users.show'
-    let canCreateUsers  = authUser.can.find(element => element == 'users.create') == 'users.create'
-    let canEditUsers    = authUser.can.find(element => element == 'users.edit') == 'users.edit'
-    let canDeleteUsers  = authUser.can.find(element => element == 'users.delete') == 'users.delete'
+    let authUser = $page.props.auth.user
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexUsers =
+        authUser.can.find((element) => element == 'users.index') ==
+        'users.index'
+    let canShowUsers =
+        authUser.can.find((element) => element == 'users.show') == 'users.show'
+    let canCreateUsers =
+        authUser.can.find((element) => element == 'users.create') ==
+        'users.create'
+    let canEditUsers =
+        authUser.can.find((element) => element == 'users.edit') == 'users.edit'
+    let canDeleteUsers =
+        authUser.can.find((element) => element == 'users.delete') ==
+        'users.delete'
 
     let filters = {}
 </script>
 
 <AuthenticatedLayout>
     <DataTable class="mt-20">
-
         <div slot="title">{$_('Users.plural')}</div>
 
         <div slot="actions">
             {#if canCreateUsers || isSuperAdmin}
-                <Button on:click={() => Inertia.visit(route('users.create'))} variant="raised">
-                    {$_('Create')} {$_('Users.singular')}
+                <Button
+                    on:click={() => Inertia.visit(route('users.create'))}
+                    variant="raised"
+                >
+                    {$_('Create')}
+                    {$_('Users.singular')}
                 </Button>
             {/if}
         </div>
 
         <thead slot="thead">
             <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Correo electrónico</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Nombre</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Correo electrónico</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Acciones</th
+                >
             </tr>
         </thead>
         <tbody slot="tbody">
             {#each users.data as user (user.id)}
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                        <p
+                            class="px-6 py-4 flex items-center focus:text-indigo-500"
+                        >
                             {user.name}
                         </p>
                     </td>
@@ -65,12 +87,21 @@
                     <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowUsers || canEditUsers || canDeleteUsers || isSuperAdmin}
-                                <Item on:SMUI:action={() => (Inertia.visit(route('users.edit', user.id)))}>
+                                <Item
+                                    on:SMUI:action={() =>
+                                        Inertia.visit(
+                                            route('users.edit', user.id),
+                                        )}
+                                >
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             {:else}
                                 <Item>
-                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                    <Text
+                                        >{$_(
+                                            "You don't have permissions",
+                                        )}</Text
+                                    >
                                 </Item>
                             {/if}
                         </ResourceMenu>
@@ -80,7 +111,9 @@
 
             {#if users.data.length === 0}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_('No data recorded')}</td
+                    >
                 </tr>
             {/if}
         </tbody>

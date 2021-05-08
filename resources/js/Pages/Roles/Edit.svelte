@@ -15,7 +15,7 @@
     import Textarea from '@/Components/Textarea'
 
     export let errors
-    export let role   = {}
+    export let role = {}
     export let allPermissions
     export let rolePermissions
 
@@ -25,27 +25,38 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexRoles   = authUser.can.find(element => element == 'roles.index') == 'roles.index'
-    let canShowRoles    = authUser.can.find(element => element == 'roles.show') == 'roles.show'
-    let canCreateRoles  = authUser.can.find(element => element == 'roles.create') == 'roles.create'
-    let canEditRoles    = authUser.can.find(element => element == 'roles.edit') == 'roles.edit'
-    let canDeleteRoles  = authUser.can.find(element => element == 'roles.delete') == 'roles.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexRoles =
+        authUser.can.find((element) => element == 'roles.index') ==
+        'roles.index'
+    let canShowRoles =
+        authUser.can.find((element) => element == 'roles.show') == 'roles.show'
+    let canCreateRoles =
+        authUser.can.find((element) => element == 'roles.create') ==
+        'roles.create'
+    let canEditRoles =
+        authUser.can.find((element) => element == 'roles.edit') == 'roles.edit'
+    let canDeleteRoles =
+        authUser.can.find((element) => element == 'roles.delete') ==
+        'roles.delete'
 
     let dialog_open = false
-    let sending     = false
+    let sending = false
     let form = useForm({
-        name:           role.name,
-        description:    role.description,
-        permission_id:  rolePermissions
+        name: role.name,
+        description: role.description,
+        permission_id: rolePermissions,
     })
 
     function submit() {
         if (canEditRoles || isSuperAdmin) {
             $form.put(route('roles.update', role.id), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
-                preserveScroll: true
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
+                preserveScroll: true,
             })
         }
     }
@@ -59,11 +70,17 @@
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexRoles || canShowRoles || canEditRoles || canDeleteRoles || isSuperAdmin}
-                        <a use:inertia href={route('roles.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('roles.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('System roles.plural')}
                         </a>
                     {/if}
@@ -78,48 +95,95 @@
         <fieldset disabled={canEditRoles || isSuperAdmin ? undefined : true}>
             <div class="bg-white rounded shadow max-w-3xl p-8">
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="description" value="Descripción" />
-                    <Textarea rows="4" id="description" bind:value={$form.description} error={errors.description} required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="description"
+                        value="Descripción"
+                    />
+                    <Textarea
+                        rows="4"
+                        id="description"
+                        bind:value={$form.description}
+                        error={errors.description}
+                        required
+                    />
                 </div>
             </div>
 
             <div class="bg-white rounded shadow overflow-hidden mt-20">
                 <div class="p-4">
-                    <Label required class="mb-4" labelFor="permission_id" value="Seleccione los permisos" />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="permission_id"
+                        value="Seleccione los permisos"
+                    />
                     <InputError message={errors.permission_id} />
                 </div>
                 <div class="grid grid-cols-6">
-                    {#each allPermissions as {id, only_name, method}, i}
+                    {#each allPermissions as { id, only_name, method }, i}
                         {#if i % 5 === 0}
-                            <div class="p-3 border-t border-b flex items-center text-sm">{$_(only_name+'.plural')}</div>
+                            <div
+                                class="p-3 border-t border-b flex items-center text-sm"
+                            >
+                                {$_(only_name + '.plural')}
+                            </div>
                         {/if}
-                        <div class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between">
+                        <div
+                            class="pt-8 pb-8 border-t border-b flex flex-col-reverse items-center justify-between"
+                        >
                             <FormField>
                                 <Checkbox
                                     bind:group={$form.permission_id}
                                     value={id}
                                 />
-                                    <span slot="label">{$_(method)}</span>
+                                <span slot="label">{$_(method)}</span>
                             </FormField>
                         </div>
                     {/each}
                 </div>
             </div>
         </fieldset>
-        <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+        <div
+            class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+        >
             {#if canDeleteRoles || isSuperAdmin}
-                <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
-                    {$_('Delete')} {$_('System roles.singular').toLowerCase()}
+                <button
+                    class="text-red-600 hover:underline text-left"
+                    tabindex="-1"
+                    type="button"
+                    on:click={(event) => (dialog_open = true)}
+                >
+                    {$_('Delete')}
+                    {$_('System roles.singular').toLowerCase()}
                 </button>
             {/if}
             {#if canEditRoles || isSuperAdmin}
-                <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                    {$_('Update')} {$_('System roles.singular')}
+                <LoadingButton
+                    loading={sending}
+                    class="btn-indigo ml-auto"
+                    type="submit"
+                >
+                    {$_('Update')}
+                    {$_('System roles.singular')}
                 </LoadingButton>
             {/if}
         </div>
@@ -127,23 +191,37 @@
 
     <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
             </svg>
             Eliminar recurso
         </div>
         <div slot="content">
             <p>
                 ¿Está seguro(a) que desea eliminar este recurso?
-                <br>
+                <br />
                 Todos los datos se eliminarán de forma permanente.
-                <br>
+                <br />
                 Está acción no se puede deshacer.
             </p>
         </div>
         <div slot="actions">
             <div class="p-4">
-                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button
+                    on:click={(event) => (dialog_open = false)}
+                    variant={null}>{$_('Cancel')}</Button
+                >
                 <Button variant="raised" on:click={destroy}>
                     {$_('Confirm')}
                 </Button>

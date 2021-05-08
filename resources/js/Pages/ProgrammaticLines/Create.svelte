@@ -13,32 +13,48 @@
     export let errors
     export let projectCategories
 
-    $: $title = $_('Create') + ' ' + $_('Programmatic lines.singular').toLowerCase()
+    $: $title =
+        $_('Create') + ' ' + $_('Programmatic lines.singular').toLowerCase()
 
     /**
      * Permisos
      */
-    let authUser    = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexProgrammaticLines   = authUser.can.find(element => element == 'programmatic-lines.index') == 'programmatic-lines.index'
-    let canShowProgrammaticLines    = authUser.can.find(element => element == 'programmatic-lines.show') == 'programmatic-lines.show'
-    let canCreateProgrammaticLines  = authUser.can.find(element => element == 'programmatic-lines.create') == 'programmatic-lines.create'
-    let canEditProgrammaticLines    = authUser.can.find(element => element == 'programmatic-lines.edit') == 'programmatic-lines.edit'
-    let canDeleteProgrammaticLines  = authUser.can.find(element => element == 'programmatic-lines.delete') == 'programmatic-lines.delete'
+    let authUser = $page.props.auth.user
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexProgrammaticLines =
+        authUser.can.find((element) => element == 'programmatic-lines.index') ==
+        'programmatic-lines.index'
+    let canShowProgrammaticLines =
+        authUser.can.find((element) => element == 'programmatic-lines.show') ==
+        'programmatic-lines.show'
+    let canCreateProgrammaticLines =
+        authUser.can.find(
+            (element) => element == 'programmatic-lines.create',
+        ) == 'programmatic-lines.create'
+    let canEditProgrammaticLines =
+        authUser.can.find((element) => element == 'programmatic-lines.edit') ==
+        'programmatic-lines.edit'
+    let canDeleteProgrammaticLines =
+        authUser.can.find(
+            (element) => element == 'programmatic-lines.delete',
+        ) == 'programmatic-lines.delete'
 
     let sending = false
     let form = useForm({
         name: '',
         description: '',
         code: '',
-        project_category: ''
+        project_category: '',
     })
 
     function submit() {
         if (canCreateProgrammaticLines || isSuperAdmin) {
             $form.post(route('programmatic-lines.store'), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
             })
         }
     }
@@ -46,11 +62,17 @@
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexProgrammaticLines || canCreateProgrammaticLines || isSuperAdmin}
-                        <a use:inertia href={route('programmatic-lines.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('programmatic-lines.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Programmatic lines.plural')}
                         </a>
                     {/if}
@@ -63,31 +85,93 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canCreateProgrammaticLines || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canCreateProgrammaticLines || isSuperAdmin
+                    ? undefined
+                    : true}
+            >
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="code" value="Código" />
-                    <Input id="code" type="number" min="0" max="99" class="mt-1 block w-full" bind:value={$form.code} error={errors.code} required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="code"
+                        value="Código"
+                    />
+                    <Input
+                        id="code"
+                        type="number"
+                        min="0"
+                        max="99"
+                        class="mt-1 block w-full"
+                        bind:value={$form.code}
+                        error={errors.code}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="project_category" value="Categoría" />
-                    <Select id="project_category" items={projectCategories} bind:selectedValue={$form.project_category} error={errors.project_category} autocomplete="off" placeholder="Seleccione una categoría" required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="project_category"
+                        value="Categoría"
+                    />
+                    <Select
+                        id="project_category"
+                        items={projectCategories}
+                        bind:selectedValue={$form.project_category}
+                        error={errors.project_category}
+                        autocomplete="off"
+                        placeholder="Seleccione una categoría"
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="description" value="Descripción" />
-                    <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="description"
+                        value="Descripción"
+                    />
+                    <Textarea
+                        rows="4"
+                        id="description"
+                        error={errors.description}
+                        bind:value={$form.description}
+                        required
+                    />
                 </div>
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canCreateProgrammaticLines || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Create')} {$_('Programmatic lines.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Create')}
+                        {$_('Programmatic lines.singular')}
                     </LoadingButton>
                 {/if}
             </div>

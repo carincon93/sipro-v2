@@ -19,12 +19,25 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexAcademicCentres     = authUser.can.find(element => element == 'academic-centres.index') == 'academic-centres.index'
-    let canShowAcademicCentres      = authUser.can.find(element => element == 'academic-centres.show') == 'academic-centres.show'
-    let canCreateAcademicCentres    = authUser.can.find(element => element == 'academic-centres.create') == 'academic-centres.create'
-    let canEditAcademicCentres      = authUser.can.find(element => element == 'academic-centres.edit') == 'academic-centres.edit'
-    let canDeleteAcademicCentres    = authUser.can.find(element => element == 'academic-centres.delete') == 'academic-centres.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexAcademicCentres =
+        authUser.can.find((element) => element == 'academic-centres.index') ==
+        'academic-centres.index'
+    let canShowAcademicCentres =
+        authUser.can.find((element) => element == 'academic-centres.show') ==
+        'academic-centres.show'
+    let canCreateAcademicCentres =
+        authUser.can.find((element) => element == 'academic-centres.create') ==
+        'academic-centres.create'
+    let canEditAcademicCentres =
+        authUser.can.find((element) => element == 'academic-centres.edit') ==
+        'academic-centres.edit'
+    let canDeleteAcademicCentres =
+        authUser.can.find((element) => element == 'academic-centres.delete') ==
+        'academic-centres.delete'
 
     let filters = {}
 </script>
@@ -35,18 +48,31 @@
 
         <div slot="actions">
             {#if canCreateAcademicCentres || isSuperAdmin}
-                <Button on:click={() => Inertia.visit(route('academic-centres.create'))} variant="raised">
-                    {$_('Create')} {$_('Academic centres.singular')}
+                <Button
+                    on:click={() =>
+                        Inertia.visit(route('academic-centres.create'))}
+                    variant="raised"
+                >
+                    {$_('Create')}
+                    {$_('Academic centres.singular')}
                 </Button>
             {/if}
         </div>
 
         <thead slot="thead">
             <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Regional</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Nombre</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Código</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Regional</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Acciones</th
+                >
             </tr>
         </thead>
 
@@ -54,7 +80,9 @@
             {#each academicCentres.data as academicCentre (academicCentre.id)}
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                        <p
+                            class="px-6 py-4 flex items-center focus:text-indigo-500"
+                        >
                             {academicCentre.name}
                         </p>
                     </td>
@@ -71,12 +99,24 @@
                     <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowAcademicCentres || canEditAcademicCentres || canDeleteAcademicCentres || isSuperAdmin}
-                                <Item on:SMUI:action={() => (Inertia.visit(route('academic-centres.edit', academicCentre.id)))}>
+                                <Item
+                                    on:SMUI:action={() =>
+                                        Inertia.visit(
+                                            route(
+                                                'academic-centres.edit',
+                                                academicCentre.id,
+                                            ),
+                                        )}
+                                >
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             {:else}
                                 <Item>
-                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                    <Text
+                                        >{$_(
+                                            "You don't have permissions",
+                                        )}</Text
+                                    >
                                 </Item>
                             {/if}
                         </ResourceMenu>
@@ -86,7 +126,9 @@
 
             {#if academicCentres.data.length === 0}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_('No data recorded')}</td
+                    >
                 </tr>
             {/if}
         </tbody>

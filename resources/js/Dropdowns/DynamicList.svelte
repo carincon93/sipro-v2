@@ -13,24 +13,26 @@
     export let placeholder
     export let routeWebApi
 
-    let items           = []
-    let itemFiltered    = null
-    let select          = null
+    let items = []
+    let itemFiltered = null
+    let select = null
 
     onMount(() => {
         getItems()
         select = document.getElementById(id)
-	})
+    })
 
     afterUpdate(() => {
         if (required) {
-            value != null && select != null ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+            value != null && select != null
+                ? select.setCustomValidity('')
+                : select.setCustomValidity($_('Please fill out this field.'))
         }
     })
 
     async function getItems() {
         let res = await axios.get(routeWebApi)
-        items   = res.data
+        items = res.data
         selectItem()
     }
 
@@ -40,13 +42,24 @@
 
     function selectItem() {
         if (value) {
-            let filterItem = items.filter(function(item) {
-                return item.value == value;
+            let filterItem = items.filter(function (item) {
+                return item.value == value
             })
             itemFiltered = filterItem[0]
         }
     }
 </script>
+
+<Select
+    selectedValue={itemFiltered}
+    inputAttributes={{ id: id }}
+    {placeholder}
+    containerClasses="items {classes}"
+    {items}
+    on:select={handleSelect}
+    on:clear={() => (value = null)}
+/>
+<InputError {message} />
 
 <style>
     :global(.items .listItem) {
@@ -56,7 +69,7 @@
     :global(.items .item) {
         height: auto !important;
         line-height: 1.6 !important;
-        text-overflow: initial!important;
+        text-overflow: initial !important;
         overflow: initial !important;
         white-space: break-spaces !important;
         padding-top: 10px;
@@ -67,13 +80,3 @@
         min-height: 50vh;
     }
 </style>
-
-<Select
-    selectedValue={itemFiltered}
-    inputAttributes={{'id': id}} placeholder={placeholder}
-    containerClasses="items {classes}"
-    items={items}
-    on:select={handleSelect}
-    on:clear={() => value = null}
-/>
-<InputError {message} />

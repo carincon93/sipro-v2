@@ -12,7 +12,7 @@
     let loading = false
 
     function initChart() {
-        google.charts.load('current', {'packages':['gantt'], 'language': 'es'})
+        google.charts.load('current', { packages: ['gantt'], language: 'es' })
         google.charts.setOnLoadCallback(drawChart)
     }
 
@@ -26,16 +26,20 @@
         data.addColumn('number', 'Percent Complete')
         data.addColumn('string', 'Dependencies')
 
-        items.map(function(item) {
+        items.map(function (item) {
             data.addRows([
                 [
-                    'itemID-'+item.id,
+                    'itemID-' + item.id,
                     '',
-                    new Date(item.start_year, item.start_month - 1, item.start_day),
+                    new Date(
+                        item.start_year,
+                        item.start_month - 1,
+                        item.start_day,
+                    ),
                     new Date(item.end_year, item.end_month - 1, item.end_day),
                     null,
                     100,
-                    null
+                    null,
                 ],
             ])
         })
@@ -52,35 +56,45 @@
                 trackHeight: trackHeight,
                 labelMaxWidth: 0,
                 labelStyle: {
-                fontName: "'Nunito', sans-serif",
-                fontSize: 10,
-                color: '#757575',
-                }
+                    fontName: "'Nunito', sans-serif",
+                    fontSize: 10,
+                    color: '#757575',
+                },
             },
             backgroundColor: {
-                fill: '#fff'
-            }
+                fill: '#fff',
+            },
         }
 
         // Valida si el document.getElementById('chart_div') existe para proceder a dibujar el GanttChart
-        if (typeof(document.getElementById('chart_div')) != 'undefined' && document.getElementById('chart_div') != null && items.length > 0) {
-            var chart = new google.visualization.Gantt(document.getElementById('chart_div'))
+        if (
+            typeof document.getElementById('chart_div') != 'undefined' &&
+            document.getElementById('chart_div') != null &&
+            items.length > 0
+        ) {
+            var chart = new google.visualization.Gantt(
+                document.getElementById('chart_div'),
+            )
 
             loading = true
 
             chart.draw(data, options)
 
-            google.visualization.events.addListener(chart, 'select', handleClick)
+            google.visualization.events.addListener(
+                chart,
+                'select',
+                handleClick,
+            )
 
-            function handleClick(){
-                var selection = chart.getSelection();
+            function handleClick() {
+                var selection = chart.getSelection()
                 for (var i = 0; i < selection.length; i++) {
-                    var item    = selection[i]
-                    var itemID  = data.getValue(item.row, i)
-                    let er      = /(\w{6}-)/
-                    let newID   = itemID.replace(er, '')
+                    var item = selection[i]
+                    var itemID = data.getValue(item.row, i)
+                    let er = /(\w{6}-)/
+                    let newID = itemID.replace(er, '')
 
-                    console.log(newID);
+                    console.log(newID)
                 }
             }
         } else {
@@ -96,33 +110,52 @@
 </script>
 
 <svelte:head>
-	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js" on:load={initChart}></script>
+    <script
+        type="text/javascript"
+        src="https://www.gstatic.com/charts/loader.js"
+        on:load={initChart}></script>
 </svelte:head>
 
 <div class="flex relative">
     {#if items.length === 0}
         <p>{$_('No data recorded')}</p>
     {:else}
-        <aside class="labels" style="{items.length > 0 ? 'flex: 0.5' : ''}">
+        <aside class="labels" style={items.length > 0 ? 'flex: 0.5' : ''}>
             <ul class="list-unstyled">
                 {#each items as item, i}
-                    <li style="height: 120px; padding: 7px;line-height: 1.2;display: flex;justify-content: space-between;width: 100%;">
+                    <li
+                        style="height: 120px; padding: 7px;line-height: 1.2;display: flex;justify-content: space-between;width: 100%;"
+                    >
                         {#if request}
-                            <p style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</p>
+                            <p
+                                style="max-width: 90%;max-height: 50px;overflow: hidden;"
+                            >
+                                {item.description ?? item.name}
+                            </p>
                             <ResourceMenu>
-                                <Item on:SMUI:action={() => (Inertia.visit(route(request.uri, arrayPush(item.id))))}>
+                                <Item
+                                    on:SMUI:action={() =>
+                                        Inertia.visit(
+                                            route(
+                                                request.uri,
+                                                arrayPush(item.id),
+                                            ),
+                                        )}
+                                >
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             </ResourceMenu>
                         {:else}
-                            <span style="max-width: 90%;max-height: 50px;overflow: hidden;">{item.description ?? item.name}</span>
+                            <span
+                                style="max-width: 90%;max-height: 50px;overflow: hidden;"
+                                >{item.description ?? item.name}</span
+                            >
                         {/if}
                     </li>
                 {/each}
             </ul>
         </aside>
-        <div id="chart_div" style="flex: 1;"></div>
+        <div id="chart_div" style="flex: 1;" />
     {/if}
-    <Loading {loading} bg="transparent"/>
+    <Loading {loading} bg="transparent" />
 </div>
-

@@ -5,13 +5,6 @@
     }
 </script>
 
-<style>
-    :global(.data-table td.border-t.td-actions:last-child) {
-        text-align: center;
-        width: 150px;
-    }
-</style>
-
 <div {...props}>
     <h1 class="mb-8 font-bold text-center text-3xl">
         <slot name="title" />
@@ -31,3 +24,10 @@
         </table>
     </div>
 </div>
+
+<style>
+    :global(.data-table td.border-t.td-actions:last-child) {
+        text-align: center;
+        width: 150px;
+    }
+</style>

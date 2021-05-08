@@ -18,20 +18,22 @@
 
     onMount(() => {
         select = document.getElementById(id)
-	})
+    })
 
     $: selectedValue
     $: if (required && select != null) {
-        selectedValue != undefined ? select.setCustomValidity('') : select.setCustomValidity($_('Please fill out this field.'))
+        selectedValue != undefined
+            ? select.setCustomValidity('')
+            : select.setCustomValidity($_('Please fill out this field.'))
     }
 </script>
 
 <SelectMulti
-    inputAttributes={{'id': id}}
-    bind:selectedValue={selectedValue}
-    items={items}
+    inputAttributes={{ id: id }}
+    bind:selectedValue
+    {items}
     isMulti={true}
     {groupBy}
-    placeholder={placeholder}
+    {placeholder}
 />
 <InputError classes="text-center" message={error} />

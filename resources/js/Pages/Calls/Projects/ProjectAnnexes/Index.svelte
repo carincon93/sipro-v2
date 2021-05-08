@@ -7,14 +7,14 @@
     import DataTable from '@/Components/DataTable'
     import Create from './Create'
 
-    import Stepper from '@/Components/Stepper';
+    import Stepper from '@/Components/Stepper'
 
     export let call
     export let project
     export let projectAnnexes = []
     export let annexes
 
-    let sending =false
+    let sending = false
 
     $title = $_('Project annexes.plural')
 
@@ -22,18 +22,30 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexProjectAnnexes      = authUser.can.find(element => element == 'project-annexes.index') == 'project-annexes.index'
-    let canShowProjectAnnexes       = authUser.can.find(element => element == 'project-annexes.show') == 'project-annexes.show'
-    let canCreateProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.create') == 'project-annexes.create'
-    let canEditProjectAnnexes       = authUser.can.find(element => element == 'project-annexes.edit') == 'project-annexes.edit'
-    let canDeleteProjectAnnexes     = authUser.can.find(element => element == 'project-annexes.delete') == 'project-annexes.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexProjectAnnexes =
+        authUser.can.find((element) => element == 'project-annexes.index') ==
+        'project-annexes.index'
+    let canShowProjectAnnexes =
+        authUser.can.find((element) => element == 'project-annexes.show') ==
+        'project-annexes.show'
+    let canCreateProjectAnnexes =
+        authUser.can.find((element) => element == 'project-annexes.create') ==
+        'project-annexes.create'
+    let canEditProjectAnnexes =
+        authUser.can.find((element) => element == 'project-annexes.edit') ==
+        'project-annexes.edit'
+    let canDeleteProjectAnnexes =
+        authUser.can.find((element) => element == 'project-annexes.delete') ==
+        'project-annexes.delete'
 
     let filters = {}
 </script>
 
 <AuthenticatedLayout>
-
     <Stepper {call} {project} />
 
     <DataTable class="mt-20">
@@ -41,8 +53,12 @@
 
         <thead slot="thead">
             <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Archivo</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Nombre</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Archivo</th
+                >
             </tr>
         </thead>
 
@@ -51,14 +67,22 @@
                 <tr>
                     <td class="border-t">
                         {#if canShowProjectAnnexes || canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
-                            <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                            <p
+                                class="px-6 py-4 flex items-center focus:text-indigo-500"
+                            >
                                 {annexe.name}
                             </p>
                         {/if}
                     </td>
                     <td class="border-t">
                         {#if canShowProjectAnnexes || canCreateProjectAnnexes || canEditProjectAnnexes || isSuperAdmin}
-                            <Create {call} {project} {annexe} {projectAnnexes} bind:sending={sending} />
+                            <Create
+                                {call}
+                                {project}
+                                {annexe}
+                                {projectAnnexes}
+                                bind:sending
+                            />
                         {/if}
                     </td>
                 </tr>
@@ -66,11 +90,15 @@
 
             {#if annexes.data.length === 0}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_('No data recorded')}</td
+                    >
                 </tr>
             {:else if !canCreateProjectAnnexes && !canEditProjectAnnexes && !isSuperAdmin}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('You don\'t have permissions')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_("You don't have permissions")}</td
+                    >
                 </tr>
             {/if}
         </tbody>

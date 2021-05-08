@@ -19,12 +19,25 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin        = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexAnnexes     = authUser.can.find(element => element == 'annexes.index') == 'annexes.index'
-    let canShowAnnexes      = authUser.can.find(element => element == 'annexes.show') == 'annexes.show'
-    let canCreateAnnexes    = authUser.can.find(element => element == 'annexes.create') == 'annexes.create'
-    let canEditAnnexes      = authUser.can.find(element => element == 'annexes.edit') == 'annexes.edit'
-    let canDeleteAnnexes    = authUser.can.find(element => element == 'annexes.delete') == 'annexes.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexAnnexes =
+        authUser.can.find((element) => element == 'annexes.index') ==
+        'annexes.index'
+    let canShowAnnexes =
+        authUser.can.find((element) => element == 'annexes.show') ==
+        'annexes.show'
+    let canCreateAnnexes =
+        authUser.can.find((element) => element == 'annexes.create') ==
+        'annexes.create'
+    let canEditAnnexes =
+        authUser.can.find((element) => element == 'annexes.edit') ==
+        'annexes.edit'
+    let canDeleteAnnexes =
+        authUser.can.find((element) => element == 'annexes.delete') ==
+        'annexes.delete'
 
     let filters = {}
 </script>
@@ -35,16 +48,24 @@
 
         <div slot="actions">
             {#if canCreateAnnexes || isSuperAdmin}
-                <Button on:click={() => Inertia.visit(route('annexes.create'))} variant="raised">
-                    {$_('Create')} {$_('Annexes.singular')}
+                <Button
+                    on:click={() => Inertia.visit(route('annexes.create'))}
+                    variant="raised"
+                >
+                    {$_('Create')}
+                    {$_('Annexes.singular')}
                 </Button>
             {/if}
         </div>
 
         <thead slot="thead">
             <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Nombre</th
+                >
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                    >Acciones</th
+                >
             </tr>
         </thead>
 
@@ -52,19 +73,30 @@
             {#each annexes.data as annexe (annexe.id)}
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                        <p
+                            class="px-6 py-4 flex items-center focus:text-indigo-500"
+                        >
                             {annexe.name}
                         </p>
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowAnnexes || canEditAnnexes || canDeleteAnnexes || isSuperAdmin}
-                                <Item on:SMUI:action={() => (Inertia.visit(route('annexes.edit', annexe.id)))}>
+                                <Item
+                                    on:SMUI:action={() =>
+                                        Inertia.visit(
+                                            route('annexes.edit', annexe.id),
+                                        )}
+                                >
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             {:else}
                                 <Item>
-                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                    <Text
+                                        >{$_(
+                                            "You don't have permissions",
+                                        )}</Text
+                                    >
                                 </Item>
                             {/if}
                         </ResourceMenu>
@@ -74,7 +106,9 @@
 
             {#if annexes.data.length === 0}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_('No data recorded')}</td
+                    >
                 </tr>
             {/if}
         </tbody>

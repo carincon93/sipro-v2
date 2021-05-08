@@ -1,7 +1,7 @@
 <script>
     import { page } from '@inertiajs/inertia-svelte'
     import { _ } from 'svelte-i18n'
-    import Snackbar, { Actions, Label } from '@smui/snackbar';
+    import Snackbar, { Actions, Label } from '@smui/snackbar'
     import IconButton from '@smui/icon-button'
 
     let snackbar
@@ -14,9 +14,9 @@
     } else if ($page.props.flash.error) {
         text = $page.props.flash.error
     } else if (errorsLength === 1) {
-        text = $_("There is one form error.")
-    } else if(errorsLength > 0) {
-        text = $_('There are form errors.', { values: { count: errorsLength }})
+        text = $_('There is one form error.')
+    } else if (errorsLength > 0) {
+        text = $_('There are form errors.', { values: { count: errorsLength } })
     }
 
     if (text && !snackbar.isOpen()) {
@@ -24,12 +24,11 @@
     }
 
     $: console.log($page.props.errors)
-
 </script>
 
 <Snackbar bind:this={snackbar} labelText={text} timeoutMs={4000}>
     <Label />
     <Actions>
-      <IconButton class="material-icons" title="Dismiss">close</IconButton>
+        <IconButton class="material-icons" title="Dismiss">close</IconButton>
     </Actions>
 </Snackbar>

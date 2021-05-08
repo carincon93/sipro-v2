@@ -15,50 +15,94 @@
     export let knowledgeSubareaDiscipline
     export let knowledgeSubareas
 
-    $: $title = knowledgeSubareaDiscipline ? knowledgeSubareaDiscipline.name : null
+    $: $title = knowledgeSubareaDiscipline
+        ? knowledgeSubareaDiscipline.name
+        : null
 
     /**
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                         = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexKnowledgeSubareaDisciplines  = authUser.can.find(element => element == 'knowledge-subarea-disciplines.index') == 'knowledge-subarea-disciplines.index'
-    let canShowKnowledgeSubareaDisciplines   = authUser.can.find(element => element == 'knowledge-subarea-disciplines.show') == 'knowledge-subarea-disciplines.show'
-    let canCreateKnowledgeSubareaDisciplines = authUser.can.find(element => element == 'knowledge-subarea-disciplines.create') == 'knowledge-subarea-disciplines.create'
-    let canEditKnowledgeSubareaDisciplines   = authUser.can.find(element => element == 'knowledge-subarea-disciplines.edit') == 'knowledge-subarea-disciplines.edit'
-    let canDeleteKnowledgeSubareaDisciplines = authUser.can.find(element => element == 'knowledge-subarea-disciplines.delete') == 'knowledge-subarea-disciplines.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexKnowledgeSubareaDisciplines =
+        authUser.can.find(
+            (element) => element == 'knowledge-subarea-disciplines.index',
+        ) == 'knowledge-subarea-disciplines.index'
+    let canShowKnowledgeSubareaDisciplines =
+        authUser.can.find(
+            (element) => element == 'knowledge-subarea-disciplines.show',
+        ) == 'knowledge-subarea-disciplines.show'
+    let canCreateKnowledgeSubareaDisciplines =
+        authUser.can.find(
+            (element) => element == 'knowledge-subarea-disciplines.create',
+        ) == 'knowledge-subarea-disciplines.create'
+    let canEditKnowledgeSubareaDisciplines =
+        authUser.can.find(
+            (element) => element == 'knowledge-subarea-disciplines.edit',
+        ) == 'knowledge-subarea-disciplines.edit'
+    let canDeleteKnowledgeSubareaDisciplines =
+        authUser.can.find(
+            (element) => element == 'knowledge-subarea-disciplines.delete',
+        ) == 'knowledge-subarea-disciplines.delete'
 
     let dialog_open = false
     let sending = false
     let form = useForm({
-        name:                   knowledgeSubareaDiscipline.name,
-        knowledge_subarea_id:   {value: knowledgeSubareaDiscipline.knowledge_subarea_id, label: knowledgeSubareas.find(item => item.value == knowledgeSubareaDiscipline.knowledge_subarea_id)?.label},
+        name: knowledgeSubareaDiscipline.name,
+        knowledge_subarea_id: {
+            value: knowledgeSubareaDiscipline.knowledge_subarea_id,
+            label: knowledgeSubareas.find(
+                (item) =>
+                    item.value ==
+                    knowledgeSubareaDiscipline.knowledge_subarea_id,
+            )?.label,
+        },
     })
 
     function submit() {
         if (canEditKnowledgeSubareaDisciplines || isSuperAdmin) {
-            $form.put(route('knowledge-subarea-disciplines.update', knowledgeSubareaDiscipline.id), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
-                preserveScroll: true
-            })
+            $form.put(
+                route(
+                    'knowledge-subarea-disciplines.update',
+                    knowledgeSubareaDiscipline.id,
+                ),
+                {
+                    onStart: () => (sending = true),
+                    onFinish: () => (sending = false),
+                    preserveScroll: true,
+                },
+            )
         }
     }
 
     function destroy() {
         if (canDeleteKnowledgeSubareaDisciplines || isSuperAdmin) {
-            $form.delete(route('knowledge-subarea-disciplines.destroy', knowledgeSubareaDiscipline.id))
+            $form.delete(
+                route(
+                    'knowledge-subarea-disciplines.destroy',
+                    knowledgeSubareaDiscipline.id,
+                ),
+            )
         }
     }
 </script>
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexKnowledgeSubareaDisciplines || canShowKnowledgeSubareaDisciplines || canEditKnowledgeSubareaDisciplines || canDeleteKnowledgeSubareaDisciplines || isSuperAdmin}
-                        <a use:inertia href={route('knowledge-subarea-disciplines.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('knowledge-subarea-disciplines.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Knowledge subarea disciplines.plural')}
                         </a>
                     {/if}
@@ -71,26 +115,71 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canEditKnowledgeSubareaDisciplines || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canEditKnowledgeSubareaDisciplines || isSuperAdmin
+                    ? undefined
+                    : true}
+            >
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="knowledge_subarea_id" value="Subárea de conocimiento" />
-                    <Select id="knowledge_subarea_id" items={knowledgeSubareas} bind:selectedValue={$form.knowledge_subarea_id} error={errors.knowledge_subarea_id} autocomplete="off" placeholder="Seleccione una subárea de conocimiento" required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="knowledge_subarea_id"
+                        value="Subárea de conocimiento"
+                    />
+                    <Select
+                        id="knowledge_subarea_id"
+                        items={knowledgeSubareas}
+                        bind:selectedValue={$form.knowledge_subarea_id}
+                        error={errors.knowledge_subarea_id}
+                        autocomplete="off"
+                        placeholder="Seleccione una subárea de conocimiento"
+                        required
+                    />
                 </div>
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canDeleteKnowledgeSubareaDisciplines || isSuperAdmin}
-                    <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
-                        {$_('Delete')} {$_('Knowledge subarea disciplines.singular').toLowerCase()}
+                    <button
+                        class="text-red-600 hover:underline text-left"
+                        tabindex="-1"
+                        type="button"
+                        on:click={(event) => (dialog_open = true)}
+                    >
+                        {$_('Delete')}
+                        {$_(
+                            'Knowledge subarea disciplines.singular',
+                        ).toLowerCase()}
                     </button>
                 {/if}
                 {#if canEditKnowledgeSubareaDisciplines || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Update')} {$_('Knowledge subarea disciplines.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Update')}
+                        {$_('Knowledge subarea disciplines.singular')}
                     </LoadingButton>
                 {/if}
             </div>
@@ -98,23 +187,37 @@
     </div>
     <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
             </svg>
             Eliminar recurso
         </div>
         <div slot="content">
             <p>
                 ¿Está seguro(a) que desea eliminar este recurso?
-                <br>
+                <br />
                 Todos los datos se eliminarán de forma permanente.
-                <br>
+                <br />
                 Está acción no se puede deshacer.
             </p>
         </div>
         <div slot="actions">
             <div class="p-4">
-                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button
+                    on:click={(event) => (dialog_open = false)}
+                    variant={null}>{$_('Cancel')}</Button
+                >
                 <Button variant="raised" on:click={destroy}>
                     {$_('Confirm')}
                 </Button>

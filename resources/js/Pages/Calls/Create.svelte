@@ -19,28 +19,39 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin   = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexCalls  = authUser.can.find(element => element == 'calls.index') == 'calls.index'
-    let canShowCalls   = authUser.can.find(element => element == 'calls.show') == 'calls.show'
-    let canCreateCalls = authUser.can.find(element => element == 'calls.create') == 'calls.create'
-    let canEditCalls   = authUser.can.find(element => element == 'calls.edit') == 'calls.edit'
-    let canDeleteCalls = authUser.can.find(element => element == 'calls.delete') == 'calls.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexCalls =
+        authUser.can.find((element) => element == 'calls.index') ==
+        'calls.index'
+    let canShowCalls =
+        authUser.can.find((element) => element == 'calls.show') == 'calls.show'
+    let canCreateCalls =
+        authUser.can.find((element) => element == 'calls.create') ==
+        'calls.create'
+    let canEditCalls =
+        authUser.can.find((element) => element == 'calls.edit') == 'calls.edit'
+    let canDeleteCalls =
+        authUser.can.find((element) => element == 'calls.delete') ==
+        'calls.delete'
 
     let sending = false
     let form = useForm({
-        description:        '',
-        end_date:           '',
-        start_date:         '',
-        active:             false,
+        description: '',
+        end_date: '',
+        start_date: '',
+        active: false,
         project_start_date: '',
-        project_end_date:   ''
+        project_end_date: '',
     })
 
     function submit() {
         if (canCreateCalls || isSuperAdmin) {
             $form.post(route('calls.store'), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
             })
         }
     }
@@ -48,11 +59,17 @@
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexCalls || canCreateCalls || isSuperAdmin}
-                        <a use:inertia href={route('calls.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('calls.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Calls.plural')}
                         </a>
                     {/if}
@@ -65,69 +82,168 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canCreateCalls || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canCreateCalls || isSuperAdmin ? undefined : true}
+            >
                 <div class="mt-4 mb-20">
                     <p class="text-center">Fecha de la conovicatoria</p>
                     <div class="mt-4 flex items-start justify-around">
-                        <div class="mt-4 flex {errors.start_date ? '' : 'items-center'}">
-                            <Label required labelFor="start_date" class="{errors.start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                        <div
+                            class="mt-4 flex {errors.start_date
+                                ? ''
+                                : 'items-center'}"
+                        >
+                            <Label
+                                required
+                                labelFor="start_date"
+                                class={errors.start_date
+                                    ? 'top-3.5 relative'
+                                    : ''}
+                                value="Del"
+                            />
                             <div class="ml-4">
-                                <Input id="start_date" type="date" class="mt-1 block w-full" bind:value={$form.start_date} required />
+                                <Input
+                                    id="start_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.start_date}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div class="mt-4 flex {errors.end_date ? '' : 'items-center'}">
-                            <Label required labelFor="end_date" class="{errors.end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                        <div
+                            class="mt-4 flex {errors.end_date
+                                ? ''
+                                : 'items-center'}"
+                        >
+                            <Label
+                                required
+                                labelFor="end_date"
+                                class={errors.end_date
+                                    ? 'top-3.5 relative'
+                                    : ''}
+                                value="hasta"
+                            />
                             <div class="ml-4">
-                                <Input id="end_date" type="date" class="mt-1 block w-full" bind:value={$form.end_date} required />
+                                <Input
+                                    id="end_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.end_date}
+                                    required
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
                 {#if errors.start_date || errors.end_date}
-                    <InputError message={errors.start_date || errors.end_date} />
+                    <InputError
+                        message={errors.start_date || errors.end_date}
+                    />
                 {/if}
 
-                <hr>
+                <hr />
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="description" value="Descripción" />
-                    <Textarea rows="4" id="description" error={errors.description} bind:value={$form.description} required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="description"
+                        value="Descripción"
+                    />
+                    <Textarea
+                        rows="4"
+                        id="description"
+                        error={errors.description}
+                        bind:value={$form.description}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4 mb-20">
-                    <Label required labelFor="active" value="Desea activar está convocatoria?" class="inline-block mb-4" />
-                    <br>
+                    <Label
+                        required
+                        labelFor="active"
+                        value="Desea activar está convocatoria?"
+                        class="inline-block mb-4"
+                    />
+                    <br />
                     <Switch bind:checked={$form.active} />
                     <InputError message={errors.active} />
                 </div>
 
-                <hr>
+                <hr />
 
                 <div class="mt-4">
                     <p class="text-center">Fecha de ejecución de proyectos</p>
                     <div class="mt-4 flex items-start justify-around">
-                        <div class="mt-4 flex {errors.project_start_date ? '' : 'items-center'}">
-                            <Label required labelFor="project_start_date" class="{errors.project_start_date ? 'top-3.5 relative' : ''}" value="Del" />
+                        <div
+                            class="mt-4 flex {errors.project_start_date
+                                ? ''
+                                : 'items-center'}"
+                        >
+                            <Label
+                                required
+                                labelFor="project_start_date"
+                                class={errors.project_start_date
+                                    ? 'top-3.5 relative'
+                                    : ''}
+                                value="Del"
+                            />
                             <div class="ml-4">
-                                <Input id="project_start_date" type="date" class="mt-1 block w-full" bind:value={$form.project_start_date} required />
+                                <Input
+                                    id="project_start_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.project_start_date}
+                                    required
+                                />
                             </div>
                         </div>
-                        <div class="mt-4 flex {errors.project_end_date ? '' : 'items-center'}">
-                            <Label required labelFor="project_end_date" class="{errors.project_end_date ? 'top-3.5 relative' : ''}" value="hasta" />
+                        <div
+                            class="mt-4 flex {errors.project_end_date
+                                ? ''
+                                : 'items-center'}"
+                        >
+                            <Label
+                                required
+                                labelFor="project_end_date"
+                                class={errors.project_end_date
+                                    ? 'top-3.5 relative'
+                                    : ''}
+                                value="hasta"
+                            />
                             <div class="ml-4">
-                                <Input id="project_end_date" type="date" class="mt-1 block w-full" bind:value={$form.project_end_date} required />
+                                <Input
+                                    id="project_end_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.project_end_date}
+                                    required
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
                 {#if errors.project_start_date || errors.project_end_date}
-                    <InputError message={errors.project_start_date || errors.project_end_date} />
+                    <InputError
+                        message={errors.project_start_date ||
+                            errors.project_end_date}
+                    />
                 {/if}
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canCreateCalls || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Create')} {$_('Calls.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Create')}
+                        {$_('Calls.singular')}
                     </LoadingButton>
                 {/if}
             </div>

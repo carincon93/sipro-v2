@@ -19,15 +19,30 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexProductiveSectors   = authUser.can.find(element => element == 'productive-sectors.index') == 'productive-sectors.index'
-    let canShowProductiveSectors    = authUser.can.find(element => element == 'productive-sectors.show') == 'productive-sectors.show'
-    let canCreateProductiveSectors  = authUser.can.find(element => element == 'productive-sectors.create') == 'productive-sectors.create'
-    let canEditProductiveSectors    = authUser.can.find(element => element == 'productive-sectors.edit') == 'productive-sectors.edit'
-    let canDeleteProductiveSectors  = authUser.can.find(element => element == 'productive-sectors.delete') == 'productive-sectors.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexProductiveSectors =
+        authUser.can.find((element) => element == 'productive-sectors.index') ==
+        'productive-sectors.index'
+    let canShowProductiveSectors =
+        authUser.can.find((element) => element == 'productive-sectors.show') ==
+        'productive-sectors.show'
+    let canCreateProductiveSectors =
+        authUser.can.find(
+            (element) => element == 'productive-sectors.create',
+        ) == 'productive-sectors.create'
+    let canEditProductiveSectors =
+        authUser.can.find((element) => element == 'productive-sectors.edit') ==
+        'productive-sectors.edit'
+    let canDeleteProductiveSectors =
+        authUser.can.find(
+            (element) => element == 'productive-sectors.delete',
+        ) == 'productive-sectors.delete'
 
     let dialog_open = false
-    let sending     = false
+    let sending = false
     let form = useForm({
         name: productiveSector.name,
     })
@@ -35,27 +50,35 @@
     function submit() {
         if (canEditProductiveSectors || isSuperAdmin) {
             $form.put(route('productive-sectors.update', productiveSector.id), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
-                preserveScroll: true
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
+                preserveScroll: true,
             })
         }
     }
 
     function destroy() {
         if (canDeleteProductiveSectors || isSuperAdmin) {
-            $form.delete(route('productive-sectors.destroy', productiveSector.id))
+            $form.delete(
+                route('productive-sectors.destroy', productiveSector.id),
+            )
         }
     }
 </script>
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexProductiveSectors || canShowProductiveSectors || canEditProductiveSectors || canDeleteProductiveSectors || isSuperAdmin}
-                        <a use:inertia href={route('productive-sectors.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('productive-sectors.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Productive sectors.plural')}
                         </a>
                     {/if}
@@ -68,21 +91,51 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canEditProductiveSectors || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canEditProductiveSectors || isSuperAdmin
+                    ? undefined
+                    : true}
+            >
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canDeleteProductiveSectors || isSuperAdmin}
-                    <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
-                        {$_('Delete')} {$_('Productive sectors.singular').toLowerCase()}
+                    <button
+                        class="text-red-600 hover:underline text-left"
+                        tabindex="-1"
+                        type="button"
+                        on:click={(event) => (dialog_open = true)}
+                    >
+                        {$_('Delete')}
+                        {$_('Productive sectors.singular').toLowerCase()}
                     </button>
                 {/if}
                 {#if canEditProductiveSectors || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Update')} {$_('Productive sectors.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Update')}
+                        {$_('Productive sectors.singular')}
                     </LoadingButton>
                 {/if}
             </div>
@@ -90,23 +143,37 @@
     </div>
     <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-red-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
             </svg>
             Eliminar recurso
         </div>
         <div slot="content">
             <p>
                 ¿Está seguro(a) que desea eliminar este recurso?
-                <br>
+                <br />
                 Todos los datos se eliminarán de forma permanente.
-                <br>
+                <br />
                 Está acción no se puede deshacer.
             </p>
         </div>
         <div slot="actions">
             <div class="p-4">
-                <Button on:click={event => dialog_open = false} variant={null}>{$_('Cancel')}</Button>
+                <Button
+                    on:click={(event) => (dialog_open = false)}
+                    variant={null}>{$_('Cancel')}</Button
+                >
                 <Button variant="raised" on:click={destroy}>
                     {$_('Confirm')}
                 </Button>
@@ -114,4 +181,3 @@
         </div>
     </Dialog>
 </AuthenticatedLayout>
-

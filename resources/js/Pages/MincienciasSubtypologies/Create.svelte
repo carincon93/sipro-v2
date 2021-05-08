@@ -12,18 +12,39 @@
     export let errors
     export let mincienciasTypologies
 
-    $: $title = $_('Create') + ' ' + $_('Minciencias subtypologies.singular').toLowerCase()
+    $: $title =
+        $_('Create') +
+        ' ' +
+        $_('Minciencias subtypologies.singular').toLowerCase()
 
     /**
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                       = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexMincienciasSubtypologies   = authUser.can.find(element => element == 'minciencias-subtypologies.index') == 'minciencias-subtypologies.index'
-    let canShowMincienciasSubtypologies    = authUser.can.find(element => element == 'minciencias-subtypologies.show') == 'minciencias-subtypologies.show'
-    let canCreateMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.create') == 'minciencias-subtypologies.create'
-    let canEditMincienciasSubtypologies    = authUser.can.find(element => element == 'minciencias-subtypologies.edit') == 'minciencias-subtypologies.edit'
-    let canDeleteMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.delete') == 'minciencias-subtypologies.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.index',
+        ) == 'minciencias-subtypologies.index'
+    let canShowMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.show',
+        ) == 'minciencias-subtypologies.show'
+    let canCreateMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.create',
+        ) == 'minciencias-subtypologies.create'
+    let canEditMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.edit',
+        ) == 'minciencias-subtypologies.edit'
+    let canDeleteMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.delete',
+        ) == 'minciencias-subtypologies.delete'
 
     let sending = false
     let form = useForm({
@@ -34,8 +55,8 @@
     function submit() {
         if (canCreateMincienciasSubtypologies || isSuperAdmin) {
             $form.post(route('minciencias-subtypologies.store'), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
             })
         }
     }
@@ -43,11 +64,17 @@
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexMincienciasSubtypologies || canCreateMincienciasSubtypologies || isSuperAdmin}
-                        <a use:inertia href={route('minciencias-subtypologies.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('minciencias-subtypologies.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Minciencias subtypologies.plural')}
                         </a>
                     {/if}
@@ -60,21 +87,58 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canCreateMincienciasSubtypologies || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canCreateMincienciasSubtypologies || isSuperAdmin
+                    ? undefined
+                    : true}
+            >
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
 
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="minciencias_typology_id" value="Tipología Minciencias" />
-                    <Select id="minciencias_typology_id" items={mincienciasTypologies} bind:selectedValue={$form.minciencias_typology_id} error={errors.minciencias_typology_id} autocomplete="off" placeholder="Seleccione una tipología Minciencias" required />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="minciencias_typology_id"
+                        value="Tipología Minciencias"
+                    />
+                    <Select
+                        id="minciencias_typology_id"
+                        items={mincienciasTypologies}
+                        bind:selectedValue={$form.minciencias_typology_id}
+                        error={errors.minciencias_typology_id}
+                        autocomplete="off"
+                        placeholder="Seleccione una tipología Minciencias"
+                        required
+                    />
                 </div>
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canCreateMincienciasSubtypologies || isSuperAdmin}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Create')} {$_('Minciencias subtypologies.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Create')}
+                        {$_('Minciencias subtypologies.singular')}
                     </LoadingButton>
                 {/if}
             </div>

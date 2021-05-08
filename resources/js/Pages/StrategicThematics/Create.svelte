@@ -10,26 +10,46 @@
 
     export let errors
 
-    $: $title = $_('Create') + ' ' + ' ' + $_('Strategic thematics.singular').toLowerCase()
+    $: $title =
+        $_('Create') +
+        ' ' +
+        ' ' +
+        $_('Strategic thematics.singular').toLowerCase()
 
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexStrategicThematics  = authUser.can.find(element => element == 'strategic-thematics.index') == 'strategic-thematics.index'
-    let canShowStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.show') == 'strategic-thematics.show'
-    let canCreateStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.create') == 'strategic-thematics.create'
-    let canEditStrategicThematics   = authUser.can.find(element => element == 'strategic-thematics.edit') == 'strategic-thematics.edit'
-    let canDeleteStrategicThematics = authUser.can.find(element => element == 'strategic-thematics.delete') == 'strategic-thematics.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexStrategicThematics =
+        authUser.can.find(
+            (element) => element == 'strategic-thematics.index',
+        ) == 'strategic-thematics.index'
+    let canShowStrategicThematics =
+        authUser.can.find((element) => element == 'strategic-thematics.show') ==
+        'strategic-thematics.show'
+    let canCreateStrategicThematics =
+        authUser.can.find(
+            (element) => element == 'strategic-thematics.create',
+        ) == 'strategic-thematics.create'
+    let canEditStrategicThematics =
+        authUser.can.find((element) => element == 'strategic-thematics.edit') ==
+        'strategic-thematics.edit'
+    let canDeleteStrategicThematics =
+        authUser.can.find(
+            (element) => element == 'strategic-thematics.delete',
+        ) == 'strategic-thematics.delete'
 
     let sending = false
     let form = useForm({
-        name:  '',
+        name: '',
     })
 
     function submit() {
         if (canCreateStrategicThematics || isSuperAdmin) {
             $form.post(route('strategic-thematics.store'), {
-                onStart: ()     => sending = true,
-                onFinish: ()    => sending = false,
+                onStart: () => (sending = true),
+                onFinish: () => (sending = false),
             })
         }
     }
@@ -37,11 +57,17 @@
 
 <AuthenticatedLayout>
     <header class="shadow bg-white" slot="header">
-        <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
+        <div
+            class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6"
+        >
             <div>
                 <h1>
                     {#if canIndexStrategicThematics || canCreateStrategicThematics || isSuperAdmin}
-                        <a use:inertia href={route('strategic-thematics.index')} class="text-indigo-400 hover:text-indigo-600">
+                        <a
+                            use:inertia
+                            href={route('strategic-thematics.index')}
+                            class="text-indigo-400 hover:text-indigo-600"
+                        >
                             {$_('Strategic thematics.plural')}
                         </a>
                     {/if}
@@ -54,16 +80,40 @@
 
     <div class="bg-white rounded shadow max-w-3xl">
         <form on:submit|preventDefault={submit}>
-            <fieldset class="p-8" disabled={canCreateStrategicThematics || isSuperAdmin ? undefined : true}>
+            <fieldset
+                class="p-8"
+                disabled={canCreateStrategicThematics || isSuperAdmin
+                    ? undefined
+                    : true}
+            >
                 <div class="mt-4">
-                    <Label required class="mb-4" labelFor="name" value="Nombre" />
-                    <Input id="name" type="text" class="mt-1 block w-full" bind:value={$form.name} error={errors.name} required  />
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="name"
+                        value="Nombre"
+                    />
+                    <Input
+                        id="name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        bind:value={$form.name}
+                        error={errors.name}
+                        required
+                    />
                 </div>
             </fieldset>
-            <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
+            <div
+                class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0"
+            >
                 {#if canCreateStrategicThematics}
-                    <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                        {$_('Create')} {$_('Strategic thematics.singular')}
+                    <LoadingButton
+                        loading={sending}
+                        class="btn-indigo ml-auto"
+                        type="submit"
+                    >
+                        {$_('Create')}
+                        {$_('Strategic thematics.singular')}
                     </LoadingButton>
                 {/if}
             </div>

@@ -19,12 +19,30 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                       = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
-    let canIndexMincienciasSubtypologies   = authUser.can.find(element => element == 'minciencias-subtypologies.index') == 'minciencias-subtypologies.index'
-    let canShowMincienciasSubtypologies    = authUser.can.find(element => element == 'minciencias-subtypologies.show') == 'minciencias-subtypologies.show'
-    let canCreateMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.create') == 'minciencias-subtypologies.create'
-    let canEditMincienciasSubtypologies    = authUser.can.find(element => element == 'minciencias-subtypologies.edit') == 'minciencias-subtypologies.edit'
-    let canDeleteMincienciasSubtypologies  = authUser.can.find(element => element == 'minciencias-subtypologies.delete') == 'minciencias-subtypologies.delete'
+    let isSuperAdmin =
+        authUser.roles.filter(function (role) {
+            return role.id == 1
+        }).length > 0
+    let canIndexMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.index',
+        ) == 'minciencias-subtypologies.index'
+    let canShowMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.show',
+        ) == 'minciencias-subtypologies.show'
+    let canCreateMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.create',
+        ) == 'minciencias-subtypologies.create'
+    let canEditMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.edit',
+        ) == 'minciencias-subtypologies.edit'
+    let canDeleteMincienciasSubtypologies =
+        authUser.can.find(
+            (element) => element == 'minciencias-subtypologies.delete',
+        ) == 'minciencias-subtypologies.delete'
 
     let filters = {}
 </script>
@@ -35,40 +53,69 @@
 
         <div slot="actions">
             {#if canCreateMincienciasSubtypologies || isSuperAdmin}
-                <Button on:click={() => Inertia.visit(route('minciencias-subtypologies.create'))} variant="raised">
-                    {$_('Create')} {$_('Minciencias subtypologies.singular')}
+                <Button
+                    on:click={() =>
+                        Inertia.visit(
+                            route('minciencias-subtypologies.create'),
+                        )}
+                    variant="raised"
+                >
+                    {$_('Create')}
+                    {$_('Minciencias subtypologies.singular')}
                 </Button>
             {/if}
         </div>
 
         <tr class="text-left font-bold" slot="thead">
-            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Tipología Minciencias</th>
-            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                >Nombre</th
+            >
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                >Tipología Minciencias</th
+            >
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl"
+                >Acciones</th
+            >
         </tr>
 
         <tbody slot="tbody">
             {#each mincienciasSubtypologies.data as mincienciasSubtypology (mincienciasSubtypology.id)}
                 <tr class="hover:bg-gray-100 focus-within:bg-gray-100">
                     <td class="border-t">
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                        <p
+                            class="px-6 py-4 flex items-center focus:text-indigo-500"
+                        >
                             {mincienciasSubtypology.name}
                         </p>
                     </td>
                     <td class="border-t">
-                        <p class="px-6 py-4 flex items-center focus:text-indigo-500">
+                        <p
+                            class="px-6 py-4 flex items-center focus:text-indigo-500"
+                        >
                             {mincienciasSubtypology.minciencias_typology?.name}
                         </p>
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowMincienciasSubtypologies || canEditMincienciasSubtypologies || canDeleteMincienciasSubtypologies || isSuperAdmin}
-                                <Item on:SMUI:action={() => (Inertia.visit(route('minciencias-subtypologies.edit', mincienciasSubtypology.id)))}>
+                                <Item
+                                    on:SMUI:action={() =>
+                                        Inertia.visit(
+                                            route(
+                                                'minciencias-subtypologies.edit',
+                                                mincienciasSubtypology.id,
+                                            ),
+                                        )}
+                                >
                                     <Text>{$_('View details')}</Text>
                                 </Item>
                             {:else}
                                 <Item>
-                                    <Text>{$_('You don\'t have permissions')}</Text>
+                                    <Text
+                                        >{$_(
+                                            "You don't have permissions",
+                                        )}</Text
+                                    >
                                 </Item>
                             {/if}
                         </ResourceMenu>
@@ -78,7 +125,9 @@
 
             {#if mincienciasSubtypologies.data.length === 0}
                 <tr>
-                    <td class="border-t px-6 py-4" colspan="4">{$_('No data recorded')}</td>
+                    <td class="border-t px-6 py-4" colspan="4"
+                        >{$_('No data recorded')}</td
+                    >
                 </tr>
             {/if}
         </tbody>
