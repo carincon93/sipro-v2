@@ -142,8 +142,6 @@
     </div>
 
     <DataTable class="mt-20">
-        <div slot="title">{$_('Academic centres.plural')}</div>
-
         <div slot="actions">
             {#if canCreateProjectSennovaBudgets || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('calls.projects.project-sennova-budgets.create', [call.id, project.id]))}>
