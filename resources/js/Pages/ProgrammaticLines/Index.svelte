@@ -70,7 +70,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowProgrammaticLines || canEditProgrammaticLines ||canDeleteProgrammaticLines || isSuperAdmin}
+                            {#if canShowProgrammaticLines || canEditProgrammaticLines || canDeleteProgrammaticLines || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('programmatic-lines.edit', programmaticLine.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

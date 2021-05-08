@@ -57,7 +57,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowTechnicalCommittees || canEditTechnicalCommittees ||canDeleteTechnicalCommittees || isSuperAdmin}
+                            {#if canShowTechnicalCommittees || canEditTechnicalCommittees || canDeleteTechnicalCommittees || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('technical-committees.edit', technicalCommittee.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

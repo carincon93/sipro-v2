@@ -58,7 +58,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowStrategicThematics || canEditStrategicThematics ||canDeleteStrategicThematics || isSuperAdmin}
+                            {#if canShowStrategicThematics || canEditStrategicThematics || canDeleteStrategicThematics || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('strategic-thematics.edit', strategicThematic.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

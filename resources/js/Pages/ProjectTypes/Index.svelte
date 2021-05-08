@@ -63,7 +63,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowProjectTypes || canEditProjectTypes ||canDeleteProjectTypes || isSuperAdmin}
+                            {#if canShowProjectTypes || canEditProjectTypes || canDeleteProjectTypes || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('project-types.edit', projectType.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

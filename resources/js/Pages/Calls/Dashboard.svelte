@@ -22,7 +22,7 @@
 
 <AuthenticatedLayout>
     <div class="py-12">
-        {#if canShowCalls || canEditCalls ||canDeleteCalls || isSuperAdmin}
+        {#if canShowCalls || canEditCalls || canDeleteCalls || isSuperAdmin}
             <div class="flex justify-center items-center flex-col">
                 <p>Si desea revisar, {#if canEditCalls} editar {/if} la información de la convocatoria, de clic en el siguiente botón</p>
                 <div>

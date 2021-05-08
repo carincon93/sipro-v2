@@ -36,7 +36,7 @@
         qty_months:             '',
         qty_roles:              '',
         description:            '',
-        call_sennova_role_id: null
+        call_sennova_role_id:   null
     })
 
     $: if (projectSennovaRoleInfo) {
@@ -46,7 +46,7 @@
 
     function submit() {
         if (canCreateProjectSennovaRoles || isSuperAdmin) {
-            Inertia.post(route('calls.projects.project-sennova-roles.store', [call.id, project.id]), $form, {
+            $form.post(route('calls.projects.project-sennova-roles.store', [call.id, project.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

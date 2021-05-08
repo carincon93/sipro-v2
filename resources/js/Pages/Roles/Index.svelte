@@ -57,7 +57,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowRoles || canEditRoles ||canDeleteRoles || isSuperAdmin}
+                            {#if canShowRoles || canEditRoles || canDeleteRoles || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('roles.edit', role.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

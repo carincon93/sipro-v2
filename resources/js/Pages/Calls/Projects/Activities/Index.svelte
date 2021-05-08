@@ -34,6 +34,6 @@
 
     <InfoMessage message="Si desea añadir actividades, por favor diríjase al 'Arbol de objetivos'" />
 
-    <Gantt items={activities.data} request={canShowActivities || canEditActivities ||canDeleteActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
+    <Gantt items={activities.data} request={canShowActivities || canEditActivities || canDeleteActivities || isSuperAdmin ? {'uri': 'calls.projects.activities.edit', 'params': [call.id, project.id]} : null} />
 </AuthenticatedLayout>
 

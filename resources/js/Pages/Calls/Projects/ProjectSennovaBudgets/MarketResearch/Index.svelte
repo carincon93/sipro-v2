@@ -145,7 +145,7 @@
 
                         <td class="border-t px-6 pt-6 pb-4">
                             <ResourceMenu>
-                                {#if canShowMarketResearch || canEditMarketResearch ||canDeleteMarketResearch || isSuperAdmin}
+                                {#if canShowMarketResearch || canEditMarketResearch || canDeleteMarketResearch || isSuperAdmin}
                                     <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-budgets.project-budget-batches.edit', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id])))}>
                                         <Text>{$_('View details')}</Text>
                                     </Item>

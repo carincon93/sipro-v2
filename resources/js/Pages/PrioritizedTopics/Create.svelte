@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -36,7 +35,7 @@
 
     function submit() {
         if (canCreatePrioritizedTopics || isSuperAdmin) {
-            Inertia.post(route('prioritized-topics.store'), $form, {
+            $form.post(route('prioritized-topics.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

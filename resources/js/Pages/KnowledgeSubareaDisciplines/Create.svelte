@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -34,7 +33,7 @@
 
     function submit() {
         if (canCreateKnowledgeSubareaDisciplines || isSuperAdmin) {
-            Inertia.post(route('knowledge-subarea-disciplines.store'), $form, {
+            $form.post(route('knowledge-subarea-disciplines.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

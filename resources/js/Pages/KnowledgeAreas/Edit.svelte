@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -35,7 +34,7 @@
 
     function submit() {
         if (canEditKnowledgeAreas || isSuperAdmin) {
-            Inertia.put(route('knowledge-areas.update', knowledgeArea.id), $form, {
+            $form.put(route('knowledge-areas.update', knowledgeArea.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -45,7 +44,7 @@
 
     function destroy() {
         if (canDeleteKnowledgeAreas || isSuperAdmin) {
-            Inertia.delete(route('knowledge-areas.destroy', knowledgeArea.id))
+            $form.delete(route('knowledge-areas.destroy', knowledgeArea.id))
         }
     }
 </script>
@@ -55,7 +54,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexKnowledgeAreas || canShowKnowledgeAreas || canEditKnowledgeAreas ||canDeleteKnowledgeAreas || isSuperAdmin}
+                    {#if canIndexKnowledgeAreas || canShowKnowledgeAreas || canEditKnowledgeAreas || canDeleteKnowledgeAreas || isSuperAdmin}
                         <a use:inertia href={route('knowledge-areas.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Knowledge areas.plural')}
                         </a>

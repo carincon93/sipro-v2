@@ -1,13 +1,11 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
-    import InputError from '@/Components/InputError'
     import LoadingButton from '@/Components/LoadingButton'
 
     export let errors
@@ -32,7 +30,7 @@
 
     function submit() {
         if (canCreateKnowledgeNetworks || isSuperAdmin) {
-            Inertia.post(route('knowledge-networks.store'), $form, {
+            $form.post(route('knowledge-networks.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

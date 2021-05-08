@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <Gantt items={outputs.data} request={canShowOutputs || canEditOutputs ||canDeleteOutputs || isSuperAdmin ? {'uri': 'calls.projects.outputs.edit', 'params': [call.id, project.id]} : null} />
+    <Gantt items={outputs.data} request={canShowOutputs || canEditOutputs || canDeleteOutputs || isSuperAdmin ? {'uri': 'calls.projects.outputs.edit', 'params': [call.id, project.id]} : null} />
 
     <Pagination links={outputs.links} />
 

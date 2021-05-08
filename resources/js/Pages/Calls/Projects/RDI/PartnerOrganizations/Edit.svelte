@@ -303,7 +303,7 @@
 
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowPartnerOrganizations || canEditPartnerOrganizationMembers ||canDeletePartnerOrganizations || isSuperAdmin}
+                            {#if canShowPartnerOrganizations || canEditPartnerOrganizationMembers || canDeletePartnerOrganizations || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('calls.rdi.partner-organizations.partner-organization-members.edit', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id])))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

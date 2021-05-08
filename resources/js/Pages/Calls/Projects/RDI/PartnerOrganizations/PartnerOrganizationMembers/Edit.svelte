@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -44,7 +43,7 @@
 
     function submit() {
         if (canEditPartnerOrganizationMembers || isSuperAdmin) {
-            Inertia.put(route('calls.rdi.partner-organizations.partner-organization-members.update', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id]), $form, {
+            $form.put(route('calls.rdi.partner-organizations.partner-organization-members.update', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -54,7 +53,7 @@
 
     function destroy() {
         if (canDeletetPartnerOrganizationMembers || isSuperAdmin) {
-            Inertia.delete(route('calls.rdi.partner-organizations.partner-organization-members.destroy', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id]))
+            $form.delete(route('calls.rdi.partner-organizations.partner-organization-members.destroy', [call.id, rdi.id, partnerOrganization.id, partnerOrganizationMember.id]))
         }
     }
 </script>

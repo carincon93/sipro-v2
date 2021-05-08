@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -35,7 +34,7 @@
 
     function submit() {
         if (canEditKnowledgeNetworks || isSuperAdmin) {
-            Inertia.put(route('knowledge-networks.update', knowledgeNetwork.id), $form, {
+            $form.put(route('knowledge-networks.update', knowledgeNetwork.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -45,7 +44,7 @@
 
     function destroy() {
         if (canDeleteKnowledgeNetworks || isSuperAdmin) {
-            Inertia.delete(route('knowledge-networks.destroy', knowledgeNetwork.id))
+            $form.delete(route('knowledge-networks.destroy', knowledgeNetwork.id))
         }
     }
 </script>
@@ -55,7 +54,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canIndexKnowledgeNetworks || canShowKnowledgeNetworks || canEditKnowledgeNetworks ||canDeleteKnowledgeNetworks || isSuperAdmin}
+                    {#if canIndexKnowledgeNetworks || canShowKnowledgeNetworks || canEditKnowledgeNetworks || canDeleteKnowledgeNetworks || isSuperAdmin}
                         <a use:inertia href={route('knowledge-networks.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Knowledge networks.plural')}
                         </a>

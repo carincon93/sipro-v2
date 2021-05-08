@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -32,16 +31,16 @@
     let sending = false
     let form = useForm({
         call_budget_id: '',
-        description: '',
-        justification: '',
-        value: '',
-        qty_items: ''
+        description:    '',
+        justification:  '',
+        value:          '',
+        qty_items:      ''
     })
 
     function submit() {
         if (canCreateProjectSennovaBudgets || isSuperAdmin) {
             sending = true,
-            Inertia.post(route('calls.projects.project-sennova-budgets.store', [call.id, project.id]), $form, {
+            $form.post(route('calls.projects.project-sennova-budgets.store', [call.id, project.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

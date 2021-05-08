@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -38,7 +37,7 @@
 
     function submit() {
         if (canEditKnowledgeSubareas || isSuperAdmin) {
-            Inertia.put(route('knowledge-subareas.update', knowledgeSubarea.id), $form, {
+            $form.put(route('knowledge-subareas.update', knowledgeSubarea.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -48,7 +47,7 @@
 
     function destroy() {
         if (canDeleteKnowledgeSubareas || isSuperAdmin) {
-            Inertia.delete(route('knowledge-subareas.destroy', knowledgeSubarea.id))
+            $form.delete(route('knowledge-subareas.destroy', knowledgeSubarea.id))
         }
     }
 </script>

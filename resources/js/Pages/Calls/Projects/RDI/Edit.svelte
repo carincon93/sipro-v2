@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -113,7 +112,7 @@
                 technologicalLines = []
             }
 
-            Inertia.put(route('calls.rdi.update', [call.id, rdi.id]), $form, {
+            $form.put(route('calls.rdi.update', [call.id, rdi.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -127,9 +126,9 @@
 
     function destroy() {
         if (canDeleteRDI || isSuperAdmin) {
-            Inertia.visit(route('calls.rdi.destroy', [call.id, rdi.id]), {
+            $form.visit(route('calls.rdi.destroy', [call.id, rdi.id]), {
                 method: 'DELETE',
-                data: values,
+                data:   values,
             })
         }
     }

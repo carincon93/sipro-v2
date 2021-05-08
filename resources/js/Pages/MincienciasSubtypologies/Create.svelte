@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -34,7 +33,7 @@
 
     function submit() {
         if (canCreateMincienciasSubtypologies || isSuperAdmin) {
-            Inertia.post(route('minciencias-subtypologies.store'), $form, {
+            $form.post(route('minciencias-subtypologies.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

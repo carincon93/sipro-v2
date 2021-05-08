@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -36,7 +35,7 @@
 
     function submit() {
         if (canEditRegional || isSuperAdmin) {
-            Inertia.put(route('regional.update', regional.id), $form, {
+            $form.put(route('regional.update', regional.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -46,7 +45,7 @@
 
     function destroy() {
         if (canDeleteRegional || isSuperAdmin) {
-            Inertia.delete(route('regional.destroy', regional.id))
+            $form.delete(route('regional.destroy', regional.id))
         }
     }
 </script>

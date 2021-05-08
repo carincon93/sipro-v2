@@ -194,7 +194,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowProjectSennovaBudgets || canEditProjectSennovaBudgets ||canDeleteProjectSennovaBudgets || isSuperAdmin}
+                            {#if canShowProjectSennovaBudgets || canEditProjectSennovaBudgets || canDeleteProjectSennovaBudgets || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

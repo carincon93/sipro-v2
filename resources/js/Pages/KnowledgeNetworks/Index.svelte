@@ -56,7 +56,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowKnowledgeNetworks || canEditKnowledgeNetworks ||canDeleteKnowledgeNetworks || isSuperAdmin}
+                            {#if canShowKnowledgeNetworks || canEditKnowledgeNetworks || canDeleteKnowledgeNetworks || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('knowledge-networks.edit', knowledgeNetwork.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

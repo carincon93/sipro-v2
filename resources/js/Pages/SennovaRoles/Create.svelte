@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -38,7 +37,7 @@
 
     function submit() {
         if (canCreateSennovaRoles || isSuperAdmin) {
-            Inertia.post(route('sennova-roles.store'), $form, {
+            $form.post(route('sennova-roles.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

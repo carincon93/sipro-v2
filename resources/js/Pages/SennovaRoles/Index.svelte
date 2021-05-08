@@ -57,7 +57,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowSennovaRoles || canEditSennovaRoles ||canDeleteSennovaRoles || isSuperAdmin}
+                            {#if canShowSennovaRoles || canEditSennovaRoles || canDeleteSennovaRoles || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('sennova-roles.edit', sennovaRole.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

@@ -64,7 +64,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowRegional || canEditRegional ||canDeleteRegional || isSuperAdmin}
+                            {#if canShowRegional || canEditRegional || canDeleteRegional || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('regional.edit', regional.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

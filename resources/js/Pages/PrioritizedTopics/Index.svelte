@@ -69,7 +69,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowPrioritizedTopics || canEditPrioritizedTopics ||canDeletePrioritizedTopics || isSuperAdmin}
+                            {#if canShowPrioritizedTopics || canEditPrioritizedTopics || canDeletePrioritizedTopics || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('prioritized-topics.edit', prioritizedTopic.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

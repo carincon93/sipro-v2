@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { useForm, page } from '@inertiajs/inertia-svelte'
     import { onMount } from 'svelte'
     import { route } from '@/Utils'
@@ -70,7 +69,7 @@
 
     function submitIndirectEffect() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), $formIndirectEffect, {
+            $formIndirectEffect.post(route('projects.indirect_effect', {project:project.id, direct_effect: $formIndirectEffect.direct_effect_id}), {
                 onStart: ()     =>  { sending = true },
                 onSuccess: ()   =>  { closeDialog() },
                 onFinish: ()    =>  { sending = false },
@@ -101,7 +100,7 @@
 
     function submitDirectEffect() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.direct_effect', {project:project.id, direct_effect: $formDirectEffect.id}), $formDirectEffect, {
+            $formDirectEffect.post(route('projects.direct_effect', {project:project.id, direct_effect: $formDirectEffect.id}), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },
@@ -131,7 +130,7 @@
 
     function submitStatementProblem() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.problem_statement', project.id), $formStatementProblem, {
+            $formStatementProblem.post(route('projects.problem_statement', project.id), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },
@@ -162,7 +161,7 @@
 
     function submitDirectCause() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.direct_cause', {project:project.id, direct_cause: $formDirectCause.id}), $formDirectCause, {
+            $formDirectCause.post(route('projects.direct_cause', {project:project.id, direct_cause: $formDirectCause.id}), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },
@@ -200,7 +199,7 @@
 
     function submitIndirectCause() {
         if (canCreateOrUpdate == undefined) {
-            Inertia.post(route('projects.indirect_cause', {project:project.id, direct_cause: $formIndirectCause.direct_cause_id}), $formIndirectCause, {
+            $formIndirectCause.post(route('projects.indirect_cause', {project:project.id, direct_cause: $formIndirectCause.direct_cause_id}), {
                 onStart: ()     => { sending = true },
                 onSuccess: ()   => { closeDialog() },
                 onFinish: ()    => { sending = false },

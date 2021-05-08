@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -33,19 +32,19 @@
     let dialog_open = false
     let sending     = false
     let form = useForm({
-        name:                       researchGroup.name,
-        acronym:                    researchGroup.acronym,
-        email:                      researchGroup.email,
-        gruplac_link:               researchGroup.gruplac_link,
-        minciencias_code:           researchGroup.minciencias_code,
+        name:                    researchGroup.name,
+        acronym:                 researchGroup.acronym,
+        email:                   researchGroup.email,
+        gruplac_link:            researchGroup.gruplac_link,
+        minciencias_code:        researchGroup.minciencias_code,
         minciencias_category:    {value: researchGroup.minciencias_category, label: mincienciasCategories.find(item => item.value == researchGroup.minciencias_category)?.label},
-        academic_centre_id:         researchGroup.academic_centre_id,
+        academic_centre_id:      researchGroup.academic_centre_id,
 
     })
 
     function submit() {
         if (canEditResearchGroups || isSuperAdmin) {
-            Inertia.put(route('research-groups.update', researchGroup.id), $form, {
+            $form.put(route('research-groups.update', researchGroup.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -55,7 +54,7 @@
 
     function destroy() {
         if (canDeleteResearchGroups || isSuperAdmin) {
-            Inertia.delete(route('research-groups.destroy', researchGroup.id))
+            $form.delete(route('research-groups.destroy', researchGroup.id))
         }
     }
 </script>
@@ -65,7 +64,7 @@
         <div class="flex items-center justify-between lg:px-8 max-w-7xl mx-auto px-4 py-6 sm:px-6">
             <div>
                 <h1>
-                    {#if canShowResearchGroups || canEditResearchGroups ||canDeleteResearchGroups || isSuperAdmin}
+                    {#if canShowResearchGroups || canEditResearchGroups || canDeleteResearchGroups || isSuperAdmin}
                         <a use:inertia href={route('research-groups.index')} class="text-indigo-400 hover:text-indigo-600">
                             {$_('Research groups.plural')}
                         </a>

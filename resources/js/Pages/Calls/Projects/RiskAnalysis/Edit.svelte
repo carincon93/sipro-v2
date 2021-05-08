@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -49,7 +48,7 @@
 
     function submit() {
         if (canEditRiskAnalysis || isSuperAdmin) {
-            Inertia.put(route('calls.projects.risk-analysis.update', [call.id, project.id, riskAnalysis.id]), $form, {
+            $form.put(route('calls.projects.risk-analysis.update', [call.id, project.id, riskAnalysis.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -59,7 +58,7 @@
 
     function destroy() {
         if (canDeleteRiskAnalysis || isSuperAdmin) {
-            Inertia.delete(route('calls.projects.risk-analysis.destroy', [call.id, project.id, riskAnalysis.id]))
+            $form.delete(route('calls.projects.risk-analysis.destroy', [call.id, project.id, riskAnalysis.id]))
         }
     }
 </script>

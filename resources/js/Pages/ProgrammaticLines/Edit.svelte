@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -41,7 +40,7 @@
 
     function submit() {
         if (canEditProgrammaticLines || isSuperAdmin) {
-            Inertia.put(route('programmatic-lines.update', programmaticLine.id), $form, {
+            $form.put(route('programmatic-lines.update', programmaticLine.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -51,7 +50,7 @@
 
     function destroy() {
         if (canDeleteProgrammaticLines|| isSuperAdmin) {
-            Inertia.delete(route('programmatic-lines.destroy', programmaticLine.id))
+            $form.delete(route('programmatic-lines.destroy', programmaticLine.id))
         }
     }
 </script>

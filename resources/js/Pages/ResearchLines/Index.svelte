@@ -69,7 +69,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowResearchLines || canEditResearchLines ||canDeleteResearchLines || isSuperAdmin}
+                            {#if canShowResearchLines || canEditResearchLines || canDeleteResearchLines || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('research-lines.edit', researchLine.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

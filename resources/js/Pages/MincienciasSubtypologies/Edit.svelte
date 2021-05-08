@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -38,7 +37,7 @@
 
     function submit() {
         if (canEditMincienciasSubtypologies || isSuperAdmin) {
-            Inertia.put(route('minciencias-subtypologies.update', mincienciasSubtypology.id), $form, {
+            $form.put(route('minciencias-subtypologies.update', mincienciasSubtypology.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -48,7 +47,7 @@
 
     function destroy() {
         if (canDeleteMincienciasSubtypologies || isSuperAdmin) {
-            Inertia.delete(route('minciencias-subtypologies.destroy', mincienciasSubtypology.id))
+            $form.delete(route('minciencias-subtypologies.destroy', mincienciasSubtypology.id))
         }
     }
 </script>

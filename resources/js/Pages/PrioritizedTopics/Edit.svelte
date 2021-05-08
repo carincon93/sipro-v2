@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -40,7 +39,7 @@
 
     function submit() {
         if (canEditPrioritizedTopics ||isSuperAdmin) {
-            Inertia.put(route('prioritized-topics.update', prioritizedTopic.id), $form, {
+            $form.put(route('prioritized-topics.update', prioritizedTopic.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -50,7 +49,7 @@
 
     function destroy() {
         if (canDeletePrioritizedTopics ||isSuperAdmin) {
-            Inertia.delete(route('prioritized-topics.destroy', prioritizedTopic.id))
+            $form.delete(route('prioritized-topics.destroy', prioritizedTopic.id))
         }
     }
 </script>

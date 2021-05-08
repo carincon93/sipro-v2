@@ -62,7 +62,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowMincienciasSubtypologies || canEditMincienciasSubtypologies ||canDeleteMincienciasSubtypologies || isSuperAdmin}
+                            {#if canShowMincienciasSubtypologies || canEditMincienciasSubtypologies || canDeleteMincienciasSubtypologies || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('minciencias-subtypologies.edit', mincienciasSubtypology.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

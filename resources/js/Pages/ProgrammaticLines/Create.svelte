@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -37,7 +36,7 @@
 
     function submit() {
         if (canCreateProgrammaticLines || isSuperAdmin) {
-            Inertia.post(route('programmatic-lines.store'), $form, {
+            $form.post(route('programmatic-lines.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -28,7 +27,7 @@
 
     function submit() {
         if (canCreateTechnicalCommittees || isSuperAdmin) {
-                Inertia.post(route('technical-committees.store'), $form, {
+            $form.post(route('technical-committees.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

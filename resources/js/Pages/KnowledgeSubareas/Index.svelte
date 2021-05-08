@@ -62,7 +62,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowKnowledgeSubareas || canEditKnowledgeSubareas ||canDeleteKnowledgeSubareas || isSuperAdmin}
+                            {#if canShowKnowledgeSubareas || canEditKnowledgeSubareas || canDeleteKnowledgeSubareas || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('knowledge-subareas.edit', knowledgeSubarea.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

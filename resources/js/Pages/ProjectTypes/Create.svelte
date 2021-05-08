@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -34,7 +33,7 @@
     })
 
     function submit() {
-        Inertia.post(route('project-types.store'), $form, {
+        $form.post(route('project-types.store'), {
             onStart: ()     => sending = true,
             onFinish: ()    => sending = false,
         })

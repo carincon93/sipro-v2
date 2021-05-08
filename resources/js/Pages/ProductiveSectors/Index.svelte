@@ -59,7 +59,7 @@
                     </td>
                     <td class="border-t td-actions">
                         <ResourceMenu>
-                            {#if canShowProductiveSectors || canEditProductiveSectors ||canDeleteProductiveSectors || isSuperAdmin}
+                            {#if canShowProductiveSectors || canEditProductiveSectors || canDeleteProductiveSectors || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('productive-sectors.edit', productiveSector.id)))}>
                                     <Text>{$_('View details')}</Text>
                                 </Item>

@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -37,8 +36,6 @@
     let canEditUsers    = authUser.can.find(element => element == 'users.edit') == 'users.edit'
     let canDeleteUsers  = authUser.can.find(element => element == 'users.delete') == 'users.delete'
 
-    console.log(userRoles);
-
     let dialog_open = false
     let sending     = false
     let form = useForm({
@@ -56,7 +53,7 @@
 
     function submit() {
         if (canEditUsers || isSuperAdmin) {
-            Inertia.put(route('users.update', user.id), $form, {
+            $form.put(route('users.update', user.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -66,7 +63,7 @@
 
     function destroy() {
         if (canDeleteUsers || isSuperAdmin) {
-            Inertia.delete(route('users.destroy', user.id))
+            $form.delete(route('users.destroy', user.id))
         }
     }
 </script>

@@ -50,7 +50,7 @@
 
     function submit() {
         if (canEditCalls || isSuperAdmin) {
-            Inertia.put(route('calls.update', call.id), $form, {
+            $form.put(route('calls.update', call.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })
@@ -63,7 +63,7 @@
 
     function destroy() {
         if (canDeleteCalls || isSuperAdmin) {
-            Inertia.visit(route('calls.destroy', [call.id]), {
+            $form.visit(route('calls.destroy', [call.id]), {
                 method: 'DELETE',
                 data: values,
             })
