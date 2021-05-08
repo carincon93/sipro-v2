@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -42,7 +41,7 @@
 
     function submit() {
         if (canCreateOutputs || isSuperAdmin) {
-            Inertia.post(route('calls.projects.outputs.store', [call.id, project.id]), $form, {
+            $form.post(route('calls.projects.outputs.store', [call.id, project.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

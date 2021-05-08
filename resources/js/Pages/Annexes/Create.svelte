@@ -29,14 +29,14 @@
 
     let sending = false
     let form = useForm({
-        name:  '',
-        description: '',
-        programmatic_line_id: [],
+        name:                   '',
+        description:            '',
+        programmatic_line_id:   [],
     })
 
     function submit() {
         if (canCreateAnnexes || isSuperAdmin) {
-            Inertia.post(route('annexes.store'), $form, {
+            $form.post(route('annexes.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

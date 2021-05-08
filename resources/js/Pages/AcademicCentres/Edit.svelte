@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -38,7 +37,7 @@
 
     function submit() {
         if (canEditAcademicCentres || isSuperAdmin) {
-            Inertia.put(route('academic-centres.update', academicCentre.id), $form, {
+            $form.put(route('academic-centres.update', academicCentre.id), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -48,7 +47,7 @@
 
     function destroy() {
         if (canDeleteAcademicCentres || isSuperAdmin) {
-            Inertia.delete(route('academic-centres.destroy', academicCentre.id))
+            $form.delete(route('academic-centres.destroy', academicCentre.id))
         }
     }
 </script>

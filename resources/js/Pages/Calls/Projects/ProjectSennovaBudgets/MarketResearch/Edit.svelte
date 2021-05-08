@@ -1,10 +1,9 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
+    import LinearProgress from '@smui/linear-progress'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
-    import { afterUpdate } from 'svelte'
 
     import Input from '@/Components/Input'
     import InputError from '@/Components/InputError'
@@ -14,6 +13,7 @@
     import File from '@/Components/File'
     import Switch from '@/Components/Switch'
     import Dialog from '@/Components/Dialog'
+import { onMount } from 'svelte';
 
     export let errors
     export let call
@@ -37,58 +37,40 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
+        _method: 'put',
         requires_third_market_research: projectBudgetBatch.market_research[2] || errors.third_price_quote || errors.third_company_name || errors.third_price_quote_file ? true : false,
-        call_budget_id: projectSennovaBudget.call_budget.id,
-        qty_items: projectBudgetBatch.qty_items,
-        fact_sheet: '',
+        call_budget_id:                 projectSennovaBudget.call_budget.id,
+        qty_items:                      projectBudgetBatch.qty_items,
+        fact_sheet:                     null,
 
-        first_market_research_id: projectBudgetBatch.market_research[0].id,
-        first_price_quote: projectBudgetBatch.market_research[0].price_quote,
-        first_company_name: projectBudgetBatch.market_research[0].company_name,
-        first_price_quote_file: '',
+        first_market_research_id:   projectBudgetBatch.market_research[0].id,
+        first_price_quote:          projectBudgetBatch.market_research[0].price_quote,
+        first_company_name:         projectBudgetBatch.market_research[0].company_name,
+        first_price_quote_file:     null,
 
-        second_market_research_id: projectBudgetBatch.market_research[1].id,
-        second_price_quote: projectBudgetBatch.market_research[1].price_quote,
-        second_company_name: projectBudgetBatch.market_research[1].company_name,
-        second_price_quote_file: '',
+        second_market_research_id:  projectBudgetBatch.market_research[1].id,
+        second_price_quote:         projectBudgetBatch.market_research[1].price_quote,
+        second_company_name:        projectBudgetBatch.market_research[1].company_name,
+        second_price_quote_file:    null,
 
-        third_market_research_id: projectBudgetBatch.market_research[2]?.id ?? '',
-        third_price_quote: projectBudgetBatch.market_research[2]?.price_quote ?? '',
-        third_company_name: projectBudgetBatch.market_research[2]?.company_name ?? '',
-        third_price_quote_file: '',
+        third_market_research_id:   projectBudgetBatch.market_research[2]?.id ?? null,
+        third_price_quote:          projectBudgetBatch.market_research[2]?.price_quote ?? null,
+        third_company_name:         projectBudgetBatch.market_research[2]?.company_name ?? null,
+        third_price_quote_file:     null,
     })
 
     function submit() {
         if (canEditMarketResearch || isSuperAdmin) {
-            let formData = new FormData()
-            formData.append('_method', 'put')
-            formData.append('call_budget_id', $form.call_budget_id)
-            formData.append('qty_items', $form.qty_items)
-            formData.append('fact_sheet', $form.fact_sheet)
-
-            formData.append('first_market_research_id', $form.first_market_research_id)
-            formData.append('first_price_quote', $form.first_price_quote)
-            formData.append('first_company_name', $form.first_company_name)
-            formData.append('first_price_quote_file', $form.first_price_quote_file)
-
-            formData.append('second_market_research_id', $form.second_market_research_id)
-            formData.append('second_price_quote', $form.second_price_quote)
-            formData.append('second_company_name', $form.second_company_name)
-            formData.append('second_price_quote_file', $form.second_price_quote_file)
-
-            formData.append('requires_third_market_research', $form.requires_third_market_research)
-            formData.append('third_market_research_id', $form.third_market_research_id)
             if ($form.requires_third_market_research) {
-                formData.append('third_price_quote', $form.third_price_quote)
-                formData.append('third_company_name', $form.third_company_name)
-                formData.append('third_price_quote_file', $form.third_price_quote_file)
+
             }
 
             sending = true,
-            Inertia.post(route('calls.projects.project-sennova-budgets.project-budget-batches.update', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]), formData, {
-                onStart: ()     => sending = true,
-                onFinish: ()    => {
-                    sending     = false
+            $form.post(route('calls.projects.project-sennova-budgets.project-budget-batches.update', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]), {
+                forceFormData: true,
+                onStart: ()   => sending = true,
+                onFinish: ()  => {
+                    sending   = false
                 },
                 onError: () => {
                     $form.requires_third_market_research = errors.third_price_quote || errors.third_company_name || errors.third_price_quote_file ? true : false
@@ -100,14 +82,38 @@
 
     function destroy() {
         if (canDeleteMarketResearch || isSuperAdmin) {
-            Inertia.delete(route('calls.projects.project-sennova-budgets.project-budget-batches.destroy', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]))
+            $form.delete(route('calls.projects.project-sennova-budgets.project-budget-batches.destroy', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]))
         }
     }
 
+    let progress = 0;
+    let closed = false;
+    let timer;
+    $: progress
+
+    $: if ($form.progress) {
+        progress = 0;
+        closed = false;
+        clearInterval(timer);
+        progress += ($form.progress.percentage / 100);
+        console.log(progress);
+
+        if (progress >= 1) {
+            progress = 1;
+            closed = true;
+            clearInterval(timer);
+        }
+    }
+
+    // let progress = 0
+    // $: if ($form.progress) {
+    //     progress =
+    // }
+
+    // $: console.log(progress);
+
     let average
-    afterUpdate(() => {
-        average = ((parseInt($form.first_price_quote) + parseInt($form.second_price_quote) + (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? parseInt($form.third_price_quote) : 0)) / (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? 3 : 2))
-    })
+    $: average = ((parseInt($form.first_price_quote) + parseInt($form.second_price_quote) + (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? parseInt($form.third_price_quote) : 0)) / (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? 3 : 2))
 </script>
 
 <AuthenticatedLayout>
@@ -211,6 +217,9 @@
                     </div>
                 {/if}
             </fieldset>
+            {#if $form.progress}
+                {$form.progress.percentage}%
+            {/if}
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteMarketResearch || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>

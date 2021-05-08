@@ -29,8 +29,8 @@ class MarketResearchRequest extends FormRequest
                 'first_company_name'      => ['required', 'max:255'],
                 'first_price_quote_file'  => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
-                'second_price_quote'       => ['required', 'numeric', 'min:0'],
-                'second_company_name'      => ['required', 'max:255'],
+                'second_price_quote'      => ['required', 'numeric', 'min:0'],
+                'second_company_name'     => ['required', 'max:255'],
                 'second_price_quote_file'  => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
                 'third_price_quote'       => ['nullable', 'numeric', 'min:0'],
@@ -43,9 +43,9 @@ class MarketResearchRequest extends FormRequest
                 'first_company_name'      => ['required', 'max:255'],
                 'first_price_quote_file'  => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
-                'second_price_quote'       => ['required', 'numeric', 'min:0'],
-                'second_company_name'      => ['required', 'max:255'],
-                'second_price_quote_file'  => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
+                'second_price_quote'      => ['required', 'numeric', 'min:0'],
+                'second_company_name'     => ['required', 'max:255'],
+                'second_price_quote_file' => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
                 'third_price_quote'       => ['nullable', 'numeric', 'min:0'],
                 'third_company_name'      => ['nullable', 'max:255'],

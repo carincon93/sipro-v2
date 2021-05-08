@@ -1,8 +1,6 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { page } from '@inertiajs/inertia-svelte'
-    import { Inertia } from '@inertiajs/inertia'
-    import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
     import Pagination from '@/Components/Pagination'

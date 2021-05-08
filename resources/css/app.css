@@ -28,6 +28,11 @@ text {
     font-size: 10px;
 }
 
+progress {
+    height: 8px;
+    width: 100%;
+}
+
 .bg-mistyrose {
     background-color: mistyrose;
 }
@@ -141,6 +146,12 @@ fieldset[disabled] .selectedItem {
 @keyframes spinning {
     0% { transform: rotate(0deg) }
     100% { transform: rotate(360deg) }
+}
+
+.nprogress-busy .snippet {
+    opacity: 1;
+    visibility: visible;
+    animation: dot-stretching-after 2s infinite ease-in;
 }
 
 

@@ -13,6 +13,7 @@
 <style>
     :global(.mdc-button) {
         height: auto;
+        min-height: 36px;
     }
 </style>
 

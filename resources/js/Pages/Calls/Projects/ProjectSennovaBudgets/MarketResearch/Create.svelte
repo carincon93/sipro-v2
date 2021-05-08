@@ -1,5 +1,4 @@
 <script>
-    import { Inertia } from '@inertiajs/inertia'
     import { useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -20,9 +19,6 @@
     export let dialogOpen
 
     export let sending = false
-
-
-    // $: $title = $_('Create') + ' ' + $_('Market research.singular').toLowerCase()
 
     /**
      * Permisos
@@ -55,27 +51,12 @@
 
     function submit() {
         if (canCreateMarketResearch || isSuperAdmin) {
-            let formData = new FormData()
-            formData.append('call_budget_id', $form.call_budget_id)
-            formData.append('qty_items', $form.qty_items)
-            formData.append('fact_sheet', $form.fact_sheet)
-
-            formData.append('first_price_quote', $form.first_price_quote)
-            formData.append('first_company_name', $form.first_company_name)
-            formData.append('first_price_quote_file', $form.first_price_quote_file)
-
-            formData.append('second_price_quote', $form.second_price_quote)
-            formData.append('second_company_name', $form.second_company_name)
-            formData.append('second_price_quote_file', $form.second_price_quote_file)
-
             if ($form.requires_third_market_research) {
-                formData.append('third_price_quote', $form.third_price_quote)
-                formData.append('third_company_name', $form.third_company_name)
-                formData.append('third_price_quote_file', $form.third_price_quote_file)
+
             }
 
             sending = true,
-            Inertia.post(route('calls.projects.project-sennova-budgets.project-budget-batches.store', [call.id, project.id, projectSennovaBudget]), formData, {
+            $form.post(route('calls.projects.project-sennova-budgets.project-budget-batches.store', [call.id, project.id, projectSennovaBudget]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => {
                     sending     = false,
@@ -85,30 +66,16 @@
                     $form.requires_third_market_research = errors.third_price_quote || errors.third_company_name || errors.third_price_quote_file ? true : false
                 },
                 onSuccess: () => {
-                    $form.qty_items = '',
-                    $form.fact_sheet = '',
-                    $form.first_price_quote = '',
-                    $form.first_company_name = '',
-                    $form.first_price_quote_file = '',
-                    $form.second_price_quote = '',
-                    $form.second_company_name = '',
-                    $form.second_price_quote_file = '',
-                    $form.third_price_quote = '',
-                    $form.third_company_name = '',
-                    $form.third_price_quote_file = '',
-                    document.getElementById('fact_sheet').value ? document.getElementById('fact_sheet').value                       = '' : null
-                    document.getElementById('first_price_quote_file') ? document.getElementById('first_price_quote_file').value     = '' : null
-                    document.getElementById('second_price_quote_file') ? document.getElementById('second_price_quote_file').value   = '' : null
-                    document.getElementById('third_price_quote_file') ? document.getElementById('third_price_quote_file').value     = '' : null
+                    $form.reset()
                 },
             })
         }
     }
 
     let average
-    afterUpdate(() => {
-        average = ((parseInt($form.first_price_quote) + parseInt($form.second_price_quote) + (parseInt($form.third_price_quote) > 0 ? parseInt($form.third_price_quote) : 0)) / (parseInt($form.third_price_quote) > 0 ? 3 : 2))
-    })
+    // afterUpdate(() => {
+        $: average = ((parseInt($form.first_price_quote) + parseInt($form.second_price_quote) + (parseInt($form.third_price_quote) > 0 ? parseInt($form.third_price_quote) : 0)) / (parseInt($form.third_price_quote) > 0 ? 3 : 2))
+    // })
 </script>
 
 <form on:submit|preventDefault={submit} id="market-reseach-form">
@@ -181,7 +148,13 @@
                 <File id="third_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.third_price_quote_file} error={errors.third_price_quote_file} required />
             </div>
         {/if}
-        </fieldset>
+
+        {#if $form.progress}
+            <progress value={$form.progress.percentage} max="100" class="mt-4">
+                {$form.progress.percentage}%
+            </progress>
+        {/if}
+    </fieldset>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
         <p class="break-all w-72">
             Valor promedio: ${ average > 0 ? new Intl.NumberFormat('de-DE').format(average) : 0 } COP

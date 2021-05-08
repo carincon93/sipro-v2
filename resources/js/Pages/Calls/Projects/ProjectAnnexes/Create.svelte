@@ -43,7 +43,12 @@
 
 <form on:submit|preventDefault={submit} class="mt-4 p-4">
     {#if projectAnnexes.data.filter(function(i) { return i.annexe_id == annexe.id}).length > 0 }
-        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, annexe.id])}>{annexe.name}</a>
+        <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-annexes.download', [call.id, project.id, annexe.id])}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            {annexe.name}
+        </a>
     {/if}
     <fieldset disabled={canCreateProjectAnnexes && !sending || canEditProjectAnnexes && !sending || isSuperAdmin && !sending ? undefined : true}>
         <div>

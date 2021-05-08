@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -40,7 +39,7 @@
 
     function submit() {
         if (canEditCallSennovaRoles || isSuperAdmin) {
-            Inertia.put(route('calls.call-sennova-roles.update', [call.id, callSennovaRole.id]), $form, {
+            $form.put(route('calls.call-sennova-roles.update', [call.id, callSennovaRole.id]), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -50,7 +49,7 @@
 
     function destroy() {
         if (canDeleteCallSennovaRoles || isSuperAdmin) {
-            Inertia.delete(route('calls.call-sennova-roles.destroy', [call.id, callSennovaRole.id]))
+            $form.delete(route('calls.call-sennova-roles.destroy', [call.id, callSennovaRole.id]))
         }
     }
 </script>

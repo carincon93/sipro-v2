@@ -37,7 +37,7 @@
 
     function submit() {
         if (canCreateAcademicPrograms || isSuperAdmin) {
-            Inertia.post(route('academic-programs.store'), $form, {
+            $form.post(route('academic-programs.store'), {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
             })

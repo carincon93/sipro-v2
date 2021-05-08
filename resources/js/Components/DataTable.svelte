@@ -5,6 +5,13 @@
     }
 </script>
 
+<style>
+    :global(.data-table td.border-t:last-child) {
+        text-align: center;
+        width: 150px;
+    }
+</style>
+
 <div {...props}>
     <h1 class="mb-8 font-bold text-center text-3xl">
         <slot name="title" />
@@ -17,7 +24,7 @@
         <slot name="actions" />
     </div>
     <div class="bg-white rounded shadow">
-        <table class="w-full whitespace-no-wrap">
+        <table class="w-full whitespace-no-wrap data-table">
             <slot name="thead" />
             <slot name="tbody" />
             <slot name="tfoot" />

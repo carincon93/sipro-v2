@@ -10,6 +10,13 @@
     }
 </script>
 
+<style>
+    :global(.mdc-button) {
+        height: auto;
+        min-height: 36px;
+    }
+</style>
+
 <Button {...props} {href} variant={variant} height="100px" action={null} on:click>
     <Label>
         <slot />

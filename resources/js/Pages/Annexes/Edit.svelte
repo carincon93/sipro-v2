@@ -1,6 +1,5 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
-    import { Inertia } from '@inertiajs/inertia'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
@@ -24,7 +23,7 @@
      * Permisos
      */
     let authUser = $page.props.auth.user
-    let isSuperAdmin                = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
+    let isSuperAdmin       = authUser.roles.filter(function(role) {return role.id == 1}).length > 0
     let canIndexAnnexes    = authUser.can.find(element => element == 'annexes.index') == 'annexes.index'
     let canShowAnnexes     = authUser.can.find(element => element == 'annexes.show') == 'annexes.show'
     let canCreateAnnexes   = authUser.can.find(element => element == 'annexes.create') == 'annexes.create'
@@ -34,14 +33,14 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
-        name:  annexe.name,
-        description: annexe.description,
-        programmatic_line_id: annexeProgrammaticLines,
+        name:                   annexe.name,
+        description:            annexe.description,
+        programmatic_line_id:   annexeProgrammaticLines,
     })
 
     function submit() {
         if (canEditAnnexes || isSuperAdmin) {
-            Inertia.put(route('annexes.update', annexe.id), $form, {
+            $form.put(route('annexes.update', annexe.id),  {
                 onStart: ()     => sending = true,
                 onFinish: ()    => sending = false,
                 preserveScroll: true
@@ -51,7 +50,7 @@
 
     function destroy() {
         if (canDeleteAnnexes || isSuperAdmin) {
-            Inertia.delete(route('annexes.destroy', annexe.id))
+            $form.delete(route('annexes.destroy', annexe.id))
         }
     }
 </script>

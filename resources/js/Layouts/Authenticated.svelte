@@ -17,12 +17,21 @@
     import Dialog from '@/Components/Dialog'
     import Button from '@/Components/Button'
     import { Inertia } from '@inertiajs/inertia';
+    import Loading from '@/Components/Loading.svelte'
 
     let dialog_open = false
     let showingNavigationDropdown = false
 
     let authUser        = $page.props.auth.user
     let isSuperAdmin    = authUser.roles.filter(function(role) {return role.id == 1;}).length > 0
+
+    let loading = true
+    Inertia.on('start', () => {
+        loading = false
+    })
+    Inertia.on('finish', () => {
+        loading = true
+    })
 
     $: isUrl = (...urls) => {
         return urls.filter(url => $page.url.match(url)).length
@@ -150,6 +159,7 @@
         <!-- Page Content -->
         <main class="lg:px-8 max-w-7xl md:p-12 mx-auto px-4 py-8 sm:px-6">
             <FlashMessages />
+            <Loading {loading} />
             <slot />
         </main>
     </div>
