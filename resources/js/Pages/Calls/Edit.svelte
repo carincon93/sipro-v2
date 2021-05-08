@@ -57,15 +57,14 @@
         }
     }
 
-    let values = {
+    let deleteForm = useForm({
         password: ''
-    }
+    })
 
     function destroy() {
         if (canDeleteCalls || isSuperAdmin) {
-            $form.visit(route('calls.destroy', [call.id]), {
-                method: 'DELETE',
-                data: values,
+            $deleteForm.delete(route('calls.destroy', [call.id]), {
+                preserveScroll: true
             })
         }
     }
@@ -186,7 +185,7 @@
 
             <form on:submit|preventDefault={destroy} id="delete-rdi" class="mt-20 mb-28">
                 <Label for="password" value="Ingrese su contraseña para confirmar que desea eliminar permanentemente esta convocatoria." />
-                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
+                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={$deleteForm.password} required />
             </form>
         </div>
         <div slot="actions">

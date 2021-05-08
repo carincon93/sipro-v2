@@ -120,15 +120,15 @@
         }
     }
 
-    let values = {
+    let deleteForm = useForm({
         password: ''
-    }
+        }
+    )
 
     function destroy() {
         if (canDeleteRDI || isSuperAdmin) {
-            $form.visit(route('calls.rdi.destroy', [call.id, rdi.id]), {
-                method: 'DELETE',
-                data:   values,
+            $deleteForm.delete(route('calls.rdi.destroy', [call.id, rdi.id]), {
+                preserveScroll: true
             })
         }
     }
@@ -683,7 +683,7 @@
 
             <form on:submit|preventDefault={destroy} id="delete-rdi" class="mt-20 mb-28">
                 <Label for="password" value="Ingrese su contraseña para confirmar que desea eliminar permanentemente este proyecto." />
-                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={values.password} required />
+                <Input id="password" type="password" class="mt-1 block w-full" error={errors.password} placeholder="Escriba su contraseña" bind:value={$deleteForm.password} required />
             </form>
         </div>
         <div slot="actions">

@@ -56,7 +56,7 @@
     <div class="py-12">
         {#if canCreateCalls || isSuperAdmin}
             <div class="flex justify-center items-center flex-col">
-                <p>A continuación se listan todas las convocatorias, si desea crear una nueva de clic en el siguiente botón.</p>
+                <p>A continuación, se listan todas las convocatorias, si desea crear una nueva de clic en el siguiente botón.</p>
                 <div>
                     <Button on:click={() => Inertia.visit(route('calls.create'))} class="mt-8 mb-20" variant="raised">
                         {$_('Create')} {$_('Calls.singular')}
