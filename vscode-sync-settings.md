@@ -8,10 +8,10 @@ Settings sync - Author Shan Khan
 
 O ir al siguiente enlace: https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
 
-Configurar la extensión:
+Configurar la extensión con el siguiente comando:
 
 ```sh
-1. Ir a la configuración de la extensión con Ctrl+Shift+P y buscar: Sync Advanced Options
+Ctrl+Shift+P y buscar: Sync Advanced Options
 ```
 
 Seleccionar la siguiente opción:
