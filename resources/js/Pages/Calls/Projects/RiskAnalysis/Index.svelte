@@ -89,6 +89,12 @@
                     </td>
                 </tr>
             {/each}
+
+            {#if riskAnalysis.data.length === 0}
+                <tr>
+                    <td class="border-t px-6 py-4" colspan="3">{$_('No data recorded')}</td>
+                </tr>
+            {/if}
         </tbody>
     </DataTable>
     <Pagination links={riskAnalysis.links} />
