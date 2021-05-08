@@ -158,7 +158,8 @@
         <thead slot="thead">
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Información</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Subtotal del costo de los productos o servicios requeridos</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Subtotal del costo de los productos o servicios requeridos</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
 
@@ -191,7 +192,7 @@
                             </span>
                         {/if}
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowProjectSennovaBudgets || canEditProjectSennovaBudgets ||canDeleteProjectSennovaBudgets || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-budgets.edit', [call.id, project.id, projectSennovaBudget.id])))}>

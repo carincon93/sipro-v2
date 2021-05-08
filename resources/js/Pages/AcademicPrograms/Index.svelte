@@ -45,7 +45,8 @@
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Centro de formación</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Centro de formación</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
 
@@ -63,12 +64,11 @@
                         </p>
                     </td>
                     <td class="border-t">
-
-                            <p class="px-6 py-4 flex items-center">
-                                {academicProgram.academic_centre?.name}
-                            </p>
+                        <p class="px-6 py-4 flex items-center">
+                            {academicProgram.academic_centre?.name}
+                        </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowAcademicPrograms || canEditAcademicPrograms || canDeleteAcademicPrograms || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('academic-programs.edit', academicProgram.id)))}>

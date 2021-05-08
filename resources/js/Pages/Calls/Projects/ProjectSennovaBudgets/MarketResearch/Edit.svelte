@@ -1,7 +1,6 @@
 <script>
     import AuthenticatedLayout, { title } from '@/Layouts/Authenticated'
     import { inertia, useForm, page } from '@inertiajs/inertia-svelte'
-    import LinearProgress from '@smui/linear-progress'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
 
@@ -13,7 +12,7 @@
     import File from '@/Components/File'
     import Switch from '@/Components/Switch'
     import Dialog from '@/Components/Dialog'
-import { onMount } from 'svelte';
+    import PercentageProgress from '@/Components/PercentageProgress'
 
     export let errors
     export let call
@@ -61,13 +60,8 @@ import { onMount } from 'svelte';
 
     function submit() {
         if (canEditMarketResearch || isSuperAdmin) {
-            if ($form.requires_third_market_research) {
-
-            }
-
             sending = true,
             $form.post(route('calls.projects.project-sennova-budgets.project-budget-batches.update', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]), {
-                forceFormData: true,
                 onStart: ()   => sending = true,
                 onFinish: ()  => {
                     sending   = false
@@ -85,32 +79,6 @@ import { onMount } from 'svelte';
             $form.delete(route('calls.projects.project-sennova-budgets.project-budget-batches.destroy', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id]))
         }
     }
-
-    let progress = 0;
-    let closed = false;
-    let timer;
-    $: progress
-
-    $: if ($form.progress) {
-        progress = 0;
-        closed = false;
-        clearInterval(timer);
-        progress += ($form.progress.percentage / 100);
-        console.log(progress);
-
-        if (progress >= 1) {
-            progress = 1;
-            closed = true;
-            clearInterval(timer);
-        }
-    }
-
-    // let progress = 0
-    // $: if ($form.progress) {
-    //     progress =
-    // }
-
-    // $: console.log(progress);
 
     let average
     $: average = ((parseInt($form.first_price_quote) + parseInt($form.second_price_quote) + (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? parseInt($form.third_price_quote) : 0)) / (parseInt($form.third_price_quote) > 0 && $form.requires_third_market_research ? 3 : 2))
@@ -170,7 +138,7 @@ import { onMount } from 'svelte';
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="first_price_quote_file" value="Soporte" />
                     <File id="first_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.first_price_quote_file} error={errors.first_price_quote_file} />
-                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[0].id])}>Descargar soporte</a>
+                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[0].id])}>Descargar soporte</a>
                 </div>
 
                 <h1 class="text-center mt-20 mb-20">Segundo estudio de mercado</h1>
@@ -188,7 +156,7 @@ import { onMount } from 'svelte';
                 <div class="mt-4">
                     <Label required class="mb-4" labelFor="second_price_quote_file" value="Soporte" />
                     <File id="second_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.second_price_quote_file} error={errors.second_price_quote_file} />
-                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[1].id])}>Descargar soporte</a>
+                    <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[1].id])}>Descargar soporte</a>
                 </div>
 
                 <div class="mt-8">
@@ -213,13 +181,10 @@ import { onMount } from 'svelte';
                     <div class="mt-4">
                         <Label labelFor="third_price_quote_file" value="Soporte" required />
                         <File id="third_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.third_price_quote_file} error={errors.third_price_quote_file} />
-                        {#if projectBudgetBatch.market_research[2] != undefined} <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[2].id])} required>Descargar soporte</a> {/if}
+                        {#if projectBudgetBatch.market_research[2] != undefined} <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.market_research[2].id])} required>Descargar soporte</a> {/if}
                     </div>
                 {/if}
             </fieldset>
-            {#if $form.progress}
-                {$form.progress.percentage}%
-            {/if}
             <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
                 {#if canDeleteMarketResearch || isSuperAdmin}
                     <button class="text-red-600 hover:underline text-left" tabindex="-1" type="button" on:click={event => dialog_open = true}>
@@ -236,6 +201,9 @@ import { onMount } from 'svelte';
                 {/if}
             </div>
         </form>
+        {#if $form.progress}
+            <PercentageProgress percentage={$form.progress.percentage} />
+        {/if}
     </div>
     <Dialog bind:open={dialog_open}>
         <div slot="title" class="flex items-center">

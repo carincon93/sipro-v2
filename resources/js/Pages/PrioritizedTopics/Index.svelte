@@ -45,7 +45,8 @@
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Sector productivo</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Mesa técnica de servicios tecnológicos</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Mesa técnica de servicios tecnológicos</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
         <tbody slot="tbody">
@@ -66,7 +67,7 @@
                             {prioritizedTopic.technical_committee?.name}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowPrioritizedTopics || canEditPrioritizedTopics ||canDeletePrioritizedTopics || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('prioritized-topics.edit', prioritizedTopic.id)))}>

@@ -43,7 +43,8 @@
 
         <tr class="text-left font-bold" slot="thead">
             <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                    <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Área de conocimiento</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Área de conocimiento</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
         </tr>
 
         <tbody slot="tbody">
@@ -59,7 +60,7 @@
                             {knowledgeSubarea.knowledge_area?.name}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowKnowledgeSubareas || canEditKnowledgeSubareas ||canDeleteKnowledgeSubareas || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('knowledge-subareas.edit', knowledgeSubarea.id)))}>

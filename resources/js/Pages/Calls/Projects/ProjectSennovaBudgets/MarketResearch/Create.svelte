@@ -6,10 +6,9 @@
     import Input from '@/Components/Input'
     import InputError from '@/Components/InputError'
     import Label from '@/Components/Label'
-    // import LoadingButton from '@/Components/LoadingButton'
     import File from '@/Components/File'
     import Switch from '@/Components/Switch'
-    import { afterUpdate } from 'svelte';
+    import PercentageProgress from '@/Components/PercentageProgress'
 
     export let errors
     export let call
@@ -51,10 +50,6 @@
 
     function submit() {
         if (canCreateMarketResearch || isSuperAdmin) {
-            if ($form.requires_third_market_research) {
-
-            }
-
             sending = true,
             $form.post(route('calls.projects.project-sennova-budgets.project-budget-batches.store', [call.id, project.id, projectSennovaBudget]), {
                 onStart: ()     => sending = true,
@@ -148,21 +143,13 @@
                 <File id="third_price_quote_file" type="file" accept="application/pdf" class="mt-1 block w-full" bind:value={$form.third_price_quote_file} error={errors.third_price_quote_file} required />
             </div>
         {/if}
-
-        {#if $form.progress}
-            <progress value={$form.progress.percentage} max="100" class="mt-4">
-                {$form.progress.percentage}%
-            </progress>
-        {/if}
     </fieldset>
     <div class="px-8 py-4 bg-gray-100 border-t border-gray-200 flex items-center sticky bottom-0">
         <p class="break-all w-72">
             Valor promedio: ${ average > 0 ? new Intl.NumberFormat('de-DE').format(average) : 0 } COP
         </p>
-        <!-- {#if canCreateMarketResearch || isSuperAdmin}
-            <LoadingButton loading={sending} class="btn-indigo ml-auto" type="submit">
-                {$_('Create')} {$_('Market research.singular')}
-            </LoadingButton>
-        {/if} -->
     </div>
 </form>
+{#if $form.progress}
+    <PercentageProgress percentage={$form.progress.percentage} />
+{/if}

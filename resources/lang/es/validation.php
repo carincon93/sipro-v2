@@ -313,17 +313,18 @@ return [
 		'effects'               => 'efectos',
 		'mitigation_measures'   => 'medidas de mitigación',
 
-
         // Rubro SENNOVA - SENNOVA budget
         'first_budget_info_id'              => 'nombre de cuenta',
         'second_budget_info_id'             => 'concepto interno SENA',
         'third_budget_info_id'              => 'rubro',
         'budget_usage_id'                   => 'uso presupuestal',
+        'requires_third_market_research'    => '¿Requiere de un tercer estudio de mercado?',
         'requires_market_research_batch'    => 'requiere múltiples estudios de mercados',
         'requires_market_research'          => 'requiere de estudio de mercado',
         'can_be_added'                      => 'puede sumar al total del proyecto',
         'message'                           => 'mensaje',
         'max_value'                         => 'valor máximo',
+        'true'                              => 'si',
 
         // Rol SENNOVA - SENNOVA role
         'academic_degree'   => 'nivel educativo',

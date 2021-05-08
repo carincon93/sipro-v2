@@ -23,8 +23,6 @@ class ProjectBudgetBatchRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this);
-
         if ($this->isMethod('PUT')) {
             return [
                 'qty_items'                 => ['required', 'numeric', 'min:1'],
@@ -38,8 +36,8 @@ class ProjectBudgetBatchRequest extends FormRequest
                 'second_company_name'       => ['required', 'max:255'],
                 'second_price_quote_file'   => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
-                'third_price_quote'         => ['required_with:third_company_name,third_price_quote_file', 'numeric', 'min:0'],
-                'third_company_name'        => ['required_with:third_price_quote,third_price_quote_file', 'max:255'],
+                'third_price_quote'         => ['required_if:requires_third_market_research,1', 'nullable', 'min:0', 'numeric'],
+                'third_company_name'        => ['required_if:requires_third_market_research,1', 'max:255'],
                 'third_price_quote_file'    => ['nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
             ];
         } else {
@@ -55,9 +53,9 @@ class ProjectBudgetBatchRequest extends FormRequest
                 'second_company_name'       => ['required', 'max:255'],
                 'second_price_quote_file'   => ['required', 'max:10000000', 'file', 'mimetypes:application/pdf'],
 
-                'third_price_quote'         => ['required_with:third_company_name,third_price_quote_file', 'numeric', 'min:0'],
-                'third_company_name'        => ['required_with:third_price_quote,third_price_quote_file', 'max:255'],
-                'third_price_quote_file'    => ['required_with:third_price_quote,third_price_quote_file', 'max:10000000', 'file', 'mimetypes:application/pdf'],
+                'third_price_quote'         => ['required_if:requires_third_market_research,1', 'nullable', 'numeric', 'min:0'],
+                'third_company_name'        => ['required_if:requires_third_market_research,1', 'nullable', 'max:255'],
+                'third_price_quote_file'    => ['required_if:requires_third_market_research,1', 'nullable', 'max:10000000', 'file', 'mimetypes:application/pdf'],
             ];
         }
     }

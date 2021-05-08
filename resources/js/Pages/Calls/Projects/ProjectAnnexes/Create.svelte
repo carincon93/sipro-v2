@@ -5,6 +5,7 @@
 
     import LoadingButton from '@/Components/LoadingButton'
     import File from '@/Components/File'
+    import PercentageProgress from '@/Components/PercentageProgress.svelte';
 
     export let errors
     export let call
@@ -60,9 +61,7 @@
             </LoadingButton>
         </div>
         {#if $form.progress}
-            <progress value={$form.progress.percentage} max="100" class="mt-4">
-                {$form.progress.percentage}%
-            </progress>
+            <PercentageProgress percentage={$form.progress.percentage} />
         {/if}
     </fieldset>
 </form>

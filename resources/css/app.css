@@ -10,7 +10,8 @@
 
 html {
     height: 100%;
-  }
+}
+
 body {
     min-height: 100%;
 }
@@ -26,11 +27,6 @@ button:focus, a:focus {
 text {
     font-family: 'Nunito', sans-serif !important;
     font-size: 10px;
-}
-
-progress {
-    height: 8px;
-    width: 100%;
 }
 
 .bg-mistyrose {
@@ -147,11 +143,4 @@ fieldset[disabled] .selectedItem {
     0% { transform: rotate(0deg) }
     100% { transform: rotate(360deg) }
 }
-
-.nprogress-busy .snippet {
-    opacity: 1;
-    visibility: visible;
-    animation: dot-stretching-after 2s infinite ease-in;
-}
-
 

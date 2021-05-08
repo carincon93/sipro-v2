@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte'
     import fitTextarea from 'fit-textarea'
-    import InputError from './InputError.svelte';
+    import InputError from '@/Components/InputError'
 
     export let id
     export let value

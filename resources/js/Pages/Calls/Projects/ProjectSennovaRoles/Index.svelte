@@ -50,7 +50,8 @@
         <thead slot="thead">
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Salario</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Salario</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
 
@@ -67,7 +68,7 @@
                             {projectSennovaRole?.call_sennova_role?.salary}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowProjectSennovaRoles || canEditProjectSennovaRoles ||canDeleteProjectSennovaRoles || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('calls.projects.project-sennova-roles.edit', [call.id, project.id, projectSennovaRole.id])))}>

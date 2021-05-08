@@ -36,13 +36,14 @@
         <div slot="actions">
             {#if canCreateMincienciasTypologies || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('minciencias-typologies.create'))} variant="raised">
-                {$_('Create')} {$_('Minciencias typologies.singular')}
+                    {$_('Create')} {$_('Minciencias typologies.singular')}
                 </Button>
             {/if}
         </div>
 
         <tr class="text-left font-bold" slot="thead">
-            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Nombre</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
         </tr>
 
         <tbody slot="tbody">

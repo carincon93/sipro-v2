@@ -6,7 +6,7 @@
 </script>
 
 <style>
-    :global(.data-table td.border-t:last-child) {
+    :global(.data-table td.border-t.td-actions:last-child) {
         text-align: center;
         width: 150px;
     }

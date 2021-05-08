@@ -36,7 +36,7 @@
         <div slot="actions">
             {#if canCreateProjectTypes || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('project-types.create'))} variant="raised">
-                {$_('Create')} {$_('Project types.singular')}
+                    {$_('Create')} {$_('Project types.singular')}
                 </Button>
             {/if}
         </div>
@@ -44,7 +44,8 @@
         <thead slot="thead">
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Línea programática</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Línea programática</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
         <tbody slot="tbody">
@@ -60,7 +61,7 @@
                             {projectType.programmatic_line?.name}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowProjectTypes || canEditProjectTypes ||canDeleteProjectTypes || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('project-types.edit', projectType.id)))}>

@@ -36,14 +36,15 @@
         <div slot="actions">
             {#if canCreateMincienciasSubtypologies || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('minciencias-subtypologies.create'))} variant="raised">
-                {$_('Create')} {$_('Minciencias subtypologies.singular')}
+                    {$_('Create')} {$_('Minciencias subtypologies.singular')}
                 </Button>
             {/if}
         </div>
 
         <tr class="text-left font-bold" slot="thead">
             <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
-            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Tipología Minciencias</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Tipología Minciencias</th>
+            <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
         </tr>
 
         <tbody slot="tbody">
@@ -59,7 +60,7 @@
                             {mincienciasSubtypology.minciencias_typology?.name}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowMincienciasSubtypologies || canEditMincienciasSubtypologies ||canDeleteMincienciasSubtypologies || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('minciencias-subtypologies.edit', mincienciasSubtypology.id)))}>

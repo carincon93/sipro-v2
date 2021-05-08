@@ -97,8 +97,8 @@ class ProjectBudgetBatchController extends Controller
 
         $factSheet = $request->fact_sheet;
 
-        $factSheetFileName = "$project->code-ficha-tecnica-$secondBudgetInfoName-cod$random.".$factSheet->extension();
-        $factSheetFile = $factSheet->storeAs(
+        $factSheetFileName  = "$project->code-ficha-tecnica-$secondBudgetInfoName-cod$random.".$factSheet->extension();
+        $factSheetFile      = $factSheet->storeAs(
             'fact-sheets', $factSheetFileName
         );
         $projectBudgetBatch->fact_sheet = $factSheetFile;
@@ -137,8 +137,8 @@ class ProjectBudgetBatchController extends Controller
 
         $requestFirstPriceQuoteFile = $request->second_price_quote_file;
 
-        $secondPriceQuoteFileName = "$project->code-estudio-de-mercado-$secondCompanyName-cod".Str::random(5).".".$requestFirstPriceQuoteFile->extension();
-        $secondPriceQuoteFile = $requestFirstPriceQuoteFile->storeAs(
+        $secondPriceQuoteFileName   = "$project->code-estudio-de-mercado-$secondCompanyName-cod".Str::random(5).".".$requestFirstPriceQuoteFile->extension();
+        $secondPriceQuoteFile       = $requestFirstPriceQuoteFile->storeAs(
             'market-research', $secondPriceQuoteFileName
         );
         $marketResearch->price_quote_file = $secondPriceQuoteFile;
@@ -311,7 +311,7 @@ class ProjectBudgetBatchController extends Controller
 
         // Tercer estudio de mercado
         $thirdMarketResearch = $projectBudgetBatch->marketResearch()->where('id', $request->third_market_research_id)->first();
-        if ($request->requires_third_market_research == 'false' && $thirdMarketResearch) {
+        if ($request->requires_third_market_research == '0' && $thirdMarketResearch) {
             Storage::delete($thirdMarketResearch->third_price_quote_file);
             $thirdMarketResearch->delete();
         } else {

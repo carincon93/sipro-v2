@@ -128,7 +128,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/download', [ProjectBudgetBatchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download');
-    Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/market-research/{market_research}/download', [MarketResearchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');
+    Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/market-research/{market_research}/download', [ProjectBudgetBatchController::class, 'downloadPriceQuoteFile'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');
 
     // Trae las Tecnoacademias
     Route::get('web-api/techno-academies', function() {

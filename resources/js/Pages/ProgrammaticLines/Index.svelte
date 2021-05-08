@@ -37,7 +37,7 @@
         <div slot="actions">
             {#if canCreateProgrammaticLines || isSuperAdmin}
                 <Button on:click={() => Inertia.visit(route('programmatic-lines.create'))} variant="raised">
-                {$_('Create')} {$_('Programmatic lines.singular')}
+                    {$_('Create')} {$_('Programmatic lines.singular')}
                 </Button>
             {/if}
         </div>
@@ -46,7 +46,8 @@
             <tr class="text-left font-bold">
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
                 <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Código</th>
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Categoría</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Categoría</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
         <tbody slot="tbody">
@@ -67,7 +68,7 @@
                             {programmaticLine.project_category}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowProgrammaticLines || canEditProgrammaticLines ||canDeleteProgrammaticLines || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('programmatic-lines.edit', programmaticLine.id)))}>

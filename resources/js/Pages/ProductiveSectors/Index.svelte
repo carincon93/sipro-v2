@@ -44,7 +44,8 @@
 
         <thead slot="thead">
             <tr class="text-left font-bold">
-                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl" colspan="2">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Nombre</th>
+                <th class="px-6 pt-6 pb-4 sticky top-0 z-10 bg-white shadow-xl">Acciones</th>
             </tr>
         </thead>
         <tbody slot="tbody">
@@ -56,7 +57,7 @@
                             {productiveSector.name}
                         </p>
                     </td>
-                    <td class="border-t">
+                    <td class="border-t td-actions">
                         <ResourceMenu>
                             {#if canShowProductiveSectors || canEditProductiveSectors ||canDeleteProductiveSectors || isSuperAdmin}
                                 <Item on:SMUI:action={() => (Inertia.visit(route('productive-sectors.edit', productiveSector.id)))}>

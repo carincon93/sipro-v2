@@ -25,8 +25,9 @@
     export let sennovaBudget
     export let errors
 
-    let dialog_open = false
-    let sending     = false
+    let dialog_open
+    $: dialog_open = Object.keys(errors).length > 0 ? true : false
+    let sending    = false
 
     $title = $_('Market research.plural')
 
@@ -138,7 +139,7 @@
                                 <div><strong>Nombre de la compañía: </strong>{company_name}</div>
                                 <div><strong>Valor: </strong>${new Intl.NumberFormat('de-DE').format(price_quote)} COP</div>
 
-                                <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, projectBudgetBatch.id, id])}>Descargar soporte</a>
+                                <a target="_blank" class="text-indigo-400 underline inline-block mb-4" download href={route('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file', [call.id, project.id, projectSennovaBudget.id, id])}>Descargar soporte</a>
                             {/each}
                         </td>
 
