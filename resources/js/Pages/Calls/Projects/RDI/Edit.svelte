@@ -333,16 +333,16 @@
                         required
                         class="mb-4"
                         labelFor="project_type_id"
-                        value="Tipo de proyecto"
+                        value="Código dependencia presupuestal (SIIF)"
                     />
                 </div>
                 <div>
                     <DynamicList
                         id="project_type_id"
                         bind:value={$form.project_type_id}
-                        routeWebApi={route('web-api.project-types')}
+                        routeWebApi={route('web-api.project-types', ['I+D+i'])}
                         classes="min-h"
-                        placeholder="Busque por el nombre del tipo de proyecto, línea programática"
+                        placeholder="Busque por el nombre de la dependencia presupuestal, línea programática"
                         message={errors.project_type_id}
                         required
                     />

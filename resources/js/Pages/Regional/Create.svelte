@@ -7,6 +7,7 @@
     import Input from '@/Components/Input'
     import Label from '@/Components/Label'
     import LoadingButton from '@/Components/LoadingButton'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
 
@@ -40,6 +41,8 @@
     let form = useForm({
         name: '',
         code: '',
+        region_id: null,
+        regional_director_id: null,
     })
 
     function submit() {
@@ -112,6 +115,40 @@
                         class="mt-1 block w-full"
                         bind:value={$form.code}
                         error={errors.code}
+                        required
+                    />
+                </div>
+
+                <div class="mt-4">
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="region_id"
+                        value="Región"
+                    />
+                    <DynamicList
+                        id="region_id"
+                        bind:value={$form.region_id}
+                        routeWebApi={route('web-api.region')}
+                        placeholder="Busque por el nombre de la región"
+                        message={errors.region_id}
+                        required
+                    />
+                </div>
+
+                <div class="mt-4">
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="regional_director_id"
+                        value="Director(a) Regional"
+                    />
+                    <DynamicList
+                        id="regional_director_id"
+                        bind:value={$form.regional_director_id}
+                        routeWebApi={route('web-api.regional-directors')}
+                        placeholder="Busque por el nombre del director"
+                        message={errors.regional_director_id}
                         required
                     />
                 </div>

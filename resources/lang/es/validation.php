@@ -159,6 +159,8 @@ return [
         // Centro de formación - Academic centre
         'regional_id'           => 'regional',
 		'code'                  => 'código',
+		'regional_director_id'  => 'Director(a) Regional',
+		'deputy_director_id'  	=> 'Subdirector del Centro de Formación',
 
         // Programa de formación - Academic program
         'study_mode'            => 'modalidad',

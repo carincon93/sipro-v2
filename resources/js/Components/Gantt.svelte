@@ -1,10 +1,11 @@
 <script>
-    import Loading from './Loading.svelte'
     import { route } from '@/Utils'
     import { _ } from 'svelte-i18n'
+    import { Inertia } from '@inertiajs/inertia'
+
+    import Loading from './Loading'
     import ResourceMenu from '@/Components/ResourceMenu'
     import { Item, Text } from '@smui/list'
-    import { Inertia } from '@inertiajs/inertia'
 
     export let items
     export let request = null

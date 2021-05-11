@@ -50,6 +50,8 @@ class RegionalController extends Controller
         $regional = new Regional();
         $regional->name = $request->name;
         $regional->code = $request->code;
+        $regional->region()->associate($request->region_id);
+        $regional->regionalDirector()->associate($request->regional_director_id);
 
         $regional->save();
 
@@ -99,6 +101,8 @@ class RegionalController extends Controller
 
         $regional->name = $request->name;
         $regional->code = $request->code;
+        $regional->region()->associate($request->region_id);
+        $regional->regionalDirector()->associate($request->regional_director_id);
 
         $regional->save();
 

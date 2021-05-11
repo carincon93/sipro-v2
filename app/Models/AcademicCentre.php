@@ -18,6 +18,7 @@ class AcademicCentre extends Model
         'regional_id',
         'name',
         'code',
+        'deputy_director_id'
     ];
 
     /**
@@ -46,6 +47,17 @@ class AcademicCentre extends Model
     public function regional()
     {
         return $this->belongsTo(Regional::class);
+    }
+
+    
+    /**
+     * Relationship with User
+     *
+     * @return void
+     */
+    public function deputyDirector()
+    {
+        return $this->belongsTo(User::class, 'deputy_director_id');
     }
 
     /**

@@ -59,6 +59,7 @@ use App\Models\KnowledgeSubareaDiscipline;
 use App\Models\CIIUCode;
 use App\Models\StrategicThematic;
 use App\Models\AcademicCentre;
+use App\Models\Region;
 use App\Models\Regional;
 use App\Models\ResearchGroup;
 use App\Models\MincienciasSubtypology;
@@ -70,6 +71,7 @@ use App\Models\SennovaBudget;
 use App\Models\TechnoAcademy;
 use App\Models\TechnologicalLine;
 use App\Models\City;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,8 +145,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name, chr(10), \'∙ Grupo de investigación: \', research_groups.name, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-lines');
     // Trae los tipos de proyectos
-    Route::get('web-api/project-types', function() {
-        return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name, chr(10), \'∙ Línea programática: \', programmatic_lines.name) as label')->join('programmatic_lines', 'project_types.programmatic_line_id', 'programmatic_lines.id')->get());
+    Route::get('web-api/project-types/{project_category}', function($projectCategory) {
+        return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name, chr(10), \'∙ Línea programática: \', programmatic_lines.code, \' - \', programmatic_lines.name) as label')
+            ->join('programmatic_lines', 'project_types.programmatic_line_id', 'programmatic_lines.id')
+            ->where('project_category', 'ilike', '%'.$projectCategory.'%')
+            ->get());
     })->name('web-api.project-types');
     // Trae las redes de conocimiento sectorial
     Route::get('web-api/knowledge-networks', function() {
@@ -166,15 +171,41 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/academic-centres', function() {
         return response(AcademicCentre::selectRaw('academic_centres.id as value, concat(academic_centres.name, chr(10), \'∙ Código: \', academic_centres.code, chr(10), \'∙ Regional: \', regional.name) as label')->join('regional', 'academic_centres.regional_id', 'regional.id')->orderBy('academic_centres.name', 'ASC')->get());
     })->name('web-api.academic-centres');
+    
+    // Trae los subdirectores
+    Route::get('web-api/deputy-directors', function() {
+        return response(User::select('users.id as value', 'users.name as label')
+            ->join('model_has_roles', 'users.id', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', 'roles.id')
+            ->where('roles.id', 14)
+            ->orWhere('roles.name', 'ilike', '%subdirector de centro de formación%')
+            ->orderBy('users.name', 'ASC')->get());
+    })->name('web-api.deputy-directors');
+
+    // Trae las regiones
+    Route::get('web-api/region', function() {
+        return response(Region::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.region');
     // Trae las regionales
     Route::get('web-api/regional', function() {
         return response(Regional::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.regional');
+    
+    // Trae los directores de regional
+    Route::get('web-api/regional-directors', function() {
+        return response(User::select('users.id as value', 'users.name as label')
+            ->join('model_has_roles', 'users.id', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', 'roles.id')
+            ->where('roles.id', 7)
+            ->orWhere('roles.name', 'ilike', '%director de regional%')
+            ->orderBy('users.name', 'ASC')->get());
+    })->name('web-api.regional-directors');
+
     // Trae las líneas programáticas
     Route::get('web-api/programmatic-lines', function() {
         return response(ProgrammaticLine::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.programmatic-lines');
-    // Trae las líneas programáticas
+    // Trae los grupos de investigación
     Route::get('web-api/research-groups', function() {
         return response(ResearchGroup::selectRaw('research_groups.id as value, concat(research_groups.name, chr(10), \'∙ Acrónimo: \', research_groups.acronym, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('academic_centres', 'research_groups.academic_centre_id', 'academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-groups');

@@ -56,6 +56,7 @@ class AcademicCentreController extends Controller
         $academicCentre->name = $request->name;
         $academicCentre->code = $request->code;
         $academicCentre->regional()->associate($request->regional_id);
+        $academicCentre->deputyDirector()->associate($request->deputy_director_id);
 
         $academicCentre->save();
 
@@ -88,7 +89,7 @@ class AcademicCentreController extends Controller
         $this->authorize('update', [AcademicCentre::class, $academicCentre]);
 
         return Inertia::render('AcademicCentres/Edit', [
-            'academicCentre'        => $academicCentre->only(['id', 'name', 'code', 'regional_id']),
+            'academicCentre'        => $academicCentre->only(['id', 'name', 'code', 'regional_id', 'deputy_director_id']),
             'regional'              => Regional::orderBy('name', 'ASC')->select(['id as value', 'name as label'])->get()
         ]);
     }
@@ -107,6 +108,7 @@ class AcademicCentreController extends Controller
         $academicCentre->name = $request->name;
         $academicCentre->code = $request->code;
         $academicCentre->regional()->associate($request->regional_id);
+        $academicCentre->deputyDirector()->associate($request->deputy_director_id);
 
         $academicCentre->save();
 

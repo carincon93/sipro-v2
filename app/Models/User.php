@@ -75,6 +75,26 @@ class User extends Authenticatable
     }
 
     /**
+     * Relationship with AcademicCentre
+     *
+     * @return void
+     */
+    public function academicCentreDeputyDirector()
+    {
+        return $this->hasOne(AcademicCentre::class, 'deputy_director_id');
+    }
+
+    /**
+     * Relationship with Regional
+     *
+     * @return void
+     */
+    public function regionalDirector()
+    {
+        return $this->hasOne(Regional::class, 'regional_director_id');
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

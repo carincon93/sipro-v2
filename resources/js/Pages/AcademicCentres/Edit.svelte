@@ -46,6 +46,7 @@
         name: academicCentre.name,
         code: academicCentre.code,
         regional_id: academicCentre.regional_id,
+        deputy_director_id: academicCentre.deputy_director_id,
     })
 
     function submit() {
@@ -144,6 +145,23 @@
                         routeWebApi={route('web-api.regional')}
                         placeholder="Busque por el nombre del centro de formación"
                         message={errors.regional_id}
+                        required
+                    />
+                </div>
+
+                <div class="mt-4">
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="deputy_director_id"
+                        value="Subdirector"
+                    />
+                    <DynamicList
+                        id="deputy_director_id"
+                        bind:value={$form.deputy_director_id}
+                        routeWebApi={route('web-api.deputy-directors')}
+                        placeholder="Busque por el nombre de subdirector"
+                        message={errors.deputy_director_id}
                         required
                     />
                 </div>

@@ -18,7 +18,9 @@ class Regional extends Model
      */
     protected $fillable = [
         'name',
-        'code'
+        'code',
+        'region_id',
+        'regional_director_id'
     ];
 
     /**
@@ -38,6 +40,26 @@ class Regional extends Model
     protected $casts = [
         //
     ];
+
+    /**
+     * Relationship with Region
+     *
+     * @return void
+     */
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * Relationship with User
+     *
+     * @return void
+     */
+    public function regionalDirector()
+    {
+        return $this->belongsTo(User::class, 'regional_director_id');
+    }
 
     /**
      * Relationship with AcademicCentre

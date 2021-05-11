@@ -9,6 +9,7 @@
     import Button from '@/Components/Button'
     import LoadingButton from '@/Components/LoadingButton'
     import Dialog from '@/Components/Dialog'
+    import DynamicList from '@/Dropdowns/DynamicList'
 
     export let errors
     export let regional = {}
@@ -44,6 +45,8 @@
     let form = useForm({
         name: regional.name,
         code: regional.code,
+        region_id: regional.region_id,
+        regional_director_id: regional.regional_director_id,
     })
 
     function submit() {
@@ -123,6 +126,40 @@
                         class="mt-1 block w-full"
                         bind:value={$form.code}
                         error={errors.code}
+                        required
+                    />
+                </div>
+
+                <div class="mt-4">
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="region_id"
+                        value="Región"
+                    />
+                    <DynamicList
+                        id="region_id"
+                        bind:value={$form.region_id}
+                        routeWebApi={route('web-api.region')}
+                        placeholder="Busque por el nombre de la región"
+                        message={errors.region_id}
+                        required
+                    />
+                </div>
+
+                <div class="mt-4">
+                    <Label
+                        required
+                        class="mb-4"
+                        labelFor="regional_director_id"
+                        value="Director(a) Regional"
+                    />
+                    <DynamicList
+                        id="regional_director_id"
+                        bind:value={$form.regional_director_id}
+                        routeWebApi={route('web-api.regional-directors')}
+                        placeholder="Busque por el nombre del director"
+                        message={errors.regional_director_id}
                         required
                     />
                 </div>
