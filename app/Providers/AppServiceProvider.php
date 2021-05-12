@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if($this->app->environment('production') || substr(base_path(),0,4) == '/tmp') {
+        if($this->app->environment('production') || substr(base_path(),0,4) == '/app') {
             URL::forceScheme('https');
         }
     }
