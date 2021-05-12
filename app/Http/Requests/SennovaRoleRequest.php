@@ -24,24 +24,8 @@ class SennovaRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'programmatic_line_id'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:programmatic_lines,id'],
             'name'                  => ['required', 'max:191'],
             'description'           => ['required', 'string'],
-            'academic_degree'       => ['required', 'integer']
         ];
-    }
-
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        if( is_array($this->academic_degree) ) {
-            $this->merge([
-                'academic_degree' => $this->academic_degree['value'],
-            ]);
-        }
     }
 }

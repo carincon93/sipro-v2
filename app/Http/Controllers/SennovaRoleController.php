@@ -21,15 +21,7 @@ class SennovaRoleController extends Controller
 
         return Inertia::render('SennovaRoles/Index', [
             'filters'   => request()->all('search'),
-            'sennovaRoles' => SennovaRole::selectRaw("id, CASE academic_degree
-                WHEN '0' THEN	concat(name, ' - Nivel académico: Ninguno')
-                WHEN '1' THEN	concat(name, ' - Nivel académico: Técnico')
-                WHEN '2' THEN	concat(name, ' - Nivel académico: Tecnólogo')
-                WHEN '3' THEN	concat(name, ' - Nivel académico: Pregrado')
-                WHEN '4' THEN	concat(name, ' - Nivel académico: Especalización')
-                WHEN '5' THEN	concat(name, ' - Nivel académico: Maestría')
-                WHEN '6' THEN	concat(name, ' - Nivel académico: Doctorado')
-            END as name")->orderBy('name', 'ASC')
+            'sennovaRoles' => SennovaRole::orderBy('name', 'ASC')
                 ->filterSennovaRole(request()->only('search'))->paginate(),
         ]);
     }
@@ -61,8 +53,6 @@ class SennovaRoleController extends Controller
         $sennovaRole = new SennovaRole();
         $sennovaRole->name              = $request->name;
         $sennovaRole->description       = $request->description;
-        $sennovaRole->academic_degree   = $request->academic_degree;
-        $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
 
         $sennovaRole->save();
 
@@ -113,8 +103,6 @@ class SennovaRoleController extends Controller
 
         $sennovaRole->name              = $request->name;
         $sennovaRole->description       = $request->description;
-        $sennovaRole->academic_degree   = $request->academic_degree;
-        $sennovaRole->programmaticLine()->associate($request->programmatic_line_id);
 
         $sennovaRole->save();
 

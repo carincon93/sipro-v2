@@ -24,10 +24,12 @@ class CallSennovaRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'sennova_role_id'   => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:sennova_roles,id'],
-            'salary'            => ['required', 'min:0', 'max:2147483647'],
-            'qty_months'        => ['nullable', 'min:0', 'max:12', 'integer'],
-            'qty_roles'         => ['nullable', 'min:0', 'max:999', 'integer']
+            'programmatic_line_id'  => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:programmatic_lines,id'],
+            'sennova_role_id'       => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:sennova_roles,id'],
+            'salary'                => ['required', 'min:0', 'max:2147483647'],
+            'qty_months'            => ['nullable', 'min:0', 'max:12', 'integer'],
+            'qty_roles'             => ['nullable', 'min:0', 'max:999', 'integer'],
+            'academic_degree'       => ['required', 'integer']
         ];
     }
 
@@ -43,5 +45,12 @@ class CallSennovaRoleRequest extends FormRequest
                 'sennova_role_id' => $this->sennova_role_id['value'],
             ]);
         }
+
+        if( is_array($this->academic_degree) ) {
+            $this->merge([
+                'academic_degree' => $this->academic_degree['value'],
+            ]);
+        }
     }
+
 }

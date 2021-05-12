@@ -60,13 +60,13 @@ class ProgrammaticLine extends Model
     }
 
     /**
-     * Relationship with SennovaRole
+     * Relationship with CallSennovaRole
      *
      * @return void
      */
-    public function sennovaRoles()
+    public function callSennovaRoles()
     {
-        return $this->hasMany(SennovaRole::class);
+        return $this->hasMany(CallSennovaRole::class);
     }
 
     /**

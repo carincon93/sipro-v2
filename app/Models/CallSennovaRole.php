@@ -17,12 +17,14 @@ class CallSennovaRole extends Model
      * @var array
      */
     protected $fillable = [
+        'programmatic_line_id',
         'call_id',
         'sennova_role_id',
         'salary',
         'qty_months',
         'qty_roles',
-        'months_experience'
+        'months_experience',
+        'academic_degree'
     ];
 
     /**
@@ -61,6 +63,16 @@ class CallSennovaRole extends Model
     public function sennovaRole()
     {
         return $this->belongsTo(SennovaRole::class);
+    }
+
+    /**
+     * Relationship with ProgrammaticLine
+     *
+     * @return void
+     */
+    public function programmaticLine()
+    {
+        return $this->belongsTo(ProgrammaticLine::class);
     }
 
     /**
