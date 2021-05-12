@@ -40,7 +40,7 @@ use App\Http\Controllers\ProjectSennovaBudgetController;
 use App\Http\Controllers\RiskAnalysisController;
 use App\Http\Controllers\PartnerOrganizationController;
 use App\Http\Controllers\AnnexeController;
-use App\Http\Controllers\CIIUCodeController;
+use App\Http\Controllers\EconomicActivityController;
 use App\Http\Controllers\MincienciasTypologyController;
 use App\Http\Controllers\MincienciasSubtypologyController;
 use App\Http\Controllers\ProjectAnnexeController;
@@ -56,7 +56,7 @@ use App\Models\ResearchLine;
 use App\Models\ProjectType;
 use App\Models\KnowledgeNetwork;
 use App\Models\KnowledgeSubareaDiscipline;
-use App\Models\CIIUCode;
+use App\Models\EconomicActivity;
 use App\Models\StrategicThematic;
 use App\Models\AcademicCentre;
 use App\Models\Region;
@@ -131,7 +131,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Muestra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
-
     Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/download', [ProjectBudgetBatchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/market-research/{market_research}/download', [ProjectBudgetBatchController::class, 'downloadPriceQuoteFile'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');
@@ -140,14 +139,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/techno-academies', function() {
         return response(TechnoAcademy::select('techno_academies.id as value', 'techno_academies.name as label')->get());
     })->name('web-api.techno-academies');
+
     // Trae las líneas tecnológicas
     Route::get('web-api/techno-academies/{techno_academy}/technological-lines', function($technoAcademy) {
         return response(TechnologicalLine::select('id', 'name')->where('technological_lines.techno_academy_id', $technoAcademy)->get());
     })->name('web-api.techno-academies.technological-lines');
+
     // Trae las líneas de investigación
     Route::get('web-api/research-lines', function() {
         return response(ResearchLine::selectRaw('research_lines.id as value, concat(research_lines.name, chr(10), \'∙ Grupo de investigación: \', research_groups.name, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('research_groups', 'research_lines.research_group_id', 'research_groups.id')->join('academic_centres', 'research_groups.academic_centre_id','academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-lines');
+
     // Trae los tipos de proyectos
     Route::get('web-api/project-types/{project_category}', function($projectCategory) {
         return response(ProjectType::selectRaw('project_types.id as value, concat(project_types.name, chr(10), \'∙ Línea programática: \', programmatic_lines.code, \' - \', programmatic_lines.name) as label')
@@ -155,22 +157,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->where('project_category', 'ilike', '%'.$projectCategory.'%')
             ->get());
     })->name('web-api.project-types');
+
     // Trae las redes de conocimiento sectorial
     Route::get('web-api/knowledge-networks', function() {
         return response(KnowledgeNetwork::select('knowledge_networks.id as value', 'knowledge_networks.name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.knowledge-networks');
+
     // Trae las disciplinas de subáreas de conocimiento
     Route::get('web-api/knowledge-subarea-disciplines', function() {
         return response(KnowledgeSubareaDiscipline::select('knowledge_subarea_disciplines.id as value', 'knowledge_subarea_disciplines.name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.knowledge-subarea-disciplines');
-    // Trae los códigos CIIU
-    Route::get('web-api/ciiu-codes', function() {
-        return response(CIIUCode::select('ciiu_codes.id as value', 'ciiu_codes.name as label')->orderBy('name', 'ASC')->get());
-    })->name('web-api.ciiu-codes');
+
+    // Trae los Actividades económicas
+    Route::get('web-api/economic-activities', function() {
+        return response(EconomicActivity::select('economic_activities.id as value', 'economic_activities.name as label')->orderBy('name', 'ASC')->get());
+    })->name('web-api.economic-activities');
+
     // Trae las temáticas estrategicas SENA
     Route::get('web-api/strategic-thematics', function() {
         return response(StrategicThematic::select('strategic_thematics.id as value', 'strategic_thematics.name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.strategic-thematics');
+
     // Trae los centros de formación
     Route::get('web-api/academic-centres', function() {
         return response(AcademicCentre::selectRaw('academic_centres.id as value, concat(academic_centres.name, chr(10), \'∙ Código: \', academic_centres.code, chr(10), \'∙ Regional: \', regional.name) as label')->join('regional', 'academic_centres.regional_id', 'regional.id')->orderBy('academic_centres.name', 'ASC')->get());
@@ -190,6 +197,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/region', function() {
         return response(Region::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.region');
+
     // Trae las regionales
     Route::get('web-api/regional', function() {
         return response(Regional::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
@@ -209,10 +217,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('web-api/programmatic-lines', function() {
         return response(ProgrammaticLine::select('id as value', 'name as label')->orderBy('name', 'ASC')->get());
     })->name('web-api.programmatic-lines');
+
     // Trae los grupos de investigación
     Route::get('web-api/research-groups', function() {
         return response(ResearchGroup::selectRaw('research_groups.id as value, concat(research_groups.name, chr(10), \'∙ Acrónimo: \', research_groups.acronym, chr(10), \'∙ Centro de formación: \', academic_centres.name, chr(10), \'∙ Regional: \', regional.name) as label')->join('academic_centres', 'research_groups.academic_centre_id', 'academic_centres.id')->join('regional', 'academic_centres.regional_id', 'regional.id')->get());
     })->name('web-api.research-groups');
+
     // Trae las subtipologías Minciencias
     Route::get('web-api/minciencias-subtypologies', function() {
         return response(MincienciasSubtypology::selectRaw('minciencias_subtypologies.id as value, concat(minciencias_subtypologies.name, chr(10), \'∙ Tipología Minciencias: \', minciencias_typologies.name) as label')->join('minciencias_typologies', 'minciencias_subtypologies.minciencias_typology_id', 'minciencias_typologies.id')->orderBy('minciencias_subtypologies.name')->get());
@@ -229,6 +239,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->where('sennova_budgets.second_budget_info_id', $secondBudgetInfo)
             ->get());
     })->name('web-api.third-budget-info');
+
     // Trae los usos presupuestales
     Route::get('web-api/calls/{call}/programmatic-lines/{programmaticLine}/sennova-budgets/second-budget-info/{secondBudgetInfo}/third-budget-info/{thirdBudgetInfo}', function($call, $programmaticLine, $secondBudgetInfo, $thirdBudgetInfo) {
         return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label')
@@ -285,7 +296,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             'budget-usages' => BudgetUsageController::class,
             'minciencias-typologies' => MincienciasTypologyController::class,
             'minciencias-subtypologies' => MincienciasSubtypologyController::class,
-            'ciiu-codes' => CIIUCodeController::class,
+            'economic-activities' => EconomicActivityController::class,
             'regional' => RegionalController::class,
             'users' => UserController::class,
             'academic-centres' => AcademicCentreController::class,

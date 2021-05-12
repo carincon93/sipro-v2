@@ -34,7 +34,7 @@ class RDIRequest extends FormRequest
                 'knowledge_subarea_discipline_id'           => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_subarea_disciplines,id'],
                 'strategic_thematic_id'                     => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:strategic_thematics,id'],
                 'knowledge_network_id'                      => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:knowledge_networks,id'],
-                'ciiu_code_id'                              => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:ciiu_codes,id'],
+                'economic_activity_id'                              => ['required', 'min:0', 'max:2147483647', 'integer', 'exists:economic_activities,id'],
                 'title'                                     => ['required', new MaxWords],
                 'start_date'                                => ['required', 'date', 'date_format:Y-m-d', 'before:end_date', new ProjectStartDate($this->route('call'))],
                 'end_date'                                  => ['required', 'date', 'date_format:Y-m-d', 'after:start_date', new ProjectEndDate($this->route('call'))],

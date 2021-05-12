@@ -74,7 +74,7 @@
         strategic_thematic_id: rdi.strategic_thematic_id,
         knowledge_network_id: rdi.knowledge_network_id,
         project_type_id: rdi.project.project_type_id,
-        ciiu_code_id: rdi.ciiu_code_id,
+        economic_activity_id: rdi.economic_activity_id,
         title: rdi.title,
         start_date: rdi.start_date,
         end_date: rdi.end_date,
@@ -397,18 +397,18 @@
                     <Label
                         required
                         class="mb-4"
-                        labelFor="ciiu_code_id"
+                        labelFor="economic_activity_id"
                         value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?"
                     />
                 </div>
                 <div>
                     <DynamicList
-                        id="ciiu_code_id"
-                        bind:value={$form.ciiu_code_id}
-                        routeWebApi={route('web-api.ciiu-codes')}
-                        placeholder="Busque por el nombre del código CIIU"
+                        id="economic_activity_id"
+                        bind:value={$form.economic_activity_id}
+                        routeWebApi={route('web-api.economic-activities')}
+                        placeholder="Busque por el nombre de la actividad económica"
                         classes="min-h"
-                        message={errors.ciiu_code_id}
+                        message={errors.economic_activity_id}
                         required
                     />
                 </div>

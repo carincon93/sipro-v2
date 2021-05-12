@@ -35,7 +35,7 @@ class RDI extends Model
         'knowledge_subarea_discipline_id',
         'strategic_thematic_id',
         'knowledge_network_id',
-        'ciiu_code_id',
+        'economic_activity_id',
         'title',
         'start_date',
         'end_date',
@@ -133,13 +133,13 @@ class RDI extends Model
     }
 
     /**
-     * Relationship with CIIUCode
+     * Relationship with EconomicActivity
      *
      * @return void
      */
-    public function ciiuCode()
+    public function economicActivity()
     {
-        return $this->belongsTo(CIIUCode::class);
+        return $this->belongsTo(EconomicActivity::class);
     }
 
     /**

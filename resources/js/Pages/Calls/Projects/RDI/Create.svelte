@@ -43,7 +43,7 @@
         strategic_thematic_id: '',
         knowledge_network_id: '',
         project_type_id: '',
-        ciiu_code_id: '',
+        economic_activity_id: '',
         title: 'Escriba aquí el título del proyecto. No mayor a 20 palabras.',
         start_date: '',
         end_date: '',
@@ -265,17 +265,17 @@
                     <Label
                         required
                         class="mb-4"
-                        labelFor="ciiu_code_id"
+                        labelFor="economic_activity_id"
                         value="¿En cuál de estas actividades económicas se puede aplicar el proyecto de investigación?"
                     />
                 </div>
                 <div>
                     <DynamicList
-                        id="ciiu_code_id"
-                        bind:value={$form.ciiu_code_id}
-                        routeWebApi={route('web-api.ciiu-codes')}
-                        placeholder="Busque por el nombre del código CIIU"
-                        message={errors.ciiu_code_id}
+                        id="economic_activity_id"
+                        bind:value={$form.economic_activity_id}
+                        routeWebApi={route('web-api.economic-activities')}
+                        placeholder="Busque por el nombre de la actividad económica"
+                        message={errors.economic_activity_id}
                         required
                     />
                 </div>

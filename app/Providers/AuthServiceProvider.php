@@ -47,7 +47,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\RiskAnalysis' => 'App\Policies\RiskAnalysisPolicy',
         'App\Models\PartnerOrganization' => 'App\Policies\PartnerOrganizationPolicy',
         'App\Models\Annexe' => 'App\Policies\AnnexePolicy',
-        'App\Models\CIIUCode' => 'App\Policies\CIIUCodePolicy',
+        'App\Models\EconomicActivity' => 'App\Policies\EconomicActivityPolicy',
         'App\Models\MincienciasSubtypology' => 'App\Policies\MincienciasSubtypologyPolicy',
         'App\Models\MincienciasTypology' => 'App\Policies\MincienciasTypologyPolicy',
         'App\Models\ProjectAnnexe' => 'App\Policies\ProjectAnnexePolicy',

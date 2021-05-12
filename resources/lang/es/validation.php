@@ -271,7 +271,7 @@ return [
 		'knowledge_subarea_discipline_id'           => 'disciplina de la subárea de conocimiento',
         'strategic_thematic_id'                     => 'temáticas estratégicas SENA',
 		'knowledge_network_id'                      => 'red de conocimiento',
-        'ciiu_code_id'                              => 'código CIIU',
+        'economic_activity_id'                              => 'Actividad económica',
 		'title'                                     => 'título',
 		'abstract'                                  => 'resumen ',
 		'project_background'                        => 'antecedentes del proyecto',

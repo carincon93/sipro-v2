@@ -143,7 +143,7 @@
                         id="regional_id"
                         bind:value={$form.regional_id}
                         routeWebApi={route('web-api.regional')}
-                        placeholder="Busque por el nombre del centro de formación"
+                        placeholder="Busque por el nombre de la regional"
                         message={errors.regional_id}
                         required
                     />

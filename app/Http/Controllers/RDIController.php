@@ -90,7 +90,7 @@ class RDIController extends Controller
         $rdi->knowledgeSubareaDiscipline()->associate($request->knowledge_subarea_discipline_id);
         $rdi->strategicThematic()->associate($request->strategic_thematic_id);
         $rdi->knowledgeNetwork()->associate($request->knowledge_network_id);
-        $rdi->ciiuCode()->associate($request->ciiu_code_id);
+        $rdi->economicActivity()->associate($request->economic_activity_id);
 
         $project->rdi()->save($rdi);
 
@@ -176,7 +176,7 @@ class RDIController extends Controller
         $rdi->knowledgeSubareaDiscipline()->associate($request->knowledge_subarea_discipline_id);
         $rdi->strategicThematic()->associate($request->strategic_thematic_id);
         $rdi->knowledgeNetwork()->associate($request->knowledge_network_id);
-        $rdi->ciiuCode()->associate($request->ciiu_code_id);
+        $rdi->economicActivity()->associate($request->economic_activity_id);
 
         $rdi->related_with_technological_plan           = $request->related_with_technological_plan;
         $rdi->related_with_competitiveness_innovation   = $request->related_with_competitiveness_innovation;
