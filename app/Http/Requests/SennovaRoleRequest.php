@@ -24,8 +24,8 @@ class SennovaRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'                  => ['required', 'max:191'],
-            'description'           => ['required', 'string'],
+            'name'        => ['required', 'max:191'],
+            'description' => ['required', 'string'],
         ];
     }
 }

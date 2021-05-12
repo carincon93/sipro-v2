@@ -24,7 +24,8 @@ class CallSennovaRole extends Model
         'qty_months',
         'qty_roles',
         'months_experience',
-        'academic_degree'
+        'academic_degree',
+        'message'
     ];
 
     /**

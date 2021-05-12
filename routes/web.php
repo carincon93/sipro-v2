@@ -242,7 +242,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Trae los usos presupuestales
     Route::get('web-api/calls/{call}/programmatic-lines/{programmaticLine}/sennova-budgets/second-budget-info/{secondBudgetInfo}/third-budget-info/{thirdBudgetInfo}', function($call, $programmaticLine, $secondBudgetInfo, $thirdBudgetInfo) {
-        return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label')
+        return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label', 'sennova_budgets.requires_market_research', 'sennova_budgets.message')
             ->join('budget_usages', 'sennova_budgets.budget_usage_id', 'budget_usages.id')
             ->join('call_budgets', 'sennova_budgets.id', 'call_budgets.sennova_budget_id')
             ->where('call_budgets.call_id', $call)
@@ -252,15 +252,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->orderBy('budget_usages.description', 'ASC')->get());
     })->name('web-api.budget-usages');
 
-    Route::get('web-api/call-budgets/{call_budget}', function($callBudget) {
-        return response(SennovaBudget::select('sennova_budgets.requires_market_research', 'sennova_budgets.message')
-            ->join('call_budgets', 'sennova_budgets.id', 'call_budgets.sennova_budget_id')
-            ->where('call_budgets.id', $callBudget)
-            ->first());
-    })->name('web-api.budget-requires-market-research');
-
     Route::get('web-api/calls/{call}/{programmaticLine}/project-sennova-roles', function($call, $programmaticLine) {
-        return response(CallSennovaRole::selectRaw("call_sennova_roles.id as value,
+        return response(CallSennovaRole::selectRaw("call_sennova_roles.id as value, call_sennova_roles.message,
         CASE academic_degree
 				WHEN '0' THEN	concat(sennova_roles.name, ' - Nivel académico: Ninguno', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)
                 WHEN '1' THEN	concat(sennova_roles.name, ' - Nivel académico: Técnico', chr(10), '∙ Asignación mensual: ', call_sennova_roles.salary)

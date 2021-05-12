@@ -7,6 +7,7 @@ use App\Models\Call;
 use App\Models\Project;
 use App\Models\ProjectSennovaRole;
 use Illuminate\Http\Request;
+use App\Http\Traits\ProjectRoleValidationTrait;
 use Inertia\Inertia;
 
 class ProjectSennovaRoleController extends Controller
@@ -60,6 +61,10 @@ class ProjectSennovaRoleController extends Controller
     public function store(ProjectSennovaRoleRequest $request, Call $call, Project $project)
     {
         $this->authorize('create', [ProjectSennovaRole::class]);
+
+        if (ProjectRoleValidationTrait::studentRoleValidation($request->call_sennova_role_id, $project, null, $request->qty_months, $request->qty_roles)) {
+            return redirect()->back()->with('error', "Máximo 2 monitorias de 3 a 6 meses cada una");
+        }
 
         $projectSennovaRole = new ProjectSennovaRole();
         $projectSennovaRole->qty_months     = $request->qty_months;
@@ -117,6 +122,10 @@ class ProjectSennovaRoleController extends Controller
     public function update(ProjectSennovaRoleRequest $request, Call $call, Project $project, ProjectSennovaRole $projectSennovaRole)
     {
         $this->authorize('update', [ProjectSennovaRole::class, $projectSennovaRole]);
+
+        if (ProjectRoleValidationTrait::studentRoleValidation($request->call_sennova_role_id, $project, $projectSennovaRole, $request->qty_months, $request->qty_roles)) {
+            return redirect()->back()->with('error', "Máximo 2 monitorias de 3 a 6 meses cada una");
+        }
 
         $projectSennovaRole->qty_months     = $request->qty_months;
         $projectSennovaRole->qty_roles      = $request->qty_roles;

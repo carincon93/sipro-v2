@@ -39,9 +39,7 @@
               )
             : null
         sennovaBudget?.call_budget?.id
-            ? checkIfBudgetRequiresMarketResearch(
-                  sennovaBudget?.call_budget?.id,
-              )
+            ? test(sennovaBudget?.call_budget?.id)
             : null
     })
 
@@ -52,6 +50,8 @@
 
     function handleSecondBudgetInfo(e) {
         selectedSecondBudgetInfoID = e.target.value
+        budgetMessage = null
+        showQtyInput = null
         if (selectedSecondBudgetInfoID != '')
             getThirdBudgetInfo(selectedSecondBudgetInfoID)
     }
@@ -66,6 +66,8 @@
     }
 
     function handleThirdBudgetInfo(e) {
+        budgetMessage = null
+        showQtyInput = null
         selectedThirdBudgetInfoID = e.target.value
 
         if (selectedSecondBudgetInfoID != '' && selectedThirdBudgetInfoID != '')
@@ -88,17 +90,20 @@
     }
 
     function handleSennovaBudget(e) {
-        if (e.target.value != '')
-            checkIfBudgetRequiresMarketResearch(e.target.value)
+        if (e.target.value != '') test(e.target.value)
     }
 
-    async function checkIfBudgetRequiresMarketResearch(sennovaBudgetID) {
-        let res = await axios.get(
-            route('web-api.budget-requires-market-research', [sennovaBudgetID]),
-        )
-        showQtyInput = res.data.requires_market_research
-        budgetMessage = res.data.message
+    function test(value) {
+        budgetMessage = budgetUsages.find(
+            (item) => item.value == value,
+        )?.message
+
+        showQtyInput = budgetUsages.find(
+            (item) => item.value == value,
+        )?.requires_market_research
     }
+
+    console.log(budgetMessage)
 </script>
 
 <div class="mt-4">

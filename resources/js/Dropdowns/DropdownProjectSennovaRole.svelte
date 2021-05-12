@@ -5,6 +5,7 @@
 
     import Select from 'svelte-select'
     import InputError from '@/Components/InputError'
+    import InfoMessage from '@/Components/InfoMessage'
 
     export let classes = ''
     export let id = ''
@@ -18,6 +19,7 @@
     let projectSennovaRoles = []
     let projectSennovaRoleFiltered = null
     let select = null
+    let sennovaRoleMessage
 
     onMount(() => {
         getProjectSennovaRoles()
@@ -46,6 +48,8 @@
     function handleProjectSennovaRole(event) {
         formProjectSennovaRole = event.detail.value
         projectSennovaRoleInfo = event.detail
+
+        sennovaRoleMessage = event.detail.message
     }
 
     function selectProjectSennovaRole() {
@@ -70,6 +74,10 @@
     on:clear={() => (formProjectSennovaRole = null)}
 />
 <InputError {message} />
+
+{#if sennovaRoleMessage}
+    <InfoMessage message={sennovaRoleMessage} />
+{/if}
 
 <style>
     :global(.project-sennova-roles .listItem) {
