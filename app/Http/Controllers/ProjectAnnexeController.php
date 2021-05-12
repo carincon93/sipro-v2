@@ -23,7 +23,7 @@ class ProjectAnnexeController extends Controller
     {
         $this->authorize('viewAny', [ProjectAnnexe::class]);
 
-        dd(substr(base_path(),0,4) == '/tmp');
+        dd(substr(base_path(),0,4));
 
         return Inertia::render('Calls/Projects/ProjectAnnexes/Index', [
             'filters'           => request()->all('search'),
