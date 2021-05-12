@@ -61,8 +61,6 @@
             )
         }
     }
-
-    console.log(annexe)
 </script>
 
 <form on:submit|preventDefault={submit} class="mt-4 p-4">

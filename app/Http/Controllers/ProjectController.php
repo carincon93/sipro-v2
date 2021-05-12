@@ -19,6 +19,13 @@ class ProjectController extends Controller
     {
         // $this->authorize('viewAny', [Project::class]);
 
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
+
         return Inertia::render('Calls/Projects/Finder/Participants', [
             'call'      => $call,
             'project'   => $project

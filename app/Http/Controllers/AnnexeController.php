@@ -21,6 +21,13 @@ class AnnexeController extends Controller
     {
         $this->authorize('viewAny', [Annexe::class]);
 
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
+
         return Inertia::render('Annexes/Index', [
             'filters'   => request()->all('search'),
             'annexes'   => Annexe::orderBy('name', 'ASC')

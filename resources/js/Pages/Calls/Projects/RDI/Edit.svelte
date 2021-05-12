@@ -195,7 +195,7 @@
 </script>
 
 <AuthenticatedLayout>
-    <Stepper {call} project={rdi} />
+    <Stepper {call} project={rdi.project} />
 
     <form on:submit|preventDefault={submit}>
         <fieldset

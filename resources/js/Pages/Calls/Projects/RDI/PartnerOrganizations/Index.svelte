@@ -51,7 +51,7 @@
 </script>
 
 <AuthenticatedLayout>
-    <Stepper {call} project={rdi} />
+    <Stepper {call} project={rdi.project} />
 
     <DataTable class="mt-20">
         <div slot="title">{$_('Partner organizations.plural')}</div>

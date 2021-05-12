@@ -84,11 +84,15 @@ use App\Models\User;
 |
 */
 
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin'    => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//     ]);
+// });
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'    => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
+    return redirect()->route('login');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

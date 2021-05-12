@@ -125,7 +125,7 @@ class RDIController extends Controller
     {
         $this->authorize('update', [RDI::class, $rdi]);
 
-        $rdi->project;
+        $rdi->project->projectType->programmaticLine;
 
         return Inertia::render('Calls/Projects/RDI/Edit', [
             'call'                          => $call->only('id'),

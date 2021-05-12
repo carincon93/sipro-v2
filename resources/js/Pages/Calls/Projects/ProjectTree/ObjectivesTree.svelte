@@ -679,9 +679,10 @@
                                 >
                                     <small
                                         class="title block font-bold mb-2 line-height-1"
-                                        >OBJ-ESP-{directCause.specific_objective
-                                            .id}</small
                                     >
+                                        OBJ-ESP-{directCause.specific_objective
+                                            .id}
+                                    </small>
                                     {#if directCause.specific_objective.description != null && directCause.specific_objective.description.length > 0}
                                         {directCause.specific_objective
                                             .description}
@@ -731,11 +732,12 @@
                                             {#if indirectCause.activity}
                                                 <small
                                                     class="title block font-bold mb-2 line-height-1"
-                                                    >OBJ-ESP-{directCause
+                                                >
+                                                    OBJ-ESP-{directCause
                                                         .specific_objective
                                                         .id}-ACT-{indirectCause
-                                                        .activity.id}</small
-                                                >
+                                                        .activity.id}
+                                                </small>
                                                 {#if indirectCause.activity.description != null && indirectCause.activity.description.length > 0}
                                                     {indirectCause.activity
                                                         .description}

@@ -20,9 +20,16 @@ class ProjectSennovaRoleController extends Controller
     {
         $this->authorize('viewAny', [ProjectSennovaRole::class]);
 
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
+
         return Inertia::render('Calls/Projects/ProjectSennovaRoles/Index', [
             'call'                  => $call->only('id'),
-            'project'               => $project->only('id'),
+            'project'               => $project,
             'filters'               => request()->all('search'),
             'projectSennovaRoles'   => ProjectSennovaRole::where('project_id', $project->id)->filterProjectSennovaRole(request()->only('search'))->with('callSennovaRole.sennovaRole')->paginate(),
         ]);

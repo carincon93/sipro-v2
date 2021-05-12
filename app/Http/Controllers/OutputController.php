@@ -22,6 +22,13 @@ class OutputController extends Controller
         $this->authorize('viewAny', [Output::class]);
 
         $projectResult = $project->directEffects()->with('projectResult')->get()->pluck('projectResult')->flatten()->filter();
+        
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
 
         return Inertia::render('Calls/Projects/Outputs/Index', [
             'call'    => $call,

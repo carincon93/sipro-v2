@@ -150,23 +150,25 @@
             <p class="text-sm text-center">Análisis de riesgos</p>
         </a>
     </div>
-    <div class="w-10/12">
-        <a
-            use:inertia
-            href={route('calls.rdi.partner-organizations.index', [
-                call.id,
-                project.id,
-            ])}
-            class="flex flex-col items-center inline-block"
-        >
-            <div
-                class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2"
+    {#if project.project_type.programmatic_line.code == 66 || project.project_type.programmatic_line.code == 82}
+        <div class="w-10/12">
+            <a
+                use:inertia
+                href={route('calls.rdi.partner-organizations.index', [
+                    call.id,
+                    project.id,
+                ])}
+                class="flex flex-col items-center inline-block"
             >
-                10
-            </div>
-            <p class="text-sm text-center">Entidades aliadas</p>
-        </a>
-    </div>
+                <div
+                    class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2"
+                >
+                    10
+                </div>
+                <p class="text-sm text-center">Entidades aliadas</p>
+            </a>
+        </div>
+    {/if}
     <div class="w-10/12">
         <a
             use:inertia
@@ -179,7 +181,11 @@
             <div
                 class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2"
             >
-                11
+                {#if project.project_type.programmatic_line.code == 66 || project.project_type.programmatic_line.code == 82}
+                    11
+                {:else}
+                    10
+                {/if}
             </div>
             <p class="text-sm text-center">Anexos</p>
         </a>
@@ -189,7 +195,11 @@
             <div
                 class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2"
             >
-                12
+                {#if project.project_type.programmatic_line.code == 66 || project.project_type.programmatic_line.code == 82}
+                    12
+                {:else}
+                    11
+                {/if}
             </div>
             <p class="text-sm text-center">Cadena de valor</p>
         </a>
@@ -199,7 +209,11 @@
             <div
                 class="rounded-full bg-white w-11 h-11 text-center flex items-center justify-center shadow mb-2"
             >
-                13
+                {#if project.project_type.programmatic_line.code == 66 || project.project_type.programmatic_line.code == 82}
+                    13
+                {:else}
+                    12
+                {/if}
             </div>
             <p class="text-sm text-center">Finalzar formulación</p>
         </a>

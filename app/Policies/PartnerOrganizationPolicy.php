@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\PartnerOrganization;
 use App\Models\User;
+use App\Models\RDI;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PartnerOrganizationPolicy
@@ -16,8 +17,12 @@ class PartnerOrganizationPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, Rdi $rdi)
     {
+        if ($rdi->project->projectType->programmaticLine->code == 23) {
+            return false;
+        }
+
         if ( $user->hasPermissionTo('partner-organizations.index') || $user->hasPermissionTo('partner-organizations.show') || $user->hasPermissionTo('partner-organizations.create') || $user->hasPermissionTo('partner-organizations.edit') || $user->hasPermissionTo('partner-organizations.delete') ) {
             return true;
         }

@@ -23,6 +23,13 @@ class ActivityController extends Controller
 
         $specificObjective = $project->directCauses()->with('specificObjective')->get()->pluck('specificObjective')->flatten()->filter();
 
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
+
         return Inertia::render('Calls/Projects/Activities/Index', [
             'call'          => $call,
             'project'       => $project,

@@ -21,6 +21,13 @@ class RiskAnalysisController extends Controller
     {
         $this->authorize('viewAny', [RiskAnalysis::class]);
 
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
+
         return Inertia::render('Calls/Projects/RiskAnalysis/Index', [
             'call'      => $call,
             'project'   => $project,

@@ -21,11 +21,18 @@ class PartnerOrganizationController extends Controller
      */
     public function index(Call $call, RDI $rdi)
     {
-        $this->authorize('viewAny', [PartnerOrganization::class]);
+        $this->authorize('viewAny', [PartnerOrganization::class, $rdi]);
+
+        $rdi->project->projectType->programmaticLine;
+        $rdi->project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
 
         return Inertia::render('Calls/Projects/RDI/PartnerOrganizations/Index', [
             'call'      => $call->only('id'),
-            'rdi'       => $rdi->only('id'),
+            'rdi'       => $rdi,
             'filters'   => request()->all('search'),
             'partnerOrganizations' => PartnerOrganization::where('rdi_id', $rdi->id)->orderBy('name', 'ASC')
                 ->filterPartnerOrganization(request()->only('search'))->select('id', 'name')->paginate(),

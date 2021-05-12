@@ -101,11 +101,17 @@ class ProjectTreeController extends Controller
                 $this->generateTree($project);
                 $directEffects  = $project->directEffects()->with('indirectEffects:id,direct_effect_id,description')->get();
                 $directCauses   = $project->directCauses()->with('indirectCauses')->get();
-                $project        = $project->rdi()->first();
                 break;
             default:
                 break;
         }
+
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
 
         return Inertia::render('Calls/Projects/ProjectTree/ProblemTree', [
             'call'          => $call,
@@ -268,11 +274,17 @@ class ProjectTreeController extends Controller
 
                 $directEffects  = $project->directEffects()->with('indirectEffects.impact', 'projectResult')->get();
                 $directCauses   = $project->directCauses()->with('indirectCauses.activity', 'specificObjective')->get();
-                $project        = $project->rdi()->first();
                 break;
             default:
                 break;
         }
+
+        $project->projectType->programmaticLine;
+        $project->makeHidden(
+            'rdi', 
+            'projectSennovaBudgets', 
+            'updated_at',
+        );
 
         return Inertia::render('Calls/Projects/ProjectTree/ObjectivesTree', [
             'call'          => $call->only('id'),
