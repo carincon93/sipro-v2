@@ -242,7 +242,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Trae los usos presupuestales
     Route::get('web-api/calls/{call}/programmatic-lines/{programmaticLine}/sennova-budgets/second-budget-info/{secondBudgetInfo}/third-budget-info/{thirdBudgetInfo}', function($call, $programmaticLine, $secondBudgetInfo, $thirdBudgetInfo) {
-        return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label', 'sennova_budgets.requires_market_research', 'sennova_budgets.message')
+        return response(SennovaBudget::select('call_budgets.id as value', 'budget_usages.description as label', 'budget_usages.code', 'sennova_budgets.requires_market_research', 'sennova_budgets.message')
             ->join('budget_usages', 'sennova_budgets.budget_usage_id', 'budget_usages.id')
             ->join('call_budgets', 'sennova_budgets.id', 'call_budgets.sennova_budget_id')
             ->where('call_budgets.call_id', $call)

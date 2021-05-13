@@ -13,6 +13,7 @@
     export let showQtyInput
     export let call
     export let programmaticLine
+    export let budgetUsageCode
 
     let selectedSecondBudgetInfoID
     let selectedThirdBudgetInfoID
@@ -39,7 +40,7 @@
               )
             : null
         sennovaBudget?.call_budget?.id
-            ? test(sennovaBudget?.call_budget?.id)
+            ? getBudgetUsageData(sennovaBudget?.call_budget?.id)
             : null
     })
 
@@ -90,20 +91,20 @@
     }
 
     function handleSennovaBudget(e) {
-        if (e.target.value != '') test(e.target.value)
+        if (e.target.value != '') getBudgetUsageData(e.target.value)
     }
 
-    function test(value) {
+    function getBudgetUsageData(value) {
         budgetMessage = budgetUsages.find(
             (item) => item.value == value,
         )?.message
+
+        budgetUsageCode = budgetUsages.find((item) => item.value == value)?.code
 
         showQtyInput = budgetUsages.find(
             (item) => item.value == value,
         )?.requires_market_research
     }
-
-    console.log(budgetMessage)
 </script>
 
 <div class="mt-4">

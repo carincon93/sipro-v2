@@ -9,10 +9,13 @@
     import LoadingButton from '@/Components/LoadingButton'
     import DropdownCallBudget from '@/Dropdowns/DropdownCallBudget'
     import Textarea from '@/Components/Textarea'
+    import InputError from '@/Components/InputError'
 
     export let call
     export let project
     export let errors
+    export let licenceTypes
+    export let softwareTypes
 
     $: $title =
         $_('Create') +
@@ -51,11 +54,16 @@
     let showQtyInput = true
     let sending = false
     let form = useForm({
-        call_budget_id: '',
+        call_budget_id: null,
         description: '',
         justification: '',
         value: '',
         qty_items: '',
+        software_type: '',
+        license_type: '',
+        start_date: '',
+        end_date: '',
+        budget_usage_code: '',
     })
 
     function submit() {
@@ -113,6 +121,7 @@
                     <DropdownCallBudget
                         bind:selectedBudgetUsage={$form.call_budget_id}
                         bind:showQtyInput
+                        bind:budgetUsageCode={$form.budget_usage_code}
                         message={errors.call_budget_id}
                         {call}
                         programmaticLine={project.project_type
@@ -188,6 +197,87 @@
                             required
                         />
                     </div>
+                {/if}
+
+                {#if $form.budget_usage_code == '2010100600203101'}
+                    <div class="mt-4">
+                        <Label
+                            required
+                            class="mb-4"
+                            labelFor="license_type"
+                            value="Tipo de licencia"
+                        />
+                        <select
+                            id="license_type"
+                            bind:value={$form.license_type}
+                            required
+                        >
+                            <option value=""
+                                >Seleccione el tipo de licencia
+                            </option>
+                            {#each licenceTypes as { value, label }}
+                                <option {value}>{label}</option>
+                            {/each}
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <Label
+                            required
+                            class="mb-4"
+                            labelFor="software_type"
+                            value="Tipo de software"
+                        />
+                        <select
+                            id="software_type"
+                            bind:value={$form.software_type}
+                            required
+                        >
+                            <option value=""
+                                >Seleccione el tipo de software
+                            </option>
+                            {#each softwareTypes as { value, label }}
+                                <option {value}>{label}</option>
+                            {/each}
+                        </select>
+                    </div>
+
+                    <div class="mt-8">
+                        <p>Periodo de uso</p>
+                        <div class="mt-4">
+                            <Label
+                                required
+                                class="mb-4"
+                                labelFor="start_date"
+                                value="Fecha de inicio"
+                            />
+                            <Input
+                                id="start_date"
+                                type="date"
+                                class="mt-1 block w-full"
+                                bind:value={$form.start_date}
+                                required
+                            />
+                        </div>
+                        <div class="mt-4">
+                            <Label
+                                class="mb-4"
+                                labelFor="end_date"
+                                value="Fecha de finalización"
+                            />
+                            <Input
+                                id="end_date"
+                                type="date"
+                                class="mt-1 block w-full"
+                                bind:value={$form.end_date}
+                            />
+                        </div>
+                    </div>
+                    {#if errors.start_date || errors.end_date}
+                        <InputError
+                            message={errors.start_date || errors.end_date}
+                        />
+                    {/if}
                 {/if}
             </fieldset>
             <div

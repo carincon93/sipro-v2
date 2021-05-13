@@ -8,6 +8,7 @@ use App\Models\CallBudget;
 use App\Models\SecondBudgetInfo;
 use App\Models\Project;
 use App\Models\ProjectSennovaBudget;
+use App\Models\SoftwareInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -53,8 +54,10 @@ class ProjectSennovaBudgetController extends Controller
         $project->projectType->programmaticLine->only('id');
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Create', [
-            'call'      => $call,
-            'project'   => $project
+            'call'          => $call,
+            'project'       => $project,
+            'licenceTypes'  => json_decode(Storage::get('json/license-types.json'), true),
+            'softwareTypes' => json_decode(Storage::get('json/software-types.json'), true)
         ]);
     }
 
@@ -88,6 +91,16 @@ class ProjectSennovaBudgetController extends Controller
         $projectSennovaBudget->callBudget()->associate($callBudget);
         $projectSennovaBudget->save();
 
+        if($request->get('budget_usage_code') == '2010100600203101') {
+            $softwareInfo = new SoftwareInfo();
+            $softwareInfo->license_type     = $request->get('license_type');
+            $softwareInfo->software_type    = $request->get('software_type');
+            $softwareInfo->start_date       = $request->get('start_date');
+            $softwareInfo->end_date         = $request->get('end_date');
+            
+            $projectSennovaBudget->softwareInfo()->save($softwareInfo);
+        }
+
         return redirect()->route('calls.projects.project-sennova-budgets.project-budget-batches.index', [$call, $project, $projectSennovaBudget])->with('success', 'The resource has been created successfully.');
     }
 
@@ -116,13 +129,16 @@ class ProjectSennovaBudgetController extends Controller
     {
         $this->authorize('update', [ProjectSennovaBudget::class, $projectSennovaBudget]);
 
-        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage->only('id', 'description');
-        $project->projectType->programmaticLine->only('id');
+        $projectSennovaBudget->softwareInfo;
+        $projectSennovaBudget->callBudget->sennovaBudget->budgetUsage;
+        $project->projectType->programmaticLine;
 
         return Inertia::render('Calls/Projects/ProjectSennovaBudgets/Edit', [
-            'call'                          => $call->only('id'),
-            'project'                       => $project,
-            'projectSennovaBudget'          => $projectSennovaBudget,
+            'call'                  => $call->only('id'),
+            'project'               => $project,
+            'projectSennovaBudget'  => $projectSennovaBudget,
+            'licenceTypes'          => json_decode(Storage::get('json/license-types.json'), true),
+            'softwareTypes'         => json_decode(Storage::get('json/software-types.json'), true)
         ]);
     }
 

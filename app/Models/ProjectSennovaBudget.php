@@ -84,6 +84,16 @@ class ProjectSennovaBudget extends Model
     }
 
     /**
+     * Relationship with SoftwareInfo
+     *
+     * @return void
+     */
+    public function softwareInfo()
+    {
+        return $this->hasOne(SoftwareInfo::class);
+    }
+
+    /**
      * Filtrar registros
      *
      * @param  mixed $query

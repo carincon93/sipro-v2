@@ -17,6 +17,8 @@
     export let project
     export let errors
     export let projectSennovaBudget
+    export let licenceTypes
+    export let softwareTypes
 
     let callBudget = projectSennovaBudget.call_budget
     let sennovaBudget = projectSennovaBudget
@@ -59,12 +61,19 @@
     let dialog_open = false
     let sending = false
     let form = useForm({
+        budget_usage_code: 2010100600203101,
         call_budget_id: projectSennovaBudget.call_budget_id,
         description: projectSennovaBudget.description,
         justification: projectSennovaBudget.justification,
         value: projectSennovaBudget.value,
         qty_items: projectSennovaBudget.qty_items,
+        software_type: projectSennovaBudget.software_info?.software_type,
+        license_type: projectSennovaBudget.software_info?.license_type,
+        start_date: projectSennovaBudget.software_info?.start_date,
+        end_date: projectSennovaBudget.software_info?.end_date,
     })
+
+    console.log()
 
     function submit() {
         if (canEditProjectSennovaBudgets || isSuperAdmin) {
@@ -123,6 +132,8 @@
         </div>
     </header>
 
+    {$form.budget_usage_code}
+
     <div class="flex">
         <div class="bg-white rounded shadow max-w-3xl flex-1">
             <form on:submit|preventDefault={submit} id="form-project-budget">
@@ -131,6 +142,7 @@
                         <DropdownCallBudget
                             bind:selectedBudgetUsage={$form.call_budget_id}
                             bind:showQtyInput
+                            bind:budgetUsageCode={$form.budget_usage_code}
                             {sennovaBudget}
                             message={errors.call_budget_id}
                             {call}
@@ -199,7 +211,7 @@
                         />
                     </div>
 
-                    {#if !showQtyInput}
+                    {#if showQtyInput != undefined}
                         <div class="mt-4">
                             <Label
                                 required
@@ -234,6 +246,87 @@
                                 required
                             />
                         </div>
+                    {/if}
+
+                    {#if $form.budget_usage_code == '2010100600203101'}
+                        <div class="mt-4">
+                            <Label
+                                required
+                                class="mb-4"
+                                labelFor="license_type"
+                                value="Tipo de licencia"
+                            />
+                            <select
+                                id="license_type"
+                                bind:value={$form.license_type}
+                                required
+                            >
+                                <option value=""
+                                    >Seleccione el tipo de licencia
+                                </option>
+                                {#each licenceTypes as { value, label }}
+                                    <option {value}>{label}</option>
+                                {/each}
+                            </select>
+                        </div>
+
+                        <div class="mt-4">
+                            <Label
+                                required
+                                class="mb-4"
+                                labelFor="software_type"
+                                value="Tipo de software"
+                            />
+                            <select
+                                id="software_type"
+                                bind:value={$form.software_type}
+                                required
+                            >
+                                <option value=""
+                                    >Seleccione el tipo de software
+                                </option>
+                                {#each softwareTypes as { value, label }}
+                                    <option {value}>{label}</option>
+                                {/each}
+                            </select>
+                        </div>
+
+                        <div class="mt-8">
+                            <p>Periodo de uso</p>
+                            <div class="mt-4">
+                                <Label
+                                    required
+                                    class="mb-4"
+                                    labelFor="start_date"
+                                    value="Fecha de inicio"
+                                />
+                                <Input
+                                    id="start_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.start_date}
+                                    required
+                                />
+                            </div>
+                            <div class="mt-4">
+                                <Label
+                                    class="mb-4"
+                                    labelFor="end_date"
+                                    value="Fecha de finalización"
+                                />
+                                <Input
+                                    id="end_date"
+                                    type="date"
+                                    class="mt-1 block w-full"
+                                    bind:value={$form.end_date}
+                                />
+                            </div>
+                        </div>
+                        {#if errors.start_date || errors.end_date}
+                            <InputError
+                                message={errors.start_date || errors.end_date}
+                            />
+                        {/if}
                     {/if}
                 </div>
 
