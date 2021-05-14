@@ -211,7 +211,7 @@
                     <DynamicList
                         id="project_type_id"
                         bind:value={$form.project_type_id}
-                        routeWebApi={route('web-api.project-types')}
+                        routeWebApi={route('web-api.project-types', ['I+D+i'])}
                         placeholder="Busque por el nombre del tipo de proyecto, línea programática"
                         message={errors.project_type_id}
                         required
