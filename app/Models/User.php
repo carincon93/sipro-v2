@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -104,7 +105,10 @@ class User extends Authenticatable
     public function scopeFilterUser($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('name', 'ilike', '%'.$search.'%');
+            $search = str_replace(' ', '%%', $search);
+            $query->whereRaw("unaccent(name) ilike unaccent('%".$search."%')");
+            $query->orWhere('email', 'ilike', '%'.$search.'%');
+            $query->orWhere('document_number', 'ilike', '%'.$search.'%');
         });
     }
 

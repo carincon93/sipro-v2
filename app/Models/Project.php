@@ -170,6 +170,26 @@ class Project extends Model
     }
 
     /**
+     * Relationship with Project (academic_programs)
+     *
+     * @return void
+     */
+    public function academicPrograms()
+    {
+        return $this->belongsToMany(AcademicProgram::class, 'project_academic_program', 'project_id', 'academic_program_id');
+    }
+
+    /**
+     * Relationship with Project (project_research_teams)
+     *
+     * @return void
+     */
+    public function researchTeams()
+    {
+        return $this->belongsToMany(ResearchTeam::class, 'project_research_team', 'project_id', 'research_team_id');
+    }
+
+    /**
      * Get code e.g. SGPS-8000-2021
      *
      * @return void

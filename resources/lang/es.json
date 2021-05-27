@@ -33,8 +33,10 @@
     "Disable": "Inhabilitar",
     "Confirm": "Confirmar",
     "Cancel": "Cancelar",
+    "Remove": "Quitar",
     "Upload": "Cargar",
     "Continue": "Continuar",
+    "Link up": "Vincular",
     "View details": "Ver detalles",
     "The password is incorrect.": "La contraseña es incorrecta",
     "Update Password": "Actualizar contraseña",
@@ -114,6 +116,10 @@
     "The resource has been updated successfully.": "El recurso se ha actualizado correctamente.",
     "The resource has been deleted successfully.": "El recurso se ha eliminado correctamente.",
     "The resource has been saved successfully.": "El recurso se ha guardado correctamente.",
+    "The resource has been link up successfully.": "El recurso se ha vinculado correctamente.",
+    "The resource has been unlink up successfully.": "El recurso se ha desvinculado correctamente. ",
+    "The resource is already linked.": "El recurso ya está vinculado.",
+    "The resource is already unlinked.": "El recurso ya está desvinculado.",
     "There are form errors.": "Hay {count} errores en el formulario. Por favor revíselos.",
     "There is one form error.": "Hay un error en el formulario. Por favor revíselo.",
     "Please fill out this field.": "Completa este campo",
@@ -339,5 +345,7 @@
         "plural": "Mesas sectoriales"
     },
     "Problem tree": "Árbol de problemas",
-    "Objectives tree": "Árbol de objetivos"
+    "Objectives tree": "Árbol de objetivos",
+    "Search": "Buscar",
+    "Create participant": "Crear Proponente"
 }

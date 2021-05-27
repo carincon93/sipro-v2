@@ -129,8 +129,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Actualiza la actividad en el arbol de objetivos
     Route::post('calls/{call}/projects/{project}/activity/{activity}', [ProjectTreeController::class, 'updateActivity'])->name('projects.activity');
 
-    // Muestra los participantes
+    // Muestra, añade y filtra los participantes
     Route::get('calls/{call}/projects/{project}/participants', [ProjectController::class, 'participants'])->name('calls.projects.participants');
+    Route::post('calls/{call}/projects/{project}/participants/users', [ProjectController::class, 'filterParticipants'])->name('calls.projects.participants.users');
+    Route::post('calls/{call}/projects/{project}/participants/users/link', [ProjectController::class, 'linkParticipant'])->name('calls.projects.participants.users.link');
+    Route::put('calls/{call}/projects/{project}/participants/users/link', [ProjectController::class, 'updateParticipant'])->name('calls.projects.participants.users.update');
+    Route::delete('calls/{call}/projects/{project}/participants/users/unlink', [ProjectController::class, 'unlinkParticipant'])->name('calls.projects.participants.users.unlink');
+    Route::post('calls/{call}/projects/{project}/participants/users/register', [ProjectController::class, 'registerParticipant'])->name('calls.projects.participants.users.register');
+
+    // Vincula y filtra los programas
+    Route::post('calls/{call}/projects/{project}/participants/programs', [ProjectController::class, 'filterAcademicPrograms'])->name('calls.projects.participants.programs');
+    Route::post('calls/{call}/projects/{project}/participants/programs/link', [ProjectController::class, 'linkProgram'])->name('calls.projects.participants.programs.link');
+    Route::delete('calls/{call}/projects/{project}/participants/programs/unlink', [ProjectController::class, 'unlinkProgram'])->name('calls.projects.participants.programs.unlink');
+
+    // Vincula y filtra los semilleros
+    Route::post('calls/{call}/projects/{project}/participants/teams', [ProjectController::class, 'filterResearchTeams'])->name('calls.projects.participants.teams');
+    Route::post('calls/{call}/projects/{project}/participants/teams/link', [ProjectController::class, 'linkResearchTeam'])->name('calls.projects.participants.teams.link');
+    Route::delete('calls/{call}/projects/{project}/participants/teams/unlink', [ProjectController::class, 'unlinkResearchTeam'])->name('calls.projects.participants.teams.unlink');
+
     Route::get('calls/{call}/projects/{project}/project-annexes/{project_annexe}/download', [ProjectAnnexeController::class, 'download'])->name('calls.projects.project-annexes.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/project-budget-batches/{project_budget_batch}/download', [ProjectBudgetBatchController::class, 'download'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download');
     Route::get('calls/{call}/projects/{project}/project-sennova-budgets/{project_sennova_budget}/market-research/{market_research}/download', [ProjectBudgetBatchController::class, 'downloadPriceQuoteFile'])->name('calls.projects.project-sennova-budgets.project-budget-batches.download-price-qoute-file');

@@ -6,8 +6,12 @@
     import ResearchTeamsFinder from './ResearchTeamsFinder.svelte'
     import UsersFinder from './UsersFinder.svelte'
 
+    export let errors
+    export let filters;
     export let call
     export let project
+    export let documentTypes
+    export let participationTypes
 
     $: $title = 'Participantes'
 </script>
@@ -17,13 +21,15 @@
 
     <div class="py-12">
         <div class="mt-16">
-            <UsersFinder />
+            <UsersFinder call={call} project={project} errors={errors} documentTypes={documentTypes} participationTypes={participationTypes} />
         </div>
-        <div class="mt-80">
-            <ResearchTeamsFinder />
+        <hr class="my-16">
+        <div>
+            <ResearchTeamsFinder  call={call} project={project} errors={errors}/>
         </div>
-        <div class="mt-80">
-            <AcademicProgramsFinder />
+        <hr class="my-16">
+        <div>
+            <AcademicProgramsFinder  call={call} project={project} errors={errors}/>
         </div>
     </div>
 </AuthenticatedLayout>

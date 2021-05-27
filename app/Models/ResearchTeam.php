@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -67,7 +68,8 @@ class ResearchTeam extends Model
     public function scopeFilterResearchTeam($query, array $filters)
     {
         $query->when($filters['search'] ?? null, function ($query, $search) {
-            $query->where('name', 'ilike', '%'.$search.'%');
+            $search = str_replace(' ', '%%', $search);
+            $query->whereRaw("unaccent(name) ilike unaccent('%".$search."%')");
         });
     }
 }
