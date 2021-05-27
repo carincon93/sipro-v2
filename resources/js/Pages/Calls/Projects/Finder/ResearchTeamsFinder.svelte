@@ -214,7 +214,7 @@
                             on:SMUI:action={() =>
                                 disableTeam(rteam.id)}
                         >
-                            <Text>{$_('Disable')}</Text>
+                            <Text>{$_('Remove')}</Text>
                         </Item>
                     </ResourceMenu>
                 </td>

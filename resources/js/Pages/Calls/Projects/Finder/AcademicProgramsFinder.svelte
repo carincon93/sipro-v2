@@ -249,7 +249,7 @@
                             on:SMUI:action={() =>
                                 disableProgram(ap.id)}
                         >
-                            <Text>{$_('Disable')}</Text>
+                            <Text>{$_('Remove')}</Text>
                         </Item>
                     </ResourceMenu>
                 </td>
